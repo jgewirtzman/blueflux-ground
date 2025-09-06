@@ -8,7 +8,7 @@ library(readxl)
 library(openxlsx)
 
 # Set your data path
-data_path <- "analyzer_data/LGR_UGGA/LGR3"
+data_path <- "analyzer_data/LGR_GLA131/LGR1"
 
 cat("=== EXTRACTING ZIP FILES ===\n")
 
