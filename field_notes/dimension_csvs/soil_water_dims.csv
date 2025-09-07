@@ -1,0 +1,7 @@
+﻿Chamber,Diameter_cm,Height_cm,Chamber_Volume_cm3,Chamber_Volume_L,Offset_cm,Collar_Volume_cm3,Collar_Volume_L,Chamber+Collar_Volume_L,Ground_Surface_Area_cm2
+Soil 8 in,19.38,9.68,1905.7,1.91,5,1621.5,1.62,3.53,324.3
+Soil 6 in,14.3,7.14,765.6,0.77,5,912.1,0.91,1.68,182.4
+Floating 8 in,19.38,9.68,1905.7,1.91,2.54,463.3,0.46,3.37,324.3
+3 ft soil,23.5,91.4,39643.5,39.6,-2,-867.5,-0.87,38.7,433.7
+2 ft soil,23.5,61,26429.3,26.4,-2,-867.5,-0.87,25.6,433.7
+1 ft soil,23.5,30.5,13214.7,13.2,-2,-867.5,-0.87,12.3,433.7
