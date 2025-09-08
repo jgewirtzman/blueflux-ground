@@ -74,23 +74,6 @@ if (length(na_indices) > 0) {
 # Create date-only column for same-day matching (same as fill_air_temp.R)
 soil_water_data$date_only <- as.Date(soil_water_data$datetime)
 
-# Create unique flux IDs (following tree pattern)
-soil_water_data <- soil_water_data %>%
-  mutate(
-    # Create flux_id similar to tree data pattern  
-    flux_id = paste(
-      format(date_only, "%b_%d_%y"),  # Format: Mar_18_22
-      plot,
-      substr(surface, 1, 1),  # S for Soil, W for Water
-      collar_notes,
-      gsub("[^A-Za-z0-9]", "", chamber_id),  # Clean chamber ID
-      analyzer_id,
-      sep = "_"
-    ),
-    flux_id = gsub("_+", "_", flux_id),  # Remove multiple underscores
-    flux_id = gsub("_$", "", flux_id)   # Remove trailing underscore
-  )
-
 cat("Data processing complete:\n")
 cat("- Date range:", min(soil_water_data$date, na.rm = TRUE), "to", max(soil_water_data$date, na.rm = TRUE), "\n")
 cat("- Analyzers:", paste(sort(unique(soil_water_data$analyzer_id)), collapse = ", "), "\n")

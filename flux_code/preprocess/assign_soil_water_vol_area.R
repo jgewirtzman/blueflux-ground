@@ -2,6 +2,7 @@
 # This follows the same logic as assign_tree_vol_area.R but for soil/water chambers
 # Reads from actual files and includes drierite with time-period assignments
 
+library(tidyverse)
 library(dplyr)
 library(readr)
 library(lubridate)

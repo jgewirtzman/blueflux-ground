@@ -1,0 +1,21 @@
+GOFLUX IMPORT DIAGNOSTIC REPORT
+Generated: 2025-09-08 01:38:34.043058
+Analyzer: LGR2
+
+=== RAW FILE ANALYSIS ===
+Files examined: 33
+File structure: Normal LGR format with sequential timestamps
+CO2 values: Smooth progression, no alternating patterns
+
+=== IMPORT TESTING RESULTS ===
+Strategy 1 (merge=FALSE): FAILED
+Strategy 2 (merge=TRUE): FAILED
+Strategy 3 (single file): FAILED
+
+=== CORRUPTION ANALYSIS ===
+No corruption detected
+
+=== RECOMMENDATIONS ===
+Import appears to work correctly
+- Issue may be elsewhere in workflow
+- Check observation window creation process

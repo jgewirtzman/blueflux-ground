@@ -77,8 +77,10 @@ if(is.null(lgr3_data_tz)) lgr3_data_tz <- ""
 cat("LGR3 data timezone:", ifelse(lgr3_data_tz == "", "UTC (default)", lgr3_data_tz), "\n")
 
 # Load LGR3 auxfile
-#lgr3_auxfile <- read_csv("flux_code/auxfiles/tree_auxfile_lgr3_complete.csv") %>%
-  mutate(start.time = as.POSIXct(start.time, tz = ifelse(lgr3_data_tz == "", "UTC", lgr3_data_tz)))
+#lgr3_auxfile <- read_csv("flux_code/auxfiles/tree_auxfile_lgr3_complete.csv") %>% mutate(start.time = as.POSIXct(start.time, tz = ifelse(lgr3_data_tz == "", "UTC", lgr3_data_tz)))
+lgr3_auxfile <- read_csv("flux_code/auxfiles/tree_auxfile_all_instruments_additional.csv") %>% mutate(start.time = as.POSIXct(start.time, tz = ifelse(lgr3_data_tz == "", "UTC", lgr3_data_tz)))
+
+
 
 cat("Auxfile loaded:", nrow(lgr3_auxfile), "measurements\n")
 

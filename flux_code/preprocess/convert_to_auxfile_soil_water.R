@@ -1,5 +1,5 @@
 # STEP 3: CONVERT SOIL/WATER DATA TO GOFLUX AUXFILE FORMAT - REVISED
-# Simple sequential numbering approach to create unique IDs
+# Use existing flux_id as UniqueID instead of creating new sequential IDs
 
 library(dplyr)
 library(readr)
@@ -61,20 +61,11 @@ convert_soilwater_to_auxfile <- function(soil_water_data, default_pcham = 101.32
     stop("No complete records found for auxfile conversion")
   }
   
-  # Create unique flux_ids by simply adding row numbers
-  complete_data_unique <- complete_data %>%
-    arrange(datetime) %>%  # Sort by time to make numbering meaningful
-    mutate(
-      UniqueID = paste0("SW_", sprintf("%03d", row_number()))  # SW_001, SW_002, etc.
-    )
-  
-  cat("Records with unique IDs:", nrow(complete_data_unique), "\n")
-  
-  # Convert to auxfile format and preserve analyzer info
-  auxfile <- complete_data_unique %>%
+  # Convert to auxfile format and preserve existing flux_id as UniqueID
+  auxfile <- complete_data %>%
     transmute(
-      # UniqueID: Use the simple sequential ID
-      UniqueID = UniqueID,
+      # UniqueID: Use existing flux_id directly
+      UniqueID = flux_id,
       
       # DATE: Convert date to yyyy-mm-d format
       DATE = case_when(
