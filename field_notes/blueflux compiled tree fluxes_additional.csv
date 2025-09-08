@@ -76,7 +76,7 @@
 75,T1_75,Mar_22_T1_75_BL60_stem,BL60,3/24/22,12:18:00,12:23:00,stem,alive,RHMA,Picarro,Picarro,S3,B,,,50,7.6,,30.3,24.6,,sediment,
 76,T1_76,Mar_22_T1_76_BL60_root,BL60,3/24/22,12:37:00,12:42:00,root,alive,RHMA,Picarro,Picarro,RZ,NA,,,0,3.5,,,,,sediment,
 77,T1_77,Mar_22_T1_77_BL60_stem,BL60,3/24/22,12:56:00,13:01:00,stem,alive,RHMA,Picarro,Picarro,S3,B,,,25,6.4,,,,,sediment,
-78,T1_78,Mar_22_T1_78_BL60_stem,BL60,3/24/22,15:05:30,13:13:30,stem,alive,LARA,LGR,LGR3,B,B,,,0,17.8,31.4,36.2,24.9,,sediment,
+78,T1_78,Mar_22_T1_78_BL60_stem,BL60,3/24/22,15:05:30,13:13:30,stem,alive,LARA,LGR,LGR3,B,B,,,0,17.8,31.4,32.6,24.9,,sediment,
 79,T1_79,Mar_22_T1_79_BL60_stem,BL60,3/24/22,13:24:00,13:29:30,stem,alive,LARA,LGR,LGR3,B,B,,,50,8.6,29.7,33.4,,,sediment,
 80,T1_80,Mar_22_T1_80_BL60_stem,BL60,3/24/22,13:35:30,13:40:30,stem,alive,LARA,LGR,LGR3,B,B,,,100,8,30.8,27.3,,,sediment,
 81,T1_81,Mar_22_T1_81_BL60_stem,BL60,3/24/22,14:00:00,14:05:00,stem,alive,RHMA,LGR,LGR3,B,B,,,0,9.5,35.4,33.9,29.6,,sediment,
