@@ -470,3 +470,154 @@ p_overall_summary <- stem_data_final %>%
   )
 
 print(p_overall_summary)
+
+
+# Optional: Create a summary plot showing overall patterns across height categories
+p_overall_summary <- stem_data_final %>%
+  ggplot(aes(x = CH4_best.flux, y = height_category)) +
+  geom_boxplot(aes(fill = height_category), alpha = 0.7) +
+  geom_jitter(height = 0.2, alpha = 0.3, size = 0.8) +
+  scale_x_log10(labels = label_log()) +
+  #xlim(-1, 100)+
+  scale_fill_viridis_d(name = "Height\nCategory") +
+  labs(
+    title = expression(Overall~Stem~CH[4]~Flux~by~Height~Category),
+    y = "Height Category", 
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale),
+    subtitle = paste("Combined data from", length(plots_with_sufficient_data), "plots")
+  ) +
+  theme_bw() +
+  theme(
+    axis.title = element_text(size = 11, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "none"
+  )
+
+print(p_overall_summary)
+
+
+
+
+
+
+
+
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+library(ggridges)
+library(scales)
+
+# Create site bins and filter data
+stem_data_ridge <- stem_data_final %>%
+  mutate(
+    site_bin = case_when(
+      plot %in% c("SRS5", "SRS6") ~ "healthy",
+      plot %in% c("BL60") ~ "regenerating", 
+      plot %in% c("FLM30", "CP40") ~ "ghost",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  # Filter to only include the specified sites
+  filter(!is.na(site_bin)) %>%
+  # Convert site_bin to factor with desired order
+  mutate(site_bin = factor(site_bin, levels = c("healthy", "regenerating", "ghost")))
+
+# Create ridge plot
+p_ridge_by_site <- stem_data_ridge %>%
+  ggplot(aes(x = CH4_best.flux, y = height_category, fill = site_bin)) +
+  geom_density_ridges(alpha = 0.7, scale = 0.9, bandwidth = 0.5) +
+  scale_x_log10(labels = label_log()) +
+  scale_fill_manual(values = c("healthy" = "#228B22", "regenerating" = "#808080", "ghost" = "#8B4513"), 
+                    name = "Site\nCondition") +
+  labs(
+    title = expression(Stem~CH[4]~Flux~Distribution~by~Height~Category~and~Site~Condition),
+    y = "Height Category", 
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale)
+  ) +
+  theme_bw() +
+  theme(
+    axis.title = element_text(size = 11, face = "bold"),
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "right"
+  )
+
+print(p_ridge_by_site)
+
+
+
+
+
+
+# Load required libraries
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(scales)
+
+# Create site bins and filter data
+stem_data_ridge <- stem_data_final %>%
+  mutate(
+    site_bin = case_when(
+      plot %in% c("SRS5", "SRS6") ~ "healthy",
+      plot %in% c("BL60") ~ "regenerating", 
+      plot %in% c("FLM30", "CP40") ~ "ghost",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  # Filter to only include the specified sites
+  filter(!is.na(site_bin)) %>%
+  # Convert site_bin to factor with desired order
+  mutate(site_bin = factor(site_bin, levels = c("healthy", "regenerating", "ghost")))
+
+# Define colors
+site_colors <- c("healthy" = "#228B22", "regenerating" = "#808080", "ghost" = "#8B4513")
+
+# Create density plot (top portion)
+density_plot <- stem_data_ridge %>%
+  ggplot(aes(x = CH4_best.flux, fill = site_bin)) +
+  geom_density(alpha = 0.7, adjust = 1.5, position = 'identity') +
+  facet_wrap(~height_category, nrow = 1) +
+  scale_x_log10(labels = label_log()) +
+  scale_fill_manual(values = site_colors) +
+  labs(fill = "Site\nCondition") +
+  theme_classic() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    legend.position = "none",
+    strip.text = element_text(size = 10, face = "bold"),
+    plot.margin = margin(t = 10, r = 5, b = 0, l = 5)
+  )
+
+# Create box/jitter plot (bottom portion)
+box_jitter_plot <- stem_data_ridge %>%
+  ggplot(aes(x = CH4_best.flux, y = site_bin, fill = site_bin)) +
+  geom_jitter(height = 0.2, width = 0, alpha = 0.4, size = 1) +
+  geom_boxplot(width = 0.4, alpha = 0.7) +
+  facet_wrap(~height_category, nrow = 1) +
+  scale_x_log10(labels = label_log()) +
+  scale_fill_manual(values = site_colors) +
+  labs(
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
+    y = "Site Condition",
+    fill = "Site\nCondition"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_blank(),  # Remove strip text since it's in the top plot
+    legend.position = "right",
+    plot.margin = margin(t = 0, r = 5, b = 10, l = 5)
+  )
+
+# Align and combine the plots
+aligned <- align_plots(density_plot, box_jitter_plot, align = "v", axis = "tblr")
+p1 <- ggdraw(aligned[[1]])
+p2 <- ggdraw(aligned[[2]])
+
+# Create final rainfall plot
+rainfall_plot <- plot_grid(p1, p2, ncol = 1, align = "v", rel_heights = c(1, 2))
+
+print(rainfall_plot)

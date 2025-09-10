@@ -629,9 +629,39 @@ p_combined_flux_plot <- combined_data %>%
 print(p_combined_flux_plot)
 
 
+p_combined_flux_pseudolog <- combined_data %>%
+  ggplot(aes(x = flux_value, y = component, color = component, fill = component)) +
+  geom_jitter(alpha = 0.6, size = 1.5, height = 0.3) +
+  geom_boxplot(alpha = 0.3, outlier.shape = NA, color = "black", width = 0.4) +
+  stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black", width = 0.4) +
+  stat_summary(fun = mean, geom = "point", size = 3, color = "black", shape = 23, fill = "white") +
+  facet_wrap(~gas_type, scales = "free_x") +
+  #scale_x_continuous(trans = "pseudo_log") +
+  scale_color_manual(values = component_colors) +
+  scale_fill_manual(values = component_colors) +
+  labs(
+    x = expression(Flux~Rate~(CO[2]:~μmol~m^-2~s^-1~CH[4]:~nmol~m^-2~s^-1)),
+    y = "Ecosystem Component",
+    color = "Component",
+    fill = "Component"
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(angle = 0, hjust = 1),
+    axis.text.x = element_text(size = 9),
+    axis.title.x = element_text(size = 11, face = "bold"),
+    axis.title.y = element_text(size = 11, face = "bold"),
+    strip.text = element_text(size = 10, face = "bold"),
+    legend.position = "bottom"
+  )+xlim(0,10)
+
+print(p_combined_flux_pseudolog)
 
 
 
+
+
+###this one is to see the co2 more easily and is not actually log scale
 p_combined_flux_pseudolog <- combined_data %>%
   ggplot(aes(x = flux_value, y = component, color = component, fill = component)) +
   geom_jitter(alpha = 0.6, size = 1.5, height = 0.3) +
