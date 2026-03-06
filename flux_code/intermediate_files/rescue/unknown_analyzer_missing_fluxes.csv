@@ -1,4 +1,0 @@
-flux_id,date,analyzer_id,measurement_type,start_time,surface_area_cm2,chamber_volume_cm3,total_system_volume_L,air_temp
-44854_SRS5_Water_54,10/20/22,NA,soil water,12:50:00,324.3,3370,4.283,20.7888888888889
-44854_SRS5_Water_55,10/20/22,NA,soil water,13:01:00,324.3,3370,4.283,20.6
-44854_SRS5_Water_56,10/20/22,NA,soil water,13:11:00,324.3,3370,4.283,20.5222222222222

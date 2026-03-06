@@ -1,0 +1,74 @@
+# Flux Statistics Table - Metadata and Units
+
+## File Information
+- **Generated**: 2025
+- **Data Source**: Mangrove greenhouse gas flux measurements
+- **Seasons**: Dry (March), Wet (October)
+- **Years**: 2022, 2023 (pooled by season)
+
+## Column Definitions and Units
+
+### Grouping Variables
+- **season**: Dry (March) or Wet (October)
+- **plot**: Site code (BL60, CP40, FLM30, MI, RB10, SE1, SRS5, SRS6)
+- **disturbance_level**: Forest condition category
+  - healthy: SRS5, SRS6, RB10
+  - regenerating: BL60
+  - ghost: CP40, FLM30, MI
+  - scrub: SE1
+- **component_base**: Ecosystem component measured
+  - Soil, Water, stem, root, CWD, pneumatophore, leaves
+- **height_category**: Height bin for stems/pneumatophores
+  - 0-50cm, 50-100cm, 100-150cm, >150cm
+  - NA for non-stem components or stems without height data
+
+### CH4 Statistics (Methane)
+**Units: nmol m⁻² s⁻¹ (nanomoles per square meter per second)**
+
+- **n_CH4**: Sample size (number of flux measurements)
+- **median_CH4**: Median flux rate
+- **mean_CH4**: Arithmetic mean flux rate
+- **geom_mean_CH4**: Geometric mean flux rate (NA if any values ≤ 0)
+- **sd_CH4**: Standard deviation
+- **se_CH4**: Standard error (SD / √n)
+- **geom_sd_CH4**: Geometric standard deviation (NA if any values ≤ 0)
+- **geom_se_CH4**: Geometric standard error (NA if any values ≤ 0)
+
+### CO2 Statistics (Carbon Dioxide)
+**Units: µmol m⁻² s⁻¹ (micromoles per square meter per second)**
+
+- **n_CO2**: Sample size (number of flux measurements)
+- **median_CO2**: Median flux rate
+- **mean_CO2**: Arithmetic mean flux rate
+- **geom_mean_CO2**: Geometric mean flux rate (NA if any values ≤ 0)
+- **sd_CO2**: Standard deviation
+- **se_CO2**: Standard error (SD / √n)
+- **geom_sd_CO2**: Geometric standard deviation (NA if any values ≤ 0)
+- **geom_se_CO2**: Geometric standard error (NA if any values ≤ 0)
+
+## Notes
+
+### Geometric Statistics
+Geometric mean, SD, and SE are only calculated for strictly positive values. NA values indicate:
+- Presence of zero or negative flux measurements in the group
+- Sample size too small (n ≤ 1 for SD/SE)
+
+### Height Categories
+- Stem and pneumatophore measurements are binned by height above ground/water
+- Height ranges: [0-50), [50-100), [100-150), [150-∞) cm
+- Some stems have NA height category due to missing height data
+
+### Flux Sign Convention
+- Positive flux = emission (from ecosystem to atmosphere)
+- Negative flux = uptake (from atmosphere to ecosystem)
+- Small negative values may indicate measurement noise near zero
+
+### Sample Size
+- Minimum n varies by component and plot
+- Groups with n=0 have all statistics as NA
+- Groups with n=1 have NA for SD and SE
+
+## Analysis Method
+- Flux calculations used best-fit model (HM or LM) as determined by quality metrics
+- Seasons pooled across years (2022-2023)
+- Statistics calculated separately for each season × plot × component × height combination

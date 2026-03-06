@@ -1,0 +1,13 @@
+data_source,analyzer_type,measurement_location,count
+original,LGR1,surface,12
+original,LGR1,trees,40
+original,LGR2,surface,27
+original,LGR2,trees,266
+original,LGR3,surface,107
+original,LGR3,trees,309
+original,Picarro,surface,31
+original,Picarro,trees,42
+rescued,LGR1,surface,2
+rescued,LGR2,trees,12
+rescued,LGR3,trees,38
+rescued,Picarro,surface,6

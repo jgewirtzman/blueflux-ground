@@ -1,0 +1,42 @@
+column_name,description,units,data_type,notes
+flux_id,Unique measurement identifier,"",character,Format: YYMMDD_SITE_Surface_Number
+date,Date of measurement,"",date,Format varies (M/D/YY)
+plot,Site identifier code,"",character,"FLM30, CP40, BL60, SE1, MI, RB10, SRS5, SRS6"
+surface,Surface type for soil/water measurements,"",character,"Soil, Water, or NA (for tree stems)"
+chamber_id,Chamber or collar identifier,"",character,
+start_time,Measurement start time,"HH:MM:SS",time,Local time
+end_time,Measurement end time,"HH:MM:SS",time,Local time
+year,Year of measurement,"",integer,2022 or 2023
+month,Month of measurement,"",integer,1-12
+time_period,Seasonal time period,"",character,
+air_temp,Air temperature at time of measurement,degrees C,numeric,Interpolated from weather station where missing
+soil_temp_c,Soil temperature,degrees C,numeric,
+water_temp_c,Water temperature,degrees C,numeric,At soil/water sites only
+water_depth_cm,Water depth,cm,numeric,At soil/water sites only
+pressure_start,Atmospheric pressure at start,kPa,numeric,
+rh_start,Relative humidity at start,%,numeric,
+Diameter_cm,Tree stem diameter at collar height,cm,numeric,Tree measurements only
+Height_cm,Collar height on tree stem,cm,numeric,Tree measurements only
+chamber_volume_cm3,Chamber internal volume,cm3,numeric,
+surface_area_cm2,Chamber surface area (stem cross-section or ground area),cm2,numeric,
+total_system_volume_cm3,Total system volume (chamber + tubing + analyzer cell),cm3,numeric,
+CH4_best.flux,Best-estimate CH4 flux,nmol m-2 s-1,numeric,Selected from LM or HM model based on quality criteria
+CH4_best.model,Model selected for CH4 best flux,"",character,LM (linear) or HM (Hutchinson-Mosier)
+CH4_quality.check,Quality flag for CH4 flux,"",character,
+CH4_LM.flux,CH4 flux from linear model,nmol m-2 s-1,numeric,
+CH4_LM.r2,R-squared of CH4 linear model,"",numeric,
+CH4_LM.p.val,P-value of CH4 linear model,"",numeric,
+CH4_HM.flux,CH4 flux from Hutchinson-Mosier model,nmol m-2 s-1,numeric,
+CH4_HM.r2,R-squared of CH4 HM model,"",numeric,
+CO2_best.flux,Best-estimate CO2 flux,nmol m-2 s-1,numeric,Selected from LM or HM model based on quality criteria
+CO2_best.model,Model selected for CO2 best flux,"",character,LM (linear) or HM (Hutchinson-Mosier)
+CO2_quality.check,Quality flag for CO2 flux,"",character,
+CO2_LM.flux,CO2 flux from linear model,nmol m-2 s-1,numeric,
+CO2_LM.r2,R-squared of CO2 linear model,"",numeric,
+CO2_LM.p.val,P-value of CO2 linear model,"",numeric,
+CO2_HM.flux,CO2 flux from Hutchinson-Mosier model,nmol m-2 s-1,numeric,
+CO2_HM.r2,R-squared of CO2 HM model,"",numeric,
+analyzer_id,Instrument identifier,"",character,"LGR1, LGR2, LGR3, or Picarro"
+measurement_type,Type of measurement,"",character,"tree or soil/water"
+measurement_category,Measurement category,"",character,"tree, soil, or water"
+notes,Field or processing notes,"",character,
