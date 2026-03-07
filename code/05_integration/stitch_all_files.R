@@ -133,12 +133,51 @@ read_rescued_data <- function(file_path) {
   # Standardize column types BEFORE adding metadata
   df <- standardize_column_types(df)
   
+  # CRITICAL FIX: Rename goFlux columns to include gas prefix
+  # Original datasets use "CH4_best.flux", "CO2_best.flux" etc.
+  # Rescued files use unprefixed "best.flux", "LM.flux" etc.
+  # Without this renaming, rescued flux values end up in the wrong columns
+  # and appear as NA in downstream analysis.
+  gas_type <- unique(df$rescued_gas)[1]  # "CH4" or "CO2"
+  cat("  Renaming goFlux columns with", gas_type, "prefix...\n")
+
+  # All goFlux output columns that need gas prefix to match original datasets
+  goflux_cols <- c(
+    # Linear model columns
+    "LM.flux", "LM.C0", "LM.Ct", "LM.slope", "LM.MAE", "LM.RMSE",
+    "LM.AICc", "LM.SE", "LM.se.rel", "LM.r2", "LM.p.val",
+    # Hutchinson-Mosier model columns
+    "HM.flux", "HM.C0", "HM.Ci", "HM.slope", "HM.MAE", "HM.RMSE",
+    "HM.AICc", "HM.SE", "HM.se.rel", "HM.r2", "HM.k",
+    # General goFlux columns
+    "C0", "Ct", "MDF", "prec", "flux.term", "nb.obs",
+    "k.max", "k.mult", "g.fact",
+    # Best flux selection
+    "best.flux", "model", "quality.check",
+    # Diagnostics and scores
+    "HM.diagnose", "LM.diagnose", "HM.score", "LM.score",
+    # Limit columns
+    "RMSE.lim", "MAE.lim", "SE.lim", "g.limit", "g.reverse",
+    "k.ratio.lim", "p.val.lim", "MDF.lim", "warn.nb.obs"
+  )
+
+  renamed_count <- 0
+  for (col in goflux_cols) {
+    if (col %in% names(df)) {
+      new_name <- paste0(gas_type, "_", col)
+      df[[new_name]] <- df[[col]]
+      df[[col]] <- NULL
+      renamed_count <- renamed_count + 1
+    }
+  }
+  cat("  Renamed", renamed_count, "columns with", gas_type, "prefix\n")
+
   # Add metadata
   df$source_file <- basename(file_path)
   df$data_source <- "rescued"
   df$analyzer_type <- df$rescued_analyzer
   df$measurement_category <- "rescued"
-  
+
   # Determine measurement location from UniqueID patterns
   df$measurement_location <- case_when(
     grepl("_Water_|_Soil_", df$UniqueID) ~ "surface",
@@ -146,16 +185,19 @@ read_rescued_data <- function(file_path) {
     grepl("_CWD", df$UniqueID) ~ "trees",  # Added CWD pattern
     TRUE ~ "unknown"
   )
-  
+
   # IMPORTANT: Create a composite ID that includes gas type
   # This prevents "duplicates" when the same UniqueID has both CH4 and CO2
   df$UniqueID_Gas <- paste(df$UniqueID, df$rescued_gas, sep = "_")
-  
+
   cat("Loaded", nrow(df), "rescued measurements\n")
-  cat("  - Gas:", unique(df$rescued_gas), "\n")
-  cat("  - Quality:", sum(df$quality.check == "clean" | is.na(df$quality.check)), "clean,", 
-      sum(df$quality.check != "clean" & !is.na(df$quality.check)), "flagged\n")
-  
+  cat("  - Gas:", gas_type, "\n")
+  qc_col <- paste0(gas_type, "_quality.check")
+  if (qc_col %in% names(df)) {
+    cat("  - Quality:", sum(df[[qc_col]] == "clean" | is.na(df[[qc_col]]), na.rm = TRUE), "clean,",
+        sum(df[[qc_col]] != "clean" & !is.na(df[[qc_col]]), na.rm = TRUE), "flagged\n")
+  }
+
   return(df)
 }
 
@@ -230,19 +272,28 @@ if (!is.null(combined_rescued)) {
   cat("\nRescued measurements by gas:\n")
   print(table(combined_rescued$rescued_gas))
   
-  # Quality breakdown for rescued data
-  if ("quality.check" %in% names(combined_rescued)) {
-    rescued_quality <- combined_rescued %>%
-      mutate(quality_status = case_when(
-        is.na(quality.check) | quality.check == "" ~ "clean",
-        TRUE ~ "flagged"
-      )) %>%
-      group_by(rescued_gas, quality_status) %>%
-      summarise(count = n(), .groups = 'drop')
-    
-    cat("\nRescued flux quality breakdown:\n")
-    print(rescued_quality)
+  # Quality breakdown for rescued data (columns are now gas-prefixed)
+  # Extract the quality check value for each row based on its gas type
+  combined_rescued$qc_value <- NA_character_
+  if ("CH4_quality.check" %in% names(combined_rescued)) {
+    ch4_rows <- combined_rescued$rescued_gas == "CH4"
+    combined_rescued$qc_value[ch4_rows] <- combined_rescued$CH4_quality.check[ch4_rows]
   }
+  if ("CO2_quality.check" %in% names(combined_rescued)) {
+    co2_rows <- combined_rescued$rescued_gas == "CO2"
+    combined_rescued$qc_value[co2_rows] <- combined_rescued$CO2_quality.check[co2_rows]
+  }
+
+  rescued_quality <- combined_rescued %>%
+    mutate(quality_status = if_else(is.na(qc_value) | qc_value == "", "clean", "flagged")) %>%
+    group_by(rescued_gas, quality_status) %>%
+    summarise(count = n(), .groups = 'drop')
+
+  cat("\nRescued flux quality breakdown:\n")
+  print(rescued_quality)
+
+  # Clean up temp column
+  combined_rescued$qc_value <- NULL
   
   # Check metadata completeness for rescued fluxes
   cat("\n=== RESCUED FLUX METADATA COMPLETENESS ===\n")

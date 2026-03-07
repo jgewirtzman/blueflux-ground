@@ -17,32 +17,40 @@ library(stringr)
 
 # Helper Functions --------------------------------------------------------------
 
+# Geometric stats: computed on positive values only.
+# For flux data, negative values indicate net uptake (real signal).
+# Geometric mean/SD/SE are only meaningful for strictly positive data,
+# so we filter to positive values and report the count (n_pos) alongside.
 geom_mean <- function(x, na.rm = TRUE) {
   if (na.rm) x <- x[!is.na(x) & is.finite(x)]
-  if (length(x) == 0 || any(x <= 0)) return(NA_real_)
-  exp(mean(log(x)))
+  x_pos <- x[x > 0]
+  if (length(x_pos) == 0) return(NA_real_)
+  exp(mean(log(x_pos)))
 }
 
 geom_sd <- function(x, na.rm = TRUE) {
   if (na.rm) x <- x[!is.na(x) & is.finite(x)]
-  if (length(x) <= 1 || any(x <= 0)) return(NA_real_)
-  exp(sd(log(x)))
+  x_pos <- x[x > 0]
+  if (length(x_pos) <= 1) return(NA_real_)
+  exp(sd(log(x_pos)))
 }
 
 geom_se <- function(x, na.rm = TRUE) {
   if (na.rm) x <- x[!is.na(x) & is.finite(x)]
-  n <- length(x)
-  if (n <= 1 || any(x <= 0)) return(NA_real_)
-  exp(sd(log(x)) / sqrt(n))
+  x_pos <- x[x > 0]
+  n <- length(x_pos)
+  if (n <= 1) return(NA_real_)
+  exp(sd(log(x_pos)) / sqrt(n))
 }
 
 calc_stats <- function(data, var_name) {
   x <- data[[var_name]]
   x <- x[!is.na(x) & is.finite(x)]
-  
+
   if (length(x) == 0) {
     return(tibble(
-      n = 0,
+      n = 0L,
+      n_pos = 0L,
       median = NA_real_,
       mean = NA_real_,
       geom_mean = NA_real_,
@@ -52,13 +60,15 @@ calc_stats <- function(data, var_name) {
       geom_se = NA_real_
     ))
   }
-  
+
   n <- length(x)
+  n_pos <- sum(x > 0)
   mean_val <- mean(x)
   sd_val <- sd(x)
-  
+
   tibble(
     n = n,
+    n_pos = n_pos,
     median = median(x),
     mean = mean_val,
     geom_mean = geom_mean(x),
@@ -115,12 +125,16 @@ df_processed <- df %>%
     
     # Height categories for stems/pneumatophores
     height_category = case_when(
-      grepl("stem|pneum", component_base, ignore.case = TRUE) & !is.na(height_corrected_numeric) ~ 
-        as.character(cut(height_corrected_numeric, 
+      grepl("stem|pneum", component_base, ignore.case = TRUE) & !is.na(height_corrected_numeric) &
+        height_corrected_numeric >= 0 ~
+        as.character(cut(height_corrected_numeric,
                          breaks = c(0, 50, 100, 150, Inf),
                          labels = c("0-50cm", "50-100cm", "100-150cm", ">150cm"),
                          right = FALSE,
                          include.lowest = TRUE)),
+      grepl("stem|pneum", component_base, ignore.case = TRUE) & !is.na(height_corrected_numeric) &
+        height_corrected_numeric < 0 ~ "submerged",
+      grepl("stem|pneum", component_base, ignore.case = TRUE) & is.na(height_corrected_numeric) ~ "unknown",
       TRUE ~ NA_character_
     )
   )
@@ -176,18 +190,20 @@ cat("Creating final table...\n\n")
 final_table <- bind_rows(ch4_stats, co2_stats) %>%
   pivot_wider(
     names_from = gas,
-    values_from = c(n, median, mean, geom_mean, sd, se, geom_sd, geom_se),
+    values_from = c(n, n_pos, median, mean, geom_mean, sd, se, geom_sd, geom_se),
     names_sep = "_"
   ) %>%
+  # Remove empty groups where BOTH gases have n=0
+  filter(!(n_CH4 == 0 & n_CO2 == 0)) %>%
   arrange(season, disturbance_level, plot, component_base, height_category) %>%
   select(
-    season, 
-    plot, 
-    disturbance_level, 
-    component_base, 
+    season,
+    plot,
+    disturbance_level,
+    component_base,
     height_category,
-    n_CH4, median_CH4, mean_CH4, geom_mean_CH4, sd_CH4, se_CH4, geom_sd_CH4, geom_se_CH4,
-    n_CO2, median_CO2, mean_CO2, geom_mean_CO2, sd_CO2, se_CO2, geom_sd_CO2, geom_se_CO2
+    n_CH4, n_pos_CH4, median_CH4, mean_CH4, geom_mean_CH4, sd_CH4, se_CH4, geom_sd_CH4, geom_se_CH4,
+    n_CO2, n_pos_CO2, median_CO2, mean_CO2, geom_mean_CO2, sd_CO2, se_CO2, geom_sd_CO2, geom_se_CO2
   )
 
 # Display results ---------------------------------------------------------------
