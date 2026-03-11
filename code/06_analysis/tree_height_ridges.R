@@ -7,7 +7,7 @@ library(scales)
 
 # Load data if not already in memory (normally created by tree_height_plots.R)
 if (!exists("stem_data_final")) {
-  df <- read.csv("output/combined_gas_flux_dataset_with_month_year.csv")
+  df <- read.csv("output/combined_gas_flux_dataset.csv")
   stem_data_final <- df %>%
     filter(component == "stem",
            !is.na(CH4_best.flux),

@@ -5,7 +5,7 @@
 # ===============================================================================
 
 # Read the data (assumes you have this loaded)
-df <- read.csv("output/combined_gas_flux_dataset_with_month_year.csv")
+df <- read.csv("output/combined_gas_flux_dataset.csv")
 
 
 

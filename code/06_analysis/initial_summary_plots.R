@@ -4,7 +4,7 @@ library(ggplot2)
 library(tidyverse)
 
 # Read the data (if not already loaded)
- df <- read.csv("output/combined_gas_flux_dataset_with_month_year.csv")
+ df <- read.csv("output/combined_gas_flux_dataset.csv")
 
 # Define the plots to include
 selected_plots <- c("BL60", "CP40", "FLM30", "MI", "SE1", "SRS5", "SRS6", "RB10")

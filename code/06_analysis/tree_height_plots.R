@@ -4,7 +4,7 @@ library(ggplot2)
 library(tidyverse)
 
 # Read the data (assumes you have this loaded)
-df <- read.csv("output/combined_gas_flux_dataset_with_month_year.csv")
+df <- read.csv("output/combined_gas_flux_dataset.csv")
 
 # First, let's check what the height_corrected values look like
 print("Sample height_corrected values (character):")
