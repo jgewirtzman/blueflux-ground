@@ -9,21 +9,14 @@ library(tidyverse)
 # Define the plots to include
 selected_plots <- c("BL60", "CP40", "FLM30", "MI", "SE1", "SRS5", "SRS6", "RB10")
 
-# Update component based on surface column
-df_updated <- df %>%
-  mutate(component = case_when(
-    surface == "Soil" ~ "soil",
-    surface == "Water" ~ "water",
-    TRUE ~ component  # Keep original component value for all other cases
-  ))
-
 # Filter data for selected plots only
-filtered_data <- df_updated %>%
+# (component is already standardized lowercase by assemble_clean_dataset.R)
+filtered_data <- df %>%
   filter(plot %in% selected_plots,
          !is.na(CH4_best.flux), 
          !is.na(component), 
          !is.na(month_year),
-         CH4_best.flux > 0)  # Remove zero/negative values for log scale
+         CH4_best.flux >= 0)  # Keep zero and positive values
 
 # Check what components we have
 print("Components in filtered data:")
@@ -46,13 +39,13 @@ p1 <- filtered_data %>%
   geom_point(alpha = 0.7, size = 2) +
   geom_boxplot(alpha = 0.3, outlier.shape = NA) +
   facet_grid(plot ~ month_year, scales = "free_x") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   labs(
     title = "CH4 Flux by Component across Selected Plots",
     subtitle = "Rows = Plot, Columns = Month-Year (Season), Colored by Component",
     x = "Component",
-    y = "CH4 Flux (CH4_best.flux) - Log Scale",
+    y = "CH4 Flux (CH4_best.flux) - Asinh Scale",
     color = "Component"
   ) +
   theme_bw() +
@@ -63,6 +56,7 @@ p1 <- filtered_data %>%
   )
 
 print(p1)
+ggsave("output/figures/ch4_component_boxplot_grid.png", p1, width = 14, height = 12, dpi = 300)
 
 # Alternative with jittered points
 p2 <- filtered_data %>%
@@ -70,13 +64,13 @@ p2 <- filtered_data %>%
   geom_jitter(alpha = 0.7, size = 2, width = 0.3) +
   stat_summary(fun = median, geom = "crossbar", width = 0.5, alpha = 0.8, color = "black") +
   facet_grid(plot ~ month_year, scales = "free_x") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   labs(
     title = "CH4 Flux by Component across Selected Plots",
     subtitle = "Rows = Plot, Columns = Month-Year, Colored by Component, with Medians",
     x = "Component",
-    y = "CH4 Flux (CH4_best.flux) - Log Scale",
+    y = "CH4 Flux (CH4_best.flux) - Asinh Scale",
     color = "Component"
   ) +
   theme_bw() +
@@ -94,13 +88,13 @@ p3 <- filtered_data %>%
   geom_point(alpha = 0.7, size = 2) +
   geom_boxplot(alpha = 0.3, outlier.shape = NA) +
   facet_grid(plot ~ month_year, scales = "free_x") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   labs(
     title = "CH4 Flux by Component across Selected Plots",
     subtitle = "Rows = Plot, Columns = Month-Year, Colored by Component",
     x = "Component",
-    y = "CH4 Flux (CH4_best.flux) - Log Scale",
+    y = "CH4 Flux (CH4_best.flux) - Asinh Scale",
     color = "Component"
   ) +
   theme_bw() +
@@ -119,13 +113,13 @@ p4 <- filtered_data %>%
   geom_violin(alpha = 0.7) +
   geom_point(alpha = 0.5, size = 1, position = position_jitter(width = 0.2)) +
   facet_grid(plot ~ month_year, scales = "free_x") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   scale_fill_manual(values = component_colors) +
   labs(
     title = "CH4 Flux Distribution by Component across Selected Plots",
     subtitle = "Violin plots showing distribution shape, colored by component",
     x = "Component",
-    y = "CH4 Flux (CH4_best.flux) - Log Scale",
+    y = "CH4 Flux (CH4_best.flux) - Asinh Scale",
     fill = "Component"
   ) +
   theme_bw() +
@@ -173,10 +167,10 @@ p2_switched <- filtered_data %>%
   geom_jitter(alpha = 0.7, size = 2, height = 0.3) +
   stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black") +
   facet_grid(plot ~ month_year, scales = "free_y") +
-  scale_x_log10(
+  scale_x_continuous(
+    trans = "asinh",
     name = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
-    labels = scales::trans_format("log10", scales::math_format(10^.x)),
-    breaks = scales::trans_breaks("log10", function(x) 10^x, n = 4)
+    breaks = c(0, 0.1, 1, 10, 100, 1000)
   ) +
   scale_color_manual(values = component_colors) +
   labs(
@@ -203,10 +197,10 @@ p2_switched_simple <- filtered_data %>%
   geom_jitter(alpha = 0.7, size = 2, height = 0.3) +
   stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black") +
   facet_grid(plot ~ month_year, scales = "free_y") +
-  scale_x_log10(
+  scale_x_continuous(
+    trans = "asinh",
     name = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
-    breaks = c(0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.01", "0.1", "1", "10", "100", "1000")
+    breaks = c(0, 0.1, 1, 10, 100, 1000)
   ) +
   scale_color_manual(values = component_colors) +
   labs(
@@ -226,6 +220,7 @@ p2_switched_simple <- filtered_data %>%
   )
 
 print(p2_switched_simple)
+ggsave("output/figures/ch4_component_by_plot_month.png", p2_switched_simple, width = 14, height = 12, dpi = 300)
 
 
 
@@ -242,7 +237,7 @@ library(ggridges)
 filtered_data %>%
   ggplot(aes(x = CH4_best.flux, y = component, fill = component)) +
   geom_density_ridges(alpha = 0.7, scale = 0.9) +
-  scale_x_log10() +
+  scale_x_continuous(trans = "asinh") +
   facet_grid(plot ~ month_year) +
   theme_ridges()
 
@@ -253,7 +248,7 @@ filtered_data %>%
   ggplot(aes(x = component, y = CH4_best.flux, fill = component)) +
   geom_boxplot(alpha = 0.7, outlier.alpha = 0.3) +
   geom_jitter(width = 0.2, alpha = 0.4, size = 1) +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   facet_grid(plot ~ month_year) +
   coord_flip() +
   theme_bw()
@@ -266,7 +261,7 @@ filtered_data %>%
   geom_violin(alpha = 0.7, trim = FALSE) +
   geom_boxplot(width = 0.1, alpha = 0.8, outlier.shape = NA) +
   geom_jitter(width = 0.05, alpha = 0.3, size = 0.8) +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   facet_grid(plot ~ month_year) +
   coord_flip()
 
@@ -280,10 +275,10 @@ summary_data <- filtered_data %>%
             .groups = 'drop')
 
 summary_data %>%
-  ggplot(aes(x = month_year, y = component, fill = log10(median_flux))) +
+  ggplot(aes(x = month_year, y = component, fill = median_flux)) +
   geom_tile(color = "white", size = 0.5) +
   facet_wrap(~plot, ncol = 2) +
-  scale_fill_viridis_c(name = "log10(CH4 Flux)") +
+  scale_fill_viridis_c(name = "CH4 Flux", trans = "asinh") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -293,7 +288,7 @@ filtered_data %>%
   ggplot(aes(x = month_year, y = CH4_best.flux, color = plot)) +
   geom_jitter(alpha = 0.6, width = 0.2) +
   geom_smooth(method = "loess", se = TRUE, alpha = 0.3) +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   facet_wrap(~component, scales = "free_y", ncol = 2) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -307,11 +302,11 @@ p <- filtered_data %>%
              color = component, text = paste("Plot:", plot, 
                                              "<br>Date:", month_year))) +
   geom_jitter(alpha = 0.7, size = 2) +
-  scale_x_log10() +
+  scale_x_continuous(trans = "asinh") +
   facet_grid(plot ~ month_year) +
   theme_bw()
 
-ggplotly(p, tooltip = "text")
+tryCatch(ggplotly(p, tooltip = "text"), error = function(e) message("ggplotly skipped (non-interactive): ", e$message))
 
 
 ## 7. **Slope Graph for Temporal Changes**
@@ -322,7 +317,7 @@ slope_data <- filtered_data %>%
             .groups = 'drop')
 
 slope_data %>%
-  ggplot(aes(x = month_year, y = log10(median_flux), 
+  ggplot(aes(x = month_year, y = median_flux,
              color = component, group = component)) +
   geom_point(size = 3) +
   geom_line(size = 1.2, alpha = 0.8) +
@@ -338,7 +333,7 @@ filtered_data %>%
   ggplot(aes(x = component, y = CH4_best.flux, fill = component)) +
   stat_halfeye(alpha = 0.7, width = 0.6) +
   stat_dots(side = "left", alpha = 0.4) +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   facet_grid(plot ~ month_year) +
   coord_flip() +
   theme_bw()
@@ -363,10 +358,10 @@ p_ridges <- filtered_data %>%
   ggplot(aes(x = CH4_best.flux, y = component, fill = component)) +
   geom_density_ridges(alpha = 0.7, scale = 0.9) +
   facet_grid(plot ~ month_year, scales = "free_y") +
-  scale_x_log10(
+  scale_x_continuous(
+    trans = "asinh",
     name = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
-    breaks = c(0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.01", "0.1", "1", "10", "100", "1000")
+    breaks = c(0, 0.1, 1, 10, 100, 1000)
   ) +
   scale_fill_manual(values = component_colors_ridges) +
   labs(
@@ -384,6 +379,7 @@ p_ridges <- filtered_data %>%
   )
 
 print(p_ridges)
+ggsave("output/figures/ch4_component_ridges.png", p_ridges, width = 14, height = 12, dpi = 300)
 
 # Heatmap with viridis scale in the same grid format
 # First summarize the data
@@ -398,9 +394,8 @@ p_heatmap <- summary_data %>%
   facet_wrap(~plot, scales = "free_y") +
   scale_fill_viridis_c(
     name = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
-    trans = "log10",
-    breaks = c(0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.01", "0.1", "1", "10", "100", "1000")
+    trans = "asinh",
+    breaks = c(0, 0.1, 1, 10, 100, 1000)
   ) +
   labs(
     x = "Time Period",
@@ -417,17 +412,18 @@ p_heatmap <- summary_data %>%
   )
 
 print(p_heatmap)
+ggsave("output/figures/ch4_component_heatmap.png", p_heatmap, width = 12, height = 10, dpi = 300)
 
 
-p_jitter_box <- filtered_data %>%
+p_jitter_box_ch4 <- filtered_data %>%
   ggplot(aes(x = CH4_best.flux, y = component, fill = component, color = component)) +
   geom_jitter(alpha = 0.6, size = 2, height = 0.3) +
   geom_boxplot(alpha = 0.3, outlier.shape = NA, color = "black", width = 0.5) +
   facet_grid(plot ~ month_year, scales = "free_y") +
-  scale_x_log10(
+  scale_x_continuous(
+    trans = "asinh",
     name = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
-    breaks = c(0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.01", "0.1", "1", "10", "100", "1000")
+    breaks = c(0, 0.1, 1, 10, 100, 1000)
   ) +
   scale_fill_manual(values = component_colors_ridges) +
   scale_color_manual(values = component_colors_ridges) +
@@ -445,20 +441,21 @@ p_jitter_box <- filtered_data %>%
     strip.text = element_text(size = 9, face = "bold"),
     legend.position = "bottom"
   )
-print(p_jitter_box)
+print(p_jitter_box_ch4)
+ggsave("output/figures/ch4_component_jitterbox.png", p_jitter_box_ch4, width = 14, height = 12, dpi = 300)
 
 
 
 
-p_jitter_box <- filtered_data %>%
+p_jitter_box_co2 <- filtered_data %>%
   ggplot(aes(x = CO2_best.flux, y = component, fill = component, color = component)) +
   geom_jitter(alpha = 0.6, size = 2, height = 0.3) +
   geom_boxplot(alpha = 0.3, outlier.shape = NA, color = "black", width = 0.5) +
   facet_grid(plot ~ month_year, scales = "free_y") +
-  scale_x_log10(
-    name = expression(CO[2]~Flux~Rate~(umol~m^-2~s^-1)),
-    breaks = c(0.01, 0.1, 1, 10, 100, 1000),
-    labels = c("0.01", "0.1", "1", "10", "100", "1000")
+  scale_x_continuous(
+    trans = "asinh",
+    name = expression(CO[2]~Flux~Rate~(mu*mol~m^-2~s^-1)),
+    breaks = c(0, 0.1, 1, 10, 100, 1000)
   ) +
   scale_fill_manual(values = component_colors_ridges) +
   scale_color_manual(values = component_colors_ridges) +
@@ -476,7 +473,8 @@ p_jitter_box <- filtered_data %>%
     strip.text = element_text(size = 9, face = "bold"),
     legend.position = "bottom"
   )
-print(p_jitter_box)
+print(p_jitter_box_co2)
+ggsave("output/figures/co2_component_jitterbox.png", p_jitter_box_co2, width = 14, height = 12, dpi = 300)
 
 
 
@@ -503,6 +501,7 @@ p_co2_simple <- filtered_data %>%
   )
 
 print(p_co2_simple)
+ggsave("output/figures/co2_component_simple.png", p_co2_simple, width = 8, height = 6, dpi = 300)
 
 
 
@@ -567,7 +566,7 @@ p_combined_flux_pseudolog <- combined_data %>%
   geom_jitter(alpha = 0.7, size = 2, height = 0.3) +
   stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black") +
   facet_wrap(~gas_type, scales = "free_x") +
-  scale_x_continuous(trans = "pseudo_log") +
+  scale_x_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   labs(
     x = expression(Flux~Rate~(CO[2]:~mu*mol~m^-2~s^-1~CH[4]:~nmol~m^-2~s^-1)),
@@ -609,7 +608,7 @@ p_combined_flux_plot <- combined_data %>%
   geom_jitter(alpha = 0.7, size = 2, height = 0.3) +
   stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black") +
   facet_grid(plot ~ gas_type, scales = "free_x") +
-  scale_x_continuous(trans = "pseudo_log") +
+  scale_x_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   labs(
     x = expression(Flux~Rate~(CO[2]:~mu*mol~m^-2~s^-1~CH[4]:~nmol~m^-2~s^-1)),
@@ -636,7 +635,7 @@ p_combined_flux_pseudolog <- combined_data %>%
   stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black", width = 0.4) +
   stat_summary(fun = mean, geom = "point", size = 3, color = "black", shape = 23, fill = "white") +
   facet_wrap(~gas_type, scales = "free_x") +
-  #scale_x_continuous(trans = "pseudo_log") +
+  #scale_x_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   scale_fill_manual(values = component_colors) +
   labs(
@@ -661,15 +660,15 @@ print(p_combined_flux_pseudolog)
 
 
 
-###this one is to see the co2 more easily and is not actually log scale
-p_combined_flux_pseudolog <- combined_data %>%
+###this one is to see the co2 more easily — asinh scale
+p_combined_flux_asinh <- combined_data %>%
   ggplot(aes(x = flux_value, y = component, color = component, fill = component)) +
   geom_jitter(alpha = 0.6, size = 1.5, height = 0.3) +
   geom_boxplot(alpha = 0.3, outlier.shape = NA, color = "black", width = 0.4) +
   stat_summary(fun = median, geom = "crossbar", height = 0.5, alpha = 0.8, color = "black", width = 0.4) +
   stat_summary(fun = mean, geom = "point", size = 3, color = "black", shape = 23, fill = "white") +
   facet_wrap(~gas_type, scales = "free_x") +
-  scale_x_continuous(trans = "pseudo_log") +
+  scale_x_continuous(trans = "asinh") +
   scale_color_manual(values = component_colors) +
   scale_fill_manual(values = component_colors) +
   labs(
@@ -688,5 +687,6 @@ p_combined_flux_pseudolog <- combined_data %>%
     legend.position = "bottom"
   )
 
-print(p_combined_flux_pseudolog)
+print(p_combined_flux_asinh)
+ggsave("output/figures/combined_ch4_co2_by_component.png", p_combined_flux_asinh, width = 12, height = 8, dpi = 300)
 

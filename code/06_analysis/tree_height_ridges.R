@@ -6,7 +6,7 @@ library(cowplot)
 library(scales)
 
 # Load data if not already in memory (normally created by tree_height_plots.R)
-if (!exists("stem_data_final")) {
+if (!exists("stem_data_final") || !"height_category" %in% names(stem_data_final)) {
   df <- read.csv("output/combined_gas_flux_dataset.csv")
   stem_data_final <- df %>%
     filter(component == "stem",
@@ -14,7 +14,19 @@ if (!exists("stem_data_final")) {
            !is.na(CO2_best.flux),
            !is.na(height_corrected)) %>%
     mutate(height_corrected = as.numeric(height_corrected)) %>%
-    filter(!is.na(height_corrected), height_corrected >= 0)
+    filter(!is.na(height_corrected), height_corrected >= 0) %>%
+    mutate(
+      height_category = case_when(
+        height_corrected >= 0 & height_corrected < 50 ~ "0-50cm",
+        height_corrected >= 50 & height_corrected < 100 ~ "50-100cm",
+        height_corrected >= 100 & height_corrected < 150 ~ "100-150cm",
+        height_corrected >= 150 ~ ">150cm",
+        TRUE ~ NA_character_
+      ),
+      height_category = factor(height_category,
+                               levels = c("0-50cm", "50-100cm", "100-150cm", ">150cm"))
+    ) %>%
+    filter(!is.na(height_category))
 }
 
 # Create site bins and filter data
@@ -37,13 +49,13 @@ site_colors <- c("healthy" = "#228B22", "regenerating" = "#808080", "ghost" = "#
 
 # Define shared x-axis limits and breaks
 x_limits <- range(stem_data_ridge$CH4_best.flux, na.rm = TRUE)
-x_breaks <- c(0.01, 0.1, 1, 10, 100, 1000)
+x_breaks <- c(0, 0.1, 1, 10, 100, 1000)
 
 # Create overlapping ridges plot (top portion)
 ridges_plot <- stem_data_ridge %>%
   ggplot(aes(x = CH4_best.flux, y = height_category, fill = site_bin)) +
   geom_density_ridges(alpha = 0.7, scale = 0.9, bandwidth = 0.5) +
-  scale_x_log10(labels = label_log(), limits = x_limits, breaks = x_breaks) +
+  scale_x_continuous(trans = "asinh", limits = x_limits, breaks = x_breaks) +
   scale_y_discrete(expand = expansion(mult = c(0.05, 0.33))) +  # Add more space at top
   scale_fill_manual(values = site_colors, name = "Site\nCondition") +
   labs(
@@ -68,14 +80,14 @@ box_plots <- stem_data_ridge %>%
   ggplot(aes(x = CH4_best.flux, y = interaction(site_bin, height_category, sep = " - "), fill = site_bin)) +
   geom_jitter(height = 0.2, width = 0, alpha = 0.4, size = 1) +
   geom_boxplot(width = 0.4, alpha = 0.7) +
-  scale_x_log10(labels = label_log(), limits = x_limits, breaks = x_breaks) +
+  scale_x_continuous(trans = "asinh", limits = x_limits, breaks = x_breaks) +
   scale_fill_manual(values = site_colors) +
   scale_y_discrete(labels = function(x) {
     # Extract just the site_bin part for labeling
     sapply(strsplit(x, " - "), function(parts) parts[1])
   }) +
   labs(
-    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale),
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Asinh~Scale),
     y = "Site Condition"
   ) +
   theme_bw() +
@@ -108,3 +120,4 @@ p2 <- ggdraw(aligned[[2]])
 rainfall_plot <- plot_grid(p1, p2, ncol = 1, align = "v", rel_heights = c(1, 1.5))
 
 print(rainfall_plot)
+ggsave("output/figures/tree_height_ridges_rainfall.png", rainfall_plot, width = 12, height = 10, dpi = 300)

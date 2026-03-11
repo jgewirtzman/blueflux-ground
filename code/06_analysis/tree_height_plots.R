@@ -57,7 +57,7 @@ p_ch4_height <- stem_data %>%
   ggplot(aes(x = height_corrected, y = CH4_best.flux)) +
   geom_point(alpha = 0.7, size = 2, color = stem_color) +
   geom_smooth(method = "loess", se = TRUE, alpha = 0.3, color = "darkgreen", span = 0.8) +
-  #scale_y_log10() +
+  #scale_y_continuous(trans = "asinh") +
   coord_flip() +
   labs(
     title = expression(Stem~CH[4]~Flux~by~Height~Corrected),
@@ -70,13 +70,14 @@ p_ch4_height <- stem_data %>%
   )
 
 print(p_ch4_height)
+ggsave("output/figures/stem_ch4_vs_height.png", p_ch4_height, width = 8, height = 6, dpi = 300)
 
 # 2. CO2 Flux by Height Corrected - Scatter plot for stems (height_corrected on y-axis after coord_flip)
 p_co2_height <- stem_data %>%
   ggplot(aes(x = height_corrected, y = CO2_best.flux)) +
   geom_point(alpha = 0.7, size = 2, color = stem_color) +
   geom_smooth(method = "loess", se = TRUE, alpha = 0.3, color = "darkgreen", span = 0.8) +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   coord_flip() +
   labs(
     title = expression(Stem~CO[2]~Flux~by~Height~Corrected),
@@ -89,6 +90,7 @@ p_co2_height <- stem_data %>%
   )
 
 print(p_co2_height)
+ggsave("output/figures/stem_co2_vs_height.png", p_co2_height, width = 8, height = 6, dpi = 300)
 
 # 3. Combined CH4 and CO2 flux by height_corrected for stems (using coord_flip with less sensitive loess)
 # Reshape data for combined plot
@@ -107,7 +109,7 @@ p_combined_height <- stem_combined %>%
   geom_point(alpha = 0.7, size = 2, color = stem_color) +
   geom_smooth(method = "loess", se = TRUE, alpha = 0.3, color = "darkgreen", span = 0.8) +
   facet_wrap(~gas_type, scales = "free_y") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   coord_flip() +
   labs(
     title = "Stem Gas Flux by Height Corrected",
@@ -121,6 +123,7 @@ p_combined_height <- stem_combined %>%
   )
 
 print(p_combined_height)
+ggsave("output/figures/stem_combined_flux_vs_height.png", p_combined_height, width = 10, height = 6, dpi = 300)
 
 # 4. Height corrected binned analysis for stems (filter out NA height_corrected categories)
 # Create height_corrected bins appropriate for 0-185 cm range
@@ -135,7 +138,7 @@ p_height_bins <- stem_data_binned %>%
   ggplot(aes(x = height_bin, y = CH4_best.flux)) +
   geom_boxplot(alpha = 0.7, outlier.alpha = 0.5, fill = stem_color, color = "darkgreen") +
   geom_jitter(alpha = 0.4, size = 1.5, width = 0.2, color = "darkgreen") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   coord_flip() +
   labs(
     title = expression(Stem~CH[4]~Flux~by~Height~Corrected~Categories),
@@ -148,6 +151,7 @@ p_height_bins <- stem_data_binned %>%
   )
 
 print(p_height_bins)
+ggsave("output/figures/stem_ch4_height_bins.png", p_height_bins, width = 8, height = 6, dpi = 300)
 
 # 5. Faceted by plot for stems (using less sensitive loess)
 p_height_faceted <- stem_data %>%
@@ -155,7 +159,7 @@ p_height_faceted <- stem_data %>%
   geom_point(alpha = 0.7, size = 2, color = stem_color) +
   geom_smooth(method = "lm", se = TRUE, alpha = 0.3, color = "darkgreen") +
   facet_wrap(~plot, scales = "free") +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   coord_flip() +
   labs(
     title = expression(Stem~CH[4]~Flux~by~Height~Corrected~(by~Plot)),
@@ -169,13 +173,14 @@ p_height_faceted <- stem_data %>%
   )
 
 print(p_height_faceted)
+ggsave("output/figures/stem_ch4_faceted_by_plot.png", p_height_faceted, width = 12, height = 8, dpi = 300)
 
 # 6. Stem flux by height_corrected colored by plot (using less sensitive loess)
 p_height_by_plot <- stem_data %>%
   ggplot(aes(x = height_corrected, y = CH4_best.flux, color = plot)) +
   geom_point(alpha = 0.7, size = 2) +
   geom_smooth(method = "loess", se = FALSE, alpha = 0.8, span = 0.8) +
-  scale_y_log10() +
+  scale_y_continuous(trans = "asinh") +
   coord_flip() +
   labs(
     title = expression(Stem~CH[4]~Flux~by~Height~Corrected~(Colored~by~Plot)),
@@ -190,6 +195,7 @@ p_height_by_plot <- stem_data %>%
   )
 
 print(p_height_by_plot)
+ggsave("output/figures/stem_ch4_colored_by_plot.png", p_height_by_plot, width = 8, height = 6, dpi = 300)
 
 # Summary statistics by height_corrected ranges for stems
 height_summary <- stem_data_binned %>%
@@ -212,8 +218,8 @@ print(height_summary)
 # Correlation analysis for stems
 correlation_results <- stem_data %>%
   summarise(
-    ch4_height_corrected_cor = cor(height_corrected, log10(CH4_best.flux), use = "complete.obs"),
-    co2_height_corrected_cor = cor(height_corrected, log10(CO2_best.flux), use = "complete.obs"),
+    ch4_height_corrected_cor = cor(height_corrected, asinh(CH4_best.flux), use = "complete.obs"),
+    co2_height_corrected_cor = cor(height_corrected, asinh(CO2_best.flux), use = "complete.obs"),
     ch4_height_corrected_cor_linear = cor(height_corrected, CH4_best.flux, use = "complete.obs"),
     co2_height_corrected_cor_linear = cor(height_corrected, CO2_best.flux, use = "complete.obs"),
     n_obs = n()
@@ -226,8 +232,8 @@ print(correlation_results)
 correlation_by_plot <- stem_data %>%
   group_by(plot) %>%
   summarise(
-    ch4_height_corrected_cor = cor(height_corrected, log10(CH4_best.flux), use = "complete.obs"),
-    co2_height_corrected_cor = cor(height_corrected, log10(CO2_best.flux), use = "complete.obs"),
+    ch4_height_corrected_cor = cor(height_corrected, asinh(CH4_best.flux), use = "complete.obs"),
+    co2_height_corrected_cor = cor(height_corrected, asinh(CO2_best.flux), use = "complete.obs"),
     n_obs = n(),
     .groups = 'drop'
   ) %>%
@@ -301,6 +307,7 @@ p_stem_flux_faceted <- stem_data_final %>%
   )
 
 print(p_stem_flux_faceted)
+ggsave("output/figures/stem_ch4_height_category_boxplot.png", p_stem_flux_faceted, width = 12, height = 8, dpi = 300)
 
 # Summary statistics by height_corrected category and plot
 summary_stats <- stem_data_final %>%
@@ -337,6 +344,7 @@ p_overall_summary <- stem_data_final %>%
   )
 
 print(p_overall_summary)
+ggsave("output/figures/stem_ch4_height_category_overall.png", p_overall_summary, width = 8, height = 6, dpi = 300)
 
 
 
@@ -370,9 +378,7 @@ plots_with_sufficient_data <- stem_data_categorized %>%
 
 # Filter the data to only include plots with >15 measurements
 stem_data_final <- stem_data_categorized %>%
-  filter(plot %in% plots_with_sufficient_data) %>%
-  # Filter out zero and negative values for log transformation
-  filter(CH4_best.flux > 0)
+  filter(plot %in% plots_with_sufficient_data)
 
 # Check how many plots and measurements we have
 cat("Plots with >15 measurements:", length(plots_with_sufficient_data), "\n")
@@ -384,12 +390,12 @@ p_stem_flux_faceted <- stem_data_final %>%
   geom_boxplot(aes(fill = height_category), alpha = 0.7, outlier.alpha = 0.5) +
   geom_jitter(height = 0.2, alpha = 0.5, size = 1) +
   facet_wrap(~ plot, scales = "free_x", ncol = 3) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   scale_fill_viridis_d(name = "Height\nCategory") +
   labs(
     title = expression(Stem~CH[4]~Flux~by~Height~Corrected~Category~(Plots~with~">15"~Measurements)),
     y = "Height Corrected Category",
-    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale),
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Asinh~Scale),
     caption = paste("Data from", length(plots_with_sufficient_data), "plots with >15 measurements each")
   ) +
   theme_bw() +
@@ -401,20 +407,21 @@ p_stem_flux_faceted <- stem_data_final %>%
   )
 
 print(p_stem_flux_faceted)
+ggsave("output/figures/stem_ch4_height_category_asinh.png", p_stem_flux_faceted, width = 12, height = 8, dpi = 300)
 
 
-# Create the faceted plot with height_corrected on y-axis and log scale for flux
-p_stem_flux_faceted <- stem_data_final %>%
+# Create the faceted plot — clean version (no title)
+p_stem_flux_clean <- stem_data_final %>%
   ggplot(aes(x = CH4_best.flux, y = height_category)) +
   geom_boxplot(aes(fill = height_category), alpha = 0.7, outlier.alpha = 0.5) +
   geom_jitter(height = 0.2, alpha = 0.5, size = 1) +
   facet_wrap(~ plot, ncol = 3) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   scale_fill_viridis_d(name = "Height\nCategory") +
   labs(
     #title = expression(Stem~CH[4]~Flux~by~Height~Corrected~Category~(Plots~with~">15"~Measurements)),
     y = "Height Corrected Category",
-    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale),
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Asinh~Scale),
     #caption = paste("Data from", length(plots_with_sufficient_data), "plots with >15 measurements each")
   ) +
   theme_bw() +
@@ -425,7 +432,8 @@ p_stem_flux_faceted <- stem_data_final %>%
     legend.position = "none"
   )
 
-print(p_stem_flux_faceted)
+print(p_stem_flux_clean)
+ggsave("output/figures/stem_ch4_height_category_clean.png", p_stem_flux_clean, width = 12, height = 8, dpi = 300)
 
 # Summary statistics by height_corrected category and plot
 summary_stats <- stem_data_final %>%
@@ -446,12 +454,12 @@ p_overall_summary <- stem_data_final %>%
   ggplot(aes(x = CH4_best.flux, y = height_category)) +
   geom_boxplot(aes(fill = height_category), alpha = 0.7) +
   geom_jitter(height = 0.2, alpha = 0.3, size = 0.8) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   scale_fill_viridis_d(name = "Height\nCategory") +
   labs(
     title = expression(Overall~Stem~CH[4]~Flux~by~Height~Corrected~Category),
     y = "Height Corrected Category", 
-    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale),
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Asinh~Scale),
     subtitle = paste("Combined data from", length(plots_with_sufficient_data), "plots")
   ) +
   theme_bw() +
@@ -469,13 +477,13 @@ p_overall_summary <- stem_data_final %>%
   ggplot(aes(x = CH4_best.flux, y = height_category)) +
   geom_boxplot(aes(fill = height_category), alpha = 0.7) +
   geom_jitter(height = 0.2, alpha = 0.3, size = 0.8) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   #xlim(-1, 100)+
   scale_fill_viridis_d(name = "Height\nCategory") +
   labs(
     title = expression(Overall~Stem~CH[4]~Flux~by~Height~Corrected~Category),
     y = "Height Corrected Category", 
-    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale),
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Asinh~Scale),
     subtitle = paste("Combined data from", length(plots_with_sufficient_data), "plots")
   ) +
   theme_bw() +
@@ -519,13 +527,13 @@ stem_data_ridge <- stem_data_final %>%
 p_ridge_by_site <- stem_data_ridge %>%
   ggplot(aes(x = CH4_best.flux, y = height_category, fill = site_bin)) +
   geom_density_ridges(alpha = 0.7, scale = 0.9, bandwidth = 0.5) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   scale_fill_manual(values = c("healthy" = "#228B22", "regenerating" = "#808080", "ghost" = "#8B4513"), 
                     name = "Site\nCondition") +
   labs(
     title = expression(Stem~CH[4]~Flux~Distribution~by~Height~Corrected~Category~and~Site~Condition),
     y = "Height Corrected Category", 
-    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Log~Scale)
+    x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)~-~Asinh~Scale)
   ) +
   theme_bw() +
   theme(
@@ -535,6 +543,7 @@ p_ridge_by_site <- stem_data_ridge %>%
   )
 
 print(p_ridge_by_site)
+ggsave("output/figures/stem_ch4_ridges_by_site.png", p_ridge_by_site, width = 10, height = 6, dpi = 300)
 
 
 
@@ -570,7 +579,7 @@ density_plot <- stem_data_ridge %>%
   ggplot(aes(x = CH4_best.flux, fill = site_bin)) +
   geom_density(alpha = 0.7, adjust = 1.5, position = 'identity') +
   facet_wrap(~height_category, nrow = 1) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   scale_fill_manual(values = site_colors) +
   labs(fill = "Site\nCondition") +
   theme_classic() +
@@ -589,7 +598,7 @@ box_jitter_plot <- stem_data_ridge %>%
   geom_jitter(height = 0.2, width = 0, alpha = 0.4, size = 1) +
   geom_boxplot(width = 0.4, alpha = 0.7) +
   facet_wrap(~height_category, nrow = 1) +
-  scale_x_log10(labels = label_log()) +
+  scale_x_continuous(trans = "asinh", breaks = c(0, 0.1, 1, 10, 100, 1000)) +
   scale_fill_manual(values = site_colors) +
   labs(
     x = expression(CH[4]~Flux~Rate~(nmol~m^-2~s^-1)),
@@ -613,3 +622,4 @@ p2 <- ggdraw(aligned[[2]])
 rainfall_plot <- plot_grid(p1, p2, ncol = 1, align = "v", rel_heights = c(1, 2))
 
 print(rainfall_plot)
+ggsave("output/figures/stem_ch4_rainfall_by_site.png", rainfall_plot, width = 12, height = 10, dpi = 300)
