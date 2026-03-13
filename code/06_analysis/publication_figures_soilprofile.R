@@ -48,9 +48,11 @@ theme_pub <- function(base_size = 11) {
 
 save_pub <- function(plot, name, width, height, units = "mm") {
   ggsave(paste0("output/figures/pub_", name, ".pdf"), plot,
-         width = width, height = height, units = units)
+         width = width, height = height, units = units,
+         device = cairo_pdf)
   ggsave(paste0("output/figures/pub_", name, ".png"), plot,
-         width = width, height = height, units = units, dpi = 300)
+         width = width, height = height, units = units, dpi = 300,
+         type = "cairo")
   cat("Saved: pub_", name, ".pdf/.png\n", sep = "")
 }
 
@@ -172,20 +174,19 @@ save_pub(fig2, "soil_carbon_profiles", width = 220, height = 200)
 
 
 # =============================================================================
-# FIGURE 3: Isotope Depth Profiles (d13C-CH4 and d13C-CO2)
+# FIGURE 3: Isotope Depth Profile (d13C-CH4 only; d13C-CO2 excluded due to
+# H2S interference in analysis)
 # =============================================================================
-cat("\n--- Figure 3: Isotope Depth Profiles ---\n")
+cat("\n--- Figure 3: Isotope Depth Profile ---\n")
 
 fig3a <- make_depth_panel(df, "d13C_CH4_mean",
                           expression(delta^{13}*C-CH[4]~("\u2030")), "(a)")
-fig3b <- make_depth_panel(df, "d13C_CO2_mean",
-                          expression(delta^{13}*C-CO[2]~("\u2030")), "(b)")
 
-fig3 <- (fig3a | fig3b) /
+fig3 <- fig3a /
   patchwork::wrap_elements(legend_grob) +
   plot_layout(heights = c(1, 0.08))
 
-save_pub(fig3, "soil_isotope_profiles", width = 220, height = 130)
+save_pub(fig3, "soil_isotope_profiles", width = 140, height = 130)
 
 
 # =============================================================================
@@ -270,8 +271,9 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     geom_hline(yintercept = 0, linetype = "dashed", color = "grey80") +
     geom_vline(xintercept = 0, linetype = "dashed", color = "grey80") +
     # Cluster ellipses by site
-    stat_ellipse(aes(group = Site, linetype = Site),
-                 level = 0.68, color = "grey50", linewidth = 0.5) +
+    stat_ellipse(aes(group = Site),
+                 level = 0.68, color = "grey50", linewidth = 0.5,
+                 linetype = "dashed") +
     # Loading arrows
     geom_segment(data = loadings,
                  aes(x = 0, y = 0, xend = PC1, yend = PC2),
@@ -294,9 +296,6 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     scale_shape_manual(values = c("SRS5" = 16, "SRS6" = 17,
                                   "BL60" = 15, "CP40" = 18),
                        name = "Site") +
-    scale_linetype_manual(values = c("SRS5" = "solid", "SRS6" = "dashed",
-                                     "BL60" = "dotted", "CP40" = "dotdash"),
-                          name = "Site") +
     labs(x = sprintf("PC1 (%.1f%%)", var_exp[1]),
          y = sprintf("PC2 (%.1f%%)", var_exp[2]),
          tag = "(a)") +
@@ -357,6 +356,121 @@ save_pub(fig6, "soil_heatmap", width = 280, height = 180)
 
 
 # =============================================================================
+# =============================================================================
+# FIGURE 7: Comprehensive Porewater Depth Profiles (2 rows × 5 panels)
+# dissolved CH4, CO2, salinity, sulfate, ORP, DO, pH, DOC, alkalinity,
+# d13C-CH4 — excluding "Surface" depth and d13C-CO2 (H2S interference)
+# =============================================================================
+cat("\n--- Figure 7: Comprehensive Porewater Depth Profiles ---\n")
+
+# Filter out Surface
+df_nosurface <- df %>% filter(Depth_cm != "Surface") %>%
+  mutate(Depth_cm = droplevels(Depth_cm))
+
+# Slim depth panel helper — no tags, compact for 11-across layout
+make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
+  d <- data %>% filter(!is.na(.data[[var]])) %>% mutate(Site = droplevels(Site))
+  d_means <- d %>%
+    group_by(Site, Depth_numeric) %>%
+    summarise(mean_val = mean(.data[[var]], na.rm = TRUE),
+              se_val = sd(.data[[var]], na.rm = TRUE) / sqrt(n()),
+              .groups = "drop") %>%
+    mutate(ymin = mean_val - se_val, ymax = mean_val + se_val)
+
+  p <- ggplot() +
+    geom_line(data = d_means,
+              aes(x = Depth_numeric, y = mean_val, color = Site, group = Site),
+              linewidth = 0.6, alpha = 0.7) +
+    geom_point(data = d,
+               aes(x = Depth_numeric, y = .data[[var]], color = Site, shape = Site),
+               size = 1.8) +
+    scale_x_continuous(breaks = c(0, 15, 45, 90),
+                       labels = c("0", "15", "45", "90"),
+                       trans = "reverse") +
+    scale_color_manual(values = site_colors, name = "Site") +
+    scale_shape_manual(values = c("SRS5" = 16, "SRS6" = 17, "BL60" = 15, "CP40" = 18),
+                       name = "Site") +
+    labs(y = y_lab, x = NULL) +
+    coord_flip() +
+    theme_bw(base_size = 8) +
+    theme(legend.position = "none",
+          axis.title = element_text(size = 7.5),
+          axis.text.y = element_text(size = 7),
+          axis.text.x = element_text(size = 6.5, angle = 45, hjust = 1),
+          panel.grid.minor = element_blank(),
+          plot.margin = margin(2, 3, 2, 2))
+  if (log_scale) p <- p + scale_y_log10()
+  p
+}
+
+p_ch4  <- make_slim_panel(df_nosurface, "CH4_mean_uM",
+                           expression(CH[4]~(mu*M)))
+p_co2  <- make_slim_panel(df_nosurface, "CO2_mean_uM",
+                           expression(CO[2]~(mu*M)))
+p_sal  <- make_slim_panel(df_nosurface, "PSU",
+                           expression(Salinity~(PSU)))
+p_so4  <- make_slim_panel(df_nosurface, "SO4_ppm",
+                           expression(SO[4]^{"2-"}~(ppm)))
+p_orp  <- make_slim_panel(df_nosurface, "ORP",
+                           expression(ORP~(mV)))
+p_do   <- make_slim_panel(df_nosurface, "ppmDO",
+                           expression(DO~(mg~L^{-1})))
+p_ph   <- make_slim_panel(df_nosurface, "pH",
+                           expression(pH))
+p_doc  <- make_slim_panel(df_nosurface, "DOC_mg_L",
+                           expression(DOC~(mg~L^{-1})))
+p_alk  <- make_slim_panel(df_nosurface, "Alkalinity_uM",
+                           expression(Alk.~(mu*M)))
+p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
+                              paste0("\u03B4\u00B9\u00B3CH\u2084 (\u2030)"))
+# d13C-CO2 excluded due to H2S interference in analysis
+
+# Add shared x-axis label to first panel in each row
+p_ch4 <- p_ch4 + labs(x = "Depth (cm)")
+p_do  <- p_do  + labs(x = "Depth (cm)")
+
+# Show legend on the last panel of row 1 — match PCA legend sizing
+p_orp_leg <- p_orp +
+  theme(legend.position = "right",
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        legend.key.size = unit(4, "mm"))
+
+# 2 rows × 5 panels: row 1 = CH4, CO2, salinity, sulfate, ORP (with legend)
+#                     row 2 = DO, pH, DOC, alkalinity, d13C-CH4
+fig7_row1 <- p_ch4 + p_co2 + p_sal + p_so4 + p_orp_leg + plot_layout(nrow = 1)
+fig7_row2 <- p_do + p_ph + p_doc + p_alk + p_d13ch4 + plot_layout(nrow = 1)
+
+fig7 <- fig7_row1 / fig7_row2 +
+  plot_layout(heights = c(1, 1))
+
+save_pub(fig7, "porewater_depth_profiles", width = 210, height = 110)
+
+
+# =============================================================================
+# FIGURE 8: PCA + Porewater Depth Profiles Composite
+# PCA on top, porewater profiles on bottom
+# =============================================================================
+cat("\n--- Figure 8: PCA + Porewater Composite ---\n")
+
+if (exists("fig5")) {
+  # Remove tag from PCA for composite (will use patchwork tags)
+  fig5_notag <- fig5 + labs(tag = NULL)
+
+  # Rebuild profile rows for composite (same as fig7)
+  fig8_row1 <- p_ch4 + p_co2 + p_sal + p_so4 + p_orp_leg + plot_layout(nrow = 1)
+  fig8_row2 <- p_do + p_ph + p_doc + p_alk + p_d13ch4 + plot_layout(nrow = 1)
+
+  fig8 <- (fig5_notag /
+            fig8_row1 / fig8_row2) +
+    plot_layout(heights = c(1.4, 1, 1)) +
+    plot_annotation(tag_levels = list(c("(a)", "(b)")))
+
+  save_pub(fig8, "pca_porewater_composite", width = 210, height = 220)
+} else {
+  cat("  Skipping composite: PCA not available\n")
+}
+
 # DONE
 # =============================================================================
 cat("\n===== All soil profile figures saved to output/figures/ =====\n")

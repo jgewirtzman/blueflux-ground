@@ -67,10 +67,11 @@ make_photo_panel <- function(file, label, tag, border_color) {
   # Use a ggplot canvas; label border colored by disturbance type
   ggplot() +
     annotation_custom(g, xmin = 0, xmax = 1, ymin = 0, ymax = 1) +
-    geom_label(aes(x = 0.04, y = 0.96, label = label),
-               hjust = 0, vjust = 1, size = 5, fontface = "bold",
-               fill = alpha("white", 0.85), color = border_color,
-               label.padding = unit(0.3, "lines"), linewidth = 0.8) +
+    annotate("label", x = 0.04, y = 0.96,
+             label = label,
+             hjust = 0, vjust = 1, size = 5, fontface = "bold",
+             fill = alpha("white", 0.85),
+             label.padding = unit(0.3, "lines")) +
     scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) +
     scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
     theme_void() +
