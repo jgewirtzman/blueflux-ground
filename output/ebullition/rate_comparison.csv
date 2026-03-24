@@ -1,0 +1,10 @@
+Site,Season,n_processed,n_additional,n_ebullition,processed_flux,processed_trace_diffusive,additional_trace_diffusive,ebullitive_rate,pct_ebullitive
+BL60,dry (Mar 2023),2,0,0,6.86,5.75,NA,0,0
+BL60,wet (Oct 2022),4,1,2,38.83,27.41,57.65,2.93,6.5
+CP40,dry (Mar 2023),4,1,0,16.73,5.53,5.42,0,0
+CP40,wet (Oct 2022),5,7,3,39.75,23.2,40.82,10.07,19.3
+FLM30,dry (Mar 2023),14,11,0,6.07,4.11,3.33,0,0
+FLM30,wet (Oct 2022),3,3,1,13.02,9.22,13.67,0.66,4.4
+SE1,dry (Mar 2023),5,0,0,1.61,0.56,NA,0,0
+SRS5,dry (Mar 2023),8,1,0,0.55,0.32,0.11,0,0
+SRS6,dry (Mar 2023),3,3,0,1.37,1.02,0.74,0,0
