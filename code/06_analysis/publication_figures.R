@@ -156,7 +156,7 @@ theme_pub <- function(base_size = 11) {
 
 # Asinh scale breaks — drop 0.1 to avoid overlap with 0
 # Gap analysis: asinh(0)->0, asinh(0.1)->0.10, asinh(1)->0.88 — 0 and 0.1 overlap
-asinh_brk     <- c(-100, -10, 0, 10, 100, 1000)  # full range (no -1/0.1)
+asinh_brk     <- c(-100, -10, -1, 0, 1, 10, 100)  # CO2 full range
 asinh_brk_pos <- c(0, 1, 10, 100, 1000)              # CH4 positive breaks
 
 # Clean numeric labels for asinh axes
