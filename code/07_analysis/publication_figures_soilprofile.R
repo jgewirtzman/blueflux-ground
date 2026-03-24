@@ -477,7 +477,7 @@ p_doc  <- make_slim_panel(df_nosurface, "DOC_mg_L",
 p_alk  <- make_slim_panel(df_nosurface, "Alkalinity_uM",
                            expression(Alk.~(mu*M)))
 p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
-                              paste0("\u03B4\u00B9\u00B3CH\u2084 (\u2030)"))
+                              expression(delta^{13}*CH[4]~("\u2030")))
 # d13C-CO2 excluded due to H2S interference in analysis
 
 # Add shared x-axis label to first panel in each row
@@ -699,55 +699,89 @@ if (!is.null(fig8_left)) {
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
     theme_pub(base_size = 14)
 
-  # Build entire composite with patchwork (flat, no nesting)
-  # Left column: PCA (a) over depth profiles (b)
-  # Right column: CH4 bubbles (c) over salinity bubbles (d) over scatter (e)
+  # Build entire composite with patchwork — ALL panels flat (no nesting)
+  #
+  # Layout (14 rows x 15 columns):
+  #   Left col (9 wide): PCA (rows 1-6) then 2 rows x 5 depth panels (rows 7-14)
+  #   Right col (6 wide): CH4 bubbles (rows 1-4), sal bubbles (rows 5-9), scatter (rows 10-14)
+  #
+  # Panels: A=PCA, B-F=depth row1 (ch4,co2,sal,so4,orp),
+  #         G-K=depth row2 (do,ph,doc,alk,d13ch4),
+  #         L=CH4 bubbles, M=sal bubbles, N=scatter
 
-  # Ensure consistent text sizes across all panels
-  unified_text <- theme(
-    axis.title = element_text(size = 12, face = "bold"),
-    axis.text  = element_text(size = 10),
-    legend.title = element_text(size = 10, face = "bold"),
-    legend.text  = element_text(size = 9),
-    strip.text   = element_text(size = 10, face = "bold"),
-    plot.tag     = element_text(size = 16, face = "bold")
+  # Unified theme for ALL panels
+  unified <- theme(
+    axis.title   = element_text(size = 11),
+    axis.text    = element_text(size = 9),
+    legend.title = element_text(size = 9),
+    legend.text  = element_text(size = 8),
+    strip.text   = element_text(size = 9, face = "bold"),
+    plot.tag     = element_text(size = 14, face = "bold"),
+    plot.margin  = margin(2, 2, 2, 2)
   )
 
-  p_pca <- fig5 + labs(tag = "(a)") + unified_text
+  # PCA panel
+  p_A <- fig5 + labs(tag = "(a)") + unified +
+    theme(legend.position = "right", plot.margin = margin(2, 2, 2, 2))
 
-  # Rebuild profiles with unified text applied to each sub-panel
-  fig8_row1 <- (p_ch4 + labs(x = "Depth (cm)") + unified_text) +
-    (p_co2 + unified_text) + (p_sal + unified_text) +
-    (p_so4 + unified_text) + (p_orp_leg + unified_text) +
-    plot_layout(nrow = 1)
-  fig8_row2 <- (p_do + unified_text) + (p_ph + unified_text) +
-    (p_doc + unified_text) + (p_alk + unified_text) +
-    (p_d13ch4 + unified_text) + plot_layout(nrow = 1)
-  profiles <- fig8_row1 / fig8_row2
+  # Depth panels — remove existing tags, add (b) to first only
+  dp <- list(p_ch4 + labs(x = "Depth (cm)", tag = "(b)"),
+             p_co2, p_sal, p_so4, p_orp_leg,
+             p_do, p_ph, p_doc, p_alk, p_d13ch4)
+  dp <- lapply(dp, function(p) p + unified)
 
-  # Add tags to right panels with unified text
-  p_r_ch4 <- p_r_ch4 + labs(tag = "(c)") + unified_text
-  p_r_sal <- p_r_sal + labs(tag = "(d)") + unified_text
-  p_r_scatter <- p_r_scatter + labs(tag = "(e)") + unified_text
+  # Right panels
+  p_L <- p_r_ch4 + labs(tag = "(c)") + unified
+  p_M <- p_r_sal + labs(tag = "(d)") + unified
+  p_N <- p_r_scatter + labs(tag = "(e)") + unified +
+    theme(plot.margin = margin(2, 2, 2, 2))
 
-  # Use patchwork design layout
-  # Row 1: PCA (left, spans rows 1-2) | CH4 bubbles (right)
-  # Row 2: PCA cont.                  | Sal bubbles (right)
-  # Row 3: Depth profiles (left)      | Scatter (right)
-  # Row 4: Depth profiles cont.       | Scatter cont.
+  # Move scatter annotations to bottom right
+  p_N <- merged_mc %>%
+    ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
+    geom_point(size = 2.5, alpha = 0.8) +
+    geom_smooth(aes(group = disturbance, fill = disturbance),
+                method = "lm", se = TRUE, alpha = 0.15, linewidth = 0.7) +
+    scale_y_continuous(trans = "log1p", breaks = c(0, 1, 5, 10, 25, 50, 100)) +
+    scale_color_manual(values = disturbance_colors, name = "Disturbance") +
+    scale_fill_manual(values = disturbance_colors, guide = "none") +
+    scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
+    geom_text(data = scatter_stats_mc,
+              aes(x = Inf, y = -Inf, label = label, color = disturbance),
+              inherit.aes = FALSE, parse = TRUE,
+              hjust = 1.05, vjust = c(-2.6, -1.3, -0.1), size = 3) +
+    labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
+         tag = "(e)") +
+    unified
 
+  # Design: 14 rows, 15 columns
+  # A = PCA (9 wide, 6 tall)
+  # B-F = depth row 1, each ~1.8 wide (9 total), 4 tall
+  # G-K = depth row 2, same
+  # L = CH4 bubbles (6 wide, 4-5 tall)
+  # M = sal bubbles (6 wide, 4-5 tall)
+  # N = scatter (6 wide, 4-5 tall)
   layout_design <- "
-  AAACC
-  AAACC
-  BBBDD
-  BBBDD
-  BBBEE
-  BBBEE
+  AAAAAAAAALLLLLL
+  AAAAAAAAALLLLLL
+  AAAAAAAAALLLLLL
+  AAAAAAAAAMMMMM#
+  AAAAAAAAAMMMMM#
+  AAAAAAAAAMMMMM#
+  BCDEFNNNNNNNNN#
+  BCDEFNNNNNNNNN#
+  BCDEFNNNNNNNNN#
+  BCDEFNNNNNNNNN#
+  GHIJKNNNNNNNNN#
+  GHIJKNNNNNNNNN#
+  GHIJKNNNNNNNNN#
+  GHIJKNNNNNNNNN#
   "
 
-  fig9 <- p_pca + profiles + p_r_ch4 + p_r_sal + p_r_scatter +
-    plot_layout(design = layout_design) +
-    plot_annotation(theme = theme(plot.margin = margin(5, 5, 5, 5)))
+  fig9 <- p_A + dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] +
+    dp[[6]] + dp[[7]] + dp[[8]] + dp[[9]] + dp[[10]] +
+    p_L + p_M + p_N +
+    plot_layout(design = layout_design)
 
   save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 300)
   cat("  Saved combined layout\n")
