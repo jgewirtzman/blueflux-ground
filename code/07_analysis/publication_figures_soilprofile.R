@@ -35,7 +35,7 @@ site_shapes <- c(
   "BL60" = 15, "CP40" = 18
 )
 
-theme_pub <- function(base_size = 11) {
+theme_pub <- function(base_size = 14) {
   theme_bw(base_size = base_size) %+replace%
     theme(
       axis.title        = element_text(size = base_size, face = "bold"),
@@ -139,7 +139,7 @@ make_depth_panel <- function(data, var, y_lab, tag_label, log_scale = FALSE) {
                                   "BL60 (regen.)", "CP40 (ghost)")) +
     labs(y = y_lab, x = "Depth (cm)", tag = tag_label) +
     coord_flip() +
-    theme_pub(base_size = 11) +
+    theme_pub(base_size = 14) +
     theme(legend.position = "none")
   if (log_scale) p <- p + scale_y_log10()
   p
@@ -399,7 +399,7 @@ fig6 <- df_heat %>%
                        midpoint = 0, name = "Z-score") +
   scale_y_discrete(limits = rev(c("Surface", "0", "15", "45", "90"))) +
   labs(x = NULL, y = "Depth (cm)") +
-  theme_pub(base_size = 11) +
+  theme_pub(base_size = 14) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1, size = 8),
         legend.position = "right",
         strip.text = element_text(size = 8))
@@ -447,7 +447,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
                                   "BL60 (regen.)", "CP40 (ghost)")) +
     labs(y = y_lab, x = NULL) +
     coord_flip() +
-    theme_bw(base_size = 11) +
+    theme_bw(base_size = 14) +
     theme(legend.position = "none",
           axis.title = element_text(size = 7.5),
           axis.text.y = element_text(size = 7),
@@ -668,7 +668,7 @@ if (!is.null(fig8_left)) {
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
     scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
     labs(x = NULL, y = "Depth (cm)") +
-    theme_pub(base_size = 11) +
+    theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
   p_r_sal <- sal_sum_mc %>%
@@ -680,7 +680,7 @@ if (!is.null(fig8_left)) {
     scale_size_continuous(range = c(1, 7), name = "PSU") +
     scale_color_gradient(low = "blue", high = "red", name = "PSU") +
     labs(x = NULL, y = "Depth (cm)") +
-    theme_pub(base_size = 11) +
+    theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
   p_r_scatter <- merged_mc %>%
@@ -697,7 +697,7 @@ if (!is.null(fig8_left)) {
               inherit.aes = FALSE, parse = TRUE,
               hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 3) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
-    theme_pub(base_size = 11)
+    theme_pub(base_size = 14)
 
   right_panel <- ggpubr::ggarrange(p_r_ch4, p_r_sal, p_r_scatter,
                                     ncol = 1, heights = c(1, 1, 1.2),
