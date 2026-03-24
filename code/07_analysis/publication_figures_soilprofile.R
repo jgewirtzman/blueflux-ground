@@ -454,7 +454,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
     coord_flip() +
     theme_bw(base_size = 14) +
     theme(legend.position = "none",
-          axis.title = element_text(size = 7.5),
+          axis.title = element_text(size = 7.5, face = "plain"),
           axis.text.y = element_text(size = 14),
           axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
           panel.grid.minor = element_blank(),
@@ -489,19 +489,14 @@ p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
 p_ch4 <- p_ch4 + labs(x = "Depth (cm)")
 p_do  <- p_do  + labs(x = "Depth (cm)")
 
-# No legend on row 1 — legend goes on last panel of row 2
-p_orp_leg <- p_orp
-p_d13ch4_leg <- p_d13ch4
-
-# Put legend on first panel of row 2 (bottom left position)
-p_do_leg <- p_do + labs(x = "Depth (cm)") +
-  theme(legend.position = c(0.5, 0.0),
-        legend.justification = c(0.5, 0),
+# Legend on last panel of row 1 (right side, spans both rows visually)
+p_orp_leg <- p_orp +
+  theme(legend.position = "right",
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
-        legend.key.size = unit(3.5, "mm"),
-        legend.direction = "horizontal",
-        legend.background = element_rect(fill = alpha("white", 0.85), color = NA))
+        legend.key.size = unit(3.5, "mm"))
+p_d13ch4_leg <- p_d13ch4
+p_do_leg <- p_do + labs(x = "Depth (cm)")
 
 # 2 rows × 5 panels: row 1 = CH4, CO2, salinity, sulfate, ORP (with legend)
 #                     row 2 = DO, pH, DOC, alkalinity, d13C-CH4
@@ -748,6 +743,7 @@ if (!is.null(fig8_left)) {
   dp <- list(p_ch4 + labs(tag = "(b)"),
              p_co2, p_sal, p_so4, p_orp_leg,
              p_do_leg, p_ph, p_doc, p_alk, p_d13ch4_leg)
+  # Note: legend shows on p_orp_leg (last panel, row 1 right side)
   dp <- lapply(dp, function(p) p + unified)
 
   # Right panels
