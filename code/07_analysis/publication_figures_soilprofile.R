@@ -306,7 +306,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
                ),
                aes(x = PC1, y = PC2, label = label),
                inherit.aes = FALSE,
-               size = 4, fontface = "bold", color = c(disturbance_colors[["healthy"]],
+               size = 5.5, fontface = "bold", color = c(disturbance_colors[["healthy"]],
                                                        disturbance_colors[["regenerating"]],
                                                        disturbance_colors[["ghost"]]),
                fill = alpha("white", 0.7), label.size = 0,
@@ -325,7 +325,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     geom_text_repel(data = loadings %>% filter(var_display != "CH4"),
                     aes(x = PC1, y = PC2, label = var_display),
                     inherit.aes = FALSE,
-                    color = "grey30", size = 3, fontface = "italic",
+                    color = "grey30", size = 4, fontface = "italic",
                     box.padding = 0.35, point.padding = 0.15,
                     min.segment.length = 0, segment.color = "grey70",
                     segment.size = 0.3, max.overlaps = Inf,
@@ -333,7 +333,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     geom_text_repel(data = loadings %>% filter(var_display == "CH4"),
                     aes(x = PC1, y = PC2, label = var_display),
                     inherit.aes = FALSE,
-                    color = "firebrick", size = 3.5, fontface = "bold.italic",
+                    color = "firebrick", size = 4.5, fontface = "bold.italic",
                     box.padding = 0.35, point.padding = 0.15,
                     min.segment.length = 0, segment.color = "firebrick",
                     segment.size = 0.3, force = 1.5, force_pull = 0.3) +
@@ -435,7 +435,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
               linewidth = 0.6, alpha = 0.7) +
     geom_point(data = d,
                aes(x = Depth_numeric, y = .data[[var]], color = Site, shape = Site),
-               size = 1.8) +
+               size = 3.5) +
     scale_x_continuous(breaks = c(0, 15, 45, 90),
                        labels = c("0", "15", "45", "90"),
                        trans = "reverse") +
@@ -450,8 +450,8 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
     theme_bw(base_size = 14) +
     theme(legend.position = "none",
           axis.title = element_text(size = 7.5),
-          axis.text.y = element_text(size = 7),
-          axis.text.x = element_text(size = 6.5, angle = 45, hjust = 1),
+          axis.text.y = element_text(size = 14),
+          axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
           panel.grid.minor = element_blank(),
           plot.margin = margin(2, 3, 2, 2))
   if (log_scale) p <- p + scale_y_log10()
@@ -477,7 +477,7 @@ p_doc  <- make_slim_panel(df_nosurface, "DOC_mg_L",
 p_alk  <- make_slim_panel(df_nosurface, "Alkalinity_uM",
                            expression(Alk.~(mu*M)))
 p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
-                              expression(delta^{13}*CH[4]~("\u2030")))
+                              expression(delta^{13}*C-CH[4]~("\u2030")))
 # d13C-CO2 excluded due to H2S interference in analysis
 
 # Add shared x-axis label to first panel in each row
@@ -666,10 +666,14 @@ if (!is.null(fig8_left)) {
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
-    scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
+    scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M)),
+                         guide = guide_colorbar()) +
+    scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M)),
+                          guide = "none") +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
-    theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+    theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
+          strip.background = element_blank())
 
   p_r_sal <- sal_sum_mc %>%
     mutate(season_short = factor(season_short_map[as.character(season)], levels = season_short_levels)) %>%
@@ -677,11 +681,14 @@ if (!is.null(fig8_left)) {
     geom_point() +
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
-    scale_size_continuous(range = c(1, 7), name = "PSU") +
-    scale_color_gradient(low = "blue", high = "red", name = "PSU") +
+    scale_color_gradient(low = "blue", high = "red", name = "PSU",
+                         guide = guide_colorbar()) +
+    scale_size_continuous(range = c(1, 7), name = "PSU",
+                          guide = "none") +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
-    theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+    theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
+          strip.background = element_blank())
 
   p_r_scatter <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
@@ -736,7 +743,7 @@ if (!is.null(fig8_left)) {
   p_N <- p_r_scatter + labs(tag = "(e)") + unified +
     theme(plot.margin = margin(2, 2, 2, 2))
 
-  # Move scatter annotations to bottom right
+  # Scatter panel with theme_classic (no gridlines, no shading)
   p_N <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
     geom_point(size = 2.5, alpha = 0.8) +
@@ -752,7 +759,8 @@ if (!is.null(fig8_left)) {
               hjust = 1.05, vjust = c(-2.6, -1.3, -0.1), size = 4) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
          tag = "(e)") +
-    unified
+    theme_classic(base_size = 14) +
+    theme(plot.tag = element_text(size = 18, face = "bold"))
 
   # Design: 14 rows, 15 columns
   # A = PCA (9 wide, 6 tall)
@@ -771,21 +779,28 @@ if (!is.null(fig8_left)) {
   # M (sal bub): rows 15-28, cols 10-15
   # N (scatter): rows 29-42, cols 10-15
 
+  # Grid: 42 rows x 25 cols
+  # Left column = cols 1-15 (5 depth panels x 3 cols each)
+  # Right column = cols 16-25 (10 cols)
+  # PCA: rows 1-18, cols 1-15
+  # Depth row 1 (B-F): rows 19-30, each 3 cols
+  # Depth row 2 (G-K): rows 31-42, each 3 cols
+  # L: rows 1-14, M: rows 15-28, N: rows 29-42
   fig9_layout <- c(
-    area(t = 1,  b = 18, l = 1,  r = 9),   # A: PCA
-    area(t = 19, b = 30, l = 1,  r = 2),    # B: CH4 depth
-    area(t = 19, b = 30, l = 3,  r = 4),    # C: CO2 depth
-    area(t = 19, b = 30, l = 5,  r = 5),    # D: Sal depth
-    area(t = 19, b = 30, l = 6,  r = 7),    # E: SO4 depth
-    area(t = 19, b = 30, l = 8,  r = 9),    # F: ORP depth
-    area(t = 31, b = 42, l = 1,  r = 2),    # G: DO depth
-    area(t = 31, b = 42, l = 3,  r = 4),    # H: pH depth
-    area(t = 31, b = 42, l = 5,  r = 5),    # I: DOC depth
-    area(t = 31, b = 42, l = 6,  r = 7),    # J: Alk depth
-    area(t = 31, b = 42, l = 8,  r = 9),    # K: d13CH4 depth
-    area(t = 1,  b = 14, l = 10, r = 15),   # L: CH4 bubbles
-    area(t = 15, b = 28, l = 10, r = 15),   # M: Sal bubbles
-    area(t = 29, b = 42, l = 10, r = 15)    # N: Scatter
+    area(t = 1,  b = 18, l = 1,  r = 15),   # A: PCA
+    area(t = 19, b = 30, l = 1,  r = 3),    # B: CH4 depth
+    area(t = 19, b = 30, l = 4,  r = 6),    # C: CO2 depth
+    area(t = 19, b = 30, l = 7,  r = 9),    # D: Sal depth
+    area(t = 19, b = 30, l = 10, r = 12),   # E: SO4 depth
+    area(t = 19, b = 30, l = 13, r = 15),   # F: ORP depth
+    area(t = 31, b = 42, l = 1,  r = 3),    # G: DO depth
+    area(t = 31, b = 42, l = 4,  r = 6),    # H: pH depth
+    area(t = 31, b = 42, l = 7,  r = 9),    # I: DOC depth
+    area(t = 31, b = 42, l = 10, r = 12),   # J: Alk depth
+    area(t = 31, b = 42, l = 13, r = 15),   # K: d13CH4 depth
+    area(t = 1,  b = 14, l = 16, r = 25),   # L: CH4 bubbles
+    area(t = 15, b = 28, l = 16, r = 25),   # M: Sal bubbles
+    area(t = 29, b = 42, l = 16, r = 25)    # N: Scatter
   )
 
   fig9 <- p_A + dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] +
