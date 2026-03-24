@@ -250,8 +250,19 @@ cat("Plotting layout 4: bubbles...\n")
 
 season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Nov 2025" = "Nov 25")
 
-ch4_sum_campaigns <- ch4_sum %>% filter(season != "Nov 2025")
-sal_sum_campaigns <- sal_sum %>% filter(season != "Nov 2025")
+# Order sites by mean salinity (lowest to highest)
+site_sal_order <- sal_sum %>%
+  group_by(site) %>%
+  summarise(mean_sal = mean(PSU_mean, na.rm = TRUE), .groups = "drop") %>%
+  arrange(mean_sal) %>%
+  pull(site)
+
+ch4_sum_campaigns <- ch4_sum %>%
+  filter(season != "Nov 2025") %>%
+  mutate(site = factor(site, levels = site_sal_order))
+sal_sum_campaigns <- sal_sum %>%
+  filter(season != "Nov 2025") %>%
+  mutate(site = factor(site, levels = site_sal_order))
 
 p4_ch4 <- ch4_sum_campaigns %>%
   mutate(season_short = season_short_map[season]) %>%
@@ -292,16 +303,17 @@ merged <- ch4_sum %>%
              by = c("site", "season", "depth_cm"))
 
 # Compute per-class Spearman stats manually (on raw values, matching geom_smooth)
+# Use Pearson to match geom_smooth(method="lm") trendlines
 scatter_stats <- merged %>%
   group_by(disturbance) %>%
   summarise(
     n = n(),
-    rho = suppressWarnings(cor(PSU_mean, CH4_mean, method = "spearman", use = "complete.obs")),
-    p_val = suppressWarnings(cor.test(PSU_mean, CH4_mean, method = "spearman")$p.value),
+    r = suppressWarnings(cor(PSU_mean, log1p(CH4_mean), use = "complete.obs")),
+    p_val = suppressWarnings(cor.test(PSU_mean, log1p(CH4_mean))$p.value),
     .groups = "drop"
   ) %>%
-  mutate(label = sprintf("rho == %.2f*','~italic(p) == %.3f*','~italic(n) == %d",
-                         rho, p_val, n))
+  mutate(label = sprintf("italic(r) == %.2f*','~italic(p) == %.3f*','~italic(n) == %d",
+                         r, p_val, n))
 
 # Position labels in top right, stacked by class
 scatter_stats <- scatter_stats %>%
