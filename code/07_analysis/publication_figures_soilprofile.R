@@ -662,8 +662,8 @@ if (!is.null(fig8_left)) {
               p_val = cor.test(PSU_mean, log1p(CH4_mean))$p.value,
               .groups = "drop") %>%
     mutate(p_label = ifelse(p_val < 0.001, "italic(p) < 0.001",
-                            sprintf("italic(p) == %.3f", p_val)),
-           label = sprintf("italic(r) == %.3f*','~%s*','~italic(n) == %d", r, p_label, n))
+                            sprintf("italic(p) == %.2f", p_val)),
+           label = sprintf("italic(r) == %.2f*','~%s", r, p_label))
 
   # Right panels
   p_r_ch4 <- ch4_sum_mc %>%
@@ -672,10 +672,12 @@ if (!is.null(fig8_left)) {
     geom_point() +
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
-    scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
-    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"), name = expression(CH[4]~(mu*M)),
+    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"),
+                         name = expression(CH[4]~(mu*M)),
+                         breaks = c(0, 20, 40, 60, 80),
                          guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M)),
+                          breaks = c(0, 20, 40, 60, 80),
                           guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
@@ -688,9 +690,12 @@ if (!is.null(fig8_left)) {
     geom_point() +
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
-    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"), name = "Salinity (PSU)",
+    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"),
+                         name = "Salinity (PSU)",
+                         breaks = c(10, 20, 30, 40, 50, 60),
                          guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = "Salinity (PSU)",
+                          breaks = c(10, 20, 30, 40, 50, 60),
                           guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
