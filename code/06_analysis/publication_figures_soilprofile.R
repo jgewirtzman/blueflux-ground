@@ -29,6 +29,10 @@ site_colors <- c(
   "SRS5" = "#228B22", "SRS6" = "#2E8B57",
   "BL60" = "#808080", "CP40" = "#8B4513"
 )
+site_shapes <- c(
+  "SRS5" = 16, "SRS6" = 17,
+  "BL60" = 15, "CP40" = 18
+)
 
 theme_pub <- function(base_size = 11) {
   theme_bw(base_size = base_size) %+replace%
@@ -87,6 +91,12 @@ df <- df %>%
     )
   )
 
+# Apply DO sensor offset correction (-1.8 mg/L from measured values)
+# Then shift up by 0.13 to floor minimum at 0 (avoids negative DO)
+df <- df %>%
+  mutate(ppmDO = ppmDO - 1.8 + 0.13)
+cat("  Applied DO correction: -1.67 mg/L (sensor offset -1.8, floor shift +0.13)\n")
+
 cat("  Loaded:", nrow(df), "rows,", n_distinct(df$Site), "sites\n")
 cat("  Variables:", ncol(df), "columns\n")
 
@@ -120,9 +130,12 @@ make_depth_panel <- function(data, var, y_lab, tag_label, log_scale = FALSE) {
     scale_x_continuous(breaks = c(-5, 0, 15, 45, 90),
                        labels = c("Surf.", "0", "15", "45", "90"),
                        trans = "reverse") +
-    scale_color_manual(values = site_colors, name = "Site") +
-    scale_shape_manual(values = c("SRS5" = 16, "SRS6" = 17, "BL60" = 15, "CP40" = 18),
-                       name = "Site") +
+    scale_color_manual(values = site_colors, name = "Site",
+                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                  "BL60 (regen.)", "CP40 (ghost)")) +
+    scale_shape_manual(values = site_shapes, name = "Site",
+                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                  "BL60 (regen.)", "CP40 (ghost)")) +
     labs(y = y_lab, x = "Depth (cm)", tag = tag_label) +
     coord_flip() +
     theme_pub(base_size = 10) +
@@ -141,9 +154,12 @@ fig1_legend <- df %>%
   filter(!is.na(ORP)) %>%
   ggplot(aes(x = Depth_numeric, y = ORP, color = Site, shape = Site)) +
   geom_point(size = 3) +
-  scale_color_manual(values = site_colors, name = "Site") +
-  scale_shape_manual(values = c("SRS5" = 16, "SRS6" = 17, "BL60" = 15, "CP40" = 18),
-                     name = "Site") +
+  scale_color_manual(values = site_colors, name = "Site",
+                     labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                "BL60 (regen.)", "CP40 (ghost)")) +
+  scale_shape_manual(values = site_shapes, name = "Site",
+                     labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                "BL60 (regen.)", "CP40 (ghost)")) +
   theme_pub() +
   theme(legend.position = "bottom")
 legend_grob <- cowplot::get_legend(fig1_legend)
@@ -213,7 +229,7 @@ cat("\n--- Figure 5: PCA of Porewater Geochemistry ---\n")
 
 # Select numeric columns for PCA, exclude metadata and SD columns
 remove_cols <- c("Lat", "Long", "Depth_numeric", "SpCond", "TempC",
-                 "n_replicates", "Tds ppt", "ppmDO", "Br_ppm", "F_ppm")
+                 "n_replicates", "Tds ppt", "%DO", "Br_ppm", "F_ppm")
 sd_cols <- names(df)[grepl("_sd$|_sd_", names(df))]
 co2_cols <- names(df)[grepl("CO2", names(df))]
 
@@ -250,7 +266,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     mutate(var_display = case_when(
       variable == "ORP" ~ "ORP",
       variable == "pH" ~ "pH",
-      variable == "%DO" ~ "%DO",
+      variable == "ppmDO" ~ "DO",
       variable == "PSU" ~ "Salinity",
       variable == "Sulfide" ~ "Sulfide",
       variable == "Total Iron" ~ "Fe",
@@ -274,28 +290,63 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     stat_ellipse(aes(group = Site),
                  level = 0.68, color = "grey50", linewidth = 0.5,
                  linetype = "dashed") +
-    # Loading arrows
-    geom_segment(data = loadings,
+    # Label ellipse groups by disturbance category
+    geom_label(data = tibble(
+                 label = c("healthy", "regenerating", "ghost"),
+                 color = c(disturbance_colors[["healthy"]],
+                           disturbance_colors[["regenerating"]],
+                           disturbance_colors[["ghost"]]),
+                 PC1 = c(mean(scores$PC1[scores$Site %in% c("SRS5", "SRS6")]),
+                         mean(scores$PC1[scores$Site == "BL60"]),
+                         mean(scores$PC1[scores$Site == "CP40"])),
+                 PC2 = c(max(scores$PC2[scores$Site %in% c("SRS5", "SRS6")]) + 1.2,
+                         min(scores$PC2[scores$Site == "BL60"]) - 1.2,
+                         max(scores$PC2[scores$Site == "CP40"]) + 1.2)
+               ),
+               aes(x = PC1, y = PC2, label = label),
+               inherit.aes = FALSE,
+               size = 4, fontface = "bold", color = c(disturbance_colors[["healthy"]],
+                                                       disturbance_colors[["regenerating"]],
+                                                       disturbance_colors[["ghost"]]),
+               fill = alpha("white", 0.7), label.size = 0,
+               label.padding = unit(0.2, "lines")) +
+    # Loading arrows — CH4 in red, others grey
+    geom_segment(data = loadings %>% filter(var_display != "CH4"),
                  aes(x = 0, y = 0, xend = PC1, yend = PC2),
                  inherit.aes = FALSE,
                  color = "grey50", linewidth = 0.4,
                  arrow = arrow(length = unit(0.15, "cm"))) +
-    geom_text_repel(data = loadings,
+    geom_segment(data = loadings %>% filter(var_display == "CH4"),
+                 aes(x = 0, y = 0, xend = PC1, yend = PC2),
+                 inherit.aes = FALSE,
+                 color = "firebrick", linewidth = 0.5,
+                 arrow = arrow(length = unit(0.15, "cm"))) +
+    geom_text_repel(data = loadings %>% filter(var_display != "CH4"),
                     aes(x = PC1, y = PC2, label = var_display),
                     inherit.aes = FALSE,
                     color = "grey30", size = 3, fontface = "italic",
-                    box.padding = 0.3, segment.color = NA) +
+                    box.padding = 0.35, point.padding = 0.15,
+                    min.segment.length = 0, segment.color = "grey70",
+                    segment.size = 0.3, max.overlaps = Inf,
+                    force = 1.5, force_pull = 0.3) +
+    geom_text_repel(data = loadings %>% filter(var_display == "CH4"),
+                    aes(x = PC1, y = PC2, label = var_display),
+                    inherit.aes = FALSE,
+                    color = "firebrick", size = 3.5, fontface = "bold.italic",
+                    box.padding = 0.35, point.padding = 0.15,
+                    min.segment.length = 0, segment.color = "firebrick",
+                    segment.size = 0.3, force = 1.5, force_pull = 0.3) +
     # Sample points — depth as discrete color ramp, site as shape
     geom_point(aes(color = Depth_cm, shape = Site),
                size = 3.5, stroke = 0.8) +
-    geom_text_repel(aes(label = paste0(Site, "-", Depth_cm)),
-                    size = 2.5, max.overlaps = 20, segment.size = 0.3) +
+    # Individual point labels removed for clarity
+
     scale_color_viridis_d(name = "Depth (cm)", option = "viridis",
                           direction = 1,
                           guide = guide_legend(reverse = TRUE)) +
-    scale_shape_manual(values = c("SRS5" = 16, "SRS6" = 17,
-                                  "BL60" = 15, "CP40" = 18),
-                       name = "Site") +
+    scale_shape_manual(values = site_shapes, name = "Site",
+                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                  "BL60 (regen.)", "CP40 (ghost)")) +
     labs(x = sprintf("PC1 (%.1f%%)", var_exp[1]),
          y = sprintf("PC2 (%.1f%%)", var_exp[2]),
          tag = "(a)") +
@@ -387,9 +438,12 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
     scale_x_continuous(breaks = c(0, 15, 45, 90),
                        labels = c("0", "15", "45", "90"),
                        trans = "reverse") +
-    scale_color_manual(values = site_colors, name = "Site") +
-    scale_shape_manual(values = c("SRS5" = 16, "SRS6" = 17, "BL60" = 15, "CP40" = 18),
-                       name = "Site") +
+    scale_color_manual(values = site_colors, name = "Site",
+                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                  "BL60 (regen.)", "CP40 (ghost)")) +
+    scale_shape_manual(values = site_shapes, name = "Site",
+                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                  "BL60 (regen.)", "CP40 (ghost)")) +
     labs(y = y_lab, x = NULL) +
     coord_flip() +
     theme_bw(base_size = 8) +
@@ -454,17 +508,23 @@ save_pub(fig7, "porewater_depth_profiles", width = 210, height = 110)
 cat("\n--- Figure 8: PCA + Porewater Composite ---\n")
 
 if (exists("fig5")) {
-  # Remove tag from PCA for composite (will use patchwork tags)
-  fig5_notag <- fig5 + labs(tag = NULL)
+  # Use cowplot for consistent (a)/(b) labels across sub-layouts
+  fig5_clean <- fig5 + labs(tag = NULL)  # remove PCA's own tag
 
-  # Rebuild profile rows for composite (same as fig7)
-  fig8_row1 <- p_ch4 + p_co2 + p_sal + p_so4 + p_orp_leg + plot_layout(nrow = 1)
+  fig8_row1 <- p_ch4 + labs(x = "Depth (cm)")
+  fig8_row1 <- fig8_row1 + p_co2 + p_sal + p_so4 + p_orp_leg + plot_layout(nrow = 1)
   fig8_row2 <- p_do + p_ph + p_doc + p_alk + p_d13ch4 + plot_layout(nrow = 1)
+  profiles <- fig8_row1 / fig8_row2
 
-  fig8 <- (fig5_notag /
-            fig8_row1 / fig8_row2) +
-    plot_layout(heights = c(1.4, 1, 1)) +
-    plot_annotation(tag_levels = list(c("(a)", "(b)")))
+  # Add top margin to profiles so (b) label doesn't overlap depth axis
+  profiles_padded <- profiles + plot_annotation(theme = theme(plot.margin = margin(20, 0, 0, 0)))
+
+  fig8 <- ggpubr::ggarrange(
+    fig5_clean, profiles_padded,
+    ncol = 1, heights = c(1.4, 2),
+    labels = c("(a)", "(b)"),
+    font.label = list(size = 14, face = "bold")
+  )
 
   save_pub(fig8, "pca_porewater_composite", width = 210, height = 220)
 } else {
