@@ -167,7 +167,8 @@ asinh_labels <- function(x) {
 # Mean diamond geom (reusable)
 mean_diamond <- function(...) {
   stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = "white", color = "black", stroke = 0.7, ...)
+               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6),
+               stroke = 0.7, ...)
 }
 
 # Save helper (PDF + PNG)
@@ -370,7 +371,8 @@ make_campaign_grid_condensed <- function(data, gas = "CH4", tag_label = "(a)") {
     geom_boxplot(alpha = 0.4, outlier.shape = NA, color = "black",
                  width = 0.5, linewidth = 0.3) +
     stat_summary(fun = mean, geom = "point", shape = 23,
-                 size = 1.5, fill = "white", color = "black", stroke = 0.5) +
+                 size = 1.5, fill = alpha("white", 0.6), color = alpha("black", 0.6),
+                 stroke = 0.5) +
     facet_nested(disturbance_level + plot ~ campaign,
                  nest_line = element_line(linewidth = 0.4),
                  scales = "free_y",
@@ -453,7 +455,7 @@ make_campaign_grid_condensed_boot <- function(data, gas = "CH4", tag_label = "(a
       fun.data = function(x) boot_mean_ci(x),
       geom = "pointrange", shape = 23,
       size = 0.4, linewidth = 0.5,
-      fill = "white", color = "black", stroke = 0.5,
+      fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.5,
       fatten = 4
     ) +
     facet_nested(disturbance_level + plot ~ campaign,
@@ -494,6 +496,156 @@ fig2c_co2_boot <- make_campaign_grid_condensed_boot(df, "CO2")
 save_pub(fig2c_co2_boot, "component_by_plot_campaign_co2_condensed_boot", width = 150, height = 120)
 
 
+# --- Central Tendency Comparison Figure (CH4) --------------------------------
+cat("\n--- Figure: Central Tendency Comparison (CH4) ---\n")
+
+# Geometric mean helper (returns NA for groups with no positive values)
+geom_mean_safe <- function(x) {
+  x <- x[!is.na(x) & is.finite(x) & x > 0]
+  if (length(x) == 0) return(NA_real_)
+  exp(mean(log(x)))
+}
+
+ct_data <- df %>%
+  filter(CH4_flux_status == "valid", !is.na(component), !is.na(campaign)) %>%
+  group_by(campaign, plot, component, disturbance_level) %>%
+  summarise(
+    n = n(),
+    Mean = mean(CH4_best.flux, na.rm = TRUE),
+    Median = median(CH4_best.flux, na.rm = TRUE),
+    `Geometric Mean` = geom_mean_safe(CH4_best.flux),
+    `Bootstrap Mean` = {
+      x <- CH4_best.flux[!is.na(CH4_best.flux)]
+      if (length(x) < 3) mean(x) else {
+        set.seed(42)
+        mean(replicate(5000, mean(sample(x, length(x), replace = TRUE))))
+      }
+    },
+    .groups = "drop"
+  ) %>%
+  pivot_longer(cols = c(Mean, Median, `Geometric Mean`, `Bootstrap Mean`),
+               names_to = "metric", values_to = "value") %>%
+  mutate(
+    metric = factor(metric, levels = c("Mean", "Bootstrap Mean", "Geometric Mean", "Median")),
+    plot = factor(plot, levels = c("RB10", "SRS5", "SRS6", "BL60",
+                                   "CP40", "FLM30", "MI", "SE1")),
+    disturbance_level = factor(disturbance_level,
+                               levels = c("healthy", "regenerating", "ghost", "scrub"))
+  )
+
+fig_ct <- ct_data %>%
+  ggplot(aes(x = value, y = component, color = metric, shape = metric)) +
+  geom_point(size = 2, alpha = 0.8,
+             position = position_dodge(width = 0.6)) +
+  facet_nested(disturbance_level + plot ~ campaign,
+               nest_line = element_line(linewidth = 0.4),
+               scales = "free_y",
+               space = "free_y",
+               strip = strip_nested(size = "variable")) +
+  scale_x_continuous(trans = "asinh", breaks = asinh_brk_pos, labels = asinh_labels) +
+  scale_color_manual(
+    values = c("Mean" = "#E41A1C", "Bootstrap Mean" = "#377EB8",
+               "Geometric Mean" = "#4DAF4A", "Median" = "#984EA3"),
+    name = "Central Tendency"
+  ) +
+  scale_shape_manual(
+    values = c("Mean" = 16, "Bootstrap Mean" = 23, "Geometric Mean" = 17, "Median" = 15),
+    name = "Central Tendency"
+  ) +
+  labs(x = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1})), y = NULL) +
+  theme_pub(base_size = 8) +
+  theme(
+    legend.position    = "bottom",
+    legend.key.size    = unit(3, "mm"),
+    legend.text        = element_text(size = 7),
+    legend.title       = element_text(size = 7, face = "bold"),
+    axis.text.y        = element_text(size = 6, margin = margin(0, 1, 0, 0)),
+    axis.text.x        = element_text(size = 7),
+    axis.title.x       = element_text(size = 8, face = "bold"),
+    strip.text         = element_text(size = 8, face = "bold",
+                                      margin = margin(0.3, 0.5, 0.3, 0.5)),
+    strip.text.y       = element_text(size = 8, face = "bold", angle = 0,
+                                      margin = margin(0.3, 0.3, 0.3, 0.3)),
+    strip.background   = element_blank(),
+    panel.spacing.y    = unit(0.3, "mm"),
+    panel.spacing.x    = unit(1.5, "mm"),
+    plot.margin        = margin(2, 14, 2, 3)
+  )
+
+save_pub(fig_ct, "central_tendency_comparison_ch4", width = 160, height = 130)
+
+# CO2 version
+cat("\n--- Figure: Central Tendency Comparison (CO2) ---\n")
+
+ct_data_co2 <- df %>%
+  filter(CO2_flux_status == "valid", !is.na(component), !is.na(campaign)) %>%
+  group_by(campaign, plot, component, disturbance_level) %>%
+  summarise(
+    n = n(),
+    Mean = mean(CO2_best.flux, na.rm = TRUE),
+    Median = median(CO2_best.flux, na.rm = TRUE),
+    `Geometric Mean` = geom_mean_safe(CO2_best.flux),
+    `Bootstrap Mean` = {
+      x <- CO2_best.flux[!is.na(CO2_best.flux)]
+      if (length(x) < 3) mean(x) else {
+        set.seed(42)
+        mean(replicate(5000, mean(sample(x, length(x), replace = TRUE))))
+      }
+    },
+    .groups = "drop"
+  ) %>%
+  pivot_longer(cols = c(Mean, Median, `Geometric Mean`, `Bootstrap Mean`),
+               names_to = "metric", values_to = "value") %>%
+  mutate(
+    metric = factor(metric, levels = c("Mean", "Bootstrap Mean", "Geometric Mean", "Median")),
+    plot = factor(plot, levels = c("RB10", "SRS5", "SRS6", "BL60",
+                                   "CP40", "FLM30", "MI", "SE1")),
+    disturbance_level = factor(disturbance_level,
+                               levels = c("healthy", "regenerating", "ghost", "scrub"))
+  )
+
+fig_ct_co2 <- ct_data_co2 %>%
+  ggplot(aes(x = value, y = component, color = metric, shape = metric)) +
+  geom_point(size = 2, alpha = 0.8,
+             position = position_dodge(width = 0.6)) +
+  facet_nested(disturbance_level + plot ~ campaign,
+               nest_line = element_line(linewidth = 0.4),
+               scales = "free_y",
+               space = "free_y",
+               strip = strip_nested(size = "variable")) +
+  scale_x_continuous(trans = "asinh", breaks = asinh_brk, labels = asinh_labels) +
+  scale_color_manual(
+    values = c("Mean" = "#E41A1C", "Bootstrap Mean" = "#377EB8",
+               "Geometric Mean" = "#4DAF4A", "Median" = "#984EA3"),
+    name = "Central Tendency"
+  ) +
+  scale_shape_manual(
+    values = c("Mean" = 16, "Bootstrap Mean" = 23, "Geometric Mean" = 17, "Median" = 15),
+    name = "Central Tendency"
+  ) +
+  labs(x = expression(CO[2]~Flux~(mu*mol~m^{-2}~s^{-1})), y = NULL) +
+  theme_pub(base_size = 8) +
+  theme(
+    legend.position    = "bottom",
+    legend.key.size    = unit(3, "mm"),
+    legend.text        = element_text(size = 7),
+    legend.title       = element_text(size = 7, face = "bold"),
+    axis.text.y        = element_text(size = 6, margin = margin(0, 1, 0, 0)),
+    axis.text.x        = element_text(size = 7),
+    axis.title.x       = element_text(size = 8, face = "bold"),
+    strip.text         = element_text(size = 8, face = "bold",
+                                      margin = margin(0.3, 0.5, 0.3, 0.5)),
+    strip.text.y       = element_text(size = 8, face = "bold", angle = 0,
+                                      margin = margin(0.3, 0.3, 0.3, 0.3)),
+    strip.background   = element_blank(),
+    panel.spacing.y    = unit(0.3, "mm"),
+    panel.spacing.x    = unit(1.5, "mm"),
+    plot.margin        = margin(2, 14, 2, 3)
+  )
+
+save_pub(fig_ct_co2, "central_tendency_comparison_co2", width = 160, height = 130)
+
+
 # --- Raincloud version: half-boxplot above + dots below ----------------------
 cat("\n--- Figure 2d: Raincloud Component by Plot x Campaign (CH4) ---\n")
 
@@ -526,7 +678,7 @@ make_campaign_grid_raincloud <- function(data, gas = "CH4", tag_label = "(a)") {
                  width = 0.3, linewidth = 0.3,
                  position = position_nudge(y = 0.18)) +
     stat_summary(fun = mean, geom = "point", shape = 23,
-                 size = 1.5, fill = "white", color = "black", stroke = 0.5,
+                 size = 1.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.5,
                  position = position_nudge(y = 0.18)) +
     facet_nested(disturbance_level + plot ~ campaign,
                  nest_line = element_line(linewidth = 0.4),
@@ -584,7 +736,7 @@ fig3a <- df_seasonal %>%
   geom_boxplot(alpha = 0.6, outlier.shape = NA, color = "black", width = 0.6,
                position = position_dodge(width = 0.75)) +
   stat_summary(fun = mean, geom = "point", shape = 23, size = 2.5,
-               fill = "white", color = "black", stroke = 0.7,
+               fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7,
                position = position_dodge(width = 0.75)) +
   scale_x_continuous(trans = "asinh", breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_fill_manual(values = season_colors, name = "Season") +
@@ -604,7 +756,7 @@ fig3b <- df_seasonal %>%
   geom_boxplot(alpha = 0.6, outlier.shape = NA, color = "black", width = 0.6,
                position = position_dodge(width = 0.75)) +
   stat_summary(fun = mean, geom = "point", shape = 23, size = 2.5,
-               fill = "white", color = "black", stroke = 0.7,
+               fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7,
                position = position_dodge(width = 0.75)) +
   scale_x_continuous(trans = "asinh", breaks = asinh_brk, labels = asinh_labels) +
   scale_fill_manual(values = season_colors, name = "Season") +
@@ -655,7 +807,7 @@ fig4b <- stem_height %>%
              height = 0.2, width = 0, alpha = 0.5, size = 2) +
   geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
   stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = "white", color = "black", stroke = 0.7, alpha = 0.7) +
+               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
   scale_x_continuous(trans = "asinh", limits = x_range,
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_fill_manual(values = disturbance_colors, guide = "none") +
@@ -1080,7 +1232,7 @@ fig10b <- stem_height %>%
              height = 0.2, width = 0, alpha = 0.5, size = 2) +
   geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
   stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = "white", color = "black", stroke = 0.7, alpha = 0.7) +
+               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
   scale_x_continuous(trans = "asinh", limits = x_range,
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_fill_manual(values = disturbance_colors, guide = "none") +
@@ -1285,7 +1437,7 @@ fig10b_b <- stem_height_co2 %>%
              height = 0.2, width = 0, alpha = 0.5, size = 2) +
   geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
   stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = "white", color = "black", stroke = 0.7, alpha = 0.7) +
+               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
   scale_x_continuous(trans = "asinh", limits = x_range_co2,
                      breaks = co2_brk, labels = asinh_labels) +
   scale_fill_manual(values = disturbance_colors, guide = "none") +
@@ -1450,7 +1602,7 @@ ch4_box <- stem_height %>%
              height = 0.2, width = 0, alpha = 0.5, size = 2) +
   geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
   stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = "white", color = "black", stroke = 0.7, alpha = 0.7) +
+               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
   scale_x_continuous(trans = "asinh", limits = x_range,
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_fill_manual(values = disturbance_colors, guide = "none") +
@@ -1507,7 +1659,7 @@ co2_box <- stem_height_co2 %>%
              height = 0.2, width = 0, alpha = 0.5, size = 2) +
   geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
   stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = "white", color = "black", stroke = 0.7, alpha = 0.7) +
+               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
   scale_x_continuous(trans = "asinh", limits = x_range_co2,
                      breaks = co2_brk, labels = asinh_labels) +
   scale_fill_manual(values = disturbance_colors, guide = "none") +
