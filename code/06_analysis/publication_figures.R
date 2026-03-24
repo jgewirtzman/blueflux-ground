@@ -505,6 +505,135 @@ fig2c_combined_boot <- fig2c_ch4_boot / fig2c_co2_boot +
 save_pub(fig2c_combined_boot, "component_by_plot_campaign_combined_condensed_boot",
          width = 170, height = 230)
 
+# --- Distribution Variant Functions -------------------------------------------
+# Shared facet + theme block for all variants
+condensed_facet_theme <- function(gas, brk, x_lab, tag_label) {
+  list(
+    geom_vline(xintercept = 0, linetype = "dashed", color = "grey70", linewidth = 0.3),
+    facet_nested(disturbance_level + plot ~ campaign,
+                 nest_line = element_line(linewidth = 0.4),
+                 scales = "free_y", space = "free_y",
+                 strip = strip_nested(size = "variable")),
+    scale_x_continuous(trans = "asinh", breaks = brk, labels = asinh_labels),
+    scale_fill_manual(values = component_colors_lc, name = "Component"),
+    scale_color_manual(values = component_colors_lc, name = "Component"),
+    labs(x = x_lab, y = NULL, tag = tag_label),
+    theme_pub(base_size = 8),
+    theme(
+      legend.position    = "bottom",
+      legend.key.size    = unit(3, "mm"),
+      legend.text        = element_text(size = 7),
+      legend.title       = element_text(size = 7, face = "bold"),
+      legend.margin      = margin(0, 0, 0, 0),
+      legend.box.margin  = margin(0, 0, 0, 0),
+      axis.text.y        = element_text(size = 6, margin = margin(0, 1, 0, 0)),
+      axis.text.x        = element_text(size = 7),
+      axis.title.x       = element_text(size = 8, face = "bold"),
+      strip.text         = element_text(size = 8, face = "bold",
+                                        margin = margin(0.3, 0.5, 0.3, 0.5)),
+      strip.text.y       = element_text(size = 8, face = "bold", angle = 0,
+                                        margin = margin(0.3, 0.3, 0.3, 0.3)),
+      strip.background   = element_blank(),
+      panel.spacing.y    = unit(0.3, "mm"),
+      panel.spacing.x    = unit(1.5, "mm"),
+      plot.margin        = margin(2, 14, 2, 3)
+    )
+  )
+}
+
+gas_setup <- function(gas) {
+  if (gas == "CH4") {
+    list(flux_var = "CH4_best.flux", status_var = "CH4_flux_status",
+         brk = asinh_brk_pos,
+         x_lab = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1})))
+  } else {
+    list(flux_var = "CO2_best.flux", status_var = "CO2_flux_status",
+         brk = asinh_brk,
+         x_lab = expression(CO[2]~Flux~(mu*mol~m^{-2}~s^{-1})))
+  }
+}
+
+# Boot mean/CI summary layer (shared)
+boot_summary_layer <- stat_summary(
+  fun.data = function(x) boot_mean_ci(x),
+  geom = "pointrange", shape = 23,
+  size = 0.4, linewidth = 0.5,
+  fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.5,
+  fatten = 4
+)
+
+# 1. Sina (beeswarm) variant
+library(ggbeeswarm)
+
+make_condensed_sina <- function(data, gas = "CH4", tag_label = "(a)") {
+  s <- gas_setup(gas)
+  d <- data %>% filter(.data[[s$status_var]] == "valid", !is.na(component), !is.na(campaign))
+
+  ggplot(d, aes(x = .data[[s$flux_var]], y = component,
+                fill = component, color = component)) +
+    geom_quasirandom(alpha = 0.45, size = 1.5, groupOnX = FALSE,
+                     width = 0.25, bandwidth = 0.8, stroke = 0) +
+    boot_summary_layer +
+    condensed_facet_theme(gas, s$brk, s$x_lab, tag_label)
+}
+
+# 2. Shaded violin variant (your ecotypes style)
+make_condensed_violin <- function(data, gas = "CH4", tag_label = "(a)") {
+  s <- gas_setup(gas)
+  d <- data %>% filter(.data[[s$status_var]] == "valid", !is.na(component), !is.na(campaign))
+
+  ggplot(d, aes(x = .data[[s$flux_var]], y = component,
+                fill = component, color = component)) +
+    geom_violin(alpha = 0.2, color = NA, scale = "width",
+                linewidth = 0, orientation = "y") +
+    geom_jitter(alpha = 0.45, size = 1.5, height = 0.12, stroke = 0) +
+    boot_summary_layer +
+    condensed_facet_theme(gas, s$brk, s$x_lab, tag_label)
+}
+
+# 3. Raincloud variant (half violin + jitter)
+make_condensed_raincloud <- function(data, gas = "CH4", tag_label = "(a)") {
+  s <- gas_setup(gas)
+  d <- data %>% filter(.data[[s$status_var]] == "valid", !is.na(component), !is.na(campaign))
+
+  ggplot(d, aes(x = .data[[s$flux_var]], y = component,
+                fill = component, color = component)) +
+    ggdist::stat_halfeye(
+      aes(fill = component), color = NA,
+      alpha = 0.25, adjust = 1.5,
+      width = 0.5, .width = 0,
+      justification = -0.15,
+      point_colour = NA,
+      orientation = "y"
+    ) +
+    geom_jitter(alpha = 0.45, size = 1.5, height = 0.1, stroke = 0) +
+    boot_summary_layer +
+    condensed_facet_theme(gas, s$brk, s$x_lab, tag_label)
+}
+
+# Generate all variants
+variant_fns <- list(
+  sina = make_condensed_sina,
+  violin = make_condensed_violin,
+  raincloud = make_condensed_raincloud
+)
+
+for (vname in names(variant_fns)) {
+  fn <- variant_fns[[vname]]
+  ch4_p <- fn(df, "CH4", tag_label = "(a)")
+  co2_p <- fn(df, "CO2", tag_label = "(b)")
+  combined <- ch4_p / co2_p +
+    plot_layout(guides = "collect") +
+    plot_annotation(theme = theme(legend.position = "bottom"))
+
+  save_pub(ch4_p, paste0("component_by_plot_campaign_ch4_condensed_", vname),
+           width = 150, height = 120)
+  save_pub(co2_p, paste0("component_by_plot_campaign_co2_condensed_", vname),
+           width = 150, height = 120)
+  save_pub(combined, paste0("component_by_plot_campaign_combined_condensed_", vname),
+           width = 170, height = 230)
+}
+
 
 # --- Central Tendency Comparison Figure (CH4) --------------------------------
 cat("\n--- Figure: Central Tendency Comparison (CH4) ---\n")
@@ -791,7 +920,10 @@ stem_height <- df %>%
          plot %in% c("SRS5", "SRS6", "BL60", "FLM30", "CP40")) %>%
   mutate(disturbance_level = droplevels(disturbance_level))
 
-x_range <- range(stem_height$CH4_best.flux, na.rm = TRUE)
+# Pad x_range in asinh space so density kernels aren't clipped at boundaries
+x_range_raw <- range(stem_height$CH4_best.flux, na.rm = TRUE)
+x_range <- c(sinh(asinh(x_range_raw[1]) - 1.5),
+             sinh(asinh(x_range_raw[2]) + 1.5))
 
 # (a) Overlapping ridges — height_category on y-axis, disturbance as fill
 fig4a <- stem_height %>%
@@ -1417,7 +1549,9 @@ stem_height_co2 <- df %>%
          plot %in% c("SRS5", "SRS6", "BL60", "FLM30", "CP40")) %>%
   mutate(disturbance_level = droplevels(disturbance_level))
 
-x_range_co2 <- range(stem_height_co2$CO2_best.flux, na.rm = TRUE)
+x_range_co2_raw <- range(stem_height_co2$CO2_best.flux, na.rm = TRUE)
+x_range_co2 <- c(sinh(asinh(x_range_co2_raw[1]) - 1.5),
+                 sinh(asinh(x_range_co2_raw[2]) + 1.5))
 co2_brk <- c(-10, 0, 10, 100, 1000)
 
 # (a) Ridges
