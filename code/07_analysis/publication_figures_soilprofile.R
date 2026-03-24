@@ -674,10 +674,12 @@ if (!is.null(fig8_left)) {
     scale_y_reverse() +
     scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"),
                          name = expression(CH[4]~(mu*M)),
-                         breaks = c(0, 20, 40, 60, 80),
+                         breaks = c(1, 20, 40, 60, 80),
+                         limits = c(0, 90),
                          guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M)),
-                          breaks = c(0, 20, 40, 60, 80),
+                          breaks = c(1, 20, 40, 60, 80),
+                          limits = c(0, 90),
                           guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
@@ -693,9 +695,11 @@ if (!is.null(fig8_left)) {
     scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"),
                          name = "Salinity (PSU)",
                          breaks = c(10, 20, 30, 40, 50, 60),
+                         limits = c(5, 65),
                          guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = "Salinity (PSU)",
                           breaks = c(10, 20, 30, 40, 50, 60),
+                          limits = c(5, 65),
                           guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
