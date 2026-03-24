@@ -481,8 +481,9 @@ p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
                               expression(delta^{13}*C-CH[4]~("\u2030")))
 # d13C-CO2 excluded due to H2S interference in analysis
 
-# Add shared x-axis label (becomes y after coord_flip) to first panel in row 2 only
-# Row 1: no depth label (saves space, keeps rows equal height)
+# Add depth label to row 2, invisible spacer to row 1 (keeps rows equal height)
+p_ch4 <- p_ch4 + labs(x = "Depth (cm)") +
+  theme(axis.title.y = element_text(color = "transparent"))
 p_do  <- p_do  + labs(x = "Depth (cm)")
 
 # Show legend on the last panel of row 1 — match PCA legend sizing
@@ -690,7 +691,7 @@ if (!is.null(fig8_left)) {
     theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
           strip.background = element_blank(),
-          strip.text = element_blank())
+          strip.text = element_text(color = "transparent"))
 
   p_r_scatter <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
