@@ -376,7 +376,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
           legend.justification = c(0, 0.5),
           legend.background = element_rect(fill = alpha("white", 0.85), color = NA),
           legend.key.size = unit(3.5, "mm"),
-          legend.key.height = unit(12, "mm"),
+          legend.key.height = unit(6, "mm"),
           panel.grid = element_blank())
 
   save_pub(fig5, "soil_pca", width = 220, height = 170)
