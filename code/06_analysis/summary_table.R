@@ -43,6 +43,22 @@ geom_se <- function(x, na.rm = TRUE) {
   exp(sd(log(x_pos)) / sqrt(n))
 }
 
+# Bootstrap mean and 95% CI (BCa if possible, percentile fallback)
+boot_mean_ci <- function(x, R = 5000, conf = 0.95) {
+  x <- x[!is.na(x) & is.finite(x)]
+  n <- length(x)
+  if (n < 3) return(list(boot_mean = mean(x), boot_lo = NA_real_, boot_hi = NA_real_))
+
+  set.seed(42)
+  boot_means <- replicate(R, mean(sample(x, n, replace = TRUE)))
+  alpha <- (1 - conf) / 2
+  list(
+    boot_mean = mean(boot_means),
+    boot_lo = unname(quantile(boot_means, alpha)),
+    boot_hi = unname(quantile(boot_means, 1 - alpha))
+  )
+}
+
 calc_stats <- function(data, var_name) {
   x <- data[[var_name]]
   x <- x[!is.na(x) & is.finite(x)]
@@ -53,6 +69,9 @@ calc_stats <- function(data, var_name) {
       n_pos = 0L,
       median = NA_real_,
       mean = NA_real_,
+      boot_mean = NA_real_,
+      boot_ci_lo = NA_real_,
+      boot_ci_hi = NA_real_,
       geom_mean = NA_real_,
       sd = NA_real_,
       se = NA_real_,
@@ -65,12 +84,16 @@ calc_stats <- function(data, var_name) {
   n_pos <- sum(x > 0)
   mean_val <- mean(x)
   sd_val <- sd(x)
+  bci <- boot_mean_ci(x)
 
   tibble(
     n = n,
     n_pos = n_pos,
     median = median(x),
     mean = mean_val,
+    boot_mean = bci$boot_mean,
+    boot_ci_lo = bci$boot_lo,
+    boot_ci_hi = bci$boot_hi,
     geom_mean = geom_mean(x),
     sd = sd_val,
     se = sd_val / sqrt(n),
@@ -190,7 +213,8 @@ cat("Creating final table...\n\n")
 final_table <- bind_rows(ch4_stats, co2_stats) %>%
   pivot_wider(
     names_from = gas,
-    values_from = c(n, n_pos, median, mean, geom_mean, sd, se, geom_sd, geom_se),
+    values_from = c(n, n_pos, median, mean, boot_mean, boot_ci_lo, boot_ci_hi,
+                     geom_mean, sd, se, geom_sd, geom_se),
     names_sep = "_"
   ) %>%
   # Remove empty groups where BOTH gases have n=0
@@ -202,8 +226,12 @@ final_table <- bind_rows(ch4_stats, co2_stats) %>%
     disturbance_level,
     component_base,
     height_category,
-    n_CH4, n_pos_CH4, median_CH4, mean_CH4, geom_mean_CH4, sd_CH4, se_CH4, geom_sd_CH4, geom_se_CH4,
-    n_CO2, n_pos_CO2, median_CO2, mean_CO2, geom_mean_CO2, sd_CO2, se_CO2, geom_sd_CO2, geom_se_CO2
+    n_CH4, n_pos_CH4, median_CH4, mean_CH4,
+    boot_mean_CH4, boot_ci_lo_CH4, boot_ci_hi_CH4,
+    geom_mean_CH4, sd_CH4, se_CH4, geom_sd_CH4, geom_se_CH4,
+    n_CO2, n_pos_CO2, median_CO2, mean_CO2,
+    boot_mean_CO2, boot_ci_lo_CO2, boot_ci_hi_CO2,
+    geom_mean_CO2, sd_CO2, se_CO2, geom_sd_CO2, geom_se_CO2
   )
 
 # Display results ---------------------------------------------------------------
