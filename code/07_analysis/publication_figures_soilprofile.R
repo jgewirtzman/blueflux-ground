@@ -352,9 +352,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
          y = sprintf("PC2 (%.1f%%)", var_exp[2]),
          tag = "(a)") +
     theme_pub() +
-    theme(legend.position = c(0.98, 0.5),
-          legend.justification = c(1, 0.5),
-          legend.background = element_rect(fill = alpha("white", 0.8), color = NA),
+    theme(legend.position = "right",
           legend.key.size = unit(4, "mm"),
           panel.grid = element_blank())
 
@@ -490,7 +488,10 @@ p_do  <- p_do  + labs(x = "Depth (cm)")
 
 # No legend on row 1 — legend goes on last panel of row 2
 p_orp_leg <- p_orp
-p_d13ch4_leg <- p_d13ch4 +
+p_d13ch4_leg <- p_d13ch4
+
+# Put legend on first panel of row 2 (bottom left position)
+p_do_leg <- p_do + labs(x = "Depth (cm)") +
   theme(legend.position = "bottom",
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
@@ -672,7 +673,7 @@ if (!is.null(fig8_left)) {
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
-    scale_color_gradientn(colours = c("#2166AC", "#67A9CF", "#F7F7F7", "#EF8A62", "#B2182B"), name = expression(CH[4]~(mu*M)),
+    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"), name = expression(CH[4]~(mu*M)),
                          guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M)),
                           guide = guide_legend()) +
@@ -687,7 +688,7 @@ if (!is.null(fig8_left)) {
     geom_point() +
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
-    scale_color_gradientn(colours = c("#2166AC", "#67A9CF", "#F7F7F7", "#EF8A62", "#B2182B"), name = "PSU",
+    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"), name = "PSU",
                          guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = "PSU",
                           guide = guide_legend()) +
@@ -733,17 +734,14 @@ if (!is.null(fig8_left)) {
     plot.margin  = margin(2, 2, 2, 2)
   )
 
-  # PCA panel — keep legend inside plot (set before unified, then re-override)
+  # PCA panel — legend outside (right)
   p_A <- fig5 + labs(tag = "(a)") + unified +
-    theme(legend.position = c(0.98, 0.5),
-          legend.justification = c(1, 0.5),
-          legend.background = element_rect(fill = alpha("white", 0.8), color = NA),
-          legend.key.size = unit(4, "mm"))
+    theme(legend.position = "right")
 
   # Depth panels — remove existing tags, add (b) to first only
   dp <- list(p_ch4 + labs(tag = "(b)"),
              p_co2, p_sal, p_so4, p_orp_leg,
-             p_do, p_ph, p_doc, p_alk, p_d13ch4_leg)
+             p_do_leg, p_ph, p_doc, p_alk, p_d13ch4_leg)
   dp <- lapply(dp, function(p) p + unified)
 
   # Right panels
@@ -767,15 +765,15 @@ if (!is.null(fig8_left)) {
     scale_fill_manual(values = disturbance_colors, guide = "none") +
     scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = 0.15, label = scatter_stats_mc$label[1],
+             y = 0.01, label = scatter_stats_mc$label[1],
              parse = TRUE, hjust = 1, vjust = 2.2, size = 3.5,
              color = scatter_stats_mc$text_color[1]) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = 0.15, label = scatter_stats_mc$label[2],
+             y = 0.01, label = scatter_stats_mc$label[2],
              parse = TRUE, hjust = 1, vjust = 0.9, size = 3.5,
              color = scatter_stats_mc$text_color[2]) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = 0.15, label = scatter_stats_mc$label[3],
+             y = 0.01, label = scatter_stats_mc$label[3],
              parse = TRUE, hjust = 1, vjust = -0.4, size = 3.5,
              color = scatter_stats_mc$text_color[3]) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
