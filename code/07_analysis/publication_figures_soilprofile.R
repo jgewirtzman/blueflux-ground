@@ -762,45 +762,26 @@ if (!is.null(fig8_left)) {
     theme_classic(base_size = 14) +
     theme(plot.tag = element_text(size = 18, face = "bold"))
 
-  # Design: 14 rows, 15 columns
-  # A = PCA (9 wide, 6 tall)
-  # B-F = depth row 1, each ~1.8 wide (9 total), 4 tall
-  # G-K = depth row 2, same
-  # L = CH4 bubbles (6 wide, 4-5 tall)
-  # M = sal bubbles (6 wide, 4-5 tall)
-  # N = scatter (6 wide, 4-5 tall)
-  # Use patchwork area() for precise placement
-  # Grid: 42 rows x 15 cols
-  # Left column = cols 1-9, Right column = cols 10-15
-  # A (PCA): rows 1-18, cols 1-9         (3/7 of height)
-  # Depth row 1 (B-F): rows 19-30, each ~1.8 cols wide within 1-9
-  # Depth row 2 (G-K): rows 31-42, same
-  # L (CH4 bub): rows 1-14, cols 10-15
-  # M (sal bub): rows 15-28, cols 10-15
-  # N (scatter): rows 29-42, cols 10-15
-
-  # Grid: 42 rows x 25 cols
-  # Left column = cols 1-15 (5 depth panels x 3 cols each)
-  # Right column = cols 16-25 (10 cols)
-  # PCA: rows 1-18, cols 1-15
-  # Depth row 1 (B-F): rows 19-30, each 3 cols
-  # Depth row 2 (G-K): rows 31-42, each 3 cols
-  # L: rows 1-14, M: rows 15-28, N: rows 29-42
+  # Grid: 30 rows x 25 cols
+  # Left: A (PCA) rows 1-12, depth row 1 rows 13-21, depth row 2 rows 22-30
+  # Right: L rows 1-10, M rows 11-20, N rows 21-30
+  # Depth panels: 5 per row, each 3 cols wide (cols 1-15)
+  # Right panels: cols 16-25
   fig9_layout <- c(
-    area(t = 1,  b = 18, l = 1,  r = 15),   # A: PCA
-    area(t = 19, b = 30, l = 1,  r = 3),    # B: CH4 depth
-    area(t = 19, b = 30, l = 4,  r = 6),    # C: CO2 depth
-    area(t = 19, b = 30, l = 7,  r = 9),    # D: Sal depth
-    area(t = 19, b = 30, l = 10, r = 12),   # E: SO4 depth
-    area(t = 19, b = 30, l = 13, r = 15),   # F: ORP depth
-    area(t = 31, b = 42, l = 1,  r = 3),    # G: DO depth
-    area(t = 31, b = 42, l = 4,  r = 6),    # H: pH depth
-    area(t = 31, b = 42, l = 7,  r = 9),    # I: DOC depth
-    area(t = 31, b = 42, l = 10, r = 12),   # J: Alk depth
-    area(t = 31, b = 42, l = 13, r = 15),   # K: d13CH4 depth
-    area(t = 1,  b = 14, l = 16, r = 25),   # L: CH4 bubbles
-    area(t = 15, b = 28, l = 16, r = 25),   # M: Sal bubbles
-    area(t = 29, b = 42, l = 16, r = 25)    # N: Scatter
+    area(t = 1,  b = 12, l = 1,  r = 15),   # A: PCA
+    area(t = 13, b = 21, l = 1,  r = 3),    # B: CH4 depth
+    area(t = 13, b = 21, l = 4,  r = 6),    # C: CO2 depth
+    area(t = 13, b = 21, l = 7,  r = 9),    # D: Sal depth
+    area(t = 13, b = 21, l = 10, r = 12),   # E: SO4 depth
+    area(t = 13, b = 21, l = 13, r = 15),   # F: ORP depth
+    area(t = 22, b = 30, l = 1,  r = 3),    # G: DO depth
+    area(t = 22, b = 30, l = 4,  r = 6),    # H: pH depth
+    area(t = 22, b = 30, l = 7,  r = 9),    # I: DOC depth
+    area(t = 22, b = 30, l = 10, r = 12),   # J: Alk depth
+    area(t = 22, b = 30, l = 13, r = 15),   # K: d13CH4 depth
+    area(t = 1,  b = 10, l = 16, r = 25),   # L: CH4 bubbles
+    area(t = 11, b = 20, l = 16, r = 25),   # M: Sal bubbles
+    area(t = 21, b = 30, l = 16, r = 25)    # N: Scatter
   )
 
   fig9 <- p_A + dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] +
