@@ -718,10 +718,12 @@ if (!is.null(fig8_left)) {
   # Row 4: Depth profiles cont.       | Scatter cont.
 
   layout_design <- "
-  AACCC
-  AADDD
-  BBEEE
-  BBEEE
+  AACC
+  AACC
+  BBDD
+  BBDD
+  BBEE
+  BBEE
   "
 
   fig9 <- p_pca + profiles + p_r_ch4 + p_r_sal + p_r_scatter +
