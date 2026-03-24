@@ -1,0 +1,15 @@
+flux_id,new_start_etime,new_end_etime,action
+45005_MI_Soil_157,10,152,trim
+45005_MI_Soil_166,8,140,trim
+Mar_23_94_SE1_leaves,63,599,trim
+Mar_23_243_SRS6_CWD,8,518,trim
+Oct_22_29_SRS6_stem,414,571,trim
+Oct_22_23_SRS6_stem,151,402,trim
+Mar_23_90_FLM30_stem,307,578,trim
+Mar_23_93_FLM30_stem,15,388,trim
+Mar_23_137_CP40_stem,301,555,trim
+Mar_23_14_BL60_stem,238,561,trim
+Oct_22_30_SRS6_root,14,204,trim
+Mar_23_81_FLM30_stem,8,244,trim
+Oct_22_25_SRS6_stem,429,589,trim
+Oct_22_237_BL60_stem,7,194,trim
