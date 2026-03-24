@@ -249,6 +249,7 @@ cat("  Saved layout 3\n")
 cat("Plotting layout 4: bubbles...\n")
 
 season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Nov 2025" = "Nov 25")
+season_short_levels <- c("Oct 22", "Mar 23", "Nov 25")
 
 # Order sites by mean salinity (lowest to highest)
 site_sal_order <- sal_sum %>%
@@ -257,15 +258,18 @@ site_sal_order <- sal_sum %>%
   arrange(mean_sal) %>%
   pull(site)
 
-ch4_sum_campaigns <- ch4_sum %>%
-  filter(season != "Nov 2025") %>%
-  mutate(site = factor(site, levels = site_sal_order))
-sal_sum_campaigns <- sal_sum %>%
-  filter(season != "Nov 2025") %>%
-  mutate(site = factor(site, levels = site_sal_order))
+# Order seasons chronologically
+season_chron <- c("wet (Oct 2022)", "dry (Mar 2023)", "Nov 2025")
 
-p4_ch4 <- ch4_sum_campaigns %>%
-  mutate(season_short = season_short_map[season]) %>%
+ch4_sum_bubble <- ch4_sum %>%
+  mutate(site = factor(site, levels = site_sal_order),
+         season = factor(season, levels = season_chron))
+sal_sum_bubble <- sal_sum %>%
+  mutate(site = factor(site, levels = site_sal_order),
+         season = factor(season, levels = season_chron))
+
+p4_ch4 <- ch4_sum_bubble %>%
+  mutate(season_short = factor(season_short_map[season], levels = season_short_levels)) %>%
   ggplot(aes(x = season_short, y = depth_cm, size = CH4_mean, color = CH4_mean)) +
   geom_point() +
   facet_wrap(~ site, nrow = 1) +
@@ -276,8 +280,8 @@ p4_ch4 <- ch4_sum_campaigns %>%
   theme_pub(base_size = 10) +
   theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
-p4_sal <- sal_sum_campaigns %>%
-  mutate(season_short = season_short_map[season]) %>%
+p4_sal <- sal_sum_bubble %>%
+  mutate(season_short = factor(season_short_map[season], levels = season_short_levels)) %>%
   ggplot(aes(x = season_short, y = depth_cm, size = PSU_mean, color = PSU_mean)) +
   geom_point() +
   facet_wrap(~ site, nrow = 1) +
@@ -304,23 +308,30 @@ merged <- ch4_sum %>%
 
 # Compute per-class Spearman stats manually (on raw values, matching geom_smooth)
 # Use Pearson to match geom_smooth(method="lm") trendlines
-scatter_stats <- merged %>%
+# Filter to rows that have BOTH CH4 and PSU (non-NA)
+merged_complete <- merged %>% filter(!is.na(PSU_mean), !is.na(CH4_mean))
+
+scatter_stats <- merged_complete %>%
   group_by(disturbance) %>%
   summarise(
     n = n(),
-    r = suppressWarnings(cor(PSU_mean, log1p(CH4_mean), use = "complete.obs")),
-    p_val = suppressWarnings(cor.test(PSU_mean, log1p(CH4_mean))$p.value),
+    r = cor(PSU_mean, log1p(CH4_mean), use = "complete.obs"),
+    p_val = cor.test(PSU_mean, log1p(CH4_mean))$p.value,
     .groups = "drop"
   ) %>%
-  mutate(label = sprintf("italic(r) == %.2f*','~italic(p) == %.3f*','~italic(n) == %d",
-                         r, p_val, n))
+  mutate(
+    p_label = ifelse(p_val < 0.001, "italic(p) < 0.001",
+                     sprintf("italic(p) == %.2g", p_val)),
+    label = sprintf("italic(r) == %.2f*','~%s*','~italic(n) == %d",
+                    r, p_label, n)
+  )
 
 # Position labels in top right, stacked by class
 scatter_stats <- scatter_stats %>%
   arrange(disturbance) %>%
   mutate(y_npc = seq(0.98, by = -0.07, length.out = n()))
 
-p_scatter <- merged %>%
+p_scatter <- merged_complete %>%
   ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(aes(group = disturbance, fill = disturbance),
