@@ -699,19 +699,36 @@ if (!is.null(fig8_left)) {
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
     theme_pub(base_size = 14)
 
-  right_panel <- ggpubr::ggarrange(p_r_ch4, p_r_sal, p_r_scatter,
-                                    ncol = 1, heights = c(1, 1, 1.2),
-                                    labels = c("(c)", "(d)", "(e)"),
-                                    font.label = list(size = 14, face = "bold"))
+  # Build entire composite with patchwork (flat, no nesting)
+  # Left column: PCA (a) over depth profiles (b)
+  # Right column: CH4 bubbles (c) over salinity bubbles (d) over scatter (e)
 
-  # Left panel: fig8 (PCA + Nov 2025 depth profiles) with (a)/(b) labels
-  left_panel <- fig8_left
+  p_pca <- fig5 + labs(tag = "(a)")
+  profiles_tagged <- profiles + plot_annotation(tag_levels = list(c("(b)")))
 
-  # Combine side by side
-  fig9 <- ggpubr::ggarrange(left_panel, right_panel,
-                             ncol = 2, widths = c(3, 2))
+  # Add tags to right panels
+  p_r_ch4 <- p_r_ch4 + labs(tag = "(c)")
+  p_r_sal <- p_r_sal + labs(tag = "(d)")
+  p_r_scatter <- p_r_scatter + labs(tag = "(e)")
 
-  save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 260)
+  # Use patchwork design layout
+  # Row 1: PCA (left, spans rows 1-2) | CH4 bubbles (right)
+  # Row 2: PCA cont.                  | Sal bubbles (right)
+  # Row 3: Depth profiles (left)      | Scatter (right)
+  # Row 4: Depth profiles cont.       | Scatter cont.
+
+  layout_design <- "
+  AACCC
+  AADDD
+  BBEEE
+  BBEEE
+  "
+
+  fig9 <- p_pca + profiles + p_r_ch4 + p_r_sal + p_r_scatter +
+    plot_layout(design = layout_design) +
+    plot_annotation(theme = theme(plot.margin = margin(5, 5, 5, 5)))
+
+  save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 300)
   cat("  Saved combined layout\n")
 } else {
   cat("  Skipping: fig8 not available\n")
