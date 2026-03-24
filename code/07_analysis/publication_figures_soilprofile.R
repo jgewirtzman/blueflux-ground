@@ -352,8 +352,11 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
          y = sprintf("PC2 (%.1f%%)", var_exp[2]),
          tag = "(a)") +
     theme_pub() +
-    theme(legend.position = "right",
-          legend.key.size = unit(4, "mm"),
+    theme(legend.position = c(0.85, 0.65),
+          legend.justification = c(0, 0.5),
+          legend.background = element_rect(fill = alpha("white", 0.85), color = NA),
+          legend.key.size = unit(3.5, "mm"),
+          legend.spacing.y = unit(1, "mm"),
           panel.grid = element_blank())
 
   save_pub(fig5, "soil_pca", width = 220, height = 170)
@@ -492,11 +495,13 @@ p_d13ch4_leg <- p_d13ch4
 
 # Put legend on first panel of row 2 (bottom left position)
 p_do_leg <- p_do + labs(x = "Depth (cm)") +
-  theme(legend.position = "bottom",
+  theme(legend.position = c(0.5, 0.0),
+        legend.justification = c(0.5, 0),
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
-        legend.key.size = unit(4, "mm"),
-        legend.direction = "horizontal")
+        legend.key.size = unit(3.5, "mm"),
+        legend.direction = "horizontal",
+        legend.background = element_rect(fill = alpha("white", 0.85), color = NA))
 
 # 2 rows × 5 panels: row 1 = CH4, CO2, salinity, sulfate, ORP (with legend)
 #                     row 2 = DO, pH, DOC, alkalinity, d13C-CH4
@@ -734,9 +739,10 @@ if (!is.null(fig8_left)) {
     plot.margin  = margin(2, 2, 2, 2)
   )
 
-  # PCA panel — legend outside (right)
+  # PCA panel — legend right, within column width
   p_A <- fig5 + labs(tag = "(a)") + unified +
-    theme(legend.position = "right")
+    theme(legend.position = "right",
+          legend.key.size = unit(3.5, "mm"))
 
   # Depth panels — remove existing tags, add (b) to first only
   dp <- list(p_ch4 + labs(tag = "(b)"),
@@ -764,16 +770,18 @@ if (!is.null(fig8_left)) {
     scale_color_manual(values = disturbance_colors, name = "Disturbance") +
     scale_fill_manual(values = disturbance_colors, guide = "none") +
     scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
+    # Expand y-axis down to make room for annotations below data
+    expand_limits(y = -0.5) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = 0.01, label = scatter_stats_mc$label[1],
+             y = -0.3, label = scatter_stats_mc$label[1],
              parse = TRUE, hjust = 1, vjust = 2.2, size = 3.5,
              color = scatter_stats_mc$text_color[1]) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = 0.01, label = scatter_stats_mc$label[2],
+             y = -0.3, label = scatter_stats_mc$label[2],
              parse = TRUE, hjust = 1, vjust = 0.9, size = 3.5,
              color = scatter_stats_mc$text_color[2]) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = 0.01, label = scatter_stats_mc$label[3],
+             y = -0.3, label = scatter_stats_mc$label[3],
              parse = TRUE, hjust = 1, vjust = -0.4, size = 3.5,
              color = scatter_stats_mc$text_color[3]) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
