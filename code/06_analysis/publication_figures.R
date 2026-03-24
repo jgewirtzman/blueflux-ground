@@ -157,7 +157,7 @@ theme_pub <- function(base_size = 11) {
 # Asinh scale breaks — drop 0.1 to avoid overlap with 0
 # Gap analysis: asinh(0)->0, asinh(0.1)->0.10, asinh(1)->0.88 — 0 and 0.1 overlap
 asinh_brk     <- c(-100, -10, 0, 10, 100, 1000)  # full range (no -1/0.1)
-asinh_brk_pos <- c(0, 1, 10, 100, 1000)           # positive only
+asinh_brk_pos <- c(0, 1, 10, 100, 1000)              # CH4 positive breaks
 
 # Clean numeric labels for asinh axes
 asinh_labels <- function(x) {
@@ -314,6 +314,7 @@ make_campaign_grid <- function(data, gas = "CH4", tag_label = "(a)") {
   data %>%
     filter(.data[[status_var]] == "valid", !is.na(component), !is.na(campaign)) %>%
     ggplot(aes(x = .data[[flux_var]], y = component, fill = component, color = component)) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "grey70", linewidth = 0.3) +
     geom_jitter(alpha = 0.5, size = 1, height = 0.3) +
     geom_boxplot(alpha = 0.3, outlier.shape = NA, color = "black", width = 0.5) +
     mean_diamond() +
@@ -367,6 +368,7 @@ make_campaign_grid_condensed <- function(data, gas = "CH4", tag_label = "(a)") {
   d %>%
     ggplot(aes(x = .data[[flux_var]], y = component,
                fill = component, color = component)) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "grey70", linewidth = 0.3) +
     geom_jitter(alpha = 0.45, size = 2, height = 0.12, stroke = 0) +
     geom_boxplot(alpha = 0.4, outlier.shape = NA, color = "black",
                  width = 0.5, linewidth = 0.3) +
@@ -447,6 +449,7 @@ make_campaign_grid_condensed_boot <- function(data, gas = "CH4", tag_label = "(a
   d %>%
     ggplot(aes(x = .data[[flux_var]], y = component,
                fill = component, color = component)) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "grey70", linewidth = 0.3) +
     geom_jitter(alpha = 0.45, size = 2, height = 0.12, stroke = 0) +
     geom_boxplot(alpha = 0.4, outlier.shape = NA, color = "black",
                  width = 0.5, linewidth = 0.3) +
@@ -670,6 +673,7 @@ make_campaign_grid_raincloud <- function(data, gas = "CH4", tag_label = "(a)") {
   d %>%
     ggplot(aes(x = .data[[flux_var]], y = component,
                fill = component, color = component)) +
+    geom_vline(xintercept = 0, linetype = "dashed", color = "grey70", linewidth = 0.3) +
     # Dots jittered below the center line
     stat_dots(side = "bottom", scale = 0.4, alpha = 0.5,
               dotsize = 0.8, overflow = "compress") +
