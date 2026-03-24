@@ -399,7 +399,7 @@ fig6 <- df_heat %>%
                        midpoint = 0, name = "Z-score") +
   scale_y_discrete(limits = rev(c("Surface", "0", "15", "45", "90"))) +
   labs(x = NULL, y = "Depth (cm)") +
-  theme_pub(base_size = 9) +
+  theme_pub(base_size = 11) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1, size = 8),
         legend.position = "right",
         strip.text = element_text(size = 8))
@@ -617,28 +617,34 @@ if (!is.null(fig8_left)) {
            season = ifelse(grepl("2022", as.character(Date)), "wet (Oct 2022)", "dry (Mar 2023)")
     ) %>% filter(!is.na(site), !is.na(PSU_val))
 
-  ch4_sum_mc <- bind_rows(gc %>% select(site, season, depth_cm, CH4_uM),
-                          pw_mc %>% select(site, season, depth_cm, CH4_uM)) %>%
-    filter(site %in% core_sites_mc, depth_cm >= 0) %>%
+  # All data (including surface water) for scatter
+  ch4_sum_all <- bind_rows(gc %>% select(site, season, depth_cm, CH4_uM),
+                           pw_mc %>% select(site, season, depth_cm, CH4_uM)) %>%
+    filter(site %in% core_sites_mc) %>%
     group_by(site, season, depth_cm) %>%
     summarise(CH4_mean = mean(CH4_uM, na.rm = TRUE), .groups = "drop") %>%
     mutate(disturbance = site_disturbance_mc[site])
 
-  sal_sum_mc <- bind_rows(sal_terr %>% select(site, season, depth_cm, PSU_val),
-                          pw_mc %>% filter(!is.na(PSU_val)) %>% select(site, season, depth_cm, PSU_val)) %>%
-    filter(site %in% core_sites_mc, depth_cm >= 0) %>%
+  sal_sum_all <- bind_rows(sal_terr %>% select(site, season, depth_cm, PSU_val),
+                           pw_mc %>% filter(!is.na(PSU_val)) %>% select(site, season, depth_cm, PSU_val)) %>%
+    filter(site %in% core_sites_mc) %>%
     group_by(site, season, depth_cm) %>%
     summarise(PSU_mean = mean(PSU_val, na.rm = TRUE), .groups = "drop") %>%
     mutate(disturbance = site_disturbance_mc[site])
 
-  site_sal_order <- sal_sum_mc %>%
+  # Porewater only (depth >= 0) for bubble plots
+  ch4_sum_mc <- ch4_sum_all %>% filter(depth_cm >= 0)
+  sal_sum_mc <- sal_sum_all %>% filter(depth_cm >= 0)
+
+  site_sal_order <- sal_sum_all %>%
     group_by(site) %>% summarise(mean_sal = mean(PSU_mean, na.rm = TRUE), .groups = "drop") %>%
     arrange(mean_sal) %>% pull(site)
   ch4_sum_mc <- ch4_sum_mc %>% mutate(site = factor(site, levels = site_sal_order))
   sal_sum_mc <- sal_sum_mc %>% mutate(site = factor(site, levels = site_sal_order))
 
-  merged_mc <- ch4_sum_mc %>%
-    inner_join(sal_sum_mc %>% select(site, season, depth_cm, PSU_mean),
+  # Scatter uses ALL data (including surface water)
+  merged_mc <- ch4_sum_all %>%
+    inner_join(sal_sum_all %>% select(site, season, depth_cm, PSU_mean),
                by = c("site", "season", "depth_cm")) %>%
     filter(!is.na(PSU_mean), !is.na(CH4_mean))
 
@@ -662,7 +668,7 @@ if (!is.null(fig8_left)) {
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
     scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
     labs(x = NULL, y = "Depth (cm)") +
-    theme_pub(base_size = 9) +
+    theme_pub(base_size = 11) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
   p_r_sal <- sal_sum_mc %>%
@@ -674,7 +680,7 @@ if (!is.null(fig8_left)) {
     scale_size_continuous(range = c(1, 7), name = "PSU") +
     scale_color_gradient(low = "blue", high = "red", name = "PSU") +
     labs(x = NULL, y = "Depth (cm)") +
-    theme_pub(base_size = 9) +
+    theme_pub(base_size = 11) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
   p_r_scatter <- merged_mc %>%
@@ -689,9 +695,9 @@ if (!is.null(fig8_left)) {
     geom_text(data = scatter_stats_mc,
               aes(x = Inf, y = Inf, label = label, color = disturbance),
               inherit.aes = FALSE, parse = TRUE,
-              hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 2.5) +
+              hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 3) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
-    theme_pub(base_size = 9)
+    theme_pub(base_size = 11)
 
   right_panel <- ggpubr::ggarrange(p_r_ch4, p_r_sal, p_r_scatter,
                                     ncol = 1, heights = c(1, 1, 1.2),
@@ -703,7 +709,7 @@ if (!is.null(fig8_left)) {
 
   # Combine side by side
   fig9 <- ggpubr::ggarrange(left_panel, right_panel,
-                             ncol = 2, widths = c(1, 1))
+                             ncol = 2, widths = c(3, 5))
 
   save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 260)
   cat("  Saved combined layout\n")
