@@ -532,26 +532,37 @@ if (exists("fig5")) {
   cat("  Skipping composite: PCA not available\n")
 }
 
+# Also save the PCA + profiles as left panel object for the combined figure
+fig8_left <- if (exists("fig8")) fig8 else NULL
+
 
 # =============================================================================
-# FIGURE 9: Full geochemical overview (PCA + bubbles + scatter)
-# PCA biplot (a), CH4 depth bubbles (b), salinity depth bubbles (c),
-# salinity vs CH4 scatter (d)
+# FIGURE 9: Combined layout — PCA+depth profiles (left) + bubbles+scatter (right)
+# Side-by-side of fig8 (pub_pca_porewater_composite) and
+# pub_SI_porewater_characterization
 # =============================================================================
-cat("\n--- Figure 9: Full geochemical overview ---\n")
+cat("\n--- Figure 9: Combined PCA/profiles + multi-campaign characterization ---\n")
 
-if (exists("fig5")) {
+if (!is.null(fig8_left)) {
+  # Source the site characterization figures script to get the right-side panels
+  # (bubbles + scatter). We need p_comb_ch4, p_comb_sal, p_comb_scatter from it.
+  source("code/07_ebullition/site_characterization_figures.R")
 
-  # --- Load multi-campaign data ---
+  # Right side: bubbles stacked + scatter below (from site_characterization_figures.R)
+  # These objects were created by sourcing that script: p_comb_ch4, p_comb_sal, p_comb_scatter
+  # But they may not exist if that script doesn't export them. Build inline instead.
+
+  # Read the saved porewater characterization figure? No — we need ggplot objects.
+  # The site_characterization_figures.R already built and saved these.
+  # Let's just build the right panel here from the same data.
+
   calc_dissolved_uM <- function(ppm, Vw = 0.180, Vg = 0.020, T = 25, P = 1, KH = 1.4e-3) {
     R <- 0.082057; TK <- T + 273.15; p <- ppm / 1e6 * P
     ((p * Vg / (R * TK)) + (KH * p * Vw)) / Vw * 1e6
   }
 
-  season_colors_mc <- c("wet (Oct 2022)" = "#4682B4", "dry (Mar 2023)" = "#D2691E", "Nov 2025" = "#9370DB")
   season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Nov 2025" = "Nov 25")
   season_short_levels <- c("Oct 22", "Mar 23", "Nov 25")
-
   site_disturbance_mc <- c(BL60 = "regenerating", CP40 = "ghost", FLM30 = "ghost",
                            SRS5 = "healthy", SRS6 = "healthy")
   core_sites_mc <- c("BL60", "CP40", "FLM30", "SRS5", "SRS6")
@@ -587,7 +598,6 @@ if (exists("fig5")) {
     ) %>%
     filter(!is.na(site), !is.na(sample_type), site %in% core_sites_mc)
 
-  # Picarro Nov 2025
   pw_mc <- read_csv("/Users/jongewirtzman/My Drive/Research/Blueflux/microbes/merged_porewater_all_parameters.csv",
                     show_col_types = FALSE) %>%
     mutate(site = Site, season = "Nov 2025",
@@ -595,7 +605,6 @@ if (exists("fig5")) {
            depth_cm = case_when(Depth_cm == "Surface" ~ -5, TRUE ~ as.numeric(Depth_cm)),
            CH4_uM = CH4_mean_uM, PSU_val = PSU)
 
-  # Salinity
   sal_terr <- read_excel("data/environmental/salinity/Blueflux Salinity.xlsx",
                          sheet = "Terrestrial Data (Jon)") %>%
     mutate(PSU_val = as.numeric(`Salinity (PSU) - Final`),
@@ -608,7 +617,6 @@ if (exists("fig5")) {
            season = ifelse(grepl("2022", as.character(Date)), "wet (Oct 2022)", "dry (Mar 2023)")
     ) %>% filter(!is.na(site), !is.na(PSU_val))
 
-  # Summarize
   ch4_sum_mc <- bind_rows(gc %>% select(site, season, depth_cm, CH4_uM),
                           pw_mc %>% select(site, season, depth_cm, CH4_uM)) %>%
     filter(site %in% core_sites_mc, depth_cm >= 0) %>%
@@ -623,21 +631,17 @@ if (exists("fig5")) {
     summarise(PSU_mean = mean(PSU_val, na.rm = TRUE), .groups = "drop") %>%
     mutate(disturbance = site_disturbance_mc[site])
 
-  # Site order by salinity
   site_sal_order <- sal_sum_mc %>%
     group_by(site) %>% summarise(mean_sal = mean(PSU_mean, na.rm = TRUE), .groups = "drop") %>%
     arrange(mean_sal) %>% pull(site)
-
   ch4_sum_mc <- ch4_sum_mc %>% mutate(site = factor(site, levels = site_sal_order))
   sal_sum_mc <- sal_sum_mc %>% mutate(site = factor(site, levels = site_sal_order))
 
-  # Merged for scatter
   merged_mc <- ch4_sum_mc %>%
     inner_join(sal_sum_mc %>% select(site, season, depth_cm, PSU_mean),
                by = c("site", "season", "depth_cm")) %>%
     filter(!is.na(PSU_mean), !is.na(CH4_mean))
 
-  # Scatter stats
   scatter_stats_mc <- merged_mc %>%
     group_by(disturbance) %>%
     summarise(n = n(),
@@ -648,11 +652,8 @@ if (exists("fig5")) {
                             sprintf("italic(p) == %.3f", p_val)),
            label = sprintf("italic(r) == %.3f*','~%s*','~italic(n) == %d", r, p_label, n))
 
-  # --- Panel (a): PCA biplot ---
-  p_a <- fig5 + labs(tag = "(a)")
-
-  # --- Panel (b): CH4 bubbles ---
-  p_b <- ch4_sum_mc %>%
+  # Right panels
+  p_r_ch4 <- ch4_sum_mc %>%
     mutate(season_short = factor(season_short_map[as.character(season)], levels = season_short_levels)) %>%
     ggplot(aes(x = season_short, y = depth_cm, size = CH4_mean, color = CH4_mean)) +
     geom_point() +
@@ -660,14 +661,11 @@ if (exists("fig5")) {
     scale_y_reverse() +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
     scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
-    labs(x = NULL, y = "Depth (cm)", tag = "(b)") +
+    labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 9) +
-    theme(legend.position = "right",
-          axis.text.x = element_text(angle = 45, hjust = 1),
-          plot.tag = element_text(size = 14, face = "bold"))
+    theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
-  # --- Panel (c): Salinity bubbles ---
-  p_c <- sal_sum_mc %>%
+  p_r_sal <- sal_sum_mc %>%
     mutate(season_short = factor(season_short_map[as.character(season)], levels = season_short_levels)) %>%
     ggplot(aes(x = season_short, y = depth_cm, size = PSU_mean, color = PSU_mean)) +
     geom_point() +
@@ -675,14 +673,11 @@ if (exists("fig5")) {
     scale_y_reverse() +
     scale_size_continuous(range = c(1, 7), name = "PSU") +
     scale_color_gradient(low = "blue", high = "red", name = "PSU") +
-    labs(x = NULL, y = "Depth (cm)", tag = "(c)") +
+    labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 9) +
-    theme(legend.position = "right",
-          axis.text.x = element_text(angle = 45, hjust = 1),
-          plot.tag = element_text(size = 14, face = "bold"))
+    theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
-  # --- Panel (d): Salinity vs CH4 scatter ---
-  p_d <- merged_mc %>%
+  p_r_scatter <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
     geom_point(size = 2.5, alpha = 0.8) +
     geom_smooth(aes(group = disturbance, fill = disturbance),
@@ -695,27 +690,25 @@ if (exists("fig5")) {
               aes(x = Inf, y = Inf, label = label, color = disturbance),
               inherit.aes = FALSE, parse = TRUE,
               hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 2.5) +
-    labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)), tag = "(d)") +
-    theme_pub(base_size = 9) +
-    theme(plot.tag = element_text(size = 14, face = "bold"))
+    labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
+    theme_pub(base_size = 9)
 
-  # --- Assemble ---
-  # PCA on top row, bubbles + scatter on bottom rows
-  bottom <- ggpubr::ggarrange(
-    ggpubr::ggarrange(p_b, p_c, ncol = 1),
-    p_d,
-    ncol = 2, widths = c(1.6, 1)
-  )
+  right_panel <- ggpubr::ggarrange(p_r_ch4, p_r_sal, p_r_scatter,
+                                    ncol = 1, heights = c(1, 1, 1.2),
+                                    labels = c("(c)", "(d)", "(e)"),
+                                    font.label = list(size = 14, face = "bold"))
 
-  fig9 <- ggpubr::ggarrange(
-    p_a, bottom,
-    ncol = 1, heights = c(1.2, 1.8)
-  )
+  # Left panel: fig8 (PCA + Nov 2025 depth profiles) with (a)/(b) labels
+  left_panel <- fig8_left
 
-  save_pub(fig9, "pca_porewater_full_composite", width = 260, height = 300)
-  cat("  Saved full geochemical overview composite\n")
+  # Combine side by side
+  fig9 <- ggpubr::ggarrange(left_panel, right_panel,
+                             ncol = 2, widths = c(1, 1.3))
+
+  save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 260)
+  cat("  Saved combined layout\n")
 } else {
-  cat("  Skipping: PCA not available\n")
+  cat("  Skipping: fig8 not available\n")
 }
 
 # DONE
