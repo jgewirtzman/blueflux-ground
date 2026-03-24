@@ -709,7 +709,7 @@ if (!is.null(fig8_left)) {
 
   # Combine side by side
   fig9 <- ggpubr::ggarrange(left_panel, right_panel,
-                             ncol = 2, widths = c(3, 5))
+                             ncol = 2, widths = c(3, 2))
 
   save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 260)
   cat("  Saved combined layout\n")
