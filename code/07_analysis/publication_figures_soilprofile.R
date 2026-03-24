@@ -688,9 +688,9 @@ if (!is.null(fig8_left)) {
     geom_point() +
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
-    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"), name = "PSU",
+    scale_color_gradientn(colours = c("#4575B4", "#91BFDB", "#FEE090", "#FC8D59", "#D73027"), name = "Salinity (PSU)",
                          guide = guide_legend()) +
-    scale_size_continuous(range = c(1, 7), name = "PSU",
+    scale_size_continuous(range = c(1, 7), name = "Salinity (PSU)",
                           guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
@@ -727,7 +727,7 @@ if (!is.null(fig8_left)) {
   unified <- theme(
     axis.title   = element_text(size = 14),
     axis.text    = element_text(size = 12),
-    legend.title = element_text(size = 12),
+    legend.title = element_text(size = 12, face = "plain"),
     legend.text  = element_text(size = 11),
     strip.text   = element_text(size = 12, face = "bold"),
     plot.tag     = element_text(size = 18, face = "bold"),
