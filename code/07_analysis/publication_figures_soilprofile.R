@@ -445,7 +445,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
     scale_shape_manual(values = site_shapes, name = "Site",
                        labels = c("SRS5 (healthy)", "SRS6 (healthy)",
                                   "BL60 (regen.)", "CP40 (ghost)")) +
-    scale_y_continuous(n.breaks = 4) +
+    scale_y_continuous(breaks = scales::breaks_pretty(n = 3)) +
     labs(y = y_lab, x = NULL) +
     coord_flip() +
     theme_bw(base_size = 14) +
@@ -455,7 +455,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
           axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
           panel.grid.minor = element_blank(),
           plot.margin = margin(2, 3, 2, 2))
-  if (log_scale) p <- p + scale_y_log10(n.breaks = 4)
+  if (log_scale) p <- p + scale_y_log10(breaks = scales::breaks_log(n = 4))
   p
 }
 
@@ -478,12 +478,11 @@ p_doc  <- make_slim_panel(df_nosurface, "DOC_mg_L",
 p_alk  <- make_slim_panel(df_nosurface, "Alkalinity_uM",
                            expression(Alk.~(mu*M)))
 p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
-                              expression(delta^{13}*C-CH[4]~("\u2030")))
+                              "\u03B4\u00B9\u00B3CH\u2084 (\u2030)")
 # d13C-CO2 excluded due to H2S interference in analysis
 
-# Add depth label to row 2, invisible spacer to row 1 (keeps rows equal height)
-p_ch4 <- p_ch4 + labs(x = "Depth (cm)") +
-  theme(axis.title.y = element_text(color = "transparent"))
+# Add depth label to first panel in each row (keeps rows equal height)
+p_ch4 <- p_ch4 + labs(x = "Depth (cm)")
 p_do  <- p_do  + labs(x = "Depth (cm)")
 
 # Show legend on the last panel of row 1 — match PCA legend sizing
@@ -690,8 +689,7 @@ if (!is.null(fig8_left)) {
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
-          strip.background = element_blank(),
-          strip.text = element_text(color = "transparent"))
+          strip.background = element_blank())
 
   p_r_scatter <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
@@ -747,6 +745,10 @@ if (!is.null(fig8_left)) {
     theme(plot.margin = margin(2, 2, 2, 2))
 
   # Scatter panel with theme_classic (no gridlines, no shading)
+  # Add stat labels directly with fixed colors (not via aes, to avoid scale conflicts)
+  scatter_stats_mc <- scatter_stats_mc %>%
+    mutate(text_color = disturbance_colors[as.character(disturbance)])
+
   p_N <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
     geom_point(size = 2.5, alpha = 0.8) +
@@ -756,10 +758,15 @@ if (!is.null(fig8_left)) {
     scale_color_manual(values = disturbance_colors, name = "Disturbance") +
     scale_fill_manual(values = disturbance_colors, guide = "none") +
     scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
-    geom_text(data = scatter_stats_mc,
-              aes(x = Inf, y = -Inf, label = label, color = disturbance),
-              inherit.aes = FALSE, parse = TRUE,
-              hjust = 1.05, vjust = c(-2.6, -1.3, -0.1), size = 4) +
+    annotate("text", x = Inf, y = 0, label = scatter_stats_mc$label[1],
+             parse = TRUE, hjust = 1.05, vjust = -2.0, size = 3.5,
+             color = scatter_stats_mc$text_color[1]) +
+    annotate("text", x = Inf, y = 0, label = scatter_stats_mc$label[2],
+             parse = TRUE, hjust = 1.05, vjust = -0.7, size = 3.5,
+             color = scatter_stats_mc$text_color[2]) +
+    annotate("text", x = Inf, y = 0, label = scatter_stats_mc$label[3],
+             parse = TRUE, hjust = 1.05, vjust = 0.6, size = 3.5,
+             color = scatter_stats_mc$text_color[3]) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
          tag = "(e)") +
     theme_classic(base_size = 14) +
@@ -787,10 +794,20 @@ if (!is.null(fig8_left)) {
     area(t = 21, b = 30, l = 16, r = 25)    # N: Scatter
   )
 
-  fig9 <- p_A + dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] +
-    dp[[6]] + dp[[7]] + dp[[8]] + dp[[9]] + dp[[10]] +
-    p_L + p_M + p_N +
-    plot_layout(design = fig9_layout)
+  # Build left and right columns separately with patchwork, then combine with cowplot
+  # This avoids the area() height issues
+
+  # Left column: PCA over 2 rows of depth panels
+  left_col <- p_A /
+    (dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] + plot_layout(nrow = 1)) /
+    (dp[[6]] + dp[[7]] + dp[[8]] + dp[[9]] + dp[[10]] + plot_layout(nrow = 1)) +
+    plot_layout(heights = c(4, 3, 3))
+
+  # Right column: CH4 bubbles, sal bubbles, scatter (equal heights)
+  right_col <- p_L / p_M / p_N + plot_layout(heights = c(1, 1, 1))
+
+  # Combine with cowplot for precise width control
+  fig9 <- cowplot::plot_grid(left_col, right_col, ncol = 2, rel_widths = c(3, 2))
 
   save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 300)
   cat("  Saved combined layout\n")
