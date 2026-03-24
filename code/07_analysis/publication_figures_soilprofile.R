@@ -522,7 +522,7 @@ p_orp_leg <- p_orp +
   theme(legend.position = "right",
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
-        legend.key.size = unit(3.5, "mm"), legend.spacing.y = unit(3, "mm"))
+        legend.key.size = unit(3.5, "mm"), legend.spacing.y = unit(9, "mm"))
 p_d13ch4_leg <- p_d13ch4
 p_do_leg <- p_do + labs(x = "Depth (cm)")
 
