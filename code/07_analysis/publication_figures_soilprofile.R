@@ -761,27 +761,37 @@ if (!is.null(fig8_left)) {
   # L = CH4 bubbles (6 wide, 4-5 tall)
   # M = sal bubbles (6 wide, 4-5 tall)
   # N = scatter (6 wide, 4-5 tall)
-  layout_design <- "
-  AAAAAAAAALLLLLL
-  AAAAAAAAALLLLLL
-  AAAAAAAAALLLLLL
-  AAAAAAAAAMMMMM#
-  AAAAAAAAAMMMMM#
-  AAAAAAAAAMMMMM#
-  BCDEFNNNNNNNNN#
-  BCDEFNNNNNNNNN#
-  BCDEFNNNNNNNNN#
-  BCDEFNNNNNNNNN#
-  GHIJKNNNNNNNNN#
-  GHIJKNNNNNNNNN#
-  GHIJKNNNNNNNNN#
-  GHIJKNNNNNNNNN#
-  "
+  # Use patchwork area() for precise placement
+  # Grid: 42 rows x 15 cols
+  # Left column = cols 1-9, Right column = cols 10-15
+  # A (PCA): rows 1-18, cols 1-9         (3/7 of height)
+  # Depth row 1 (B-F): rows 19-30, each ~1.8 cols wide within 1-9
+  # Depth row 2 (G-K): rows 31-42, same
+  # L (CH4 bub): rows 1-14, cols 10-15
+  # M (sal bub): rows 15-28, cols 10-15
+  # N (scatter): rows 29-42, cols 10-15
+
+  fig9_layout <- c(
+    area(t = 1,  b = 18, l = 1,  r = 9),   # A: PCA
+    area(t = 19, b = 30, l = 1,  r = 2),    # B: CH4 depth
+    area(t = 19, b = 30, l = 3,  r = 4),    # C: CO2 depth
+    area(t = 19, b = 30, l = 5,  r = 5),    # D: Sal depth
+    area(t = 19, b = 30, l = 6,  r = 7),    # E: SO4 depth
+    area(t = 19, b = 30, l = 8,  r = 9),    # F: ORP depth
+    area(t = 31, b = 42, l = 1,  r = 2),    # G: DO depth
+    area(t = 31, b = 42, l = 3,  r = 4),    # H: pH depth
+    area(t = 31, b = 42, l = 5,  r = 5),    # I: DOC depth
+    area(t = 31, b = 42, l = 6,  r = 7),    # J: Alk depth
+    area(t = 31, b = 42, l = 8,  r = 9),    # K: d13CH4 depth
+    area(t = 1,  b = 14, l = 10, r = 15),   # L: CH4 bubbles
+    area(t = 15, b = 28, l = 10, r = 15),   # M: Sal bubbles
+    area(t = 29, b = 42, l = 10, r = 15)    # N: Scatter
+  )
 
   fig9 <- p_A + dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] +
     dp[[6]] + dp[[7]] + dp[[8]] + dp[[9]] + dp[[10]] +
     p_L + p_M + p_N +
-    plot_layout(design = layout_design)
+    plot_layout(design = fig9_layout)
 
   save_pub(fig9, "pca_porewater_full_composite", width = 420, height = 300)
   cat("  Saved combined layout\n")
