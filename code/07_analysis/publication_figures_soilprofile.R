@@ -325,7 +325,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     geom_text_repel(data = loadings %>% filter(var_display != "CH4"),
                     aes(x = PC1, y = PC2, label = var_display),
                     inherit.aes = FALSE,
-                    color = "grey30", size = 4, fontface = "italic",
+                    color = "grey30", size = 5, fontface = "italic",
                     box.padding = 0.35, point.padding = 0.15,
                     min.segment.length = 0, segment.color = "grey70",
                     segment.size = 0.3, max.overlaps = Inf,
@@ -333,13 +333,13 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
     geom_text_repel(data = loadings %>% filter(var_display == "CH4"),
                     aes(x = PC1, y = PC2, label = var_display),
                     inherit.aes = FALSE,
-                    color = "firebrick", size = 4.5, fontface = "bold.italic",
+                    color = "firebrick", size = 5.5, fontface = "bold.italic",
                     box.padding = 0.35, point.padding = 0.15,
                     min.segment.length = 0, segment.color = "firebrick",
                     segment.size = 0.3, force = 1.5, force_pull = 0.3) +
     # Sample points — depth as discrete color ramp, site as shape
     geom_point(aes(color = Depth_cm, shape = Site),
-               size = 3.5, stroke = 0.8) +
+               size = 5, stroke = 1) +
     # Individual point labels removed for clarity
 
     scale_color_viridis_d(name = "Depth (cm)", option = "viridis",
@@ -352,7 +352,10 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
          y = sprintf("PC2 (%.1f%%)", var_exp[2]),
          tag = "(a)") +
     theme_pub() +
-    theme(legend.position = "right",
+    theme(legend.position = c(0.98, 0.5),
+          legend.justification = c(1, 0.5),
+          legend.background = element_rect(fill = alpha("white", 0.8), color = NA),
+          legend.key.size = unit(4, "mm"),
           panel.grid = element_blank())
 
   save_pub(fig5, "soil_pca", width = 220, height = 170)
@@ -485,12 +488,13 @@ p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
 p_ch4 <- p_ch4 + labs(x = "Depth (cm)")
 p_do  <- p_do  + labs(x = "Depth (cm)")
 
-# Show legend on the last panel of row 1 — match PCA legend sizing
+# Show legend on the last panel of row 1 — bottom position
 p_orp_leg <- p_orp +
-  theme(legend.position = "right",
+  theme(legend.position = "bottom",
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
-        legend.key.size = unit(4, "mm"))
+        legend.key.size = unit(4, "mm"),
+        legend.direction = "horizontal")
 
 # 2 rows × 5 panels: row 1 = CH4, CO2, salinity, sulfate, ORP (with legend)
 #                     row 2 = DO, pH, DOC, alkalinity, d13C-CH4
@@ -668,9 +672,9 @@ if (!is.null(fig8_left)) {
     scale_y_reverse() +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
     scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M)),
-                         guide = guide_colorbar()) +
+                         guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M)),
-                          guide = "none") +
+                          guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
@@ -683,9 +687,9 @@ if (!is.null(fig8_left)) {
     facet_wrap(~ site, nrow = 1) +
     scale_y_reverse() +
     scale_color_gradient(low = "blue", high = "red", name = "PSU",
-                         guide = guide_colorbar()) +
+                         guide = guide_legend()) +
     scale_size_continuous(range = c(1, 7), name = "PSU",
-                          guide = "none") +
+                          guide = guide_legend()) +
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
@@ -758,14 +762,14 @@ if (!is.null(fig8_left)) {
     scale_color_manual(values = disturbance_colors, name = "Disturbance") +
     scale_fill_manual(values = disturbance_colors, guide = "none") +
     scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
-    annotate("text", x = Inf, y = 0, label = scatter_stats_mc$label[1],
-             parse = TRUE, hjust = 1.05, vjust = -2.0, size = 3.5,
+    annotate("text", x = Inf, y = -Inf, label = scatter_stats_mc$label[1],
+             parse = TRUE, hjust = 1.05, vjust = -2.4, size = 3.5,
              color = scatter_stats_mc$text_color[1]) +
-    annotate("text", x = Inf, y = 0, label = scatter_stats_mc$label[2],
-             parse = TRUE, hjust = 1.05, vjust = -0.7, size = 3.5,
+    annotate("text", x = Inf, y = -Inf, label = scatter_stats_mc$label[2],
+             parse = TRUE, hjust = 1.05, vjust = -1.2, size = 3.5,
              color = scatter_stats_mc$text_color[2]) +
-    annotate("text", x = Inf, y = 0, label = scatter_stats_mc$label[3],
-             parse = TRUE, hjust = 1.05, vjust = 0.6, size = 3.5,
+    annotate("text", x = Inf, y = -Inf, label = scatter_stats_mc$label[3],
+             parse = TRUE, hjust = 1.05, vjust = -0.1, size = 3.5,
              color = scatter_stats_mc$text_color[3]) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
          tag = "(e)") +
