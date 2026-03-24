@@ -132,11 +132,19 @@ make_depth_panel <- function(data, var, y_lab, tag_label, log_scale = FALSE) {
                        labels = c("Surf.", "0", "15", "45", "90"),
                        trans = "reverse") +
     scale_color_manual(values = site_colors, name = "Site",
-                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                  "BL60 (regen.)", "CP40 (ghost)")) +
+                       labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                  "BL60
+(regen.)", "CP40
+(ghost)")) +
     scale_shape_manual(values = site_shapes, name = "Site",
-                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                  "BL60 (regen.)", "CP40 (ghost)")) +
+                       labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                  "BL60
+(regen.)", "CP40
+(ghost)")) +
     labs(y = y_lab, x = "Depth (cm)", tag = tag_label) +
     coord_flip() +
     theme_pub(base_size = 14) +
@@ -156,11 +164,19 @@ fig1_legend <- df %>%
   ggplot(aes(x = Depth_numeric, y = ORP, color = Site, shape = Site)) +
   geom_point(size = 3) +
   scale_color_manual(values = site_colors, name = "Site",
-                     labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                "BL60 (regen.)", "CP40 (ghost)")) +
+                     labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                "BL60
+(regen.)", "CP40
+(ghost)")) +
   scale_shape_manual(values = site_shapes, name = "Site",
-                     labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                "BL60 (regen.)", "CP40 (ghost)")) +
+                     labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                "BL60
+(regen.)", "CP40
+(ghost)")) +
   theme_pub() +
   theme(legend.position = "bottom")
 legend_grob <- cowplot::get_legend(fig1_legend)
@@ -346,8 +362,12 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
                           direction = 1,
                           guide = guide_legend(reverse = TRUE)) +
     scale_shape_manual(values = site_shapes, name = "Site",
-                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                  "BL60 (regen.)", "CP40 (ghost)")) +
+                       labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                  "BL60
+(regen.)", "CP40
+(ghost)")) +
     labs(x = sprintf("PC1 (%.1f%%)", var_exp[1]),
          y = sprintf("PC2 (%.1f%%)", var_exp[2]),
          tag = "(a)") +
@@ -444,11 +464,19 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
                        labels = c("0", "15", "45", "90"),
                        trans = "reverse") +
     scale_color_manual(values = site_colors, name = "Site",
-                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                  "BL60 (regen.)", "CP40 (ghost)")) +
+                       labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                  "BL60
+(regen.)", "CP40
+(ghost)")) +
     scale_shape_manual(values = site_shapes, name = "Site",
-                       labels = c("SRS5 (healthy)", "SRS6 (healthy)",
-                                  "BL60 (regen.)", "CP40 (ghost)")) +
+                       labels = c("SRS5
+(healthy)", "SRS6
+(healthy)",
+                                  "BL60
+(regen.)", "CP40
+(ghost)")) +
     scale_y_continuous(breaks = scales::breaks_pretty(n = 3)) +
     labs(y = y_lab, x = NULL) +
     coord_flip() +
