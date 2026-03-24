@@ -703,13 +703,32 @@ if (!is.null(fig8_left)) {
   # Left column: PCA (a) over depth profiles (b)
   # Right column: CH4 bubbles (c) over salinity bubbles (d) over scatter (e)
 
-  p_pca <- fig5 + labs(tag = "(a)")
-  profiles_tagged <- profiles + plot_annotation(tag_levels = list(c("(b)")))
+  # Ensure consistent text sizes across all panels
+  unified_text <- theme(
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text  = element_text(size = 10),
+    legend.title = element_text(size = 10, face = "bold"),
+    legend.text  = element_text(size = 9),
+    strip.text   = element_text(size = 10, face = "bold"),
+    plot.tag     = element_text(size = 16, face = "bold")
+  )
 
-  # Add tags to right panels
-  p_r_ch4 <- p_r_ch4 + labs(tag = "(c)")
-  p_r_sal <- p_r_sal + labs(tag = "(d)")
-  p_r_scatter <- p_r_scatter + labs(tag = "(e)")
+  p_pca <- fig5 + labs(tag = "(a)") + unified_text
+
+  # Rebuild profiles with unified text applied to each sub-panel
+  fig8_row1 <- (p_ch4 + labs(x = "Depth (cm)") + unified_text) +
+    (p_co2 + unified_text) + (p_sal + unified_text) +
+    (p_so4 + unified_text) + (p_orp_leg + unified_text) +
+    plot_layout(nrow = 1)
+  fig8_row2 <- (p_do + unified_text) + (p_ph + unified_text) +
+    (p_doc + unified_text) + (p_alk + unified_text) +
+    (p_d13ch4 + unified_text) + plot_layout(nrow = 1)
+  profiles <- fig8_row1 / fig8_row2
+
+  # Add tags to right panels with unified text
+  p_r_ch4 <- p_r_ch4 + labs(tag = "(c)") + unified_text
+  p_r_sal <- p_r_sal + labs(tag = "(d)") + unified_text
+  p_r_scatter <- p_r_scatter + labs(tag = "(e)") + unified_text
 
   # Use patchwork design layout
   # Row 1: PCA (left, spans rows 1-2) | CH4 bubbles (right)
@@ -718,12 +737,12 @@ if (!is.null(fig8_left)) {
   # Row 4: Depth profiles cont.       | Scatter cont.
 
   layout_design <- "
-  AACC
-  AACC
-  BBDD
-  BBDD
-  BBEE
-  BBEE
+  AAACC
+  AAACC
+  BBBDD
+  BBBDD
+  BBBEE
+  BBBEE
   "
 
   fig9 <- p_pca + profiles + p_r_ch4 + p_r_sal + p_r_scatter +
