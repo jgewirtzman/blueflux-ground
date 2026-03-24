@@ -262,9 +262,11 @@ site_sal_order <- sal_sum %>%
 season_chron <- c("wet (Oct 2022)", "dry (Mar 2023)", "Nov 2025")
 
 ch4_sum_bubble <- ch4_sum %>%
+  filter(depth_cm >= 0) %>%
   mutate(site = factor(site, levels = site_sal_order),
          season = factor(season, levels = season_chron))
 sal_sum_bubble <- sal_sum %>%
+  filter(depth_cm >= 0) %>%
   mutate(site = factor(site, levels = site_sal_order),
          season = factor(season, levels = season_chron))
 
@@ -321,8 +323,8 @@ scatter_stats <- merged_complete %>%
   ) %>%
   mutate(
     p_label = ifelse(p_val < 0.001, "italic(p) < 0.001",
-                     sprintf("italic(p) == %.2g", p_val)),
-    label = sprintf("italic(r) == %.2f*','~%s*','~italic(n) == %d",
+                     sprintf("italic(p) == %.3f", p_val)),
+    label = sprintf("italic(r) == %.3f*','~%s*','~italic(n) == %d",
                     r, p_label, n)
   )
 
