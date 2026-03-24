@@ -370,4 +370,66 @@ ggsave("output/figures/pub_SI_salinity_vs_ch4_bysite.pdf", p_scatter_site, width
 ggsave("output/figures/pub_SI_salinity_vs_ch4_bysite.png", p_scatter_site, width = 12, height = 4, dpi = 300)
 cat("  Saved salinity vs CH4 by site\n")
 
+# =============================================
+# COMBINED SI FIGURE: Bubbles (a,b) + Scatter (c)
+# =============================================
+cat("Plotting combined SI figure...\n")
+
+# Rebuild bubble plots with updated tags
+p_comb_ch4 <- ch4_sum_bubble %>%
+  mutate(season_short = factor(season_short_map[season], levels = season_short_levels)) %>%
+  ggplot(aes(x = season_short, y = depth_cm, size = CH4_mean, color = CH4_mean)) +
+  geom_point() +
+  facet_wrap(~ site, nrow = 1) +
+  scale_y_reverse() +
+  scale_size_continuous(range = c(1, 8), name = expression(CH[4]~(mu*M))) +
+  scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
+  guides(size = guide_legend(), color = guide_colorbar()) +
+  labs(x = NULL, y = "Depth (cm)", tag = "a") +
+  theme_pub(base_size = 10) +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+p_comb_sal <- sal_sum_bubble %>%
+  mutate(season_short = factor(season_short_map[season], levels = season_short_levels)) %>%
+  ggplot(aes(x = season_short, y = depth_cm, size = PSU_mean, color = PSU_mean)) +
+  geom_point() +
+  facet_wrap(~ site, nrow = 1) +
+  scale_y_reverse() +
+  scale_size_continuous(range = c(1, 8), name = "PSU") +
+  scale_color_gradient(low = "blue", high = "red", name = "PSU") +
+  guides(size = guide_legend(), color = guide_colorbar()) +
+  labs(x = NULL, y = "Depth (cm)", tag = "b") +
+  theme_pub(base_size = 10) +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+p_comb_scatter <- merged_complete %>%
+  ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(aes(group = disturbance, fill = disturbance),
+              method = "lm", se = TRUE, alpha = 0.15, linewidth = 0.7) +
+  scale_y_continuous(trans = "log1p", breaks = c(0, 1, 5, 10, 25, 50, 100)) +
+  scale_color_manual(values = disturbance_colors, name = "Disturbance") +
+  scale_fill_manual(values = disturbance_colors, guide = "none") +
+  scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
+  geom_text(data = scatter_stats,
+            aes(x = Inf, y = Inf, label = label, color = disturbance),
+            inherit.aes = FALSE, parse = TRUE,
+            hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 3) +
+  labs(x = "Salinity (PSU)",
+       y = expression(Dissolved~CH[4]~(mu*M)),
+       tag = "c") +
+  theme_pub(base_size = 10)
+
+combined_si <- ggarrange(
+  ggarrange(p_comb_ch4, p_comb_sal, ncol = 1, heights = c(1, 1)),
+  p_comb_scatter,
+  ncol = 1, heights = c(2, 1.3)
+)
+
+ggsave("output/figures/pub_SI_porewater_characterization.pdf", combined_si,
+       width = 12, height = 14)
+ggsave("output/figures/pub_SI_porewater_characterization.png", combined_si,
+       width = 12, height = 14, dpi = 300)
+cat("  Saved combined SI figure\n")
+
 cat("\n=== DONE ===\n")

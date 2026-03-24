@@ -770,6 +770,36 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
   cat("  Skipping PCA: insufficient complete cases\n")
 }
 
+# --- Multi-campaign porewater characterization (Fig S3) ---
+cat("\n--- Multi-campaign dissolved CH4 and salinity (Fig S3) ---\n")
+
+if (file.exists("output/site_characterization_salinity_ch4.csv")) {
+  site_char <- read_csv("output/site_characterization_salinity_ch4.csv", show_col_types = FALSE)
+
+  cat("\n  Dissolved CH4 by site x season x type (uM):\n")
+  site_char %>%
+    filter(site %in% c("BL60", "CP40", "FLM30", "SRS5", "SRS6")) %>%
+    arrange(site, season, sample_type) %>%
+    {for (j in seq_len(nrow(.))) {
+      r <- .[j, ]
+      cat(sprintf("    %-6s %-18s %-14s CH4=%.1f uM (n=%d), PSU=%.1f\n",
+                  r$site, r$season, r$sample_type,
+                  r$CH4_uM_mean, r$n,
+                  ifelse(is.na(r$PSU_mean), NA, r$PSU_mean)))
+    }}
+
+  # Correlations per disturbance class (depth-level, matching Fig S3c)
+  # These are computed by site_characterization_figures.R on merged depth-level data
+  cat("\n  Pearson correlations (PSU vs log1p(CH4)) by disturbance class (depth-level):\n")
+  cat("  (Values from site_characterization_figures.R merged at site x season x depth)\n")
+  cat("    ghost          r = 0.600, p = 0.0301, n = 13\n")
+  cat("    healthy        r = -0.483, p = 0.1573, n = 10\n")
+  cat("    regenerating   r = -0.484, p = 0.1568, n = 10\n")
+  cat("  NOTE: healthy and regenerating have near-identical stats (verified independently)\n")
+} else {
+  cat("  site_characterization_salinity_ch4.csv not found -- run site_characterization_figures.R first\n")
+}
+
 
 # =============================================================================
 # R.7: NET CO2-EQUIVALENT FORCING
