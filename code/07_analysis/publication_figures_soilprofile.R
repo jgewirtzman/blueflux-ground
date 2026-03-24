@@ -481,8 +481,8 @@ p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
                               expression(delta^{13}*C-CH[4]~("\u2030")))
 # d13C-CO2 excluded due to H2S interference in analysis
 
-# Add shared x-axis label to first panel in each row
-p_ch4 <- p_ch4 + labs(x = "Depth (cm)")
+# Add shared x-axis label (becomes y after coord_flip) to first panel in row 2 only
+# Row 1: no depth label (saves space, keeps rows equal height)
 p_do  <- p_do  + labs(x = "Depth (cm)")
 
 # Show legend on the last panel of row 1 — match PCA legend sizing
@@ -689,7 +689,8 @@ if (!is.null(fig8_left)) {
     labs(x = NULL, y = "Depth (cm)") +
     theme_pub(base_size = 14) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1),
-          strip.background = element_blank())
+          strip.background = element_blank(),
+          strip.text = element_blank())
 
   p_r_scatter <- merged_mc %>%
     ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
@@ -733,7 +734,7 @@ if (!is.null(fig8_left)) {
     theme(legend.position = "right", plot.margin = margin(2, 2, 2, 2))
 
   # Depth panels — remove existing tags, add (b) to first only
-  dp <- list(p_ch4 + labs(x = "Depth (cm)", tag = "(b)"),
+  dp <- list(p_ch4 + labs(tag = "(b)"),
              p_co2, p_sal, p_so4, p_orp_leg,
              p_do, p_ph, p_doc, p_alk, p_d13ch4)
   dp <- lapply(dp, function(p) p + unified)
