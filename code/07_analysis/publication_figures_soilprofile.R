@@ -778,15 +778,15 @@ if (!is.null(fig8_left)) {
     # Expand y-axis down to make room for annotations below data
     expand_limits(y = -0.5) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = -0.3, label = scatter_stats_mc$label[1],
+             y = -0.45, label = scatter_stats_mc$label[1],
              parse = TRUE, hjust = 1, vjust = 2.2, size = 5,
              color = scatter_stats_mc$text_color[1]) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = -0.3, label = scatter_stats_mc$label[2],
+             y = -0.45, label = scatter_stats_mc$label[2],
              parse = TRUE, hjust = 1, vjust = 0.9, size = 5,
              color = scatter_stats_mc$text_color[2]) +
     annotate("text", x = max(merged_mc$PSU_mean, na.rm=TRUE),
-             y = -0.3, label = scatter_stats_mc$label[3],
+             y = -0.45, label = scatter_stats_mc$label[3],
              parse = TRUE, hjust = 1, vjust = -0.4, size = 5,
              color = scatter_stats_mc$text_color[3]) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
