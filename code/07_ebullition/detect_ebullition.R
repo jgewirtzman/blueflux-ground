@@ -58,7 +58,7 @@ if (!dir.exists(OUTPUT_DIR)) dir.create(OUTPUT_DIR, recursive = TRUE)
 
 water_fluxes <- read_csv("output/soil_water_surface_fluxes.csv",
                          show_col_types = FALSE) %>%
-  filter(surface_type == "water") %>%
+  filter(surface_type == "water", !is.na(CH4_best.flux)) %>%
   mutate(
     date = as.Date(date),
     start_time = hms::as_hms(start_time),
@@ -717,7 +717,9 @@ placements_df %>%
   print(n = 100)
 
 write_csv(placements_df, file.path(OUTPUT_DIR, "placements_summary.csv"))
+saveRDS(all_traces, file.path(OUTPUT_DIR, "all_traces.rds"))
 cat("\nSaved to:", file.path(OUTPUT_DIR, "placements_summary.csv"), "\n")
+cat("Saved trace data to:", file.path(OUTPUT_DIR, "all_traces.rds"), "\n")
 
 # (season already added to water_fluxes and placements_df above)
 
