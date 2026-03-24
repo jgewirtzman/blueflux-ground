@@ -250,26 +250,29 @@ cat("Plotting layout 4: bubbles...\n")
 
 season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Nov 2025" = "Nov 25")
 
-p4_ch4 <- ch4_sum %>%
+ch4_sum_campaigns <- ch4_sum %>% filter(season != "Nov 2025")
+sal_sum_campaigns <- sal_sum %>% filter(season != "Nov 2025")
+
+p4_ch4 <- ch4_sum_campaigns %>%
   mutate(season_short = season_short_map[season]) %>%
   ggplot(aes(x = season_short, y = depth_cm, size = CH4_mean, color = CH4_mean)) +
   geom_point() +
   facet_wrap(~ site, nrow = 1) +
   scale_y_reverse() +
   scale_size_continuous(range = c(1, 8), name = expression(CH[4]~(mu*M))) +
-  scale_color_viridis_c(option = "inferno", name = expression(CH[4]~(mu*M))) +
+  scale_color_viridis_c(name = expression(CH[4]~(mu*M))) +
   labs(x = NULL, y = "Depth (cm)", tag = "a") +
   theme_pub(base_size = 10) +
   theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
-p4_sal <- sal_sum %>%
+p4_sal <- sal_sum_campaigns %>%
   mutate(season_short = season_short_map[season]) %>%
   ggplot(aes(x = season_short, y = depth_cm, size = PSU_mean, color = PSU_mean)) +
   geom_point() +
   facet_wrap(~ site, nrow = 1) +
   scale_y_reverse() +
   scale_size_continuous(range = c(1, 8), name = "PSU") +
-  scale_color_viridis_c(option = "mako", direction = -1, name = "PSU") +
+  scale_color_viridis_c(name = "PSU") +
   labs(x = NULL, y = "Depth (cm)", tag = "b") +
   theme_pub(base_size = 10) +
   theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
@@ -291,10 +294,14 @@ merged <- ch4_sum %>%
 p_scatter <- merged %>%
   ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
   geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(aes(group = disturbance, fill = disturbance),
+              method = "lm", se = TRUE, alpha = 0.15, linewidth = 0.7) +
   scale_y_continuous(trans = "log1p", breaks = c(0, 1, 5, 10, 25, 50, 100)) +
   scale_color_manual(values = disturbance_colors, name = "Disturbance") +
+  scale_fill_manual(values = disturbance_colors, guide = "none") +
   scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
-  stat_cor(aes(group = 1), method = "spearman", size = 3, label.x.npc = 0.6) +
+  stat_cor(aes(group = disturbance), method = "spearman", size = 2.8,
+           label.x.npc = 0.55, label.y.npc = 0.98) +
   labs(x = "Salinity (PSU)",
        y = expression(Dissolved~CH[4]~(mu*M))) +
   theme_pub(base_size = 11)
