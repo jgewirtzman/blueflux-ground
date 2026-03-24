@@ -711,12 +711,12 @@ if (!is.null(fig8_left)) {
 
   # Unified theme for ALL panels
   unified <- theme(
-    axis.title   = element_text(size = 11),
-    axis.text    = element_text(size = 9),
-    legend.title = element_text(size = 9),
-    legend.text  = element_text(size = 8),
-    strip.text   = element_text(size = 9, face = "bold"),
-    plot.tag     = element_text(size = 14, face = "bold"),
+    axis.title   = element_text(size = 14),
+    axis.text    = element_text(size = 12),
+    legend.title = element_text(size = 12),
+    legend.text  = element_text(size = 11),
+    strip.text   = element_text(size = 12, face = "bold"),
+    plot.tag     = element_text(size = 18, face = "bold"),
     plot.margin  = margin(2, 2, 2, 2)
   )
 
@@ -749,7 +749,7 @@ if (!is.null(fig8_left)) {
     geom_text(data = scatter_stats_mc,
               aes(x = Inf, y = -Inf, label = label, color = disturbance),
               inherit.aes = FALSE, parse = TRUE,
-              hjust = 1.05, vjust = c(-2.6, -1.3, -0.1), size = 3) +
+              hjust = 1.05, vjust = c(-2.6, -1.3, -0.1), size = 4) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
          tag = "(e)") +
     unified
