@@ -376,7 +376,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
           legend.justification = c(0, 0.5),
           legend.background = element_rect(fill = alpha("white", 0.85), color = NA),
           legend.key.size = unit(3.5, "mm"),
-          legend.spacing.y = unit(1, "mm"),
+          legend.key.height = unit(12, "mm"),
           panel.grid = element_blank())
 
   save_pub(fig5, "soil_pca", width = 220, height = 170)
@@ -519,13 +519,10 @@ p_do  <- p_do  + labs(x = "Depth (cm)")
 
 # Legend on last panel of row 1 (right side, spans both rows visually)
 p_orp_leg <- p_orp +
-  guides(color = guide_legend(byrow = TRUE),
-         shape = guide_legend(byrow = TRUE)) +
   theme(legend.position = "right",
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
-        legend.key.size = unit(3.5, "mm"),
-        legend.spacing.y = unit(9, "mm"))
+        legend.key.height = unit(12, "mm"))
 p_d13ch4_leg <- p_d13ch4
 p_do_leg <- p_do + labs(x = "Depth (cm)")
 
