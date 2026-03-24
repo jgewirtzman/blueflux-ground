@@ -33,6 +33,9 @@ clean_cols <- c(
   "CO2_flux_status", "CO2_below_MDF", "CO2_flagged", "CO2_SNR",
   "CO2_LM.flux", "CO2_LM.r2", "CO2_LM.p.val",
   "CO2_HM.flux", "CO2_HM.r2",
+  # Ebullition partitioning (water fluxes only)
+  "CH4_ebull_flux", "CH4_diffusive_flux", "CH4_ebullitive_fraction",
+  "CH4_n_ebull_events", "ebullition_reprocessed",
   # Derived / metadata
   "flux_status", "disturbance_level", "notes"
 )
