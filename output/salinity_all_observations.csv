@@ -1,0 +1,91 @@
+site,season,sample_type,PSU
+BL60,wet (Oct 2022),porewater,34.53
+BL60,wet (Oct 2022),porewater,41.1
+BL60,wet (Oct 2022),porewater,37.41
+BL60,wet (Oct 2022),surface_water,14.27
+BL60,wet (Oct 2022),surface_water,15.67
+BL60,wet (Oct 2022),surface_water,15.55
+CP40,wet (Oct 2022),porewater,56.84
+CP40,wet (Oct 2022),porewater,58.14
+CP40,wet (Oct 2022),porewater,58.18
+CP40,wet (Oct 2022),porewater,59.61
+CP40,wet (Oct 2022),porewater,60.64
+CP40,wet (Oct 2022),surface_water,38.12
+CP40,wet (Oct 2022),surface_water,39.28
+CP40,wet (Oct 2022),surface_water,39.4
+CP40,wet (Oct 2022),surface_water,41.29
+CP40,wet (Oct 2022),surface_water,41.09
+FLM30,wet (Oct 2022),porewater,65.082298071
+FLM30,wet (Oct 2022),porewater,66.96086846399999
+FLM30,wet (Oct 2022),porewater,60.4366716
+FLM30,wet (Oct 2022),surface_water,30.798303398999995
+FLM30,wet (Oct 2022),surface_water,31.733793983999995
+FLM30,wet (Oct 2022),surface_water,31.748337275999997
+SRS5,wet (Oct 2022),porewater,20.018540559
+SRS5,wet (Oct 2022),porewater,19.559061974999995
+SRS5,wet (Oct 2022),porewater,21.002974704
+SRS6,wet (Oct 2022),porewater,26.555544350999995
+SRS6,wet (Oct 2022),porewater,26.146978430999997
+SRS6,wet (Oct 2022),porewater,27.269437499999995
+SRS6,wet (Oct 2022),porewater,26.27014560975
+SRS6,wet (Oct 2022),surface_water,17.083428974999997
+SRS6,wet (Oct 2022),surface_water,19.1211599
+SRS6,wet (Oct 2022),surface_water,12.371651198999997
+BL60,dry (Mar 2023),porewater,37.41
+BL60,dry (Mar 2023),porewater,37.61
+BL60,dry (Mar 2023),porewater,37.44
+BL60,dry (Mar 2023),porewater,39.3
+BL60,dry (Mar 2023),porewater,39.61
+BL60,dry (Mar 2023),porewater,39.48
+BL60,dry (Mar 2023),porewater,32.42
+CP40,dry (Mar 2023),porewater,59.84
+CP40,dry (Mar 2023),porewater,61.79
+CP40,dry (Mar 2023),porewater,61.07
+CP40,dry (Mar 2023),porewater,64.12
+CP40,dry (Mar 2023),porewater,64.31
+CP40,dry (Mar 2023),porewater,64.21
+CP40,dry (Mar 2023),surface_water,44.29
+CP40,dry (Mar 2023),surface_water,45.38
+CP40,dry (Mar 2023),surface_water,45.49
+FLM30,dry (Mar 2023),porewater,60.21
+FLM30,dry (Mar 2023),porewater,61.06
+FLM30,dry (Mar 2023),porewater,61.36
+FLM30,dry (Mar 2023),surface_water,52.21
+FLM30,dry (Mar 2023),surface_water,54.28
+FLM30,dry (Mar 2023),surface_water,54.28
+MI,dry (Mar 2023),porewater,60.32
+SE1,dry (Mar 2023),porewater,7.33
+SE1,dry (Mar 2023),porewater,7.56
+SE1,dry (Mar 2023),porewater,7.74
+SE1,dry (Mar 2023),surface_water,16.16
+SE1,dry (Mar 2023),surface_water,16.97
+SE1,dry (Mar 2023),surface_water,16.12
+SRS5,dry (Mar 2023),porewater,15.16
+SRS5,dry (Mar 2023),porewater,15.97
+SRS5,dry (Mar 2023),porewater,15.7
+SRS6,dry (Mar 2023),porewater,22.49
+SRS6,dry (Mar 2023),porewater,22.42
+SRS6,wet (Oct 2022),surface_water,7.13
+SRS5,wet (Oct 2022),surface_water,0.85
+SRS6,dry (Mar 2023),surface_water,28.33
+SRS5,dry (Mar 2023),surface_water,28.11055928
+BL60,Nov 2025,surface_water,3.4
+BL60,Nov 2025,porewater,35.44
+BL60,Nov 2025,porewater,35.27
+BL60,Nov 2025,porewater,33.85
+BL60,Nov 2025,porewater,33.46
+CP40,Nov 2025,surface_water,20.84
+CP40,Nov 2025,porewater,41.36
+CP40,Nov 2025,porewater,54.5
+CP40,Nov 2025,porewater,51.68
+CP40,Nov 2025,porewater,50.32
+SRS5,Nov 2025,surface_water,NA
+SRS5,Nov 2025,porewater,13.42
+SRS5,Nov 2025,porewater,15.7
+SRS5,Nov 2025,porewater,26.8
+SRS5,Nov 2025,porewater,23.49
+SRS6,Nov 2025,surface_water,NA
+SRS6,Nov 2025,porewater,25.78
+SRS6,Nov 2025,porewater,26.7
+SRS6,Nov 2025,porewater,30.3
+SRS6,Nov 2025,porewater,35.08
