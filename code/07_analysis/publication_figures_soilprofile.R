@@ -360,7 +360,7 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
 
     scale_color_viridis_d(name = "Depth (cm)", option = "viridis",
                           direction = 1,
-                          guide = guide_legend(reverse = TRUE)) +
+                          guide = guide_legend(reverse = TRUE, byrow = TRUE)) +
     scale_shape_manual(values = site_shapes, name = "Site",
                        labels = c("SRS5
 (healthy)", "SRS6
@@ -519,10 +519,13 @@ p_do  <- p_do  + labs(x = "Depth (cm)")
 
 # Legend on last panel of row 1 (right side, spans both rows visually)
 p_orp_leg <- p_orp +
+  guides(color = guide_legend(byrow = TRUE),
+         shape = guide_legend(byrow = TRUE)) +
   theme(legend.position = "right",
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
-        legend.key.size = unit(3.5, "mm"), legend.spacing.y = unit(9, "mm"))
+        legend.key.size = unit(3.5, "mm"),
+        legend.spacing.y = unit(9, "mm"))
 p_d13ch4_leg <- p_d13ch4
 p_do_leg <- p_do + labs(x = "Depth (cm)")
 
