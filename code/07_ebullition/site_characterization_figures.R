@@ -260,7 +260,7 @@ p4_ch4 <- ch4_sum_campaigns %>%
   facet_wrap(~ site, nrow = 1) +
   scale_y_reverse() +
   scale_size_continuous(range = c(1, 8), name = expression(CH[4]~(mu*M))) +
-  scale_color_viridis_c(name = expression(CH[4]~(mu*M))) +
+  scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
   labs(x = NULL, y = "Depth (cm)", tag = "a") +
   theme_pub(base_size = 10) +
   theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
@@ -272,7 +272,7 @@ p4_sal <- sal_sum_campaigns %>%
   facet_wrap(~ site, nrow = 1) +
   scale_y_reverse() +
   scale_size_continuous(range = c(1, 8), name = "PSU") +
-  scale_color_viridis_c(name = "PSU") +
+  scale_color_gradient(low = "blue", high = "red", name = "PSU") +
   labs(x = NULL, y = "Depth (cm)", tag = "b") +
   theme_pub(base_size = 10) +
   theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
@@ -291,6 +291,23 @@ merged <- ch4_sum %>%
   inner_join(sal_sum %>% select(site, season, depth_cm, PSU_mean),
              by = c("site", "season", "depth_cm"))
 
+# Compute per-class Spearman stats manually (on raw values, matching geom_smooth)
+scatter_stats <- merged %>%
+  group_by(disturbance) %>%
+  summarise(
+    n = n(),
+    rho = suppressWarnings(cor(PSU_mean, CH4_mean, method = "spearman", use = "complete.obs")),
+    p_val = suppressWarnings(cor.test(PSU_mean, CH4_mean, method = "spearman")$p.value),
+    .groups = "drop"
+  ) %>%
+  mutate(label = sprintf("rho == %.2f*','~italic(p) == %.3f*','~italic(n) == %d",
+                         rho, p_val, n))
+
+# Position labels in top right, stacked by class
+scatter_stats <- scatter_stats %>%
+  arrange(disturbance) %>%
+  mutate(y_npc = seq(0.98, by = -0.07, length.out = n()))
+
 p_scatter <- merged %>%
   ggplot(aes(x = PSU_mean, y = CH4_mean, color = disturbance, shape = season)) +
   geom_point(size = 3, alpha = 0.8) +
@@ -300,8 +317,11 @@ p_scatter <- merged %>%
   scale_color_manual(values = disturbance_colors, name = "Disturbance") +
   scale_fill_manual(values = disturbance_colors, guide = "none") +
   scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
-  stat_cor(aes(group = disturbance), method = "spearman", size = 2.8,
-           label.x.npc = 0.55, label.y.npc = 0.98) +
+  geom_text(data = scatter_stats,
+            aes(x = Inf, y = Inf, label = label, color = disturbance),
+            inherit.aes = FALSE, parse = TRUE,
+            hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 3) +
+  scale_color_manual(values = disturbance_colors, name = "Disturbance") +
   labs(x = "Salinity (PSU)",
        y = expression(Dissolved~CH[4]~(mu*M))) +
   theme_pub(base_size = 11)
