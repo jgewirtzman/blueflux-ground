@@ -1,0 +1,712 @@
+Manuscript Results — generated 2026-03-24 06:32 
+
+
+================================================================
+DATA LOADING
+================================================================
+
+  Loaded: 855 observations after filtering
+  Flux statistics table: 78 rows
+
+================================================================
+STUDY OVERVIEW
+================================================================
+
+  Total observations:  855 
+
+  Observations by component:
+    stem                 n = 506
+    soil                 n = 119
+    water                n = 98
+    root                 n = 76
+    cwd                  n = 31
+    leaves               n = 19
+    pneumatophore        n = 6
+
+  Observations by site:
+    BL60       n = 159
+    CP40       n = 114
+    FLM30      n = 175
+    MI         n = 30
+    RB10       n = 18
+    SE1        n = 21
+    SRS5       n = 178
+    SRS6       n = 160
+
+  Observations by season:
+    Wet        n = 314
+    Dry        n = 541
+
+  Observations by disturbance level:
+    healthy              n = 356
+    regenerating         n = 159
+    ghost                n = 319
+    scrub                n = 21
+
+  Number of species (excl. NA/UNKN/blank): 6 
+    Species: AVGE, COER, COPE, CWD, LARA, RHMA 
+
+  Live vs dead stems (from status column):
+    Alive      n = 281
+    Dead       n = 222
+
+  Core sites (both seasons): BL60, CP40, FLM30, SRS5, SRS6 
+
+  Date ranges per campaign:
+    Wet  : 2022-10-15 to 2022-10-25 (11 days)
+    Dry  : 2022-03-18 to 2023-03-22 (370 days)
+
+================================================================
+R.1: AIRBORNE / TOWER FLUXES
+================================================================
+
+  PLACEHOLDER: CARAFE CH4 by land cover class (awaiting from Erin)
+  PLACEHOLDER: CARAFE wet vs dry season distributions (awaiting from Erin)
+  PLACEHOLDER: SRS6 tower CH4 reference value
+
+================================================================
+R.2: COMPONENT FLUX RATES (Fig 2)
+================================================================
+
+--- CH4 (valid fluxes, n = 807 ) ---
+
+  CH4 by component (pooled, boot mean + 95% CI):
+    cwd                1.062 (95% CI: 0.049–2.648), n = 27
+    leaves             0.017 (95% CI: 0.006–0.029), n = 19
+    root               3.296 (95% CI: 0.718–8.127), n = 65
+    soil               24.710 (95% CI: 14.660–37.034), n = 118
+    stem               7.832 (95% CI: 4.695–11.919), n = 486
+    water              16.367 (95% CI: 10.875–22.760), n = 92
+
+  CH4 by component x disturbance:
+    cwd             healthy         0.392 (95% CI: 0.220–0.581), n = 14
+    cwd             regenerating    -0.905 (95% CI: -3.156–0.224), n = 3
+    cwd             ghost           2.589 (95% CI: 0.255–6.548), n = 10
+    leaves          regenerating    0.014 (95% CI: 0.000–0.029), n = 14
+    leaves          scrub           0.026 (95% CI: 0.010–0.044), n = 5
+    root            healthy         3.929 (95% CI: 0.606–10.117), n = 50
+    root            regenerating    2.421 (95% CI: 0.878–4.074), n = 5
+    root            ghost           0.255 (95% CI: 0.174–0.341), n = 4
+    root            scrub           0.778 (95% CI: 0.327–1.287), n = 6
+    soil            healthy         6.649 (95% CI: 3.192–11.916), n = 64
+    soil            regenerating    78.604 (95% CI: 38.281–126.788), n = 23
+    soil            ghost           22.012 (95% CI: 8.865–39.560), n = 31
+    stem            healthy         0.495 (95% CI: 0.232–0.886), n = 181
+    stem            regenerating    14.408 (95% CI: 3.544–32.568), n = 90
+    stem            ghost           11.523 (95% CI: 7.261–16.809), n = 210
+    stem            scrub           0.052 (95% CI: -0.004–0.158), n = 5
+    water           healthy         0.692 (95% CI: 0.467–0.932), n = 18
+    water           regenerating    34.741 (95% CI: 14.690–60.539), n = 9
+    water           ghost           19.594 (95% CI: 12.269–28.080), n = 60
+    water           scrub           1.003 (95% CI: 0.506–1.826), n = 5
+
+  CH4 by component x season:
+    cwd             Wet    2.096 (95% CI: -0.122–5.586), n = 12
+    cwd             Dry    0.234 (95% CI: 0.134–0.357), n = 15
+    leaves          Dry    0.017 (95% CI: 0.006–0.029), n = 19
+    root            Wet    5.452 (95% CI: 0.510–14.913), n = 32
+    root            Dry    1.206 (95% CI: 0.614–2.044), n = 33
+    soil            Wet    13.111 (95% CI: 6.169–24.175), n = 29
+    soil            Dry    28.490 (95% CI: 15.811–44.248), n = 89
+    stem            Wet    14.369 (95% CI: 6.952–24.638), n = 194
+    stem            Dry    3.490 (95% CI: 2.236–4.945), n = 292
+    water           Wet    41.517 (95% CI: 28.155–56.624), n = 27
+    water           Dry    5.921 (95% CI: 3.474–10.208), n = 65
+
+--- CO2 (valid fluxes, n = 767 ) ---
+
+  CO2 by component (pooled, boot mean + 95% CI):
+    cwd                6.031 (95% CI: 3.111–10.733), n = 27
+    leaves             -1.267 (95% CI: -2.038–-0.629), n = 19
+    root               2.002 (95% CI: 1.392–2.673), n = 65
+    soil               4.320 (95% CI: 3.065–5.686), n = 118
+    stem               2.697 (95% CI: 2.409–3.030), n = 486
+    water              0.823 (95% CI: 0.661–0.998), n = 52
+
+  CO2 by component x disturbance:
+    cwd             healthy         3.617 (95% CI: 2.511–4.789), n = 14
+    cwd             regenerating    8.226 (95% CI: 4.001–11.513), n = 3
+    cwd             ghost           8.753 (95% CI: 1.678–20.895), n = 10
+    leaves          regenerating    -1.229 (95% CI: -2.207–-0.335), n = 14
+    leaves          scrub           -1.375 (95% CI: -1.827–-0.923), n = 5
+    root            healthy         2.205 (95% CI: 1.435–3.048), n = 50
+    root            regenerating    1.338 (95% CI: 0.652–2.391), n = 5
+    root            ghost           3.093 (95% CI: 1.572–4.651), n = 4
+    root            scrub           0.138 (95% CI: -0.006–0.286), n = 6
+    soil            healthy         1.619 (95% CI: 1.185–2.082), n = 64
+    soil            regenerating    14.227 (95% CI: 9.810–19.291), n = 23
+    soil            ghost           2.545 (95% CI: 1.618–3.426), n = 31
+    stem            healthy         2.173 (95% CI: 1.763–2.667), n = 181
+    stem            regenerating    5.113 (95% CI: 4.181–6.166), n = 90
+    stem            ghost           2.174 (95% CI: 1.862–2.529), n = 210
+    stem            scrub           0.116 (95% CI: 0.062–0.212), n = 5
+    water           healthy         1.236 (95% CI: 1.019–1.450), n = 11
+    water           regenerating    1.546 (95% CI: 1.000–2.060), n = 8
+    water           ghost           0.472 (95% CI: 0.378–0.582), n = 32
+    water           scrub           1.744 (95% CI: NA–NA), n = 1
+
+  CO2 by component x season:
+    cwd             Wet    10.844 (95% CI: 5.165–20.346), n = 12
+    cwd             Dry    2.181 (95% CI: 1.269–3.199), n = 15
+    leaves          Dry    -1.267 (95% CI: -2.025–-0.599), n = 19
+    root            Wet    2.277 (95% CI: 1.316–3.262), n = 32
+    root            Dry    1.736 (95% CI: 0.991–2.701), n = 33
+    soil            Wet    1.985 (95% CI: 1.143–2.909), n = 29
+    soil            Dry    5.081 (95% CI: 3.479–6.853), n = 89
+    stem            Wet    3.287 (95% CI: 2.736–3.931), n = 194
+    stem            Dry    2.305 (95% CI: 2.000–2.651), n = 292
+    water           Wet    1.035 (95% CI: 0.711–1.421), n = 15
+    water           Dry    0.737 (95% CI: 0.567–0.919), n = 37
+
+  Dead vs alive stem CH4 flux ratio (boot CI):
+    Dead stems:  10.447 (95% CI: 6.398–15.621), n = 222
+    Alive stems: 5.685 (95% CI: 1.845–11.964), n = 261
+    Dead/Alive ratio: 1.84
+
+  Percent negative fluxes by component:
+  CH4:
+    cwd                  7.4% negative (2 / 27)
+    leaves              21.1% negative (4 / 19)
+    root                 7.7% negative (5 / 65)
+    soil                 1.7% negative (2 / 118)
+    stem                 7.6% negative (37 / 486)
+    water                0.0% negative (0 / 92)
+  CO2:
+    cwd                  0.0% negative (0 / 27)
+    leaves              84.2% negative (16 / 19)
+    root                 7.7% negative (5 / 65)
+    soil                11.9% negative (14 / 118)
+    stem                 1.2% negative (6 / 486)
+    water                0.0% negative (0 / 52)
+
+----------------------------------------------------------------
+R.2b: EBULLITION
+----------------------------------------------------------------
+
+  Site x season ebullition summary:
+    BL60   dry (Mar 2023): 2 traces, 0 with ebullition (0.0%)
+    BL60   wet (Oct 2022): 5 traces, 2 with ebullition (40.0%)
+    CP40   dry (Mar 2023): 5 traces, 0 with ebullition (0.0%)
+    CP40   wet (Oct 2022): 12 traces, 3 with ebullition (25.0%)
+    FLM30  dry (Mar 2023): 25 traces, 0 with ebullition (0.0%)
+    FLM30  wet (Oct 2022): 6 traces, 1 with ebullition (16.7%)
+    SE1    dry (Mar 2023): 5 traces, 0 with ebullition (0.0%)
+    SRS5   dry (Mar 2023): 9 traces, 0 with ebullition (0.0%)
+    SRS6   dry (Mar 2023): 6 traces, 0 with ebullition (0.0%)
+
+  Total traces analyzed: 75
+  Total with ebullition: 6
+  Overall % with ebullition: 8.0%
+
+  Partitioned flux rates (from individual traces):
+    Total traces in partitioned file: 75
+    Traces with ebullition events: 6
+    Mean diffusive flux (nmol/m2/s): 56.070
+    Mean ebullitive flux (nmol/m2/s): 25.822
+    Mean total flux (nmol/m2/s): 81.893
+    Mean ebullitive fraction: 33.8%
+
+  Note: 0 ebullition events detected in dry season
+
+================================================================
+R.3: STEM HEIGHT & SPECIES (Fig 3)
+================================================================
+
+Species analysis (shared sites: BL60, SRS5, SRS6)
+n per species:
+
+AVGE COER LARA RHMA 
+  44   26   43  152 
+
+Species x site:
+      
+       BL60 SRS5 SRS6
+  AVGE    0   17   27
+  COER   26    0    0
+  LARA   17   14   12
+  RHMA   46   57   49
+
+--- CH4 Model 1: species + height + season + (1|plot) ---
+
+Type III ANOVA:
+Type III Analysis of Variance Table with Satterthwaite's method
+                  Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+species          12.1674  4.0558     3 255.97  4.6639  0.003424 ** 
+height_corrected 18.7896 18.7896     1 258.22 21.6067 5.343e-06 ***
+season_agg        3.7169  3.7169     1 257.18  4.2742  0.039695 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Emmeans for species:
+ species emmean    SE   df lower.CL upper.CL
+ AVGE     0.437 0.265 3.66   -0.326     1.20
+ COER     0.297 0.301 5.83   -0.446     1.04
+ LARA     0.992 0.260 3.48    0.225     1.76
+ RHMA     0.439 0.231 2.15   -0.490     1.37
+
+Results are averaged over the levels of: season_agg 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+
+Pairwise contrasts:
+ contrast      estimate        SE     df t.ratio p.value
+ AVGE - COER  0.1406237 0.2763294 248.16   0.509  0.9569
+ AVGE - LARA -0.5552200 0.2102547 259.00  -2.641  0.0433
+ AVGE - RHMA -0.0015420 0.1685311 259.00  -0.009  1.0000
+ COER - LARA -0.6958437 0.2486590 258.67  -2.798  0.0281
+ COER - RHMA -0.1421657 0.2236859 255.54  -0.636  0.9205
+ LARA - RHMA  0.5536780 0.1617541 257.27   3.423  0.0040
+
+Results are averaged over the levels of: season_agg 
+Degrees-of-freedom method: kenward-roger 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+
+  Height coefficient: -0.00636 +/- 0.00137 (95% CI: -0.00905–-0.00368)
+
+--- CH4 Model 2: species * height_cat + season + (1|plot) [0-150 cm] ---
+
+Type III ANOVA:
+Type III Analysis of Variance Table with Satterthwaite's method
+                    Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+species            11.4816  3.8272     3 239.60  4.8026 0.0028776 ** 
+height_cat         28.8225 14.4112     2 239.04 18.0842 4.858e-08 ***
+season_agg          9.8124  9.8124     1 239.08 12.3133 0.0005372 ***
+species:height_cat 28.1031  4.6839     6 239.02  5.8776 9.742e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Emmeans by species | height_cat:
+height_cat = 0-50 cm:
+ species   emmean    SE    df lower.CL upper.CL
+ AVGE     0.55636 0.342  5.78   -0.289    1.402
+ COER     1.05788 0.403 10.78    0.168    1.948
+ LARA     2.33392 0.349  6.29    1.489    3.178
+ RHMA     0.61178 0.290  3.02   -0.308    1.532
+
+height_cat = 50-100 cm:
+ species   emmean    SE    df lower.CL upper.CL
+ AVGE     0.37045 0.343  5.83   -0.476    1.217
+ COER    -0.00148 0.383  8.79   -0.871    0.868
+ LARA     0.50377 0.343  5.90   -0.340    1.347
+ RHMA     0.43824 0.281  2.67   -0.522    1.399
+
+height_cat = 100-150 cm:
+ species   emmean    SE    df lower.CL upper.CL
+ AVGE     0.68503 0.373  8.16   -0.173    1.543
+ COER    -0.29486 0.455 17.20   -1.254    0.664
+ LARA     0.15400 0.362  7.30   -0.696    1.004
+ RHMA     0.30276 0.287  2.88   -0.632    1.237
+
+Results are averaged over the levels of: season_agg 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+
+--- CH4 Alive/Dead Model (AVGE + RHMA at shared sites) ---
+
+n per sp_status x height_cat:
+            
+             0-50 cm 50-100 cm 100-150 cm
+  AVGE_alive      22        23         18
+  AVGE_dead       62        60         47
+  COER             8        10          6
+  LARA            14        15         12
+  RHMA_alive      35        47         41
+  RHMA_dead        9        11          7
+
+Type III ANOVA:
+Type III Analysis of Variance Table with Satterthwaite's method
+            Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+sp_status   21.888   4.378     5 315.25  3.2919  0.006509 ** 
+height_cat 181.809  90.905     2 434.01 68.3590 < 2.2e-16 ***
+season_agg  11.033  11.033     1 435.95  8.2968  0.004167 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Emmeans for sp_status:
+ sp_status  emmean    SE    df lower.CL upper.CL
+ AVGE_alive  0.683 0.265  7.08   0.0569     1.31
+ AVGE_dead   1.232 0.270  6.12   0.5756     1.89
+ COER        0.555 0.360 19.41  -0.1979     1.31
+ LARA        1.270 0.298 10.19   0.6079     1.93
+ RHMA_alive  0.814 0.256  5.64   0.1769     1.45
+ RHMA_dead   0.540 0.317 13.86  -0.1400     1.22
+
+Results are averaged over the levels of: height_cat, season_agg 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+
+Alive vs Dead contrasts:
+  emmeans levels: AVGE_alive, AVGE_dead, COER, LARA, RHMA_alive, RHMA_dead 
+
+All pairwise contrasts:
+ contrast                  estimate        SE     df t.ratio p.value
+ AVGE_alive - AVGE_dead  -0.5492821 0.2193803 290.78  -2.504  0.1263
+ AVGE_alive - COER        0.1272339 0.3398404 373.59   0.374  0.9990
+ AVGE_alive - LARA       -0.5877695 0.2573761 404.39  -2.284  0.2031
+ AVGE_alive - RHMA_alive -0.1312096 0.2032273 380.86  -0.646  0.9874
+ AVGE_alive - RHMA_dead   0.1427114 0.2777475 437.18   0.514  0.9956
+ AVGE_dead - COER         0.6765161 0.3728268 197.04   1.815  0.4588
+ AVGE_dead - LARA        -0.0384874 0.3040773 169.23  -0.127  1.0000
+ AVGE_dead - RHMA_alive   0.4180726 0.2586986 115.39   1.616  0.5897
+ AVGE_dead - RHMA_dead    0.6919935 0.3060709 264.97   2.261  0.2140
+ COER - LARA             -0.7150035 0.3149953 437.88  -2.270  0.2087
+ COER - RHMA_alive       -0.2584435 0.2877282 433.15  -0.898  0.9468
+ COER - RHMA_dead         0.0154775 0.3513029 434.83   0.044  1.0000
+ LARA - RHMA_alive        0.4565600 0.2093395 435.02   2.181  0.2488
+ LARA - RHMA_dead         0.7304809 0.2897682 436.76   2.521  0.1203
+ RHMA_alive - RHMA_dead   0.2739209 0.2482287 436.12   1.104  0.8798
+
+Results are averaged over the levels of: height_cat, season_agg 
+Degrees-of-freedom method: kenward-roger 
+P value adjustment: tukey method for comparing a family of 6 estimates 
+
+--- CO2 Model 1: species + height + season + (1|plot) ---
+
+Type III ANOVA:
+Type III Analysis of Variance Table with Satterthwaite's method
+                  Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+species          19.1574  6.3858     3 257.89 13.4392 3.551e-08 ***
+height_corrected  0.0097  0.0097     1 257.44  0.0203    0.8868    
+season_agg        0.7607  0.7607     1 257.06  1.6009    0.2069    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Emmeans for species (CO2):
+ species emmean    SE   df lower.CL upper.CL
+ AVGE      1.60 0.315 2.48   0.4703     2.73
+ COER      1.23 0.332 3.04   0.1868     2.28
+ LARA      2.07 0.313 2.42   0.9228     3.21
+ RHMA      1.35 0.300 2.05   0.0894     2.61
+
+Results are averaged over the levels of: season_agg 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+
+Pairwise contrasts (CO2):
+ contrast      estimate        SE     df t.ratio p.value
+ AVGE - COER  0.3672252 0.2025954 258.99   1.813  0.2697
+ AVGE - LARA -0.4652602 0.1550314 258.06  -3.001  0.0156
+ AVGE - RHMA  0.2498962 0.1242659 258.06   2.011  0.1866
+ COER - LARA -0.8324854 0.1831638 258.39  -4.545  <.0001
+ COER - RHMA -0.1173290 0.1644056 258.86  -0.714  0.8916
+ LARA - RHMA  0.7151564 0.1195457 257.09   5.982  <.0001
+
+Results are averaged over the levels of: season_agg 
+Degrees-of-freedom method: kenward-roger 
+P value adjustment: tukey method for comparing a family of 4 estimates 
+
+  Height coefficient (CO2): 0.00014 +/- 0.00101 (95% CI: -0.00184–0.00213)
+
+--- CO2 Model 2: species * height_cat + season + (1|plot) [0-150 cm] ---
+
+Type III ANOVA:
+Type III Analysis of Variance Table with Satterthwaite's method
+                    Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+species            16.9812  5.6604     3 239.89 11.7584 3.255e-07 ***
+height_cat          0.1961  0.0981     2 239.02  0.2037    0.8158    
+season_agg          0.8129  0.8129     1 239.04  1.6885    0.1950    
+species:height_cat  2.8677  0.4780     6 239.01  0.9929    0.4307    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Emmeans by species | height_cat (CO2):
+height_cat = 0-50 cm:
+ species emmean    SE   df lower.CL upper.CL
+ AVGE      1.50 0.349 3.47    0.474     2.53
+ COER      1.12 0.386 5.16    0.135     2.10
+ LARA      2.14 0.353 3.64    1.118     3.16
+ RHMA      1.36 0.319 2.43    0.202     2.53
+
+height_cat = 50-100 cm:
+ species emmean    SE   df lower.CL upper.CL
+ AVGE      1.36 0.349 3.49    0.335     2.39
+ COER      1.37 0.373 4.52    0.380     2.36
+ LARA      2.02 0.349 3.50    0.995     3.05
+ RHMA      1.39 0.314 2.29    0.193     2.59
+
+height_cat = 100-150 cm:
+ species emmean    SE   df lower.CL upper.CL
+ AVGE      1.95 0.367 4.28    0.955     2.94
+ COER      1.17 0.419 7.16    0.185     2.16
+ LARA      1.99 0.361 3.98    0.985     2.99
+ RHMA      1.34 0.317 2.38    0.160     2.51
+
+Results are averaged over the levels of: season_agg 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+
+--- CO2 Alive/Dead Model (AVGE + RHMA) ---
+
+n per sp_status x height_cat (CO2):
+            
+             0-50 cm 50-100 cm 100-150 cm
+  AVGE_alive      22        23         18
+  AVGE_dead       62        60         47
+  COER             8        10          6
+  LARA            14        15         12
+  RHMA_alive      35        47         41
+  RHMA_dead        9        11          7
+
+Type III ANOVA (CO2):
+Type III Analysis of Variance Table with Satterthwaite's method
+            Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+sp_status  17.9536  3.5907     5 419.29  7.4670 9.982e-07 ***
+height_cat  0.1220  0.0610     2 434.13  0.1268    0.8809    
+season_agg  8.4161  8.4161     1 435.12 17.5015 3.474e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Emmeans for sp_status (CO2):
+ sp_status  emmean    SE    df lower.CL upper.CL
+ AVGE_alive   1.40 0.210  5.44    0.875     1.93
+ AVGE_dead    1.51 0.212  5.34    0.971     2.04
+ COER         1.13 0.256 11.33    0.572     1.70
+ LARA         1.92 0.225  7.02    1.390     2.45
+ RHMA_alive   1.27 0.206  4.91    0.740     1.80
+ RHMA_dead    1.08 0.234  8.37    0.549     1.62
+
+Results are averaged over the levels of: height_cat, season_agg 
+Degrees-of-freedom method: kenward-roger 
+Confidence level used: 0.95 
+
+All pairwise contrasts (CO2 alive/dead):
+ contrast                  estimate        SE     df t.ratio p.value
+ AVGE_alive - AVGE_dead  -0.1050628 0.1327953 389.76  -0.791  0.9689
+ AVGE_alive - COER        0.2673241 0.2049433 424.18   1.304  0.7826
+ AVGE_alive - LARA       -0.5210872 0.1552820 431.60  -3.356  0.0111
+ AVGE_alive - RHMA_alive  0.1299498 0.1227364 424.54   1.059  0.8973
+ AVGE_alive - RHMA_dead   0.3169775 0.1672089 437.87   1.896  0.4061
+ AVGE_dead - COER         0.3723869 0.2263898 333.44   1.645  0.5693
+ AVGE_dead - LARA        -0.4160244 0.1849873 309.40  -2.249  0.2187
+ AVGE_dead - RHMA_alive   0.2350125 0.1578446 254.13   1.489  0.6717
+ AVGE_dead - RHMA_dead    0.4220403 0.1855352 375.39   2.275  0.2071
+ COER - LARA             -0.7884113 0.1894200 437.34  -4.162  0.0005
+ COER - RHMA_alive       -0.1373743 0.1730383 437.98  -0.794  0.9685
+ COER - RHMA_dead         0.0496534 0.2113710 438.00   0.235  0.9999
+ LARA - RHMA_alive        0.6510370 0.1258898 434.55   5.171  <.0001
+ LARA - RHMA_dead         0.8380647 0.1743087 435.75   4.808  <.0001
+ RHMA_alive - RHMA_dead   0.1870277 0.1493064 435.29   1.253  0.8104
+
+Results are averaged over the levels of: height_cat, season_agg 
+Degrees-of-freedom method: kenward-roger 
+P value adjustment: tukey method for comparing a family of 6 estimates 
+
+================================================================
+R.4: TLS STEM SURFACE AREA
+================================================================
+
+  PLACEHOLDER: TLS-derived stem surface area by species and height (from Lizzy)
+  PLACEHOLDER: Stand-level stem surface area scaling
+
+================================================================
+R.5: BOTTOM-UP / TOP-DOWN COMPARISON
+================================================================
+
+  PLACEHOLDER: Bottom-up ecosystem CH4 budget (TLS surface areas x flux rates)
+  PLACEHOLDER: Top-down CARAFE comparison
+  PLACEHOLDER: Net ecosystem exchange partitioning
+
+================================================================
+R.6: POREWATER GEOCHEMISTRY (Fig 6)
+================================================================
+
+  Applied DO correction: -1.67 mg/L
+  Loaded: 20 porewater rows, 4 sites
+
+  Mean +/- SD by Site x Depth:
+
+  --- CH4_mean_uM ---
+    SRS5   0          3.66 +/- 0.00 (n=1)
+    SRS5   15         5.34 +/- 0.00 (n=1)
+    SRS5   45         0.81 +/- 0.00 (n=1)
+    SRS5   90         3.73 +/- 0.00 (n=1)
+    SRS5   Surface    0.30 +/- 0.00 (n=1)
+    SRS6   0          0.18 +/- 0.00 (n=1)
+    SRS6   15         1.04 +/- 0.00 (n=1)
+    SRS6   45         0.66 +/- 0.00 (n=1)
+    SRS6   90         1.62 +/- 0.00 (n=1)
+    SRS6   Surface    0.47 +/- 0.00 (n=1)
+    BL60   0          11.08 +/- 0.00 (n=1)
+    BL60   15         16.09 +/- 0.00 (n=1)
+    BL60   45         4.82 +/- 0.00 (n=1)
+    BL60   90         23.45 +/- 0.00 (n=1)
+    BL60   Surface    86.62 +/- 0.00 (n=1)
+    CP40   0          59.86 +/- 0.00 (n=1)
+    CP40   15         43.97 +/- 0.00 (n=1)
+    CP40   45         42.40 +/- 0.00 (n=1)
+    CP40   90         22.35 +/- 0.00 (n=1)
+    CP40   Surface    2.75 +/- 0.00 (n=1)
+
+  --- PSU ---
+    SRS5   0          13.42 +/- 0.00 (n=1)
+    SRS5   15         15.70 +/- 0.00 (n=1)
+    SRS5   45         26.80 +/- 0.00 (n=1)
+    SRS5   90         23.49 +/- 0.00 (n=1)
+    SRS5   Surface    NaN +/- 0.00 (n=0)
+    SRS6   0          25.78 +/- 0.00 (n=1)
+    SRS6   15         26.70 +/- 0.00 (n=1)
+    SRS6   45         30.30 +/- 0.00 (n=1)
+    SRS6   90         35.08 +/- 0.00 (n=1)
+    SRS6   Surface    NaN +/- 0.00 (n=0)
+    BL60   0          35.44 +/- 0.00 (n=1)
+    BL60   15         35.27 +/- 0.00 (n=1)
+    BL60   45         33.85 +/- 0.00 (n=1)
+    BL60   90         33.46 +/- 0.00 (n=1)
+    BL60   Surface    3.40 +/- 0.00 (n=1)
+    CP40   0          41.36 +/- 0.00 (n=1)
+    CP40   15         54.50 +/- 0.00 (n=1)
+    CP40   45         51.68 +/- 0.00 (n=1)
+    CP40   90         50.32 +/- 0.00 (n=1)
+    CP40   Surface    20.84 +/- 0.00 (n=1)
+
+  --- Sulfide ---
+    SRS5   0          4.49 +/- 0.00 (n=1)
+    SRS5   15         15.80 +/- 0.00 (n=1)
+    SRS5   45         25.44 +/- 0.00 (n=1)
+    SRS5   90         29.22 +/- 0.00 (n=1)
+    SRS5   Surface    NaN +/- 0.00 (n=0)
+    SRS6   0          1.74 +/- 0.00 (n=1)
+    SRS6   15         3.97 +/- 0.00 (n=1)
+    SRS6   45         37.32 +/- 0.00 (n=1)
+    SRS6   90         32.92 +/- 0.00 (n=1)
+    SRS6   Surface    NaN +/- 0.00 (n=0)
+    BL60   0          2.58 +/- 0.00 (n=1)
+    BL60   15         3.05 +/- 0.00 (n=1)
+    BL60   45         3.65 +/- 0.00 (n=1)
+    BL60   90         8.05 +/- 0.00 (n=1)
+    BL60   Surface    2.20 +/- 0.00 (n=1)
+    CP40   0          26.91 +/- 0.00 (n=1)
+    CP40   15         10.00 +/- 0.00 (n=1)
+    CP40   45         15.64 +/- 0.00 (n=1)
+    CP40   90         17.06 +/- 0.00 (n=1)
+    CP40   Surface    18.32 +/- 0.00 (n=1)
+
+  --- ORP ---
+    SRS5   0          -233.00 +/- 0.00 (n=1)
+    SRS5   15         -268.00 +/- 0.00 (n=1)
+    SRS5   45         -271.00 +/- 0.00 (n=1)
+    SRS5   90         -291.00 +/- 0.00 (n=1)
+    SRS5   Surface    NaN +/- 0.00 (n=0)
+    SRS6   0          -93.00 +/- 0.00 (n=1)
+    SRS6   15         -188.00 +/- 0.00 (n=1)
+    SRS6   45         -240.00 +/- 0.00 (n=1)
+    SRS6   90         -308.00 +/- 0.00 (n=1)
+    SRS6   Surface    NaN +/- 0.00 (n=0)
+    BL60   0          -262.00 +/- 0.00 (n=1)
+    BL60   15         -243.00 +/- 0.00 (n=1)
+    BL60   45         -296.00 +/- 0.00 (n=1)
+    BL60   90         -368.00 +/- 0.00 (n=1)
+    BL60   Surface    -243.00 +/- 0.00 (n=1)
+    CP40   0          -376.00 +/- 0.00 (n=1)
+    CP40   15         -375.00 +/- 0.00 (n=1)
+    CP40   45         -392.00 +/- 0.00 (n=1)
+    CP40   90         -392.00 +/- 0.00 (n=1)
+    CP40   Surface    -113.00 +/- 0.00 (n=1)
+
+  --- ppmDO ---
+    SRS5   0          1.68 +/- 0.00 (n=1)
+    SRS5   15         0.87 +/- 0.00 (n=1)
+    SRS5   45         0.73 +/- 0.00 (n=1)
+    SRS5   90         0.49 +/- 0.00 (n=1)
+    SRS5   Surface    NaN +/- 0.00 (n=0)
+    SRS6   0          3.29 +/- 0.00 (n=1)
+    SRS6   15         1.93 +/- 0.00 (n=1)
+    SRS6   45         1.70 +/- 0.00 (n=1)
+    SRS6   90         0.21 +/- 0.00 (n=1)
+    SRS6   Surface    NaN +/- 0.00 (n=0)
+    BL60   0          0.40 +/- 0.00 (n=1)
+    BL60   15         0.51 +/- 0.00 (n=1)
+    BL60   45         0.35 +/- 0.00 (n=1)
+    BL60   90         0.37 +/- 0.00 (n=1)
+    BL60   Surface    0.85 +/- 0.00 (n=1)
+    CP40   0          0.16 +/- 0.00 (n=1)
+    CP40   15         0.01 +/- 0.00 (n=1)
+    CP40   45         0.04 +/- 0.00 (n=1)
+    CP40   90         0.00 +/- 0.00 (n=1)
+    CP40   Surface    10.09 +/- 0.00 (n=1)
+
+  --- DOC_mg_L ---
+    SRS5   0          96.09 +/- 0.00 (n=1)
+    SRS5   15         23.34 +/- 0.00 (n=1)
+    SRS5   45         17.24 +/- 0.00 (n=1)
+    SRS5   90         16.92 +/- 0.00 (n=1)
+    SRS5   Surface    NaN +/- 0.00 (n=0)
+    SRS6   0          19.28 +/- 0.00 (n=1)
+    SRS6   15         18.90 +/- 0.00 (n=1)
+    SRS6   45         17.76 +/- 0.00 (n=1)
+    SRS6   90         14.71 +/- 0.00 (n=1)
+    SRS6   Surface    NaN +/- 0.00 (n=0)
+    BL60   0          318.20 +/- 0.00 (n=1)
+    BL60   15         251.50 +/- 0.00 (n=1)
+    BL60   45         285.80 +/- 0.00 (n=1)
+    BL60   90         106.20 +/- 0.00 (n=1)
+    BL60   Surface    66.81 +/- 0.00 (n=1)
+    CP40   0          76.62 +/- 0.00 (n=1)
+    CP40   15         69.60 +/- 0.00 (n=1)
+    CP40   45         63.96 +/- 0.00 (n=1)
+    CP40   90         58.58 +/- 0.00 (n=1)
+    CP40   Surface    36.90 +/- 0.00 (n=1)
+
+--- Porewater PCA ---
+  PCA variables (11): ORP, pH, ppmDO, PSU, Sulfide, Total Iron, SO4_ppm, Alkalinity_uM, DOC_mg_L, CH4_mean_uM, d13C_CH4_mean
+  Complete cases for PCA: 16 (of 20)
+
+  Variance explained:
+    PC1: 40.4%
+    PC2: 27.4%
+    PC3: 15.8%
+    Cumulative PC1-PC3: 83.5%
+
+  Loadings (PC1, PC2):
+    PSU                  PC1 = +0.430   PC2 = +0.047
+    CH4_mean_uM          PC1 = +0.400   PC2 = +0.096
+    ORP                  PC1 = -0.378   PC2 = -0.281
+    SO4_ppm              PC1 = +0.372   PC2 = +0.118
+    ppmDO                PC1 = -0.358   PC2 = -0.199
+    d13C_CH4_mean        PC1 = +0.355   PC2 = -0.332
+    Alkalinity_uM        PC1 = +0.235   PC2 = -0.357
+    DOC_mg_L             PC1 = +0.181   PC2 = -0.411
+    pH                   PC1 = +0.160   PC2 = -0.155
+    Total Iron           PC1 = -0.072   PC2 = -0.430
+    Sulfide              PC1 = -0.020   PC2 = +0.491
+
+================================================================
+R.7: NET CO2-EQUIVALENT FORCING
+================================================================
+
+  CH4 flux by disturbance class:
+  (all components pooled, valid CH4 only)
+
+  Disturbance      nmol/m2/s    g/m2/yr Mg CH4/ha/yr   CO2eq(100)    CO2eq(20)
+                                                          g/m2/yr      g/m2/yr
+  healthy              2.231     1.1259     0.011259       31.411       91.419
+  regenerating        23.798    12.0077     0.120077      335.016      975.028
+  ghost               13.666     6.8957     0.068957      192.389      559.929
+  scrub                0.480     0.2420     0.002420        6.752       19.651
+
+  CO2 respiration by disturbance class:
+  (chamber-based, all components, valid CO2)
+
+  Disturbance        umol/m2/s  g CO2/m2/yr     Mg/ha/yr     n
+  healthy                2.098       2911.6      29.1163   320
+  regenerating           5.691       7897.4      78.9743   143
+  ghost                  2.266       3144.5      31.4452   287
+  scrub                 -0.219       -303.9      -3.0389    17
+
+  PLACEHOLDER: SRS6 tower GPP for net CO2 budget
+
+  Net CO2-equivalent table (chamber respiration + CH4 forcing):
+
+  Disturbance         CO2 resp CH4 CO2eq100  CH4 CO2eq20   Total(100)  CH4%100   CH4%20
+                       g/m2/yr      g/m2/yr      g/m2/yr      g/m2/yr                  
+  healthy               2911.6       31.411       91.419       2943.0     1.1%     3.0%
+  regenerating          7897.4      335.016      975.028       8232.4     4.1%    11.0%
+  ghost                 3144.5      192.389      559.929       3336.9     5.8%    15.1%
+  scrub                 -303.9        6.752       19.651       -297.1    -2.3%    -6.9%
+
+  Note: CO2 respiration here is chamber-based (soil + stem + pneumatophore etc.).
+  Net ecosystem CO2 budget requires tower GPP (PLACEHOLDER).
+
+================================================================
+END OF MANUSCRIPT RESULTS
+================================================================
