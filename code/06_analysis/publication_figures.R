@@ -492,11 +492,18 @@ make_campaign_grid_condensed_boot <- function(data, gas = "CH4", tag_label = "(a
     )
 }
 
-fig2c_ch4_boot <- make_campaign_grid_condensed_boot(df, "CH4")
+fig2c_ch4_boot <- make_campaign_grid_condensed_boot(df, "CH4", tag_label = "(a)")
 save_pub(fig2c_ch4_boot, "component_by_plot_campaign_ch4_condensed_boot", width = 150, height = 120)
 
-fig2c_co2_boot <- make_campaign_grid_condensed_boot(df, "CO2")
+fig2c_co2_boot <- make_campaign_grid_condensed_boot(df, "CO2", tag_label = "(b)")
 save_pub(fig2c_co2_boot, "component_by_plot_campaign_co2_condensed_boot", width = 150, height = 120)
+
+# Combined CH4 + CO2 condensed boot
+fig2c_combined_boot <- fig2c_ch4_boot / fig2c_co2_boot +
+  plot_layout(guides = "collect") +
+  plot_annotation(theme = theme(legend.position = "bottom"))
+save_pub(fig2c_combined_boot, "component_by_plot_campaign_combined_condensed_boot",
+         width = 170, height = 230)
 
 
 # --- Central Tendency Comparison Figure (CH4) --------------------------------
