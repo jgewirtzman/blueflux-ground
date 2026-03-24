@@ -51,10 +51,27 @@ cat("  Additional:", sum(pf$trace_type == "additional"), "\n")
 
 # ---- STEP 1: Update processed water fluxes with total flux ------------------
 
-# Match processed traces to their original flux_ids
-proc <- pf %>% filter(trace_type == "processed", !is.na(matched_flux_id))
+# Match processed traces to their original flux_ids.
+# When multiple traces match the same flux_id (e.g., a long placement split into
+# 10-min sub-segments that all overlap one logged flux window), keep only the first
+# match as the "processed" update and reclassify the rest as "additional".
+proc_all <- pf %>% filter(trace_type == "processed", !is.na(matched_flux_id))
+proc <- proc_all %>%
+  group_by(matched_flux_id) %>%
+  slice(1) %>%
+  ungroup()
+proc_extra <- proc_all %>%
+  anti_join(proc, by = "placement_id") %>%
+  mutate(trace_type = "additional")
 
-cat("\nUpdating", nrow(proc), "processed water fluxes with total (diffusive + ebullitive) CH4...\n")
+cat("\nProcessed traces:", nrow(proc_all),
+    "→", nrow(proc), "unique flux matches +",
+    nrow(proc_extra), "reclassified as additional\n")
+
+# Add reclassified extras to the additional pool
+add_reclassified <- proc_extra
+
+cat("Updating", nrow(proc), "processed water fluxes with total (diffusive + ebullitive) CH4...\n")
 
 # Initialize new columns
 df$CH4_ebull_flux <- NA_real_
@@ -93,8 +110,13 @@ df <- df %>%
 
 # ---- STEP 2: Add additional traces as new water rows ------------------------
 
-add <- pf %>% filter(trace_type == "additional")
-cat("Adding", nrow(add), "additional water traces...\n")
+add <- bind_rows(
+  pf %>% filter(trace_type == "additional"),
+  add_reclassified
+)
+cat("Adding", nrow(add), "additional water traces (",
+    sum(pf$trace_type == "additional"), "original +",
+    nrow(add_reclassified), "reclassified from multi-match)...\n")
 
 # Get representative water row for column template
 water_template <- df %>% filter(component == "water") %>% slice(1)
