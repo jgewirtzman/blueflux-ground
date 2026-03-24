@@ -445,6 +445,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
     scale_shape_manual(values = site_shapes, name = "Site",
                        labels = c("SRS5 (healthy)", "SRS6 (healthy)",
                                   "BL60 (regen.)", "CP40 (ghost)")) +
+    scale_y_continuous(n.breaks = 4) +
     labs(y = y_lab, x = NULL) +
     coord_flip() +
     theme_bw(base_size = 14) +
@@ -454,7 +455,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
           axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
           panel.grid.minor = element_blank(),
           plot.margin = margin(2, 3, 2, 2))
-  if (log_scale) p <- p + scale_y_log10()
+  if (log_scale) p <- p + scale_y_log10(n.breaks = 4)
   p
 }
 
