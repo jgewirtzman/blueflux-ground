@@ -139,7 +139,7 @@ make_depth_panel <- function(data, var, y_lab, tag_label, log_scale = FALSE) {
                                   "BL60 (regen.)", "CP40 (ghost)")) +
     labs(y = y_lab, x = "Depth (cm)", tag = tag_label) +
     coord_flip() +
-    theme_pub(base_size = 10) +
+    theme_pub(base_size = 15) +
     theme(legend.position = "none")
   if (log_scale) p <- p + scale_y_log10()
   p
@@ -399,7 +399,7 @@ fig6 <- df_heat %>%
                        midpoint = 0, name = "Z-score") +
   scale_y_discrete(limits = rev(c("Surface", "0", "15", "45", "90"))) +
   labs(x = NULL, y = "Depth (cm)") +
-  theme_pub(base_size = 11) +
+  theme_pub(base_size = 16) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1, size = 8),
         legend.position = "right",
         strip.text = element_text(size = 8))
@@ -447,7 +447,7 @@ make_slim_panel <- function(data, var, y_lab, log_scale = FALSE) {
                                   "BL60 (regen.)", "CP40 (ghost)")) +
     labs(y = y_lab, x = NULL) +
     coord_flip() +
-    theme_bw(base_size = 8) +
+    theme_bw(base_size = 12) +
     theme(legend.position = "none",
           axis.title = element_text(size = 7.5),
           axis.text.y = element_text(size = 7),
@@ -524,7 +524,7 @@ if (exists("fig5")) {
     fig5_clean, profiles_padded,
     ncol = 1, heights = c(1.4, 2),
     labels = c("(a)", "(b)"),
-    font.label = list(size = 14, face = "bold")
+    font.label = list(size = 20, face = "bold")
   )
 
   save_pub(fig8, "pca_porewater_composite", width = 210, height = 220)
@@ -668,7 +668,7 @@ if (!is.null(fig8_left)) {
     scale_size_continuous(range = c(1, 7), name = expression(CH[4]~(mu*M))) +
     scale_color_gradient(low = "blue", high = "red", name = expression(CH[4]~(mu*M))) +
     labs(x = NULL, y = "Depth (cm)") +
-    theme_pub(base_size = 11) +
+    theme_pub(base_size = 16) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
   p_r_sal <- sal_sum_mc %>%
@@ -680,7 +680,7 @@ if (!is.null(fig8_left)) {
     scale_size_continuous(range = c(1, 7), name = "PSU") +
     scale_color_gradient(low = "blue", high = "red", name = "PSU") +
     labs(x = NULL, y = "Depth (cm)") +
-    theme_pub(base_size = 11) +
+    theme_pub(base_size = 16) +
     theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
 
   p_r_scatter <- merged_mc %>%
@@ -695,14 +695,14 @@ if (!is.null(fig8_left)) {
     geom_text(data = scatter_stats_mc,
               aes(x = Inf, y = Inf, label = label, color = disturbance),
               inherit.aes = FALSE, parse = TRUE,
-              hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 3) +
+              hjust = 1.05, vjust = c(1.2, 2.5, 3.8), size = 4.5) +
     labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
-    theme_pub(base_size = 11)
+    theme_pub(base_size = 16)
 
   right_panel <- ggpubr::ggarrange(p_r_ch4, p_r_sal, p_r_scatter,
                                     ncol = 1, heights = c(1, 1, 1.2),
                                     labels = c("(c)", "(d)", "(e)"),
-                                    font.label = list(size = 14, face = "bold"))
+                                    font.label = list(size = 20, face = "bold"))
 
   # Left panel: fig8 (PCA + Nov 2025 depth profiles) with (a)/(b) labels
   left_panel <- fig8_left
