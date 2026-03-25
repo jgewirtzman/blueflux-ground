@@ -1730,7 +1730,7 @@ ch4_ridges <- stem_height %>%
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
   scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-  labs(y = "Height Category") +
+  labs(y = NULL) +
   theme_pub(base_size = 9) +
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
@@ -1773,7 +1773,7 @@ ch4_emm <- emm_d_df %>%
   scale_shape_manual(values = spst_shapes, name = NULL) +
   scale_x_continuous(breaks = emm_breaks, labels = emm_labels,
                      name = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))) +
-  labs(y = "Measurement Height") +
+  labs(y = NULL) +
   theme_pub(base_size = 9) +
   theme(plot.margin = margin(0, 5, 5, 5)) +
   no_legend
@@ -1790,7 +1790,6 @@ co2_ridges <- stem_height_co2 %>%
   theme_pub(base_size = 9) +
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        axis.text.y = element_blank(), axis.ticks.y = element_blank(),
         plot.margin = margin(5, 5, 0, 5)) +
   no_legend
 
@@ -1832,46 +1831,92 @@ co2_emm <- emm_d_co2_df %>%
                      name = expression(CO[2]~Flux~(mu*mol~m^{-2}~s^{-1}))) +
   labs(y = NULL) +
   theme_pub(base_size = 9) +
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-        plot.margin = margin(0, 5, 5, 5)) +
+  theme(plot.margin = margin(0, 5, 5, 5)) +
   no_legend
 
 # --- Build combined figure with patchwork ---
 library(patchwork)
 
-# Add disturbance legend back to CH4 ridges (top of left column)
-ch4_ridges_leg <- ch4_ridges +
+# Clean up box panels: minimal facet strips, panel borders between height groups
+ch4_box_clean <- ch4_box +
+  theme(strip.background = element_blank(),
+        strip.text.y.left = element_text(angle = 0, size = 8, face = "bold",
+                                         margin = margin(r = 2)),
+        panel.spacing.y = unit(0.5, "mm"),
+        panel.border = element_rect(color = "grey70", fill = NA, linewidth = 0.3))
+
+co2_box_clean <- co2_box +
+  theme(strip.background = element_blank(),
+        strip.text.y.left = element_blank(),
+        panel.spacing.y = unit(0.5, "mm"),
+        panel.border = element_rect(color = "grey70", fill = NA, linewidth = 0.3))
+
+# Disturbance legend (will go to top via guide_area)
+p_a <- ch4_ridges + labs(tag = "a") +
   scale_fill_manual(values = disturbance_colors, name = "Disturbance") +
   theme(legend.position = "top",
-        legend.title = element_text(size = 8, face = "bold"),
-        legend.text = element_text(size = 7))
+        legend.title = element_text(size = 9, face = "bold"),
+        legend.text = element_text(size = 8))
+p_d <- co2_ridges + labs(tag = "d")
+p_b <- ch4_box_clean + labs(tag = "b")
+p_e <- co2_box_clean + labs(tag = "e")
 
-# Add species legend back to CH4 emmeans (bottom of left column)
-ch4_emm_leg <- ch4_emm +
+# Species legend (will go to bottom via guide_area)
+p_c <- ch4_emm + labs(tag = "c") +
+  scale_color_manual(values = spst_colors, name = "Species") +
+  scale_shape_manual(values = spst_shapes, name = "Species") +
   theme(legend.position = "bottom",
-        legend.title = element_blank(),
         legend.text = element_text(size = 7, face = "italic")) +
   guides(color = guide_legend(ncol = 3, byrow = TRUE,
                               override.aes = list(size = 2.5)),
          shape = guide_legend(ncol = 3, byrow = TRUE,
                               override.aes = list(size = 2.5)))
+p_f <- co2_emm + labs(tag = "f")
 
-# Column titles as plot_annotation
-ch4_col <- (ch4_ridges_leg / ch4_box / ch4_emm_leg) +
-  plot_layout(heights = c(0.8, 1.2, 0.8)) +
-  plot_annotation(title = expression(CH[4]~Flux),
-                  theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 11)))
+# Use cowplot to place legends at top and bottom independently
+library(cowplot)
 
-co2_col <- (co2_ridges / co2_box / co2_emm) +
-  plot_layout(heights = c(0.8, 1.2, 0.8)) +
-  plot_annotation(title = expression(CO[2]~Flux),
-                  theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 11)))
+# Build fresh dummy plots for legend extraction (original plots have legend suppressed)
+dist_leg_plot <- ggplot(stem_height, aes(x = CH4_best.flux, y = height_category,
+                                          fill = disturbance_level)) +
+  geom_density_ridges(alpha = 0.6) +
+  scale_fill_manual(values = disturbance_colors, name = "Disturbance") +
+  theme_pub(base_size = 9) +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 9, face = "bold"),
+        legend.text = element_text(size = 8))
+dist_leg <- get_legend(dist_leg_plot)
 
-# Combine columns side by side, add sequential tags
-fig10_combined <- (ch4_col | co2_col) +
-  plot_layout(widths = c(1, 0.85)) +
-  plot_annotation(tag_levels = list(c("a", "b", "c", "d", "e", "f")),
-                  theme = theme(plot.tag = element_text(size = 10, face = "bold")))
+sp_leg_plot <- ggplot(emm_d_df, aes(x = emmean, y = height_cat,
+                                     color = label, shape = label)) +
+  geom_point() +
+  scale_color_manual(values = spst_colors, name = "Species") +
+  scale_shape_manual(values = spst_shapes, name = "Species") +
+  theme_pub(base_size = 9) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 7, face = "italic")) +
+  guides(color = guide_legend(ncol = 3, byrow = TRUE,
+                              override.aes = list(size = 2.5)),
+         shape = guide_legend(ncol = 3, byrow = TRUE,
+                              override.aes = list(size = 2.5)))
+sp_leg <- get_legend(sp_leg_plot)
+
+# All panels already have no_legend; p_a and p_c overrides didn't work anyway
+p_a_nl <- p_a
+p_c_nl <- p_c
+
+# 3x2 panel grid
+panel_grid <- (p_a_nl + p_d + p_b + p_e + p_c_nl + p_f) +
+  plot_layout(ncol = 2, heights = c(3, 5, 3), widths = c(1, 1)) +
+  plot_annotation(theme = theme(plot.tag = element_text(size = 10, face = "bold")))
+
+# Stack: disturbance (top) | panels | species (bottom)
+fig10_combined <- plot_grid(
+  dist_leg,
+  panel_grid,
+  sp_leg,
+  ncol = 1, rel_heights = c(2, 40, 3)
+)
 
 save_pub(fig10_combined, "stem_height_composite_combined", width = 260, height = 280)
 
