@@ -35,7 +35,8 @@ cat("Traces to reprocess with new windows:", nrow(windows), "\n\n")
 
 # ---- Load combined dataset ---------------------------------------------------
 
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+# Start from ORIGINAL combined dataset to avoid circular dependency
+df <- read_csv("output/combined_gas_flux_dataset_ORIGINAL.csv", show_col_types = FALSE)
 cat("Original dataset:", nrow(df), "rows\n")
 
 # ---- STEP 1: Remove artifacts -----------------------------------------------

@@ -44,6 +44,24 @@ EXCLUDE_WINDOWS <- list(
   list(site = "CP40", date = "2023-03-15", after = "12:19", before = "12:27")  # 1.16 ppm analyzer artifact
 )
 
+# Traces to exclude entirely (Picarro noise / analyzer artifacts, not real placements)
+EXCLUDE_TRACE_IDS <- c(
+  "LGR3_2023-03-15_CP40_P07",      # dry season noise, 54 false jumps
+  "Picarro_2022-10-18_FLM30_P09",   # Picarro noise, not a real placement
+  "Picarro_2022-10-25_BL60_P07"     # Picarro noise, not a real placement
+)
+
+# Confirmed ebullition traces (manually verified). All other detected "jumps"
+# are Picarro noise or analyzer artifacts and should be zeroed out.
+CONFIRMED_EBULLITION <- c(
+  "LGR2_2022-10-23_CP40_P02",      # 11 jumps, wet
+  "LGR2_2022-10-23_CP40_P06",      # 5 jumps, wet
+  "LGR2_2022-10-23_CP40_P10",      # 10 jumps, wet
+  "Picarro_2022-10-18_FLM30_P08",   # 2 jumps, wet
+  "Picarro_2022-10-25_BL60_P02",    # 2 jumps, wet
+  "Picarro_2022-10-25_BL60_P03"     # 4 jumps, wet
+)
+
 # Rate-based filter: trace diffusive rate must be within this factor of the
 # site's mean processed water flux rate. E.g., 3.0 = keep traces where
 # diffusive rate is between 1/3x and 3x the processed mean.
@@ -56,7 +74,7 @@ if (!dir.exists(OUTPUT_DIR)) dir.create(OUTPUT_DIR, recursive = TRUE)
 
 # ---- WATER MEASUREMENT METADATA --------------------------------------------
 
-water_fluxes <- read_csv("output/soil_water_surface_fluxes.csv",
+water_fluxes <- read_csv("output/soil_water_surface_fluxes_ORIGINAL.csv",
                          show_col_types = FALSE) %>%
   filter(surface_type == "water", !is.na(CH4_best.flux)) %>%
   mutate(
@@ -68,7 +86,10 @@ water_fluxes <- read_csv("output/soil_water_surface_fluxes.csv",
   )
 
 # Load ALL fluxes to identify non-water measurement windows on the same analyzer
-all_fluxes <- read_csv("output/combined_gas_flux_dataset.csv",
+# IMPORTANT: use the ORIGINAL flux dataset (not combined_gas_flux_dataset.csv)
+# to avoid circular dependency — the combined dataset is modified downstream
+# by integrate_ebullition.R, which would change detection results on re-runs
+all_fluxes <- read_csv("output/soil_water_surface_fluxes_ORIGINAL.csv",
                        show_col_types = FALSE) %>%
   filter(!is.na(start_time), !is.na(end_time)) %>%
   mutate(date = as.Date(date))
@@ -333,12 +354,28 @@ analyze_placement <- function(trace_df, jump_thresh = JUMP_THRESH,
   # Diffusive flux rate (ppm/sec from linear slope)
   diffusive_rate_ppm_s <- coef(lm_fit)[["elapsed_sec"]]
 
-  # Also fit linear model EXCLUDING jump points to get cleaner diffusive rate
-  non_jump <- trace_df %>% filter(!is_jump)
-  if (nrow(non_jump) > 2) {
-    lm_clean <- lm(CH4_ppm ~ elapsed_sec, data = non_jump)
+  # Step-correct: subtract cumulative jump magnitude from all points after
+  # each ebullition event, creating a "de-ebulliated" trace that removes
+  # the persistent concentration step-up caused by bubbles
+  trace_df$cum_jump <- cumsum(ifelse(trace_df$is_jump, trace_df$dCH4, 0))
+  trace_df$CH4_deebull <- trace_df$CH4_ppm - trace_df$cum_jump
+
+  # Exclude buffer window around each jump (±15s) — concentration is still
+  # equilibrating immediately after a bubble and may show leading edge before
+  EBULL_BUFFER_SEC <- 15
+  jump_times <- trace_df$elapsed_sec[trace_df$is_jump]
+  trace_df$near_jump <- sapply(trace_df$elapsed_sec, function(t) {
+    any(abs(t - jump_times) <= EBULL_BUFFER_SEC)
+  })
+  # If no jumps, near_jump is all FALSE
+  if (length(jump_times) == 0) trace_df$near_jump <- FALSE
+
+  # Fit linear model to de-ebulliated trace excluding jump neighborhoods
+  deebull_df <- trace_df %>% filter(!near_jump)
+  if (nrow(deebull_df) > 2) {
+    lm_clean <- lm(CH4_deebull ~ elapsed_sec, data = deebull_df)
     diffusive_rate_clean <- coef(lm_clean)[["elapsed_sec"]]
-    trace_df$CH4_linear_clean <- predict(lm_clean, trace_df)
+    trace_df$CH4_linear_clean <- predict(lm_clean, newdata = trace_df)
   } else {
     diffusive_rate_clean <- diffusive_rate_ppm_s
     trace_df$CH4_linear_clean <- trace_df$CH4_linear
@@ -406,11 +443,32 @@ for (i in seq_len(nrow(analyzer_days))) {
     distinct(datetime, .keep_all = TRUE) %>%
     arrange(datetime)
 
-  # Apply Picarro timestamp correction (-25220 seconds)
-  # The Picarro internal clock was offset; LGR clocks match field notes as-is
+  # Apply timestamp corrections per analyzer
+  # Picarro internal clock was offset by ~7 hours; LGR clocks have small offsets
+  # determined by aligning raw data with field note start times
+  LGR_OFFSETS <- list(
+    list(date = as.Date("2022-10-23"), analyzer = "LGR2", offset_sec = -1091),
+    list(date = as.Date("2023-03-11"), analyzer = "LGR2", offset_sec = -28),
+    list(date = as.Date("2023-03-12"), analyzer = "LGR3", offset_sec = -24),
+    list(date = as.Date("2023-03-15"), analyzer = "LGR3", offset_sec = -13),
+    list(date = as.Date("2023-03-16"), analyzer = "LGR3", offset_sec = -24),
+    list(date = as.Date("2023-03-17"), analyzer = "LGR2", offset_sec = -28),
+    list(date = as.Date("2023-03-18"), analyzer = "LGR1", offset_sec = -14),
+    list(date = as.Date("2023-03-22"), analyzer = "LGR3", offset_sec = -24)
+  )
+
   if (grepl("Picarro", analyzer, ignore.case = TRUE) && nrow(day_data) > 0) {
     day_data <- day_data %>% mutate(datetime = datetime - 25220)
     cat("  -> Applied Picarro timestamp correction (-25220s)\n")
+  } else {
+    # Check for LGR offset
+    for (lo in LGR_OFFSETS) {
+      if (lo$date == meas_date && grepl(lo$analyzer, analyzer, ignore.case = TRUE)) {
+        day_data <- day_data %>% mutate(datetime = datetime + lo$offset_sec)
+        cat(sprintf("  -> Applied %s offset: %ds\n", lo$analyzer, lo$offset_sec))
+        break
+      }
+    }
   }
 
   if (nrow(day_data) == 0) {
@@ -536,6 +594,10 @@ for (ew in EXCLUDE_WINDOWS) {
   excluded_mask <- excluded_mask | match
 }
 placements_df$excluded <- excluded_mask
+
+# Also exclude specific trace IDs (noise/artifacts identified during QC)
+placements_df$excluded <- placements_df$excluded |
+  (placements_df$placement_id %in% EXCLUDE_TRACE_IDS)
 
 # Flag traces that fall within non-water time blocks.
 # For most site-days, soil and water were done in separate sequential blocks.
@@ -669,6 +731,24 @@ if (any(placements_df$excluded)) {
       max_jump_ppm = ifelse(excluded, NA_real_, max_jump_ppm),
       mean_jump_ppm = ifelse(excluded, NA_real_, mean_jump_ppm),
       ebullitive_fraction = ifelse(excluded, 0, ebullitive_fraction)
+    )
+}
+
+# Zero out ebullition for any trace NOT in the confirmed whitelist
+# (Picarro noise, analyzer artifacts, etc. that pass the automated threshold)
+false_ebull <- placements_df$n_jumps > 0 &
+  !placements_df$placement_id %in% CONFIRMED_EBULLITION &
+  !placements_df$excluded
+if (any(false_ebull)) {
+  cat("Zeroing ebullition for", sum(false_ebull), "false positive(s):",
+      paste(placements_df$placement_id[false_ebull], collapse = ", "), "\n")
+  placements_df <- placements_df %>%
+    mutate(
+      n_jumps = ifelse(false_ebull, 0, n_jumps),
+      total_ebullitive_ppm = ifelse(false_ebull, 0, total_ebullitive_ppm),
+      max_jump_ppm = ifelse(false_ebull, NA_real_, max_jump_ppm),
+      mean_jump_ppm = ifelse(false_ebull, NA_real_, mean_jump_ppm),
+      ebullitive_fraction = ifelse(false_ebull, 0, ebullitive_fraction)
     )
 }
 
@@ -940,11 +1020,18 @@ if (length(trace_order) > 0) {
   cat("Saved", length(trace_order), "placement trace plots to", pdf_path, "\n")
 }
 
-# ---- OVERVIEW PLOT: FULL-DAY TRACES WITH PLACEMENTS HIGHLIGHTED -------------
+# ---- OVERVIEW PLOT: FULL-DAY RAW DATA WITH FINAL FLUXES MARKED --------------
+# Shows the end result: each flux that ends up in the final dataset,
+# with vertical lines for start/end, colored by source and ebullition status.
+# Uses placements_df (non-excluded) as the source — these match what gets
+# integrated into the combined dataset.
 
 cat("\n=== GENERATING FULL-DAY OVERVIEW PLOTS ===\n")
 
 overview_plots <- list()
+
+# Use only non-excluded placements (matches what goes into final dataset)
+final_placements <- placements_df %>% filter(!excluded)
 
 for (key in names(all_raw_data)) {
   raw <- all_raw_data[[key]]
@@ -952,38 +1039,37 @@ for (key in names(all_raw_data)) {
   meas_date <- raw$date[1]
   site      <- raw$site[1]
 
-  # Get placements for this day (water-only, after filtering)
-  day_placements <- placements_df %>%
-    filter(analyzer == !!analyzer, date == !!meas_date, site == !!site)
+  # Fluxes for this day
+  day_fluxes <- final_placements %>%
+    filter(analyzer == !!analyzer, date == !!meas_date, site == !!site) %>%
+    mutate(
+      flux_class = case_when(
+        n_jumps > 0 ~ "ebullitive",
+        trace_type == "additional" ~ "additional",
+        TRUE ~ "processed"
+      ),
+      mid_time = start_time + (end_time - start_time) / 2,
+      short_id = gsub(".*_P", "P", placement_id)
+    )
 
-  # Get component blocks for this analyzer-day (for shading)
+  # Component blocks for background shading
   day_blocks <- component_blocks %>%
     filter(date == meas_date, analyzer_source == analyzer)
-
-  # Get known measurement windows from metadata
-  meas_windows <- water_fluxes %>%
-    filter(analyzer_source == analyzer,
-           date == meas_date,
-           plot == site,
-           !is.na(start_time), !is.na(end_time)) %>%
-    mutate(
-      window_start = as.POSIXct(paste(date, start_time),
-                                tz = "UTC"),
-      window_end   = as.POSIXct(paste(date, end_time),
-                                tz = "UTC")
-    )
 
   ov_season <- ifelse(month(meas_date) == 10, "Wet (Oct 2022)",
                       ifelse(year(meas_date) == 2022, "Dry (Mar 2022)", "Dry (Mar 2023)"))
 
-  # Component block colors
   block_colors <- c(water = "#2196F3", soil = "#8B4513", stem = "#4CAF50",
                     root = "#FF9800", cwd = "#9E9E9E", leaves = "#CDDC39",
                     pneumatophore = "#E91E63")
+  flux_colors <- c("processed" = "#4682B4", "additional" = "#4682B4",
+                   "ebullitive" = "#D2691E")
+  flux_linetypes <- c("processed" = "solid", "additional" = "dashed",
+                      "ebullitive" = "solid")
 
   p <- ggplot(raw, aes(x = datetime, y = CH4_ppm))
 
-  # Shade component time blocks
+  # 1. Component block shading
   if (nrow(day_blocks) > 0) {
     p <- p +
       geom_rect(data = day_blocks,
@@ -993,59 +1079,82 @@ for (key in names(all_raw_data)) {
       scale_fill_manual(values = block_colors, name = "Component")
   }
 
-  # Build a colored version of raw data: tag points that fall within detected traces
-  raw_colored <- raw %>% mutate(trace_type = NA_character_)
-  if (nrow(day_placements) > 0) {
-    for (j in seq_len(nrow(day_placements))) {
-      dp <- day_placements[j, ]
-      in_range <- raw_colored$datetime >= dp$start_time & raw_colored$datetime <= dp$end_time
-      raw_colored$trace_type[in_range] <- dp$trace_type[1]
+  # 2. Raw CH4 trace (grey background)
+  p <- p + geom_line(color = "grey70", linewidth = 0.3)
+
+  # 3. Highlight raw data within each flux window
+  if (nrow(day_fluxes) > 0) {
+    raw_tagged <- raw %>% mutate(flux_class = NA_character_, trace_id = NA_character_)
+    for (j in seq_len(nrow(day_fluxes))) {
+      fl <- day_fluxes[j, ]
+      in_range <- raw_tagged$datetime >= fl$start_time & raw_tagged$datetime <= fl$end_time
+      raw_tagged$flux_class[in_range] <- fl$flux_class
+      raw_tagged$trace_id[in_range] <- fl$placement_id
     }
-  }
-  raw_bg    <- raw_colored %>% filter(is.na(trace_type))
-  raw_typed <- raw_colored %>% filter(!is.na(trace_type))
+    raw_in_flux <- raw_tagged %>% filter(!is.na(flux_class))
 
-  p <- p +
-    geom_line(data = raw_bg, aes(x = datetime, y = CH4_ppm),
-              color = "grey70", linewidth = 0.3) +
-    theme_bw(base_size = 10) +
-    labs(
-      title = sprintf("%s | %s | %s (%s)", site, ov_season,
-                       format(meas_date, "%Y-%m-%d"), analyzer),
-      subtitle = sprintf("Shading = component blocks | Traces: %d processed (blue) + %d additional (orange) = %d total | %d with ebullition",
-                          sum(day_placements$trace_type == "processed"),
-                          sum(day_placements$trace_type == "additional"),
-                          nrow(day_placements),
-                          sum(day_placements$n_jumps > 0)),
-      x = "Time", y = "CH4 dry (ppm)"
-    )
+    if (nrow(raw_in_flux) > 0) {
+      p <- p +
+        geom_line(data = raw_in_flux,
+                  aes(x = datetime, y = CH4_ppm, color = flux_class, group = trace_id),
+                  linewidth = 0.6, inherit.aes = FALSE) +
+        scale_color_manual(
+          values = flux_colors, name = "Flux type",
+          labels = c("processed" = "Diffusive (processed)",
+                     "additional" = "Diffusive (additional)",
+                     "ebullitive" = "Ebullitive"))
+    }
 
-  # Plot colored trace points + lines on top
-  if (nrow(raw_typed) > 0) {
-    # Use geom_point for visibility + geom_line segments
+    # Vertical lines at start/end of each flux
+    for (j in seq_len(nrow(day_fluxes))) {
+      fl <- day_fluxes[j, ]
+      lcolor <- flux_colors[fl$flux_class]
+      ltype <- flux_linetypes[fl$flux_class]
+      p <- p +
+        geom_vline(xintercept = as.numeric(fl$start_time),
+                   color = lcolor, linetype = ltype, linewidth = 0.4, alpha = 0.6) +
+        geom_vline(xintercept = as.numeric(fl$end_time),
+                   color = lcolor, linetype = ltype, linewidth = 0.4, alpha = 0.6)
+    }
+
+    # Label each flux at bottom
     p <- p +
-      geom_point(data = raw_typed, aes(x = datetime, y = CH4_ppm, color = trace_type),
-                 size = 0.8, alpha = 0.8, inherit.aes = FALSE) +
-      scale_color_manual(values = c("processed" = "steelblue", "additional" = "darkorange"),
-                         name = "Trace type",
-                         labels = c("processed" = "Processed", "additional" = "Additional"))
+      annotate("text", x = day_fluxes$mid_time, y = -Inf,
+               label = day_fluxes$short_id,
+               vjust = -0.3, size = 1.8, color = "grey30", angle = 45)
   }
 
-  # Mark jump points across all remaining placements for this day
-  day_trace_pids <- placements_df %>%
-    filter(analyzer == !!analyzer, date == !!meas_date, site == !!site) %>%
-    pull(placement_id)
+  # 4. Ebullition jump markers
+  day_pids <- day_fluxes$placement_id[day_fluxes$n_jumps > 0]
   day_jumps <- bind_rows(lapply(
-    day_trace_pids[day_trace_pids %in% names(all_traces)],
-    function(pid) all_traces[[pid]]$jumps
+    day_pids[day_pids %in% names(all_traces)],
+    function(pid) {
+      j <- all_traces[[pid]]$jumps
+      if (!is.null(j) && nrow(j) > 0) j else NULL
+    }
   ))
   if (nrow(day_jumps) > 0) {
     p <- p +
       geom_point(data = day_jumps, aes(x = datetime, y = CH4_ppm),
-                 color = "red", size = 2, shape = 17, inherit.aes = FALSE)
+                 color = "#D2691E", size = 2, shape = 17, inherit.aes = FALSE)
   }
 
-  # Key for sorting: site_date
+  # Counts
+  n_proc  <- sum(day_fluxes$flux_class == "processed")
+  n_add   <- sum(day_fluxes$flux_class == "additional")
+  n_ebull <- sum(day_fluxes$flux_class == "ebullitive")
+
+  p <- p +
+    theme_bw(base_size = 10) +
+    labs(
+      title = sprintf("%s | %s | %s (%s)", site, ov_season,
+                       format(meas_date, "%Y-%m-%d"), analyzer),
+      subtitle = sprintf(
+        "%d fluxes: %d processed (solid blue) + %d additional (dashed blue) + %d ebullitive (orange)",
+        nrow(day_fluxes), n_proc, n_add, n_ebull),
+      x = "Time", y = "CH4 dry (ppm)"
+    )
+
   sort_key <- sprintf("%s_%s", site, format(meas_date, "%Y-%m-%d"))
   overview_plots[[sort_key]] <- p
 }

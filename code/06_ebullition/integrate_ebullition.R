@@ -26,7 +26,19 @@ library(forcats)
 pf <- read_csv("output/ebullition/partitioned_fluxes.csv", show_col_types = FALSE)
 pl <- read_csv("output/ebullition/placements_summary.csv", show_col_types = FALSE) %>%
   filter(!excluded)
+# Read the combined dataset AFTER negative flux corrections have been applied.
+# Pipeline order: (1) apply_negative_flux_corrections.R writes corrected dataset,
+# (2) this script reads it and adds ebullition integration.
+# Both scripts start from combined_gas_flux_dataset_ORIGINAL.csv to avoid
+# circular dependency, but this one must run AFTER corrections.
 df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+
+# Safety check: remove any previous ebullition_reprocessing rows to make idempotent
+n_before <- nrow(df)
+df <- df %>% filter(is.na(data_source) | data_source != "ebullition_reprocessing")
+if (nrow(df) < n_before) {
+  cat("Removed", n_before - nrow(df), "previous ebullition_reprocessing rows for clean re-run\n")
+}
 
 # Remove any previously added ebullition rows (idempotent)
 if ("data_source" %in% names(df)) {
@@ -206,139 +218,8 @@ df_water <- df %>% filter(component == "water", CH4_flux_status == "valid")
 write_csv(df_water, "output/ebullition/water_fluxes_with_ebullition.csv")
 cat("Saved water-only dataset to: output/ebullition/water_fluxes_with_ebullition.csv\n")
 
-# ---- STEP 4: SI Figure — Partitioned Water Flux by Season × Site ------------
-
-cat("\n--- Generating SI Ebullition Figure ---\n")
-
-# Shared aesthetics from publication_figures.R
-theme_pub <- function(base_size = 11) {
-  theme_bw(base_size = base_size) %+replace%
-    theme(
-      axis.title        = element_text(size = base_size, face = "bold"),
-      axis.text         = element_text(size = base_size - 1),
-      strip.text        = element_text(size = base_size - 1, face = "bold"),
-      strip.background  = element_rect(fill = "grey95", color = "grey70"),
-      legend.title      = element_text(size = base_size - 1, face = "bold"),
-      legend.text       = element_text(size = base_size - 2),
-      panel.grid.minor  = element_blank(),
-      plot.tag          = element_text(size = base_size + 3, face = "bold"),
-      plot.title        = element_text(size = base_size + 1, face = "bold"),
-      plot.subtitle     = element_text(size = base_size - 1, color = "grey40")
-    )
-}
-
-asinh_brk_pos <- c(0, 1, 10, 100, 1000)
-asinh_labels <- function(x) {
-  ifelse(x == 0, "0", format(x, scientific = FALSE, big.mark = "", drop0trailing = TRUE))
-}
-
-# Prepare data: long-form with flux type
-si_data <- df_water %>%
-  select(flux_id, plot, season, disturbance_level,
-         CH4_diffusive_flux, CH4_ebull_flux, CH4_best.flux) %>%
-  pivot_longer(
-    cols = c(CH4_diffusive_flux, CH4_ebull_flux),
-    names_to = "flux_component",
-    values_to = "flux_nmol"
-  ) %>%
-  mutate(
-    flux_component = factor(
-      ifelse(flux_component == "CH4_diffusive_flux", "Diffusive", "Ebullitive"),
-      levels = c("Diffusive", "Ebullitive")
-    ),
-    season_display = factor(
-      ifelse(season == "wet", "Wet", "Dry"),
-      levels = c("Wet", "Dry")
-    ),
-    plot = factor(plot, levels = c("BL60", "CP40", "FLM30", "SE1", "SRS5", "SRS6"))
-  )
-
-# Colors for flux components
-flux_comp_colors <- c(
-  "Diffusive" = "#4682B4",   # Steel blue (matches water)
-  "Ebullitive" = "#FF8C00"   # Dark orange
-)
-
-# Stacked bar: mean flux partitioned into diffusive + ebullitive per site × season
-si_means <- si_data %>%
-  group_by(plot, season_display, flux_component) %>%
-  summarise(
-    mean_flux = mean(flux_nmol, na.rm = TRUE),
-    se_flux = sd(flux_nmol, na.rm = TRUE) / sqrt(n()),
-    n = n(),
-    .groups = "drop"
-  )
-
-# Total flux per site × season (for error bars on total)
-si_totals <- df_water %>%
-  mutate(
-    season_display = factor(ifelse(season == "wet", "Wet", "Dry"), levels = c("Wet", "Dry")),
-    plot = factor(plot, levels = c("BL60", "CP40", "FLM30", "SE1", "SRS5", "SRS6"))
-  ) %>%
-  group_by(plot, season_display) %>%
-  summarise(
-    mean_total = mean(CH4_best.flux, na.rm = TRUE),
-    se_total = sd(CH4_best.flux, na.rm = TRUE) / sqrt(n()),
-    n = n(),
-    .groups = "drop"
-  )
-
-# Panel (a): Stacked bar plot
-fig_si_a <- ggplot(si_means,
-                   aes(x = season_display, y = mean_flux, fill = flux_component)) +
-  geom_col(position = "stack", width = 0.6, color = "black", linewidth = 0.3) +
-  geom_errorbar(data = si_totals,
-                aes(x = season_display, y = mean_total,
-                    ymin = mean_total - se_total, ymax = mean_total + se_total,
-                    fill = NULL),
-                width = 0.15, linewidth = 0.5, inherit.aes = FALSE) +
-  geom_text(data = si_totals,
-            aes(x = season_display, y = -Inf, label = paste0("n=", n), fill = NULL),
-            vjust = 1.5, size = 2.8, inherit.aes = FALSE) +
-  facet_wrap(~ plot, nrow = 1, scales = "free_y") +
-  scale_fill_manual(values = flux_comp_colors, name = "Flux component") +
-  scale_y_continuous(expand = expansion(mult = c(0.15, 0.1))) +
-  labs(x = "Season", y = expression(bold(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))),
-       tag = "(a)") +
-  theme_pub(base_size = 10) +
-  theme(legend.position = "bottom",
-        axis.title.x = element_blank(),
-        panel.spacing = unit(0.5, "lines"))
-
-# Panel (b): Jitter + box showing individual observations, colored by component
-fig_si_b <- si_data %>%
-  ggplot(aes(x = season_display, y = flux_nmol, fill = flux_component)) +
-  geom_point(aes(color = flux_component),
-             position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.6),
-             alpha = 0.5, size = 1.2) +
-  geom_boxplot(alpha = 0.5, outlier.shape = NA, color = "black",
-               width = 0.5, position = position_dodge(width = 0.6),
-               linewidth = 0.3) +
-  stat_summary(fun = mean, geom = "point", shape = 23, size = 2,
-               fill = "white", color = "black", stroke = 0.5,
-               position = position_dodge(width = 0.6)) +
-  facet_wrap(~ plot, nrow = 1, scales = "free_y") +
-  scale_fill_manual(values = flux_comp_colors, name = "Flux component") +
-  scale_color_manual(values = flux_comp_colors, name = "Flux component") +
-  scale_y_continuous(trans = "asinh", breaks = asinh_brk_pos, labels = asinh_labels) +
-  labs(x = "Season", y = expression(bold(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))),
-       tag = "(b)") +
-  theme_pub(base_size = 10) +
-  theme(legend.position = "bottom",
-        axis.title.x = element_blank(),
-        panel.spacing = unit(0.5, "lines"))
-
-# Combine panels
-fig_si <- (fig_si_a / fig_si_b) +
-  plot_layout(guides = "collect") +
-  plot_annotation(theme = theme(legend.position = "bottom"))
-
-# Save
-ggsave("output/figures/pub_SI_ebullition_partition.pdf", fig_si,
-       width = 260, height = 180, units = "mm")
-ggsave("output/figures/pub_SI_ebullition_partition.png", fig_si,
-       width = 260, height = 180, units = "mm", dpi = 300)
-cat("Saved: pub_SI_ebullition_partition.pdf/.png\n")
+# NOTE: SI ebullition figure is generated by code/07_analysis/figS1_ebullition.R
+# (single source of truth for that figure)
 
 # ---- Summary stats -----------------------------------------------------------
 

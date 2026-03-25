@@ -85,7 +85,7 @@ get_params <- function(analyzer, site, meas_date) {
 
 cat("\nConstructing goFlux inputs from cleaned traces...\n")
 
-MIN_CLEAN_PTS <- 10  # minimum non-jump points to run goFlux
+MIN_CLEAN_PTS <- 6   # minimum non-jump points to run goFlux
 
 goflux_dfs   <- list()
 ebull_info   <- list()
@@ -101,8 +101,24 @@ for (pid in placements$placement_id) {
   tr  <- res$trace
   pl  <- placements %>% filter(placement_id == pid)
 
-  # Remove jump points for diffusive fitting
-  clean <- tr %>% filter(!is_jump)
+  # Use de-ebulliated trace: cumulative jump magnitude subtracted from
+  # all post-jump points, so the diffusive fit only sees the steady
+  # background rise without the persistent step-ups from bubbles.
+  # Also exclude ±15s buffer around each jump (equilibration period).
+  if (!"CH4_deebull" %in% names(tr)) {
+    tr$cum_jump <- cumsum(ifelse(tr$is_jump, tr$dCH4, 0))
+    tr$CH4_deebull <- tr$CH4_ppm - tr$cum_jump
+  }
+  EBULL_BUFFER_SEC <- 15
+  jump_times <- tr$elapsed_sec[tr$is_jump]
+  if (!"near_jump" %in% names(tr)) {
+    tr$near_jump <- if (length(jump_times) > 0) {
+      sapply(tr$elapsed_sec, function(t) any(abs(t - jump_times) <= EBULL_BUFFER_SEC))
+    } else {
+      rep(FALSE, nrow(tr))
+    }
+  }
+  clean <- tr %>% filter(!near_jump)
 
   if (nrow(clean) < MIN_CLEAN_PTS) {
     skipped_pids <- c(skipped_pids, pid)
@@ -125,7 +141,7 @@ for (pid in placements$placement_id) {
   gf_df <- tibble(
     UniqueID    = pid,
     POSIX.time  = clean$datetime,
-    CH4dry_ppb  = clean$CH4_ppm * 1000,    # ppm -> ppb
+    CH4dry_ppb  = clean$CH4_deebull * 1000,  # de-ebulliated ppm -> ppb
     CO2dry_ppm  = clean$CO2_ppm,
     H2O_ppm     = clean$H2O_ppm,
     CH4_prec    = ch4_prec,
