@@ -772,12 +772,12 @@ if (!is.null(fig8_left)) {
   )
 
   # PCA panel — legend right, within column width
-  p_A <- fig5 + labs(tag = "(a)") + unified +
+  p_A <- fig5 + labs(tag = "(b)") + unified +
     theme(legend.position = "right",
           legend.key.size = unit(3.5, "mm"))
 
-  # Depth panels — remove existing tags, add (b) to first only
-  dp <- list(p_ch4 + labs(tag = "(b)"),
+  # Depth panels — remove existing tags, add (a) to first only
+  dp <- list(p_ch4 + labs(tag = "(a)"),
              p_co2, p_sal, p_so4, p_orp_leg,
              p_do_leg, p_ph, p_doc, p_alk, p_d13ch4_leg)
   # Note: legend shows on p_orp_leg (last panel, row 1 right side)
@@ -817,7 +817,7 @@ if (!is.null(fig8_left)) {
              y = -0.45, label = scatter_stats_mc$label[3],
              parse = TRUE, hjust = 1, vjust = -0.4, size = 5,
              color = scatter_stats_mc$text_color[3]) +
-    labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M)),
+    labs(x = "Salinity (PSU)", y = expression(CH[4]~(mu*M)),
          tag = "(e)") +
     theme_classic(base_size = 14) +
     theme(plot.tag = element_text(size = 18, face = "bold"))
@@ -847,11 +847,12 @@ if (!is.null(fig8_left)) {
   # Build left and right columns separately with patchwork, then combine with cowplot
   # This avoids the area() height issues
 
-  # Left column: PCA over 2 rows of depth panels
-  left_col <- p_A /
+  # Left column: depth profiles over PCA
+  left_col <-
     (dp[[1]] + dp[[2]] + dp[[3]] + dp[[4]] + dp[[5]] + plot_layout(nrow = 1)) /
-    (dp[[6]] + dp[[7]] + dp[[8]] + dp[[9]] + dp[[10]] + plot_layout(nrow = 1)) +
-    plot_layout(heights = c(4, 3, 3))
+    (dp[[6]] + dp[[7]] + dp[[8]] + dp[[9]] + dp[[10]] + plot_layout(nrow = 1)) /
+    p_A +
+    plot_layout(heights = c(3, 3, 4))
 
   # Right column: CH4 bubbles, sal bubbles, scatter (equal heights)
   right_col <- p_L / p_M / p_N + plot_layout(heights = c(1, 1, 1))
