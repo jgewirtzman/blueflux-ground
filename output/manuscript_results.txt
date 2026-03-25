@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-03-24 17:02 
+Manuscript Results — generated 2026-03-24 20:31 
 
 
 ================================================================
@@ -71,96 +71,96 @@ R.2: COMPONENT FLUX RATES (Fig 2)
 --- CH4 (valid fluxes, n = 807 ) ---
 
   CH4 by component (pooled, boot mean + 95% CI):
-    cwd                1.062 (95% CI: 0.060–2.710), n = 27
+    cwd                1.062 (95% CI: 0.061–2.711), n = 27
     leaves             0.017 (95% CI: 0.006–0.029), n = 19
-    root               3.296 (95% CI: 0.721–8.109), n = 65
-    soil               24.710 (95% CI: 14.547–36.818), n = 118
-    stem               7.832 (95% CI: 4.776–11.735), n = 486
-    water              16.367 (95% CI: 10.898–22.685), n = 92
+    root               3.296 (95% CI: 0.719–8.146), n = 65
+    soil               24.710 (95% CI: 14.603–37.182), n = 118
+    stem               7.832 (95% CI: 4.796–12.029), n = 486
+    water              16.367 (95% CI: 10.862–22.598), n = 92
 
   CH4 by component x disturbance:
-    cwd             healthy         0.392 (95% CI: 0.214–0.582), n = 14
+    cwd             healthy         0.392 (95% CI: 0.222–0.576), n = 14
     cwd             regenerating    -0.905 (95% CI: -3.156–0.224), n = 3
-    cwd             ghost           2.589 (95% CI: 0.252–6.544), n = 10
-    leaves          regenerating    0.014 (95% CI: -0.000–0.029), n = 14
-    leaves          scrub           0.026 (95% CI: 0.010–0.044), n = 5
-    root            healthy         3.929 (95% CI: 0.619–10.169), n = 50
-    root            regenerating    2.421 (95% CI: 0.878–4.074), n = 5
+    cwd             ghost           2.589 (95% CI: 0.258–6.525), n = 10
+    leaves          regenerating    0.014 (95% CI: -0.000–0.028), n = 14
+    leaves          scrub           0.026 (95% CI: 0.010–0.043), n = 5
+    root            healthy         3.929 (95% CI: 0.609–10.158), n = 50
+    root            regenerating    2.421 (95% CI: 0.905–4.220), n = 5
     root            ghost           0.255 (95% CI: 0.174–0.341), n = 4
-    root            scrub           0.778 (95% CI: 0.322–1.271), n = 6
-    soil            healthy         6.649 (95% CI: 3.240–11.936), n = 64
-    soil            regenerating    78.604 (95% CI: 37.086–126.314), n = 23
-    soil            ghost           22.012 (95% CI: 8.978–39.829), n = 31
-    stem            healthy         0.495 (95% CI: 0.237–0.892), n = 181
-    stem            regenerating    14.408 (95% CI: 3.628–32.272), n = 90
-    stem            ghost           11.523 (95% CI: 7.281–16.989), n = 210
+    root            scrub           0.778 (95% CI: 0.299–1.302), n = 6
+    soil            healthy         6.649 (95% CI: 3.259–12.231), n = 64
+    soil            regenerating    78.604 (95% CI: 37.727–128.308), n = 23
+    soil            ghost           22.012 (95% CI: 8.844–39.607), n = 31
+    stem            healthy         0.495 (95% CI: 0.237–0.876), n = 181
+    stem            regenerating    14.408 (95% CI: 3.574–32.363), n = 90
+    stem            ghost           11.523 (95% CI: 7.291–16.715), n = 210
     stem            scrub           0.052 (95% CI: -0.004–0.158), n = 5
-    water           healthy         0.692 (95% CI: 0.465–0.929), n = 18
-    water           regenerating    34.741 (95% CI: 14.814–59.042), n = 9
-    water           ghost           19.594 (95% CI: 12.507–28.122), n = 60
+    water           healthy         0.692 (95% CI: 0.465–0.926), n = 18
+    water           regenerating    34.741 (95% CI: 14.735–59.665), n = 9
+    water           ghost           19.594 (95% CI: 12.503–27.885), n = 60
     water           scrub           1.003 (95% CI: 0.506–1.826), n = 5
 
   CH4 by component x season:
-    cwd             Wet    2.096 (95% CI: -0.131–5.586), n = 12
-    cwd             Dry    0.234 (95% CI: 0.130–0.355), n = 15
+    cwd             Wet    2.096 (95% CI: -0.149–5.691), n = 12
+    cwd             Dry    0.234 (95% CI: 0.132–0.359), n = 15
     leaves          Dry    0.017 (95% CI: 0.006–0.029), n = 19
-    root            Wet    5.452 (95% CI: 0.504–14.950), n = 32
-    root            Dry    1.206 (95% CI: 0.610–2.005), n = 33
-    soil            Wet    13.111 (95% CI: 6.167–24.511), n = 29
-    soil            Dry    28.490 (95% CI: 15.570–44.361), n = 89
-    stem            Wet    14.369 (95% CI: 6.947–24.288), n = 194
-    stem            Dry    3.490 (95% CI: 2.224–4.921), n = 292
-    water           Wet    41.517 (95% CI: 28.118–56.584), n = 27
-    water           Dry    5.921 (95% CI: 3.436–10.058), n = 65
+    root            Wet    5.452 (95% CI: 0.519–14.948), n = 32
+    root            Dry    1.206 (95% CI: 0.611–2.012), n = 33
+    soil            Wet    13.111 (95% CI: 6.158–24.076), n = 29
+    soil            Dry    28.490 (95% CI: 15.656–44.025), n = 89
+    stem            Wet    14.369 (95% CI: 7.050–24.490), n = 194
+    stem            Dry    3.490 (95% CI: 2.246–4.969), n = 292
+    water           Wet    41.517 (95% CI: 28.332–56.894), n = 27
+    water           Dry    5.921 (95% CI: 3.430–10.041), n = 65
 
 --- CO2 (valid fluxes, n = 767 ) ---
 
   CO2 by component (pooled, boot mean + 95% CI):
-    cwd                6.031 (95% CI: 3.100–10.871), n = 27
-    leaves             -1.267 (95% CI: -2.042–-0.609), n = 19
-    root               2.002 (95% CI: 1.383–2.703), n = 65
-    soil               4.320 (95% CI: 3.056–5.728), n = 118
-    stem               2.697 (95% CI: 2.406–3.006), n = 486
-    water              0.823 (95% CI: 0.660–0.997), n = 52
+    cwd                6.031 (95% CI: 3.109–10.741), n = 27
+    leaves             -1.267 (95% CI: -2.055–-0.583), n = 19
+    root               2.002 (95% CI: 1.396–2.697), n = 65
+    soil               4.320 (95% CI: 3.092–5.710), n = 118
+    stem               2.697 (95% CI: 2.404–3.010), n = 486
+    water              0.823 (95% CI: 0.661–0.993), n = 52
 
   CO2 by component x disturbance:
-    cwd             healthy         3.617 (95% CI: 2.531–4.779), n = 14
+    cwd             healthy         3.617 (95% CI: 2.557–4.751), n = 14
     cwd             regenerating    8.226 (95% CI: 4.001–11.513), n = 3
-    cwd             ghost           8.753 (95% CI: 1.681–20.692), n = 10
-    leaves          regenerating    -1.229 (95% CI: -2.253–-0.331), n = 14
+    cwd             ghost           8.753 (95% CI: 1.507–20.667), n = 10
+    leaves          regenerating    -1.229 (95% CI: -2.239–-0.355), n = 14
     leaves          scrub           -1.375 (95% CI: -1.827–-0.923), n = 5
-    root            healthy         2.205 (95% CI: 1.437–3.075), n = 50
+    root            healthy         2.205 (95% CI: 1.453–3.073), n = 50
     root            regenerating    1.338 (95% CI: 0.652–2.391), n = 5
     root            ghost           3.093 (95% CI: 1.572–4.651), n = 4
     root            scrub           0.138 (95% CI: -0.013–0.292), n = 6
-    soil            healthy         1.619 (95% CI: 1.199–2.101), n = 64
-    soil            regenerating    14.227 (95% CI: 9.714–19.222), n = 23
-    soil            ghost           2.545 (95% CI: 1.648–3.444), n = 31
-    stem            healthy         2.173 (95% CI: 1.760–2.696), n = 181
-    stem            regenerating    5.113 (95% CI: 4.161–6.209), n = 90
-    stem            ghost           2.174 (95% CI: 1.860–2.529), n = 210
+    soil            healthy         1.619 (95% CI: 1.192–2.092), n = 64
+    soil            regenerating    14.227 (95% CI: 9.830–19.024), n = 23
+    soil            ghost           2.545 (95% CI: 1.630–3.449), n = 31
+    stem            healthy         2.173 (95% CI: 1.767–2.648), n = 181
+    stem            regenerating    5.113 (95% CI: 4.185–6.183), n = 90
+    stem            ghost           2.174 (95% CI: 1.865–2.535), n = 210
     stem            scrub           0.116 (95% CI: 0.062–0.212), n = 5
-    water           healthy         1.236 (95% CI: 1.023–1.454), n = 11
-    water           regenerating    1.546 (95% CI: 1.025–2.053), n = 8
-    water           ghost           0.472 (95% CI: 0.378–0.583), n = 32
+    water           healthy         1.236 (95% CI: 1.016–1.452), n = 11
+    water           regenerating    1.546 (95% CI: 1.027–2.057), n = 8
+    water           ghost           0.472 (95% CI: 0.377–0.579), n = 32
     water           scrub           1.744 (95% CI: NA–NA), n = 1
 
   CO2 by component x season:
-    cwd             Wet    10.844 (95% CI: 5.258–20.129), n = 12
-    cwd             Dry    2.181 (95% CI: 1.298–3.203), n = 15
-    leaves          Dry    -1.267 (95% CI: -2.021–-0.605), n = 19
-    root            Wet    2.277 (95% CI: 1.321–3.304), n = 32
-    root            Dry    1.736 (95% CI: 0.990–2.679), n = 33
-    soil            Wet    1.985 (95% CI: 1.127–2.922), n = 29
-    soil            Dry    5.081 (95% CI: 3.525–6.945), n = 89
-    stem            Wet    3.287 (95% CI: 2.726–3.900), n = 194
-    stem            Dry    2.305 (95% CI: 1.979–2.662), n = 292
-    water           Wet    1.035 (95% CI: 0.705–1.433), n = 15
-    water           Dry    0.737 (95% CI: 0.563–0.914), n = 37
+    cwd             Wet    10.844 (95% CI: 5.215–20.088), n = 12
+    cwd             Dry    2.181 (95% CI: 1.295–3.187), n = 15
+    leaves          Dry    -1.267 (95% CI: -2.004–-0.605), n = 19
+    root            Wet    2.277 (95% CI: 1.361–3.265), n = 32
+    root            Dry    1.736 (95% CI: 0.985–2.720), n = 33
+    soil            Wet    1.985 (95% CI: 1.162–2.926), n = 29
+    soil            Dry    5.081 (95% CI: 3.478–6.894), n = 89
+    stem            Wet    3.287 (95% CI: 2.736–3.897), n = 194
+    stem            Dry    2.305 (95% CI: 2.006–2.668), n = 292
+    water           Wet    1.035 (95% CI: 0.705–1.427), n = 15
+    water           Dry    0.737 (95% CI: 0.573–0.920), n = 37
 
   Dead vs alive stem CH4 flux ratio (boot CI):
-    Dead stems:  10.447 (95% CI: 6.471–15.604), n = 222
-    Alive stems: 5.685 (95% CI: 1.864–12.154), n = 261
+    Dead stems:  10.447 (95% CI: 6.446–15.672), n = 222
+    Alive stems: 5.685 (95% CI: 1.869–12.005), n = 261
     Dead/Alive ratio: 1.84
 
   Percent negative fluxes by component:
@@ -697,4 +697,49 @@ R.6: POREWATER GEOCHEMISTRY (Fig 6)
     SRS6   wet (Oct 2022)     porewater      CH4=9.5 uM (n=3), PSU=26.6
 
   Pearson correlations (PSU vs log1p(CH4)) by disturbance class (depth-level):
-  (Computed from dissolved_gas + salinity merged at site x season x depth)
+  (Values from site_characterization_figures.R merged at site x season x depth)
+    ghost          r = 0.600, p = 0.0301, n = 13
+    healthy        r = -0.483, p = 0.1573, n = 10
+    regenerating   r = -0.484, p = 0.1568, n = 10
+  NOTE: healthy and regenerating have near-identical stats (verified independently)
+
+================================================================
+R.7: NET CO2-EQUIVALENT FORCING
+================================================================
+
+  CH4 flux by disturbance class:
+  (all components pooled, valid CH4 only)
+
+  Disturbance      nmol/m2/s    g/m2/yr Mg CH4/ha/yr   CO2eq(100)    CO2eq(20)
+                                                          g/m2/yr      g/m2/yr
+  healthy              2.231     1.1259     0.011259       31.411       91.419
+  regenerating        23.798    12.0077     0.120077      335.016      975.028
+  ghost               13.666     6.8957     0.068957      192.389      559.929
+  scrub                0.480     0.2420     0.002420        6.752       19.651
+
+  CO2 respiration by disturbance class:
+  (chamber-based, all components, valid CO2)
+
+  Disturbance        umol/m2/s  g CO2/m2/yr     Mg/ha/yr     n
+  healthy                2.098       2911.6      29.1163   320
+  regenerating           5.691       7897.4      78.9743   143
+  ghost                  2.266       3144.5      31.4452   287
+  scrub                 -0.219       -303.9      -3.0389    17
+
+  PLACEHOLDER: SRS6 tower GPP for net CO2 budget
+
+  Net CO2-equivalent table (chamber respiration + CH4 forcing):
+
+  Disturbance         CO2 resp CH4 CO2eq100  CH4 CO2eq20   Total(100)  CH4%100   CH4%20
+                       g/m2/yr      g/m2/yr      g/m2/yr      g/m2/yr                  
+  healthy               2911.6       31.411       91.419       2943.0     1.1%     3.0%
+  regenerating          7897.4      335.016      975.028       8232.4     4.1%    11.0%
+  ghost                 3144.5      192.389      559.929       3336.9     5.8%    15.1%
+  scrub                 -303.9        6.752       19.651       -297.1    -2.3%    -6.9%
+
+  Note: CO2 respiration here is chamber-based (soil + stem + pneumatophore etc.).
+  Net ecosystem CO2 budget requires tower GPP (PLACEHOLDER).
+
+================================================================
+END OF MANUSCRIPT RESULTS
+================================================================
