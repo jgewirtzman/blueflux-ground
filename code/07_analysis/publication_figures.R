@@ -229,7 +229,7 @@ fig1b <- df_co2 %>%
   theme(plot.margin = margin(5, 12, 5, 5))
 
 fig1 <- fig1a + fig1b
-save_pub(fig1, "component_overview", width = 240, height = 110)
+# save_pub(fig1, "component_overview", width = 240, height = 110)
 
 
 # =============================================================================
@@ -288,7 +288,7 @@ fig1b_wet_ch4 <- make_season_panel(df_season_core, "CH4", "Wet", "(c)")
 fig1b_wet_co2 <- make_season_panel(df_season_core, "CO2", "Wet", "(d)")
 
 fig1b_combined <- (fig1b_dry_ch4 | fig1b_dry_co2) / (fig1b_wet_ch4 | fig1b_wet_co2)
-save_pub(fig1b_combined, "component_overview_by_season", width = 260, height = 180)
+# save_pub(fig1b_combined, "component_overview_by_season", width = 260, height = 180)
 
 
 # =============================================================================
@@ -335,15 +335,15 @@ make_campaign_grid <- function(data, gas = "CH4", tag_label = "(a)") {
 # All sites version
 fig2_ch4_all <- make_campaign_grid(df, "CH4", "(a)")
 fig2_co2_all <- make_campaign_grid(df, "CO2", "(b)")
-save_pub(fig2_ch4_all, "component_by_plot_campaign_ch4", width = 260, height = 300)
-save_pub(fig2_co2_all, "component_by_plot_campaign_co2", width = 260, height = 300)
+# save_pub(fig2_ch4_all, "component_by_plot_campaign_ch4", width = 260, height = 300)
+# save_pub(fig2_co2_all, "component_by_plot_campaign_co2", width = 260, height = 300)
 
 # Core sites only version
 df_core <- df %>% filter(plot %in% core_sites)
 fig2_ch4_core <- make_campaign_grid(df_core, "CH4", "(a)")
 fig2_co2_core <- make_campaign_grid(df_core, "CO2", "(b)")
-save_pub(fig2_ch4_core, "component_by_plot_campaign_ch4_core", width = 260, height = 220)
-save_pub(fig2_co2_core, "component_by_plot_campaign_co2_core", width = 260, height = 220)
+# save_pub(fig2_ch4_core, "component_by_plot_campaign_ch4_core", width = 260, height = 220)
+# save_pub(fig2_co2_core, "component_by_plot_campaign_co2_core", width = 260, height = 220)
 
 
 # --- Condensed version: proportional row heights, uniform boxplot widths ------
@@ -407,10 +407,10 @@ make_campaign_grid_condensed <- function(data, gas = "CH4", tag_label = "(a)") {
 }
 
 fig2c_ch4 <- make_campaign_grid_condensed(df, "CH4")
-save_pub(fig2c_ch4, "component_by_plot_campaign_ch4_condensed", width = 150, height = 120)
+# save_pub(fig2c_ch4, "component_by_plot_campaign_ch4_condensed", width = 150, height = 120)
 
 fig2c_co2 <- make_campaign_grid_condensed(df, "CO2")
-save_pub(fig2c_co2, "component_by_plot_campaign_co2_condensed", width = 150, height = 120)
+# save_pub(fig2c_co2, "component_by_plot_campaign_co2_condensed", width = 150, height = 120)
 
 
 # --- Fig 2c-boot: Condensed with bootstrapped mean + 95% CI -----------------
@@ -626,12 +626,12 @@ for (vname in names(variant_fns)) {
     plot_layout(guides = "collect") +
     plot_annotation(theme = theme(legend.position = "bottom"))
 
-  save_pub(ch4_p, paste0("component_by_plot_campaign_ch4_condensed_", vname),
-           width = 150, height = 120)
-  save_pub(co2_p, paste0("component_by_plot_campaign_co2_condensed_", vname),
-           width = 150, height = 120)
-  save_pub(combined, paste0("component_by_plot_campaign_combined_condensed_", vname),
-           width = 170, height = 230)
+#   save_pub(ch4_p, paste0("component_by_plot_campaign_ch4_condensed_", vname),
+#            width = 150, height = 120)
+#   save_pub(co2_p, paste0("component_by_plot_campaign_co2_condensed_", vname),
+#            width = 150, height = 120)
+#   save_pub(combined, paste0("component_by_plot_campaign_combined_condensed_", vname),
+#            width = 170, height = 230)
 }
 
 
@@ -711,7 +711,7 @@ fig_ct <- ct_data %>%
     plot.margin        = margin(2, 14, 2, 3)
   )
 
-save_pub(fig_ct, "central_tendency_comparison_ch4", width = 160, height = 130)
+# save_pub(fig_ct, "central_tendency_comparison_ch4", width = 160, height = 130)
 
 # CO2 version
 cat("\n--- Figure: Central Tendency Comparison (CO2) ---\n")
@@ -782,7 +782,7 @@ fig_ct_co2 <- ct_data_co2 %>%
     plot.margin        = margin(2, 14, 2, 3)
   )
 
-save_pub(fig_ct_co2, "central_tendency_comparison_co2", width = 160, height = 130)
+# save_pub(fig_ct_co2, "central_tendency_comparison_co2", width = 160, height = 130)
 
 
 # --- Raincloud version: half-boxplot above + dots below ----------------------
@@ -851,7 +851,7 @@ make_campaign_grid_raincloud <- function(data, gas = "CH4", tag_label = "(a)") {
 }
 
 fig2d_ch4 <- make_campaign_grid_raincloud(df, "CH4")
-save_pub(fig2d_ch4, "component_by_plot_campaign_ch4_raincloud", width = 190, height = 220)
+# save_pub(fig2d_ch4, "component_by_plot_campaign_ch4_raincloud", width = 190, height = 220)
 
 
 # =============================================================================
@@ -906,7 +906,7 @@ fig3b <- df_seasonal %>%
   theme(legend.position = "bottom")
 
 fig3 <- fig3a + fig3b + plot_layout(guides = "collect")
-save_pub(fig3, "seasonal_variation", width = 240, height = 130)
+# save_pub(fig3, "seasonal_variation", width = 240, height = 130)
 
 
 # =============================================================================
@@ -969,7 +969,7 @@ fig4 <- plot_grid(ggdraw(aligned[[1]]), ggdraw(aligned[[2]]),
                   ncol = 1, rel_heights = c(1, 1.5),
                   labels = c("(a)", "(b)"), label_size = 14, label_fontface = "bold")
 
-save_pub(fig4, "height_profile", width = 200, height = 200)
+# save_pub(fig4, "height_profile", width = 200, height = 200)
 
 
 # =============================================================================
@@ -1013,7 +1013,7 @@ fig5_co2 <- df_spatial %>%
         legend.position = "bottom")
 
 fig5 <- fig5_ch4 / fig5_co2 + plot_layout(heights = c(1, 1.15))
-save_pub(fig5, "disturbance_gradient", width = 280, height = 200)
+# save_pub(fig5, "disturbance_gradient", width = 280, height = 200)
 
 
 # =============================================================================
@@ -1064,7 +1064,7 @@ fig6d <- df_env %>%
   theme_pub() + theme(legend.position = "bottom")
 
 fig6 <- (fig6a | fig6b) / (fig6c | fig6d) + plot_layout(guides = "collect")
-save_pub(fig6, "environmental_drivers", width = 240, height = 200)
+# save_pub(fig6, "environmental_drivers", width = 240, height = 200)
 
 
 # =============================================================================
@@ -1088,7 +1088,7 @@ fig7 <- df_covar %>%
        y = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))) +
   theme_pub() + theme(legend.position = "bottom")
 
-save_pub(fig7, "ch4_co2_covariation", width = 210, height = 180)
+# save_pub(fig7, "ch4_co2_covariation", width = 210, height = 180)
 
 
 # =============================================================================
@@ -1135,7 +1135,7 @@ fig8b <- heatmap_data_co2 %>%
         legend.position = "bottom", legend.key.width = unit(20, "mm"))
 
 fig8 <- fig8a / fig8b
-save_pub(fig8, "heatmap_summary", width = 270, height = 220)
+# save_pub(fig8, "heatmap_summary", width = 270, height = 220)
 
 
 # =============================================================================
@@ -1330,7 +1330,7 @@ fig9b <- emm_byheight_df %>%
 
 # --- Combine: (a) top, (b) bottom ---
 fig9 <- fig9a / fig9b + plot_layout(heights = c(1, 1.2))
-save_pub(fig9, "species_emmeans", width = 200, height = 200)
+# save_pub(fig9, "species_emmeans", width = 200, height = 200)
 
 cat("\n--- Species emmeans figure saved ---\n")
 
@@ -1532,7 +1532,7 @@ bot_row <- plot_grid(fig10b_aligned, fig10d, nrow = 1, rel_widths = c(1, 1))
 fig10 <- plot_grid(top_row, bot_row,
                    ncol = 1, rel_heights = c(1, 1))
 
-save_pub(fig10, "stem_height_composite", width = 260, height = 200)
+# save_pub(fig10, "stem_height_composite", width = 260, height = 200)
 
 cat("\n--- Stem height composite figure saved ---\n")
 
@@ -1705,7 +1705,7 @@ bot_row_co2 <- plot_grid(ab_co2_aligned[[2]], fig10b_d, nrow = 1, rel_widths = c
 fig10_co2 <- plot_grid(top_row_co2, bot_row_co2,
                        ncol = 1, rel_heights = c(1, 1))
 
-save_pub(fig10_co2, "stem_height_composite_co2", width = 260, height = 200)
+# save_pub(fig10_co2, "stem_height_composite_co2", width = 260, height = 200)
 
 cat("\n--- CO2 stem height composite figure saved ---\n")
 
@@ -1836,72 +1836,42 @@ co2_emm <- emm_d_co2_df %>%
         plot.margin = margin(0, 5, 5, 5)) +
   no_legend
 
-# --- Column titles ---
-title_ch4 <- ggdraw() + draw_label(expression(CH[4]~Flux), fontface = "bold", size = 11)
-title_co2 <- ggdraw() + draw_label(expression(CO[2]~Flux), fontface = "bold", size = 11)
+# --- Build combined figure with patchwork ---
+library(patchwork)
 
-# --- Align ridges and box within each column ---
-ch4_aligned <- align_plots(ch4_ridges, ch4_box, align = "v", axis = "lr")
-co2_aligned <- align_plots(co2_ridges, co2_box, align = "v", axis = "lr")
+# Add disturbance legend back to CH4 ridges (top of left column)
+ch4_ridges_leg <- ch4_ridges +
+  scale_fill_manual(values = disturbance_colors, name = "Disturbance") +
+  theme(legend.position = "top",
+        legend.title = element_text(size = 8, face = "bold"),
+        legend.text = element_text(size = 7))
 
-# --- Build columns (no legends — all stripped) ---
-ch4_col <- plot_grid(ch4_aligned[[1]], ch4_aligned[[2]], ch4_emm,
-                     ncol = 1, rel_heights = c(0.8, 1.2, 0.8),
-                     labels = c("(a)", "(c)", "(e)"), label_size = 10, label_fontface = "bold")
+# Add species legend back to CH4 emmeans (bottom of left column)
+ch4_emm_leg <- ch4_emm +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 7, face = "italic")) +
+  guides(color = guide_legend(ncol = 3, byrow = TRUE,
+                              override.aes = list(size = 2.5)),
+         shape = guide_legend(ncol = 3, byrow = TRUE,
+                              override.aes = list(size = 2.5)))
 
-co2_col <- plot_grid(co2_aligned[[1]], co2_aligned[[2]], co2_emm,
-                     ncol = 1, rel_heights = c(0.8, 1.2, 0.8),
-                     labels = c("(b)", "(d)", "(f)"), label_size = 10, label_fontface = "bold")
+# Column titles as plot_annotation
+ch4_col <- (ch4_ridges_leg / ch4_box / ch4_emm_leg) +
+  plot_layout(heights = c(0.8, 1.2, 0.8)) +
+  plot_annotation(title = expression(CH[4]~Flux),
+                  theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 11)))
 
-# --- Centered shared legends (extract via ggplotGrob) ---
-# Helper: extract legend grob from a ggplot
-extract_legend <- function(p) {
-  g <- ggplotGrob(p + theme(legend.position = "bottom"))
-  leg <- g$grobs[which(sapply(g$grobs, function(x) x$name) == "guide-box")]
-  if (length(leg) > 0) leg[[1]] else grid::nullGrob()
-}
+co2_col <- (co2_ridges / co2_box / co2_emm) +
+  plot_layout(heights = c(0.8, 1.2, 0.8)) +
+  plot_annotation(title = expression(CO[2]~Flux),
+                  theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 11)))
 
-# Disturbance legend
-leg_dist_grob <- extract_legend(
-  ggplot(stem_height, aes(x = CH4_best.flux, fill = disturbance_level)) +
-    geom_density() +
-    scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-    guides(fill = guide_legend(nrow = 1)) +
-    theme_pub(base_size = 9) +
-    theme(legend.title = element_text(size = 9, face = "bold"),
-          legend.text = element_text(size = 8))
-)
-
-# Species/status legend
-leg_spp_grob <- extract_legend(
-  ggplot(emm_d_df, aes(x = emmean, y = height_cat,
-                        color = label, shape = label)) +
-    geom_point(size = 2.5, stroke = 0.8) +
-    scale_color_manual(values = spst_colors, name = NULL) +
-    scale_shape_manual(values = spst_shapes, name = NULL) +
-    guides(color = guide_legend(ncol = 3, byrow = TRUE,
-                                override.aes = list(size = 3)),
-           shape = guide_legend(ncol = 3, byrow = TRUE,
-                                override.aes = list(size = 3))) +
-    theme_pub(base_size = 9) +
-    theme(legend.title = element_blank(),
-          legend.text = element_text(size = 8, face = "italic"))
-)
-
-# --- Title row ---
-title_row <- plot_grid(title_ch4, title_co2, nrow = 1)
-
-# --- Main body (equal-height columns) ---
-body <- plot_grid(ch4_col, co2_col, nrow = 1, rel_widths = c(1, 0.85))
-
-# --- Full figure: title, disturbance legend, body, species legend ---
-fig10_combined <- plot_grid(
-  title_row,
-  leg_dist_grob,
-  body,
-  leg_spp_grob,
-  ncol = 1, rel_heights = c(0.04, 0.04, 1, 0.06)
-)
+# Combine columns side by side, add sequential tags
+fig10_combined <- (ch4_col | co2_col) +
+  plot_layout(widths = c(1, 0.85)) +
+  plot_annotation(tag_levels = list(c("a", "b", "c", "d", "e", "f")),
+                  theme = theme(plot.tag = element_text(size = 10, face = "bold")))
 
 save_pub(fig10_combined, "stem_height_composite_combined", width = 260, height = 280)
 
@@ -2021,7 +1991,7 @@ fig11 <- emm_ad_sp_df %>%
     plot.margin = margin(5, 10, 5, 5)
   )
 
-save_pub(fig11, "alive_vs_dead_emmeans", width = 180, height = 120)
+# save_pub(fig11, "alive_vs_dead_emmeans", width = 180, height = 120)
 
 cat("\n--- Living vs dead figure saved ---\n")
 
