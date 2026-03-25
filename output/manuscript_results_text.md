@@ -10,7 +10,7 @@ We measured 867 CH4 and CO2 fluxes from seven ecosystem components across eight 
 
 CH4 fluxes were higher at disturbed than healthy sites across all components. Stem CH4 in ghost forest (11.5, CI: 7.3-16.8, n = 210) and regenerating forest (14.4, CI: 3.5-32.6, n = 90) exceeded healthy mangrove (0.5, CI: 0.2-0.9, n = 181) by 23x and 29x, respectively. Soil CH4 was 78.6 (CI: 38.3-126.8, n = 23) at regenerating, 22.0 (CI: 8.9-39.6, n = 31) at ghost, and 6.6 (CI: 3.2-11.9, n = 64) at healthy sites. Water surface CH4 was 34.7 (CI: 14.7-60.5, n = 9) at regenerating, 19.6 (CI: 12.3-28.1, n = 60) at ghost, and 0.7 (CI: 0.5-0.9, n = 18) at healthy sites.
 
-Wet-season stem CH4 (14.4, CI: 7.0-24.6, n = 194) was 4.1x dry-season (3.5, CI: 2.2-4.9, n = 292). Wet-season water CH4 (41.5, CI: 28.2-56.6, n = 27) was 7.0x dry-season (5.9, CI: 3.5-10.2, n = 65). Ghost forest sites were entirely inundated during the wet season, with all measurements taken over water (n = 19) and none over exposed soil; in the dry season, lower water levels exposed soil surfaces (31 soil, 41 water measurements). Of 75 water-surface flux measurements, ebullition occurred exclusively in the wet season (6 of 23 measurements, 26%; Fig. S1) and only at disturbed sites, where it contributed 19.3% (CP40), 6.5% (BL60), and 4.4% (FLM30) of total water-surface CH4 flux.
+Wet-season stem CH4 (14.4, CI: 7.0-24.6, n = 194) was 4.1x dry-season (3.5, CI: 2.2-4.9, n = 292). Wet-season water CH4 (41.5, CI: 28.2-56.6, n = 27) was 7.0x dry-season (5.9, CI: 3.5-10.2, n = 65). Ghost forest sites were entirely inundated during the wet season, with all measurements taken over water (n = 19) and none over exposed soil; in the dry season, lower water levels exposed soil surfaces (31 soil, 41 water measurements). Of 75 water-surface flux measurements, ebullition occurred exclusively in the wet season (6 of 23 measurements, 26%; Fig. S1) and only at disturbed sites, where it contributed 20.4% (CP40), 7.3% (BL60), and 5.0% (FLM30) of total water-surface CH4 flux.
 
 Stem CO2 was positive across all disturbance classes (overall: 2.7 umol m-2 s-1, CI: 2.4-3.0, n = 486; regenerating highest at 5.1, CI: 4.2-6.2). Leaves were the only component with net CO2 uptake (-1.3, CI: -2.0 to -0.6, n = 19).
 
@@ -47,20 +47,4 @@ At GWP100, CH4 represented 1.1% of combined CO2 + CH4 forcing at healthy sites, 
 [PLACEHOLDER: SRS-6 tower GPP needed for net ecosystem CO2 balance. Chamber CO2 values are respiratory fluxes only.]
 
 
-# Figure Captions
-
-**Figure 1.** Study site map and representative photographs across the hurricane disturbance gradient in southwest Florida mangroves. [PLACEHOLDER: describe specific map elements, photo panels, and site locations once final layout confirmed.]
-
-**Figure 2.** Component-specific CH4 (left) and CO2 (right) flux rates across eight mangrove sites and three seasonal campaigns. Points show individual flux measurements on an inverse hyperbolic sine (asinh) scale; diamonds and horizontal bars indicate bootstrapped means and 95% confidence intervals (5,000 iterations). Sites are ordered by disturbance class: healthy (SRS5, SRS6), regenerating (BL60), and ghost forest (CP40, FLM30). Components are ordered by median CH4 flux magnitude. Grey dashed line marks zero flux.
-
-**Figure 3.** Stem CH4 and CO2 flux variation with measurement height and species identity. Left column (CH4): (a) density ridge plots by height category (0-50, 50-100, 100-150, >150 cm) for each site, colored by disturbance class; (b) jittered observations by height category and site; (c) estimated marginal mean CH4 flux (back-transformed from asinh scale) by species and height category, from a mixed-effects model with species x height interaction, season, and site as random effect, with 95% confidence intervals. Includes alive/dead status for *A. germinans* and *R. mangle*. Right column (CO2): (d) density ridges, (e) jittered observations, (f) estimated marginal means, as for CH4. Flux values in nmol m-2 s-1 (CH4) or umol m-2 s-1 (CO2).
-
-**Figure 4.** [PLACEHOLDER: TLS-derived surface area figure -- awaiting data from Lizzy.]
-
-**Figure 5.** [PLACEHOLDER: Budget closure figure -- awaiting TLS and CARAFE data.]
-
-**Figure 6.** Porewater geochemistry and dissolved gas characterization across the disturbance gradient. (a) Depth profiles of 10 porewater variables (CH4, CO2, salinity, sulfate, ORP, dissolved oxygen, pH, DOC, alkalinity, d13C-CH4) at four sites (November 2025 sampling). (b) Principal components analysis of 11 porewater variables across the same four sites and five depths; points colored by depth and shaped by site, with 68% confidence ellipses per site labeled by disturbance class. CH4 loading vector in red. (c) Porewater dissolved CH4 concentration by depth across three campaigns (October 2022, March 2023, November 2025) at five sites ordered by mean salinity; circle size and color indicate concentration. (d) Porewater salinity by depth across the same campaigns and sites. (e) Porewater salinity versus dissolved CH4 concentration across all sites, depths, and campaigns, with linear fits and Pearson r by disturbance class (ghost, regenerating, healthy).
-
-**Figure S1.** Partitioning of water-surface CH4 flux into diffusive and ebullitive components. Each panel shows a chamber concentration trace with the fitted diffusive slope (dashed line) and detected ebullition events (abrupt upward concentration jumps exceeding 0.1 ppm CH4), grouped by site and season. Ebullition was detected exclusively during the wet season at disturbed sites.
-
-**Figure S2.** Soil CH4 flux (a) and CO2 flux (b) versus pneumatophore density at five sites during the dry season (March 2023). Each panel shows observations with linear regression line, Pearson r, Spearman rho, and p-value.
+[Figure captions maintained in manuscript_methods_text.md]
