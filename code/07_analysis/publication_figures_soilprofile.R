@@ -854,8 +854,8 @@ if (!is.null(fig8_left)) {
     p_A +
     plot_layout(heights = c(3, 3, 4))
 
-  # Right column: CH4 bubbles, sal bubbles, scatter (equal heights)
-  right_col <- p_L / p_M / p_N + plot_layout(heights = c(1, 1, 1))
+  # Right column: CH4 bubbles, sal bubbles, scatter
+  right_col <- p_L / p_M / p_N + plot_layout(heights = c(1, 1, 1.2))
 
   # Combine with cowplot for precise width control
   fig9 <- cowplot::plot_grid(left_col, right_col, ncol = 2, rel_widths = c(3, 2))
