@@ -869,3 +869,4 @@ if (!is.null(fig8_left)) {
 # DONE
 # =============================================================================
 cat("\n===== All soil profile figures saved to output/figures/ =====\n")
+source("code/07_analysis/figure_cleanup.R")

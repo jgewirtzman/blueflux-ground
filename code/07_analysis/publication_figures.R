@@ -2001,3 +2001,4 @@ cat("\n--- Living vs dead figure saved ---\n")
 # =============================================================================
 cat("\n===== All publication figures saved to output/figures/ =====\n")
 cat("Diamond markers (shape 23) indicate mean; boxplot line indicates median.\n")
+source("code/07_analysis/figure_cleanup.R")

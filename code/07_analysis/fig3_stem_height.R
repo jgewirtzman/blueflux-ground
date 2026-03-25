@@ -968,3 +968,4 @@ fig10_combined <- (ch4_col | co2_col) +
 save_pub(fig10_combined, "stem_height_composite_combined", width = 260, height = 280)
 
 cat("\n--- Combined CH4+CO2 height composite figure saved ---\n")
+source("code/07_analysis/figure_cleanup.R")

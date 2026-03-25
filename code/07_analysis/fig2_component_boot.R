@@ -94,3 +94,4 @@ fig2c_combined_boot <- fig2c_ch4_boot / fig2c_co2_boot +
   plot_annotation(theme = theme(legend.position = "bottom"))
 save_pub(fig2c_combined_boot, "component_by_plot_campaign_combined_condensed_boot",
          width = 170, height = 230)
+source("code/07_analysis/figure_cleanup.R")

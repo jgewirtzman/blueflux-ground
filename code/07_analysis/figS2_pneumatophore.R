@@ -62,3 +62,4 @@ p_co2 <- pn %>%
 combined <- ggarrange(p_ch4, p_co2, ncol = 1, heights = c(1, 1.15))
 
 save_pub(combined, "SI_pneumatophore_density", width = 300, height = 200)
+source("code/07_analysis/figure_cleanup.R")

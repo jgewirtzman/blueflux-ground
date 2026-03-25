@@ -225,3 +225,4 @@ fig_s1 <- fig_traces / fig_bars +
   plot_layout(heights = c(1.5, 0.8))
 
 save_pub(fig_s1, "SI_ebullition_partition", width = 340, height = 280)
+source("code/07_analysis/figure_cleanup.R")
