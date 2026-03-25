@@ -47,4 +47,20 @@ At GWP100, CH4 represented 1.1% of combined CO2 + CH4 forcing at healthy sites, 
 [PLACEHOLDER: SRS-6 tower GPP needed for net ecosystem CO2 balance. Chamber CO2 values are respiratory fluxes only.]
 
 
-[Figure captions maintained in manuscript_methods_text.md]
+# Figure Captions
+
+**Figure 1.** Study sites across the hurricane disturbance gradient in southwest Florida mangroves. [PLACEHOLDER: describe map elements and photo panels once layout finalized.]
+
+**Figure 2.** Component-resolved CH4 and CO2 flux rates across the disturbance gradient. Bootstrapped means (diamonds) and 95% confidence intervals (horizontal bars; 5,000 iterations) for CH4 (left, nmol m-2 s-1) and CO2 (right, umol m-2 s-1) from each ecosystem component, by site and season. Individual measurements shown as points. Axes use an inverse hyperbolic sine scale; dashed line marks zero. Sites ordered by disturbance class.
+
+**Figure 3.** Stem CH4 and CO2 flux variation with measurement height and species identity. (**a**,**d**) Density distributions of stem flux by height category at sites with species-level identification (BL60, SRS5, SRS6). (**b**,**e**) Individual observations by height category and site. (**c**,**f**) Estimated marginal means (95% CI) from mixed-effects models with species x height interaction, season, and site as random effect, back-transformed from asinh scale. Includes alive/dead status for *A. germinans* and *R. mangle*. Left column: CH4 (nmol m-2 s-1); right column: CO2 (umol m-2 s-1).
+
+**Figure 4.** [PLACEHOLDER: TLS-derived surface areas -- awaiting data from Lizzy.]
+
+**Figure 5.** [PLACEHOLDER: Budget closure -- awaiting TLS and CARAFE data.]
+
+**Figure 6.** Porewater geochemistry across the disturbance gradient. (**a**) Depth profiles of 10 porewater variables at four sites (November 2025). (**b**) Principal components analysis of 11 porewater variables; 68% confidence ellipses labeled by disturbance class. CH4 loading vector in red. (**c**) Dissolved CH4 concentration by depth across three campaigns (October 2022, March 2023, November 2025) at five sites; circle size and color indicate concentration. (**d**) Porewater salinity by depth. (**e**) Salinity versus dissolved CH4, with linear fits and Pearson r by disturbance class.
+
+**Figure S1.** Ebullition partitioning of water-surface CH4 flux. (**a**) Diffusive and ebullitive CH4 flux components for each site and season. Ebullition occurred exclusively during the wet season at disturbed sites (CP40: 20.4%, BL60: 7.3%, FLM30: 5.0% of total water CH4). (**b**) Representative chamber traces showing the partitioning procedure: raw concentration time series with detected ebullition events (jumps > 0.1 ppm), step-corrected diffusive baseline, and goFlux model fit.
+
+**Figure S2.** Soil flux versus pneumatophore density. (**a**) CH4 and (**b**) CO2 flux versus *A. germinans* pneumatophore density at five sites (dry season). Each panel shows linear fit, Pearson r, Spearman rho, and p-value.
