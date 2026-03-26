@@ -177,7 +177,7 @@ review <- tibble(flux_id = no_aux_ids) %>%
     date_field = coalesce(as.Date(date_add), date_clean),
     start_time_field = format(start_time_add, "%H:%M:%S"),
     end_time_field = format(end_time_add, "%H:%M:%S"),
-    diameter_inches = coalesce(diameter_add, as.numeric(diameter_comp)),
+    diameter_cm = coalesce(diameter_add, as.numeric(diameter_comp)),
 
     # Map chamber to known Vcham
     Vcham = case_when(
@@ -193,10 +193,10 @@ review <- tibble(flux_id = no_aux_ids) %>%
 
     # Map to Area (surface area cm2)
     Area = case_when(
-      chamber_class == "HA" & !is.na(diameter_inches) ~ {
+      chamber_class == "HA" & !is.na(diameter_cm) ~ {
         # HA: lateral surface area of cylinder = 2 * pi * r * h
-        # where r = stem radius, h = A-series chamber height (3 inches)
-        r_cm <- (diameter_inches / 2) * 2.54
+        # where r = stem radius (cm), h = A-series chamber height (3 inches)
+        r_cm <- diameter_cm / 2
         h_cm <- 3 * 2.54  # A-series height = 3 inches
         2 * pi * r_cm * h_cm
       },
@@ -277,7 +277,7 @@ review %>%
 review_out <- review %>%
   select(
     flux_id, plot, date_field, component, analyzer, chamber, chamber_class,
-    diameter_inches, start_time_field, end_time_field, time_status,
+    diameter_cm, start_time_field, end_time_field, time_status,
     Vcham, Area, Vtube, Vinst, Vtot, Tcham, Pcham, ready
   )
 

@@ -180,23 +180,23 @@ assign_volumes_and_areas <- function(simplified_vol_file, additional_vol_file, s
           a_dim <- surface_area_data$a_inch[surface_area_data$chamber_class == "A"]
           
           if (length(a_vol) > 0 && length(a_dim) > 0) {
-            cylinder_radius_cm <- (diameter / 2) * 2.54  # inches to cm
-            cylinder_height_cm <- a_dim * 2.54  # inches to cm  
+            cylinder_radius_cm <- diameter / 2  # diameter already in cm
+            cylinder_height_cm <- a_dim * 2.54  # chamber height inches to cm
             cylinder_vol_cm3 <- pi * cylinder_radius_cm^2 * cylinder_height_cm
             a_vol - cylinder_vol_cm3
           } else {
             NA_real_
           }
         },
-        
+
         # HB: B series chamber volume minus cylinder volume
         chamber_class == "HB" ~ {
           b_vol <- base_chamber_volumes$avg_chamber_volume_cm3[base_chamber_volumes$chamber_class == "B"]
           b_dim <- surface_area_data$a_inch[surface_area_data$chamber_class == "B"]
-          
+
           if (length(b_vol) > 0 && length(b_dim) > 0) {
-            cylinder_radius_cm <- (diameter / 2) * 2.54  # inches to cm
-            cylinder_height_cm <- b_dim * 2.54  # inches to cm
+            cylinder_radius_cm <- diameter / 2  # diameter already in cm
+            cylinder_height_cm <- b_dim * 2.54  # chamber height inches to cm
             cylinder_vol_cm3 <- pi * cylinder_radius_cm^2 * cylinder_height_cm
             b_vol - cylinder_vol_cm3
           } else {
@@ -255,20 +255,20 @@ assign_volumes_and_areas <- function(simplified_vol_file, additional_vol_file, s
         chamber_class == "HA" ~ {
           a_dim <- surface_area_data$a_inch[surface_area_data$chamber_class == "A"]
           if (length(a_dim) > 0) {
-            cylinder_radius_cm <- (diameter / 2) * 2.54  # inches to cm
-            cylinder_height_cm <- a_dim * 2.54  # inches to cm
+            cylinder_radius_cm <- diameter / 2  # diameter already in cm
+            cylinder_height_cm <- a_dim * 2.54  # chamber height inches to cm
             2 * pi * cylinder_radius_cm * cylinder_height_cm
           } else {
             NA_real_
           }
         },
-        
-        # HB: lateral surface area of cylinder (2πrh)  
+
+        # HB: lateral surface area of cylinder (2πrh)
         chamber_class == "HB" ~ {
           b_dim <- surface_area_data$a_inch[surface_area_data$chamber_class == "B"]
           if (length(b_dim) > 0) {
-            cylinder_radius_cm <- (diameter / 2) * 2.54  # inches to cm
-            cylinder_height_cm <- b_dim * 2.54  # inches to cm
+            cylinder_radius_cm <- diameter / 2  # diameter already in cm
+            cylinder_height_cm <- b_dim * 2.54  # chamber height inches to cm
             2 * pi * cylinder_radius_cm * cylinder_height_cm
           } else {
             NA_real_
