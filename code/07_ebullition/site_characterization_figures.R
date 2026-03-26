@@ -28,7 +28,7 @@ theme_pub <- function(base_size = 11) {
     )
 }
 
-season_colors <- c("wet (Oct 2022)" = "#4682B4", "dry (Mar 2023)" = "#D2691E", "Nov 2025" = "#9370DB")
+season_colors <- c("wet (Oct 2022)" = "#4682B4", "dry (Mar 2023)" = "#D2691E", "Oct 2025" = "#9370DB")
 disturbance_colors <- c("healthy" = "#228B22", "regenerating" = "#808080", "ghost" = "#8B4513")
 site_disturbance <- c(BL60 = "regenerating", CP40 = "ghost", FLM30 = "ghost",
                       SRS5 = "healthy", SRS6 = "healthy", SE1 = "scrub", MI = "ghost")
@@ -77,14 +77,14 @@ gc <- bind_rows(d1c, d2c) %>%
   select(site, season, sample_type, depth_cm, CH4_uM)
 
 # =============================================
-# 2. Nov 2025 Picarro data
+# 2. Oct 2025 Picarro data
 # =============================================
 cat("Loading Picarro data...\n")
 pw <- read_csv("/Users/jongewirtzman/My Drive/Research/Blueflux/microbes/merged_porewater_all_parameters.csv",
                show_col_types = FALSE) %>%
   mutate(
     site = Site,
-    season = "Nov 2025",
+    season = "Oct 2025",
     sample_type = ifelse(Depth_cm == "Surface", "surface_water", "porewater"),
     depth_cm = case_when(Depth_cm == "Surface" ~ -5, TRUE ~ as.numeric(Depth_cm)),
     CH4_uM = CH4_mean_uM,
@@ -248,8 +248,8 @@ cat("  Saved layout 3\n")
 # =============================================
 cat("Plotting layout 4: bubbles...\n")
 
-season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Nov 2025" = "Nov 25")
-season_short_levels <- c("Oct 22", "Mar 23", "Nov 25")
+season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Oct 2025" = "Oct 25")
+season_short_levels <- c("Oct 22", "Mar 23", "Oct 25")
 
 # Order sites by mean salinity (lowest to highest)
 site_sal_order <- sal_sum %>%
@@ -259,7 +259,7 @@ site_sal_order <- sal_sum %>%
   pull(site)
 
 # Order seasons chronologically
-season_chron <- c("wet (Oct 2022)", "dry (Mar 2023)", "Nov 2025")
+season_chron <- c("wet (Oct 2022)", "dry (Mar 2023)", "Oct 2025")
 
 ch4_sum_bubble <- ch4_sum %>%
   filter(depth_cm >= 0) %>%

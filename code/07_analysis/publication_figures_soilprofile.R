@@ -596,8 +596,8 @@ if (!is.null(fig8_left)) {
     ((p * Vg / (R * TK)) + (KH * p * Vw)) / Vw * 1e6
   }
 
-  season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Nov 2025" = "Nov 25")
-  season_short_levels <- c("Oct 22", "Mar 23", "Nov 25")
+  season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Oct 2025" = "Oct 25")
+  season_short_levels <- c("Oct 22", "Mar 23", "Oct 25")
   site_disturbance_mc <- c(BL60 = "regenerating", CP40 = "ghost", FLM30 = "ghost",
                            SRS5 = "healthy", SRS6 = "healthy")
   core_sites_mc <- c("BL60", "CP40", "FLM30", "SRS5", "SRS6")
@@ -635,7 +635,7 @@ if (!is.null(fig8_left)) {
 
   pw_mc <- read_csv("/Users/jongewirtzman/My Drive/Research/Blueflux/microbes/merged_porewater_all_parameters.csv",
                     show_col_types = FALSE) %>%
-    mutate(site = Site, season = "Nov 2025",
+    mutate(site = Site, season = "Oct 2025",
            sample_type = ifelse(Depth_cm == "Surface", "surface_water", "porewater"),
            depth_cm = case_when(Depth_cm == "Surface" ~ -5, TRUE ~ as.numeric(Depth_cm)),
            CH4_uM = CH4_mean_uM, PSU_val = PSU)
