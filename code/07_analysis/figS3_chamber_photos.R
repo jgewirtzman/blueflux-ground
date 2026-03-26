@@ -15,14 +15,14 @@ photo_dir <- "output/figures/photos"
 crop_file <- "output/figures/photos/crop_offsets.csv"
 
 photos <- list(
-  list(file = "stem_chamber.jpg",                     label = "(a) Stem"),
-  list(file = "root_chamber.jpg",                     label = "(b) Prop root"),
-  list(file = "leaf_chamber.jpg",                     label = "(c) Leaf"),
-  list(file = "soil_collar_chamber.jpg",              label = "(d) Soil collar + dome"),
-  list(file = "soil_chamber.jpg",                     label = "(e) Soil cylinder"),
-  list(file = "soil_chamber_with_pneumatophores.jpg", label = "(f) Soil w/ pneumatophores"),
-  list(file = "floating_chamber.jpg",                 label = "(g) Floating water"),
-  list(file = "cwd_chamber.jpg",                      label = "(h) Coarse woody debris")
+  list(file = "soil_chamber.jpg",                     label = "(a) Soil cylinder"),
+  list(file = "soil_chamber_with_pneumatophores.jpg", label = "(b) Soil w/ pneumatophores"),
+  list(file = "soil_collar_chamber.jpg",              label = "(c) Soil collar + dome"),
+  list(file = "floating_chamber.jpg",                 label = "(d) Floating water"),
+  list(file = "root_chamber.jpg",                     label = "(e) Prop root"),
+  list(file = "stem_chamber.jpg",                     label = "(f) Stem"),
+  list(file = "cwd_chamber.jpg",                      label = "(g) Coarse woody debris"),
+  list(file = "leaf_chamber.jpg",                     label = "(h) Leaf")
 )
 
 target_ratio <- 4 / 3
