@@ -83,7 +83,8 @@ Rscript run_all.R 5     # run from step 5 onward
 | 16 | `07_analysis/fig6_porewater_pca.R` | Fig 6: Porewater PCA + depth profiles |
 | 17 | `07_analysis/figS1_ebullition.R` | Fig S1: Ebullition partitioning |
 | 18 | `07_analysis/figS2_pneumatophore.R` | Fig S2: Pneumatophore density vs flux |
-| 19 | `07_analysis/figure_cleanup.R` | Archive non-main figures |
+| 19 | `07_analysis/figS3_chamber_photos.R` | Fig S3: Chamber type photographs |
+| 20 | `07_analysis/figure_cleanup.R` | Archive non-main figures |
 
 Steps 3 and 13 require interactive RStudio sessions and are skipped by `run_all.R`.
 
@@ -99,6 +100,7 @@ Steps 3 and 13 require interactive RStudio sessions and are skipped by `run_all.
 | Fig 6 | `pub_pca_porewater_full_composite` | Porewater geochemistry |
 | Fig S1 | `pub_SI_ebullition_partition` | Ebullition partitioning |
 | Fig S2 | `pub_SI_pneumatophore_density` | Pneumatophore density vs flux |
+| Fig S3 | `pub_SI_chamber_photos` | Chamber type photographs |
 
 ## Instruments
 
