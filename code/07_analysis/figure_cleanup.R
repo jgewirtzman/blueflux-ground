@@ -14,7 +14,8 @@ keep_stems <- c(
   "pub_pca_porewater_full_composite",                        # Fig 6
   # SI
   "pub_SI_ebullition_partition",                              # Fig S1
-  "pub_SI_pneumatophore_density"                              # Fig S2
+  "pub_SI_pneumatophore_density",                             # Fig S2
+  "pub_SI_chamber_photos"                                     # Fig S3
 )
 
 all_files <- list.files(figdir, pattern = "\\.(pdf|png)$", full.names = FALSE)

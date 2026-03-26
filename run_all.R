@@ -114,8 +114,11 @@ run_step(17, "Fig S1: Ebullition partitioning",
 run_step(18, "Fig S2: Pneumatophore density vs flux",
           "code/07_analysis/figS2_pneumatophore.R")
 
+run_step(19, "Fig S3: Chamber type photographs",
+          "code/07_analysis/figS3_chamber_photos.R")
+
 # ---- CLEANUP -----------------------------------------------------------------
-run_step(19, "Figure cleanup (archive non-main figures)",
+run_step(20, "Figure cleanup (archive non-main figures)",
           "code/07_analysis/figure_cleanup.R")
 
 # ---- DONE --------------------------------------------------------------------
