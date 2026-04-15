@@ -588,7 +588,7 @@ make_slim_overlay_alk_dic <- function(data) {
     labs(y = expression(TA*","~DIC~(mu*M)), x = NULL) +
     coord_flip() +
     theme_bw(base_size = 14) +
-    theme(legend.position = c(0.98, 0.02),
+    theme(legend.position = c(0.98, 0.12),
           legend.justification = c(1, 0),
           legend.background = element_rect(fill = alpha("white", 0.7),
                                            color = NA),
