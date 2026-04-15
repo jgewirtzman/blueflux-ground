@@ -103,6 +103,53 @@ cat("  Variables:", ncol(df), "columns\n")
 
 
 # =============================================================================
+# Compute DIC from pH + Alkalinity via carbonate-system solve (seacarb::carb)
+# ---------------------------------------------------------------------------
+# flag = 8  : inputs are pH and total alkalinity (AT)
+# Inputs required by seacarb: AT in mol/kg, pH scale specified, S in PSU, T in C
+# pH scale: we pass pHscale = "T" (total). Field combination electrodes are
+#   nominally NBS but the liquid-junction bias in saline water ~cancels the
+#   NBS->Total offset (~0.1 pH unit), so treating probe pH as Total is the
+#   de facto convention in porewater/estuarine work. seacarb's NBS<->SWS
+#   conversion also fails at the low-salinity tail of this dataset.
+#   Residual pH-scale uncertainty (~0.02 units) -> ~5% DIC uncertainty,
+#   within typical alkalinity measurement error.
+# Alkalinity_uM (umol/L) -> mol/kg : divide by 1e6 (porewater density ~ 1 kg/L;
+#   error <3% even at high salinity, well below measurement uncertainty)
+# Output: DIC_uM (umol/L) to match CO2_mean_uM, Alkalinity_uM
+# =============================================================================
+if (requireNamespace("seacarb", quietly = TRUE)) {
+  cat("\n--- Computing DIC from pH + Alkalinity (seacarb::carb, flag=8) ---\n")
+  df <- df %>%
+    mutate(
+      DIC_uM = {
+        ok <- !is.na(pH) & !is.na(Alkalinity_uM) & !is.na(PSU) & !is.na(TempC)
+        out <- rep(NA_real_, n())
+        if (any(ok)) {
+          cb <- seacarb::carb(
+            flag    = 8,
+            var1    = pH[ok],
+            var2    = Alkalinity_uM[ok] / 1e6,   # umol/L -> mol/kg
+            S       = PSU[ok],
+            T       = TempC[ok],
+            pHscale = "T",
+            warn    = "n"
+          )
+          out[ok] <- cb$DIC * 1e6                # mol/kg -> umol/L
+        }
+        out
+      }
+    )
+  cat("  DIC computed for", sum(!is.na(df$DIC_uM)), "of", nrow(df), "samples\n")
+  cat("  DIC range:", round(min(df$DIC_uM, na.rm = TRUE)), "-",
+      round(max(df$DIC_uM, na.rm = TRUE)), "uM\n")
+} else {
+  warning("seacarb not installed; DIC column will be NA. Install with install.packages('seacarb').")
+  df$DIC_uM <- NA_real_
+}
+
+
+# =============================================================================
 # FIGURE 1: Redox & Geochemistry Depth Profiles (multi-panel)
 # ORP, pH, sulfide, dissolved O2 as depth profiles by site
 # =============================================================================
@@ -507,8 +554,54 @@ p_ph   <- make_slim_panel(df_nosurface, "pH",
                            expression(pH))
 p_doc  <- make_slim_panel(df_nosurface, "DOC_mg_L",
                            expression(DOC~(mg~L^{-1})))
-p_alk  <- make_slim_panel(df_nosurface, "Alkalinity_uM",
-                           expression(Alk.~(mu*M)))
+# Overlay panel: Alkalinity (solid, filled) + DIC (dashed, open) by site.
+# The gap between the two carries the pathway signal (~1:1 SR vs excess DIC
+# from aerobic/methanotrophic additions vs TA>DIC from carbonate dissolution).
+make_slim_overlay_alk_dic <- function(data) {
+  long <- data %>%
+    select(Site, Depth_numeric, Alkalinity_uM, DIC_uM) %>%
+    tidyr::pivot_longer(c(Alkalinity_uM, DIC_uM),
+                        names_to = "var", values_to = "val") %>%
+    filter(!is.na(val)) %>%
+    mutate(var = factor(var, levels = c("Alkalinity_uM", "DIC_uM"),
+                        labels = c("TA", "DIC")),
+           Site = droplevels(Site))
+  means <- long %>% group_by(Site, Depth_numeric, var) %>%
+    summarise(mean_val = mean(val, na.rm = TRUE), .groups = "drop")
+  ggplot() +
+    geom_line(data = means,
+              aes(x = Depth_numeric, y = mean_val,
+                  color = Site, group = interaction(Site, var),
+                  linetype = var),
+              linewidth = 0.6, alpha = 0.8) +
+    geom_point(data = long,
+               aes(x = Depth_numeric, y = val,
+                   color = Site, shape = Site, fill = var),
+               size = 3, stroke = 0.6) +
+    scale_x_continuous(breaks = c(0, 15, 45, 90), trans = "reverse") +
+    scale_color_manual(values = site_colors, guide = "none") +
+    scale_shape_manual(values = site_shapes, guide = "none") +
+    scale_linetype_manual(values = c(TA = "solid", DIC = "dashed"),
+                          name = NULL) +
+    scale_fill_manual(values = c(TA = "black", DIC = "white"),
+                      guide = "none") +
+    labs(y = expression(TA*","~DIC~(mu*M)), x = NULL) +
+    coord_flip() +
+    theme_bw(base_size = 14) +
+    theme(legend.position = c(0.98, 0.02),
+          legend.justification = c(1, 0),
+          legend.background = element_rect(fill = alpha("white", 0.7),
+                                           color = NA),
+          legend.key.size = unit(4, "mm"),
+          legend.text = element_text(size = 7),
+          legend.margin = margin(0, 2, 0, 2),
+          axis.title = element_text(size = 7.5, face = "plain"),
+          axis.text.y = element_text(size = 14),
+          axis.text.x = element_text(size = 13, angle = 45, hjust = 1),
+          panel.grid.minor = element_blank(),
+          plot.margin = margin(2, 3, 2, 2))
+}
+p_alk  <- make_slim_overlay_alk_dic(df_nosurface)
 p_d13ch4 <- make_slim_panel(df_nosurface, "d13C_CH4_mean",
                               "\u03B4\u00B9\u00B3CH\u2084 (\u2030)")
 # d13C-CO2 excluded due to H2S interference in analysis
@@ -535,6 +628,37 @@ fig7 <- fig7_row1 / fig7_row2 +
   plot_layout(heights = c(1, 1))
 
 save_pub(fig7, "porewater_depth_profiles", width = 210, height = 110)
+
+
+# =============================================================================
+# SI FIGURE: TA vs DIC diagnostic scatter (porewater only; surface excluded
+# because advective exchange confounds endogenous-metabolism signal)
+# Slope ~1 => sulfate reduction dominant; slope <1 => excess DIC from
+# aerobic/methanotrophic additions; slope >1 => carbonate dissolution or
+# other TA-generating pathway.
+# =============================================================================
+cat("\n--- SI Figure: TA vs DIC scatter ---\n")
+
+fig_ta_dic <- df_nosurface %>%
+  filter(!is.na(DIC_uM), !is.na(Alkalinity_uM)) %>%
+  ggplot(aes(x = DIC_uM, y = Alkalinity_uM, color = Site, shape = Site)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed",
+              color = "grey50", linewidth = 0.5) +
+  geom_smooth(aes(group = Site), method = "lm", se = FALSE,
+              linewidth = 0.5, alpha = 0.6) +
+  geom_point(size = 3.5) +
+  scale_color_manual(values = site_colors, name = "Site",
+                     labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                "BL60 (regen.)", "CP40 (ghost)")) +
+  scale_shape_manual(values = site_shapes, name = "Site",
+                     labels = c("SRS5 (healthy)", "SRS6 (healthy)",
+                                "BL60 (regen.)", "CP40 (ghost)")) +
+  labs(x = expression(DIC~(mu*M)),
+       y = expression(Total~Alkalinity~(mu*M))) +
+  theme_pub() +
+  theme(legend.position = "right")
+
+save_pub(fig_ta_dic, "SI_ta_vs_dic", width = 140, height = 110)
 
 
 # =============================================================================
