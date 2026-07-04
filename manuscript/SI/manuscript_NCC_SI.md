@@ -84,11 +84,9 @@ Stem CH4 declines with height, so a stand budget requires integrating flux above
 
 ### S.T2 Tide and inundation scenarios
 
-Inundation determines which surfaces emit. Tidal intact sites (SRS5, SRS6) were represented by high-tide (fully flooded, water-surface emission) and low-tide (exposed soil emission) states averaged 50/50. The ghost inundation state varied interannually: the dropped March 2022 dry campaign found ghost sites exposed (soil emitting), whereas the two campaigns used in the budget (October 2022 and March 2023) had positive measured water depth (6.6–16.1 cm), with the water surface emitting.
+Inundation determines which surfaces emit. Tidal sites (SRS5, SRS6) were represented by high-tide (fully flooded, water-surface emission) and low-tide (exposed soil emission) states averaged 50/50. Ghost sites (CP40, FLM30) had positive measured water depth in both analysed campaigns (dry-season means 6.6–8.7 cm; lower than the wet season but not drained), so they were treated as inundated in both and emitted through the water surface.
 
-The airborne top-down (CARAFE) adjudicates which chamber-scale state is representative of the landscape (supp_carafe_inundation_adjudication.csv). Bottom-up ghost areal flux under the flooded (water) assumption matches the airborne ghost end-member at every campaign: wet-season October 2022 bottom-up 46 vs airborne 51 ± 27, and dry-season March 2023 bottom-up 11 vs airborne ~4.5 nmol m−2 s−1. Under an exposed-soil assumption, however, the dry-2022 bottom-up (65 nmol m−2 s−1, from the high exposed-soil chamber flux of ~62) overshoots the airborne dry-2022 ghost value (5 ± 4) roughly 13-fold. The elevated exposed-soil chamber fluxes are therefore localized hotspots that do not scale to the landscape; the flooded/water treatment used in the budget is top-down validated, and dry-season ghost emission is low in both years regardless of the exposed/flooded microstate. Treating dry-season ghost sites as exposed soil would have overestimated their emission and broken closure with the airborne flux.
-
-For intact sites, bottom-up matches the airborne mangrove-forest end-member in the dry season (Mar 2023 ~1.6 vs airborne 2.0/−2.5) but falls below the wet-season airborne value (Oct 2022 6.9 vs 29 ± 16 nmol m−2 s−1) even under generous soil-exposure fractions (the intact soil term cannot close the gap because intact soil rates are low). This points to a genuine unmeasured wet-season intact term — ebullition, tidal creek and water-surface emission, or airborne footprint mismatch — rather than an inundation-fraction error. Because ghost emission is overwhelmingly a directly measured surface flux scaled by inundated area, structural uncertainty in the closed budgets is concentrated in the intact class (Fig. S7).
+As a robustness check we recomputed the annual ghost budget substituting the exposed-soil pathway (the ghost soil CH4 rate measured when sites were dry, pooled from FLM30 and MI, ≈87 mg CH4 m−2 d−1) for the flooded water-surface pathway. The ghost annual budget was insensitive to this substitution: ≈13.0 g CH4 m−2 yr−1 (flooded, water) versus ≈12.4 (dry, exposed soil), and ≈16.1 for a wet-flooded / dry-exposed seasonal mix, because ghost exposed-soil and flooded-water CH4 rates are of comparable magnitude. The sink-to-source result is therefore insensitive to the inundation assumption. Because ghost emission is overwhelmingly a directly measured surface flux scaled by inundated area, structural uncertainty is concentrated in the intact class (Fig. S7).
 
 ### S.T3 Coarse-woody-debris surface-area sensitivity
 
@@ -152,7 +150,7 @@ _[If microbial/metagenomic data are added, they may appear as an added Fig. 5 pa
 - **S5** Stand-level budgets and net forcing by class, with Monte Carlo 95% CIs. [net_forcing_by_class; mc_*]
 - **S6** Literature leaf Rd25 and LAI values used in the CO2 budget. [manuscript/literature/value_catalog.csv]
 - **S7** Context-site component areal CH4/CO2 rates (MI, RB10, SE1) with 95% CIs and n, alongside core-site rates. [supp_context_site_areal_rates.csv]
-- **S8** Ghost inundation: airborne (CARAFE) adjudication of bottom-up flux under flooded vs exposed-soil assumptions by campaign, annual sensitivity, and the regenerating upscaled estimate. [supp_carafe_inundation_adjudication.csv; supp_ghost_inundation_sensitivity.csv; supp_regen_budget.csv]
+- **S8** Ghost inundation sensitivity (flooded vs exposed-soil vs mixed) and the regenerating upscaled estimate. [supp_ghost_inundation_sensitivity.csv; supp_regen_budget.csv]
 
 ---
 
