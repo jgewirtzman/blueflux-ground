@@ -22,7 +22,7 @@ library(tidyr)
 cat("=== EXPORT FOR JULIO COLLABORATION ===\n\n")
 
 # Read the combined dataset
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
 
 # Site metadata
 site_meta <- tibble(
@@ -317,7 +317,7 @@ julio_export <- bind_rows(tree_rows, soil_rows)
 # PART 4: SAVE AND REPORT
 # =============================================================================
 
-outfile <- "output/julio_collab_tree_fluxes.csv"
+outfile <- "output/data_products/julio_collab_tree_fluxes.csv"
 write_csv(julio_export, outfile)
 cat("\nSaved:", outfile, "\n")
 cat("Total rows:", nrow(julio_export), "\n\n")

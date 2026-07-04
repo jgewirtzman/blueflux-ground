@@ -15,7 +15,7 @@ library(dplyr)
 cat("=== Applying HA/HB chamber corrections ===\n")
 
 corrections_file <- "intermediate/ha_hb_flux_corrections.csv"
-dataset_file <- "output/combined_gas_flux_dataset.csv"
+dataset_file <- "output/data_products/combined_gas_flux_dataset.csv"
 
 if (!file.exists(corrections_file)) {
   cat("No corrections file found at", corrections_file, "— skipping\n")

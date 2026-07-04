@@ -60,7 +60,7 @@ cat("=== BUILD MISSING AUXFILES ===\n\n")
 cat("Step 1: Loading data...\n")
 
 # Clean dataset (for the 23 no-data measurements)
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
 failed <- df %>% filter(flux_status == "no_data")
 
 # All existing auxfile IDs

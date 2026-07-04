@@ -1,0 +1,17 @@
+gas,campaign,class,flux,se,units,source,note
+CH4,Apr 2022,mangrove_forest,3.8,8,nmol m-2 s-1,Table S3 flight mean,near-zero dry-season; flights -8..9
+CH4,Oct 2022,mangrove_forest,29,16,nmol m-2 s-1,paper text (deployment mean),wet-season peak; table flights 25-32
+CH4,Feb 2023,mangrove_forest,2.0,7,nmol m-2 s-1,Table S3 flight mean,near-zero dry-season
+CH4,Apr 2023,mangrove_forest,-2.5,10,nmol m-2 s-1,Table S3 flight mean,near-zero/slightly negative
+CH4,Apr 2022,ghost_forest,5,4,nmol m-2 s-1,Table S3,source
+CH4,Oct 2022,ghost_forest,51,27,nmol m-2 s-1,paper text (deployment mean),PEAK; > mangrove forest 29; table flight ~43
+CH4,Feb 2023,ghost_forest,7,7,nmol m-2 s-1,Table S3,source
+CH4,Apr 2023,ghost_forest,2,13,nmol m-2 s-1,Table S3,source (approx; sparse sampling)
+CO2,Apr 2022,mangrove_forest,-10.8,5,umol m-2 s-1,Table S2 flight mean,strong sink
+CO2,Oct 2022,mangrove_forest,-11.5,5,umol m-2 s-1,Table S2 flight mean,strong sink
+CO2,Feb 2023,mangrove_forest,-11.3,4,umol m-2 s-1,Table S2 flight mean,strong sink; paper max single flight -11
+CO2,Apr 2023,mangrove_forest,-11.7,4,umol m-2 s-1,Table S2 flight mean,strong sink
+CO2,Apr 2022,ghost_forest,0.2,0.5,umol m-2 s-1,Table S2,near-zero/slight source
+CO2,Oct 2022,ghost_forest,-1,2,umol m-2 s-1,Table S2,near-zero
+CO2,Feb 2023,ghost_forest,-2.5,2,umol m-2 s-1,Table S2,near-zero
+CO2,Apr 2023,ghost_forest,1.1,0.8,umol m-2 s-1,paper text (deployment mean),small source

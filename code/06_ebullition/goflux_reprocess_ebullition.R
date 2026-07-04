@@ -20,7 +20,7 @@ library(patchwork)
 OUTPUT_DIR <- "output/ebullition"
 PLACEMENTS_CSV <- file.path(OUTPUT_DIR, "placements_summary.csv")
 TRACES_RDS     <- file.path(OUTPUT_DIR, "all_traces.rds")
-PROCESSED_FLUX <- "output/soil_water_surface_fluxes.csv"
+PROCESSED_FLUX <- "output/data_products/soil_water_surface_fluxes.csv"
 
 # ---- LOAD DATA ---------------------------------------------------------------
 

@@ -15,5 +15,5 @@ Combine results from all analyzers and measurement types into a single master da
 
 ## Outputs
 
-- `output/combined_gas_flux_dataset.csv` — Master dataset (all measurements)
-- `output/combined_gas_flux_dataset_with_month_year.csv` — With temporal binning
+- `output/data_products/combined_gas_flux_dataset.csv` — Master dataset (all measurements)
+- `output/data_products/combined_gas_flux_dataset_with_month_year.csv` — With temporal binning

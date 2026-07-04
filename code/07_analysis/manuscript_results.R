@@ -1,7 +1,7 @@
 # =============================================================================
 # Manuscript Results: Numerical summaries for all manuscript sections
 # =============================================================================
-# Generates a text file (output/manuscript_results.txt) with all key statistics
+# Generates a text file (manuscript/text/manuscript_results.txt) with all key statistics
 # referenced in the manuscript. Each section maps to a Results subsection.
 #
 # Run from the blueflux-ground project root.
@@ -16,7 +16,7 @@ library(boot)
 library(tidyr)
 
 # --- Output sink -------------------------------------------------------------
-sink("output/manuscript_results.txt", split = TRUE)
+sink("manuscript/text/manuscript_results.txt", split = TRUE)
 cat("Manuscript Results — generated", format(Sys.time(), "%Y-%m-%d %H:%M"), "\n\n")
 
 # --- Helper: bootstrapped mean + 95% CI -------------------------------------
@@ -46,7 +46,7 @@ cat("\n================================================================\n")
 cat("DATA LOADING\n")
 cat("================================================================\n\n")
 
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
 
 # Main study plots
 selected_plots <- c("BL60", "CP40", "FLM30", "MI", "SE1", "SRS5", "SRS6", "RB10")
@@ -72,7 +72,7 @@ df <- df %>%
 cat("  Loaded:", nrow(df), "observations after filtering\n")
 
 # Also load flux statistics table
-flux_stats <- read_csv("output/flux_statistics_table.csv", show_col_types = FALSE)
+flux_stats <- read_csv("output/data_products/flux_statistics_table.csv", show_col_types = FALSE)
 cat("  Flux statistics table:", nrow(flux_stats), "rows\n")
 
 
@@ -666,7 +666,7 @@ cat("\n================================================================\n")
 cat("R.6: POREWATER GEOCHEMISTRY (Fig 6)\n")
 cat("================================================================\n\n")
 
-pw <- read_csv("/Users/jongewirtzman/My Drive/Research/Blueflux/microbes/merged_porewater_all_parameters.csv",
+pw <- read_csv(file.path(Sys.getenv("BLUEFLUX_MICROBES_DIR", "data/porewater"), "merged_porewater_all_parameters.csv"),
                show_col_types = FALSE)
 
 # Apply DO correction
@@ -773,8 +773,8 @@ if (nrow(pca_df) >= 3 && length(keep_vars) >= 2) {
 # --- Multi-campaign porewater characterization (Fig S3) ---
 cat("\n--- Multi-campaign dissolved CH4 and salinity (Fig S3) ---\n")
 
-if (file.exists("output/site_characterization_salinity_ch4.csv")) {
-  site_char <- read_csv("output/site_characterization_salinity_ch4.csv", show_col_types = FALSE)
+if (file.exists("output/data_products/site_characterization_salinity_ch4.csv")) {
+  site_char <- read_csv("output/data_products/site_characterization_salinity_ch4.csv", show_col_types = FALSE)
 
   cat("\n  Dissolved CH4 by site x season x type (uM):\n")
   site_char %>%
@@ -922,4 +922,4 @@ cat("END OF MANUSCRIPT RESULTS\n")
 cat("================================================================\n")
 
 sink()
-cat("Results saved to: output/manuscript_results.txt\n")
+cat("Results saved to: manuscript/text/manuscript_results.txt\n")

@@ -7,7 +7,7 @@
 #
 # Depends on:
 #   - output/ebullition/corrected_time_windows.csv (from interactive picker)
-#   - output/combined_gas_flux_dataset.csv
+#   - output/data_products/combined_gas_flux_dataset.csv
 #   - Raw analyzer data + auxfiles for reprocessing
 # =============================================================================
 
@@ -36,7 +36,7 @@ cat("Traces to reprocess with new windows:", nrow(windows), "\n\n")
 # ---- Load combined dataset ---------------------------------------------------
 
 # Read current combined dataset (after ebullition integration and HA/HB corrections)
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
 cat("Input dataset:", nrow(df), "rows\n")
 
 # ---- STEP 1: Remove artifacts -----------------------------------------------
@@ -305,7 +305,7 @@ for (i in seq_len(nrow(reprocessed_df))) {
 }
 
 # Save
-write_csv(df, "output/combined_gas_flux_dataset.csv")
+write_csv(df, "output/data_products/combined_gas_flux_dataset.csv")
 cat("\nSaved updated dataset:", nrow(df), "rows\n")
 
 # ---- Summary -----------------------------------------------------------------
