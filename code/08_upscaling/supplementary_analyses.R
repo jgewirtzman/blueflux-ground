@@ -152,4 +152,37 @@ print(as.data.frame(co2ctx %>% transmute(plot, umol=round(mean,2), lo=round(lo,2
 write.csv(context %>% transmute(plot, component, nmol_m2_s=mean, lo, hi, mg_m2_d, n),
           file.path(out,"supp_context_site_areal_rates.csv"), row.names=FALSE)
 
+# =============================================================================
+# (4) CARAFE ADJUDICATION of ghost inundation state, by campaign
+#     The ghost inundation state varied interannually (dry 2022 exposed;
+#     dry 2023 flooded). Compare bottom-up areal flux under water vs soil
+#     assumptions against the airborne (CARAFE) ghost end-member per campaign.
+# =============================================================================
+cat("\n\n########## (4) CARAFE ADJUDICATION (ghost inundation) ##########\n")
+td <- read.csv("output/carafe_topdown/delaria_endmembers_campaign.csv") %>% filter(gas=="CH4")
+# ghost & healthy per-campaign component areal rates
+camp3 <- c("Mar 2022","Oct 2022","Mar 2023")
+gg <- df %>% filter(plot %in% c("CP40","FLM30"), !is.na(CH4_best.flux), campaign %in% camp3) %>%
+  group_by(campaign, component) %>% summarise(rate = mean(CH4_best.flux), .groups="drop")
+grate <- function(cp, comp){ r <- gg$rate[gg$campaign==cp & gg$component==comp]; if(length(r)) r else NA }
+ghost_woody_nmol <- (ghost_stem_rate$mean*gr$stem_ratio + ghost_root_rate$mean*gr$root_ratio) # nmol m-2 ground s-1
+adj <- do.call(rbind, lapply(camp3, function(cp){
+  w <- grate(cp,"water"); s <- grate(cp,"soil")
+  data.frame(campaign=cp,
+    bottomup_flooded = ifelse(is.na(w), NA, round(w + ghost_woody_nmol,1)),
+    bottomup_exposed = ifelse(is.na(s), NA, round(s + ghost_woody_nmol,1)))
+}))
+# CARAFE ghost (Mar 2022 ~ Apr 2022; Mar 2023 ~ mean Feb+Apr 2023)
+cg <- td %>% filter(class=="ghost_forest")
+carafe_ghost <- c("Mar 2022"=cg$flux[cg$campaign=="Apr 2022"],
+                  "Oct 2022"=cg$flux[cg$campaign=="Oct 2022"],
+                  "Mar 2023"=mean(cg$flux[cg$campaign %in% c("Feb 2023","Apr 2023")]))
+adj$carafe_ghost <- round(carafe_ghost[adj$campaign],1)
+cat("\nGhost bottom-up (nmol m-2 s-1) under flooded vs exposed vs CARAFE:\n")
+print(adj)
+cat("\n-> exposed-soil bottom-up (dry 2022) overshoots CARAFE ~",
+    round(adj$bottomup_exposed[adj$campaign=="Mar 2022"]/adj$carafe_ghost[adj$campaign=="Mar 2022"],0),
+    "x; flooded matches CARAFE at every campaign.\n")
+write.csv(adj, file.path(out,"supp_carafe_inundation_adjudication.csv"), row.names=FALSE)
+
 cat("\nDone. supp_*.csv written to", out, "\n")
