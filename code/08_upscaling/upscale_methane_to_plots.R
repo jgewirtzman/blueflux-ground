@@ -40,7 +40,7 @@ set.seed(42)
 project_dir <- here::here()
 tls_dir     <- Sys.getenv("BLUEFLUX_TLS_DIR", "data/tls")
 output_dir  <- file.path(project_dir, "output", "upscaling")
-fig_dir     <- file.path(output_dir, "figures")
+fig_dir     <- file.path(project_dir, "output", "figures", "other")
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 # --- Theme & helpers ---------------------------------------------------------
