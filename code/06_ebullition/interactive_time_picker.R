@@ -35,7 +35,7 @@ load_trace <- function(flux_id) {
   }
 
   # Fall back to reconstructing from raw analyzer data
-  df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+  df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
   row <- df %>% filter(flux_id == !!flux_id)
   if (nrow(row) == 0) return(NULL)
 

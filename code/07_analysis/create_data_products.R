@@ -6,7 +6,7 @@ library(dplyr)
 library(readr)
 
 # Read master dataset
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
 cat("Read master dataset:", nrow(df), "rows x", ncol(df), "columns\n\n")
 
 # ---- Define clean column set for archival ----
@@ -49,17 +49,17 @@ if (length(missing_cols) > 0) {
 
 # ---- Create clean archival dataset ----
 df_clean <- df %>% select(all_of(available_cols))
-write_csv(df_clean, "output/combined_gas_flux_dataset_archival.csv")
-cat("Wrote output/combined_gas_flux_dataset_archival.csv:", nrow(df_clean), "rows x", ncol(df_clean), "columns\n")
+write_csv(df_clean, "output/data_products/combined_gas_flux_dataset_archival.csv")
+cat("Wrote output/data_products/combined_gas_flux_dataset_archival.csv:", nrow(df_clean), "rows x", ncol(df_clean), "columns\n")
 
 # ---- Create tree-only subset ----
 df_trees <- df_clean %>% filter(measurement_type == "tree")
-write_csv(df_trees, "output/tree_stem_fluxes.csv")
-cat("Wrote output/tree_stem_fluxes.csv:", nrow(df_trees), "rows\n")
+write_csv(df_trees, "output/data_products/tree_stem_fluxes.csv")
+cat("Wrote output/data_products/tree_stem_fluxes.csv:", nrow(df_trees), "rows\n")
 
 # ---- Create soil/water-only subset ----
 df_surface <- df_clean %>% filter(measurement_type == "surface")
-write_csv(df_surface, "output/soil_water_surface_fluxes.csv")
-cat("Wrote output/soil_water_surface_fluxes.csv:", nrow(df_surface), "rows\n")
+write_csv(df_surface, "output/data_products/soil_water_surface_fluxes.csv")
+cat("Wrote output/data_products/soil_water_surface_fluxes.csv:", nrow(df_surface), "rows\n")
 
 cat("\nData products created successfully.\n")

@@ -6,7 +6,7 @@
 # Replaces the previous 3-script pipeline:
 #   stitch_all_files.R → rescue_auxfile_merge.R → date_harmonize.R
 #
-# Produces a single clean CSV: output/combined_gas_flux_dataset.csv
+# Produces a single clean CSV: output/data_products/combined_gas_flux_dataset.csv
 #   - 834 unique measurements (one row per measurement)
 #   - Rescued fluxes merged INTO original rows (no duplicates)
 #   - Field metadata backfilled for rescued tree rows
@@ -654,7 +654,7 @@ if (errors == 0) {
 # WRITE OUTPUT
 # =============================================================================
 
-outfile <- "output/combined_gas_flux_dataset.csv"
+outfile <- "output/data_products/combined_gas_flux_dataset.csv"
 write_csv(final, outfile)
 cat("\nWrote:", outfile, "\n")
 

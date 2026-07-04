@@ -74,7 +74,7 @@ if (!dir.exists(OUTPUT_DIR)) dir.create(OUTPUT_DIR, recursive = TRUE)
 
 # ---- WATER MEASUREMENT METADATA --------------------------------------------
 
-water_fluxes <- read_csv("output/soil_water_surface_fluxes_ORIGINAL.csv",
+water_fluxes <- read_csv("output/data_products/soil_water_surface_fluxes_ORIGINAL.csv",
                          show_col_types = FALSE) %>%
   filter(surface_type == "water", !is.na(CH4_best.flux)) %>%
   mutate(
@@ -89,7 +89,7 @@ water_fluxes <- read_csv("output/soil_water_surface_fluxes_ORIGINAL.csv",
 # IMPORTANT: use the ORIGINAL flux dataset (not combined_gas_flux_dataset.csv)
 # to avoid circular dependency — the combined dataset is modified downstream
 # by integrate_ebullition.R, which would change detection results on re-runs
-all_fluxes <- read_csv("output/soil_water_surface_fluxes_ORIGINAL.csv",
+all_fluxes <- read_csv("output/data_products/soil_water_surface_fluxes_ORIGINAL.csv",
                        show_col_types = FALSE) %>%
   filter(!is.na(start_time), !is.na(end_time)) %>%
   mutate(date = as.Date(date))

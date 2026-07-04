@@ -61,7 +61,7 @@ cat("=== RECOVER FAILED MEASUREMENTS ===\n\n")
 
 cat("Step 1: Loading clean dataset and identifying no_data measurements...\n")
 
-df <- read_csv("output/combined_gas_flux_dataset.csv", show_col_types = FALSE)
+df <- read_csv("output/data_products/combined_gas_flux_dataset.csv", show_col_types = FALSE)
 failed <- df %>% filter(flux_status == "no_data")
 
 cat("  Total no_data measurements:", nrow(failed), "\n\n")

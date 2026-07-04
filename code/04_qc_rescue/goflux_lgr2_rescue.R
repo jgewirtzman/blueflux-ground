@@ -313,7 +313,7 @@ cat("Plots saved successfully\n")
 cat("\n=== STEP 7: CREATING FINAL DATASET ===\n")
 
 # Load original tree data
-original_data <- read_csv("output/combined_gas_flux_dataset_with_month_year.csv")
+original_data <- read_csv("output/data_products/combined_gas_flux_dataset_with_month_year.csv")
 
 # Filter for LGR2 only
 lgr2_original <- original_data %>% filter(analyzer_id == "LGR2")

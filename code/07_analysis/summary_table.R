@@ -5,7 +5,7 @@
 # ===============================================================================
 
 # Read the data (assumes you have this loaded)
-df <- read.csv("output/combined_gas_flux_dataset.csv")
+df <- read.csv("output/data_products/combined_gas_flux_dataset.csv")
 
 
 
@@ -264,7 +264,7 @@ print(final_table, n = 50)
 # Save --------------------------------------------------------------------------
 cat("\n\nSaving results...\n")
 
-write.csv(final_table, "output/flux_statistics_table.csv", row.names = FALSE)
+write.csv(final_table, "output/data_products/flux_statistics_table.csv", row.names = FALSE)
 
 cat("Done!\n")
 

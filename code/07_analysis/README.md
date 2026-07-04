@@ -14,10 +14,10 @@ Summary statistics, publication figures, and clean data product generation.
 
 ## Inputs
 
-- `output/combined_gas_flux_dataset.csv` (from Step 5)
+- `output/data_products/combined_gas_flux_dataset.csv` (from Step 5)
 
 ## Outputs
 
-- `output/figures/` — Publication-quality PNG figures
-- `output/tree_stem_fluxes.csv`, `output/soil_water_surface_fluxes.csv` — Subset datasets
-- `output/flux_statistics_table.csv`
+- `output/figures/other/` — Publication-quality PNG figures
+- `output/data_products/tree_stem_fluxes.csv`, `output/data_products/soil_water_surface_fluxes.csv` — Subset datasets
+- `output/data_products/flux_statistics_table.csv`
