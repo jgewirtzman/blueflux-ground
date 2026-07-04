@@ -134,7 +134,7 @@ print(as.data.frame(sa_summary))
 
 # --- 2. Load raw flux data ---------------------------------------------------
 cat("\n=== 2. Loading flux data ===\n")
-flux_raw <- read.csv(file.path(project_dir, "output", "combined_gas_flux_dataset.csv")) %>%
+flux_raw <- read.csv(file.path(project_dir, "output", "data_products", "combined_gas_flux_dataset.csv")) %>%
   filter(plot %in% tls_sites) %>%
   mutate(
     disturbance_level = site_meta$disturbance_level[match(plot, site_meta$site)],
