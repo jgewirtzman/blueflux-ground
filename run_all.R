@@ -53,6 +53,7 @@ run_step(4, "Build missing auxfiles for rescued measurements", "code/04_qc_rescu
 # ---- 05 INTEGRATION ---------------------------------------------------------
 run_step(5, "Assemble clean combined dataset",            "code/05_integration/assemble_clean_dataset.R")
 run_step(6, "Apply chamber volume corrections",           "code/05_integration/apply_chamber_corrections.R")
+run_step(6.5, "Correct Mar 2022 soil chambers (6-inch, LM)", "code/05_integration/correct_mar2022_soil_chambers.R")
 
 # ---- 06 EBULLITION ----------------------------------------------------------
 run_step(7,  "Detect ebullition in raw traces",           "code/06_ebullition/detect_ebullition.R")
@@ -72,6 +73,7 @@ run_step(13, "Partition US-Skr tower GPP",                "code/09_tower_gpp/us_
 run_step(14, "Upscale methane to plot budgets",          "code/08_upscaling/upscale_methane_to_plots.R")
 run_step(15, "Upscale CO2 / NEE to plot budgets",        "code/08_upscaling/upscale_co2_to_plots.R")
 run_step(16, "Monte Carlo net forcing",                  "code/08_upscaling/mc_co2_forcing.R")
+run_step(16.5, "Assemble full carbon budget (NECB + lit terms)", "code/08_upscaling/assemble_carbon_budget.R")
 
 # ---- 10 FIGURES (main -> figures/main, SI -> figures/SI, else figures/other)
 if (start_step <= 17) cat("\n[17] MANUAL: Fig 1 map/photo composite — code/10_figures/publication_map_composite.R\n")
@@ -80,6 +82,7 @@ run_step(19, "Fig 3: Stem height x species",            "code/10_figures/fig3_st
 run_step(20, "Fig 4: Bottom-up budgets",               "code/10_figures/plot_budget_figs.R")
 run_step(21, "Fig 5: Porewater PCA / regime shift",    "code/10_figures/fig6_porewater_pca.R")
 run_step(22, "Fig 6: Closure + net forcing",           "code/10_figures/plot_closure.R")
+run_step(22.5, "Fig 7: Full carbon budget (NECB)",     "code/10_figures/plot_carbon_budget.R")
 run_step(23, "Fig S1: Ebullition partitioning",        "code/10_figures/figS1_ebullition.R")
 run_step(24, "Fig S2: Pneumatophore density vs flux",  "code/10_figures/figS2_pneumatophore.R")
 run_step(25, "Fig S3: Chamber photographs",            "code/10_figures/figS3_chamber_photos.R")

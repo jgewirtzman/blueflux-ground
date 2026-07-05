@@ -36,7 +36,7 @@ tls_dir     <- Sys.getenv("BLUEFLUX_TLS_DIR", "data/tls")
 gpp_file    <- file.path(project_dir, "output", "gpp",
                          "US-Skr_GPP_halfhourly_Mar2022_Oct2022_Mar2023.csv")
 output_dir  <- file.path(project_dir, "output", "upscaling")
-fig_dir     <- file.path(output_dir, "figures")
+fig_dir     <- file.path(project_dir, "output", "figures", "other")
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 theme_pub <- function(base_size = 11) {
@@ -108,7 +108,7 @@ tree_stats %>% select(site, area_m2, ground_area_m2) %>%
 # 2. Load chamber flux data; bootstrap CO2 component means
 # =============================================================================
 cat("\n=== 2. Loading flux data (CO2) ===\n")
-flux_raw <- read.csv(file.path(project_dir, "output", "combined_gas_flux_dataset.csv")) %>%
+flux_raw <- read.csv(file.path(project_dir, "output", "data_products", "combined_gas_flux_dataset.csv")) %>%
   filter(plot %in% tls_sites) %>%
   mutate(
     disturbance_level = site_meta$disturbance_level[match(plot, site_meta$site)],

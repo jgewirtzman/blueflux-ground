@@ -1,0 +1,3 @@
+"class","flux_measured","flux_lateral","lateral_pending","NECB_vertical_only","NECB_full","burial_accum","dbiomass_accum","storage_pending","storage_indep","closure_resid"
+"Ghost",402.265671994643,0,TRUE,-402.265671994643,-402.265671994643,0,0,TRUE,0,-402.265671994643
+"Healthy",-1282.71347585998,0,TRUE,1282.71347585998,1282.71347585998,0,0,TRUE,0,1282.71347585998
