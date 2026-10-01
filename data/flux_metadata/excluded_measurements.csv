@@ -1,0 +1,8 @@
+flux_id,reason
+Oct_22_199_CP40_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+Oct_22_56_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+Mar_23_119_BL60_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+Oct_22_33_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+Oct_22_54_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+Mar_23_76_FLM30_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+Oct_22_51_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)

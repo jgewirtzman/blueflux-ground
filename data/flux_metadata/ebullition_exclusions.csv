@@ -1,0 +1,5 @@
+placement_id,analyzer,site,date,start,end,n_jumps,matched_flux_id,trace_type,type,note
+LGR3_2023-03-15_CP40_P07,LGR3,CP40,2023-03-15,2023-03-15 11:29:07,2023-03-15 11:36:55,0,45000_CP40_Water_122,processed,trace,"Picarro noise / analyzer artifact, not a placement (detect_ebullition.R EXCLUDE_TRACE_IDS)"
+Picarro_2022-10-18_FLM30_P09,Picarro,FLM30,2022-10-18,2022-10-18 12:01:26,2022-10-18 12:03:35,0,NA,additional,trace,"Picarro noise / analyzer artifact, not a placement (detect_ebullition.R EXCLUDE_TRACE_IDS)"
+Picarro_2022-10-25_BL60_P07,Picarro,BL60,2022-10-25,2022-10-25 11:50:51,2022-10-25 11:53:14,0,NA,additional,trace,"Picarro noise / analyzer artifact, not a placement (detect_ebullition.R EXCLUDE_TRACE_IDS)"
+NA,NA,CP40,2023-03-15,2023-03-15 12:19:00,2023-03-15 12:27:00,NA,NA,NA,window,1.16 ppm analyzer artifact (detect_ebullition.R EXCLUDE_WINDOWS)
