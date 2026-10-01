@@ -33,6 +33,7 @@ inv <- read_csv("output/rebuild/measurement_inventory.csv", show_col_types = FAL
 det <- read_csv("output/rebuild/clock_offsets.csv", show_col_types = FALSE)
 cl  <- read_csv("output/rebuild/clock_offsets_closures.csv", show_col_types = FALSE)
 trim <- read_csv("data/flux_metadata/trimmed_windows.csv", show_col_types = FALSE)
+rejected <- read_csv("data/flux_metadata/saved_window_rejections.csv", show_col_types = FALSE)
 
 w <- aux %>%
   transmute(UniqueID, analyzer, date, measurement_type, component,
@@ -40,7 +41,10 @@ w <- aux %>%
             campaign = recode(format(date, "%Y-%m"), "2022-03" = "Mar2022", "2022-10" = "Oct2022", "2023-03" = "Mar2023")) %>%
   left_join(inv %>% transmute(UniqueID = flux_id, saved_start = with_tz(saved_start, "UTC"),
                               saved_end = with_tz(saved_end, "UTC"), saved_window_file,
-                              saved_offset = saved_minus_fieldlog_s), by = "UniqueID")
+                              saved_offset = saved_minus_fieldlog_s), by = "UniqueID") %>%
+  # saved windows shown to be wrong (saved_window_rejections.csv) are not used
+  mutate(across(c(saved_start, saved_end), ~ if_else(UniqueID %in% rejected$flux_id, as.POSIXct(NA, tz = "UTC"), .x)),
+         saved_offset = if_else(UniqueID %in% rejected$flux_id, NA_real_, saved_offset))
 
 # ---- offsets ----------------------------------------------------------------------
 off_day  <- w %>% filter(!is.na(saved_offset)) %>% group_by(analyzer, date) %>%

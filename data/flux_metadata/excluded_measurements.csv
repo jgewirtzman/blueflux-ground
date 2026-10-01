@@ -27,3 +27,6 @@
 "Mar_22_T1_6_RB10_stem","Mar 2022 chamber without dimensions (chamber ID blank on sheet); excluded per Jon 2026-10-01"
 "Mar_22_T1_7_RB10_stem","Mar 2022 chamber without dimensions (chamber ID blank on sheet); excluded per Jon 2026-10-01"
 "Mar_22_T1_8_RB10_stem","Mar 2022 chamber without dimensions (chamber ID blank on sheet); excluded per Jon 2026-10-01"
+"44854_SRS5_Water_54","no Picarro record exists for 2022-10-20 (repo, Google Drive raw copy, Dropbox USB backup); legacy rescue fitted LGR tree closures via import2RData(merge = TRUE)"
+"44854_SRS5_Water_55","no Picarro record exists for 2022-10-20 (repo, Google Drive raw copy, Dropbox USB backup); legacy rescue fitted LGR tree closures via import2RData(merge = TRUE)"
+"44854_SRS5_Water_56","no Picarro record exists for 2022-10-20 (repo, Google Drive raw copy, Dropbox USB backup); legacy rescue fitted LGR tree closures via import2RData(merge = TRUE)"

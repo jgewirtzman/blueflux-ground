@@ -69,6 +69,7 @@ cham_ovr <- rd(file.path(meta_dir, "chamber_overrides.csv"))
 date_fix <- rd(file.path(meta_dir, "date_corrections.csv"))
 excluded <- rd(file.path(meta_dir, "excluded_measurements.csv"))
 scan_ids <- rd(file.path(meta_dir, "chamber_ids_from_scans.csv"))   # chambers missing from the compiled sheet
+an_fix   <- rd(file.path(meta_dir, "analyzer_corrections.csv"))     # sheet says one analyzer, data are on another
 parse_date <- function(x) as.Date(coalesce(mdy(x, quiet = TRUE), dmy(x, quiet = TRUE), ymd(x, quiet = TRUE)))
 
 # ---- Tower air temperature and pressure (US-Skr, AmeriFlux BASE) -------------------
@@ -108,8 +109,10 @@ field <- bind_rows(
                    fieldlog_start = `Flux Start Time`, fieldlog_end = `Flux End Time`,
                    air_temp_measured = NA_real_, recorded_chamber_id = `Chamber ID`)
 ) %>%
-  # date corrections come first, so everything below uses the true date
+  # date and analyzer corrections come first, so everything below uses them
   left_join(date_fix %>% select(flux_id, date_fixed = date), by = "flux_id") %>%
+  left_join(an_fix %>% select(flux_id, analyzer_fixed = analyzer), by = "flux_id") %>%
+  mutate(analyzer = coalesce(analyzer_fixed, analyzer)) %>%
   mutate(date = coalesce(as.Date(date_fixed), date_rec),
          dt = parse_dt(format(date, "%m/%d/%Y"), fieldlog_start),
          t_utc = local_to_utc(dt))
@@ -277,7 +280,7 @@ aux <- bind_rows(geo_trees, geo_sw) %>%
   transmute(UniqueID = flux_id, measurement_type, component, plot, analyzer, date, start.time, end.time,
             obs.length, chamber_id, geometry_rule, Area, offset, Vcham, Vtube, Vinst, Vtot,
             Tcham, Tcham_source, Tcham_handheld, Tcham_handheld_source, tower_TA_raw, tower_TA_bias = bias, Pcham, Pcham_source, end_time_repair,
-            date_corrected = !is.na(date_fixed), excluded) %>%
+            date_corrected = !is.na(date_fixed), analyzer_corrected = !is.na(analyzer_fixed), excluded) %>%
   arrange(date, analyzer, start.time, UniqueID)
 stopifnot(!anyDuplicated(aux$UniqueID))
 write_csv(aux, "output/rebuild/auxfile.csv")

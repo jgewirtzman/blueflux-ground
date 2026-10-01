@@ -11,11 +11,13 @@ intermediate file, and say why in the row.
 |------|-----:|---------|
 | `chamber_overrides.csv` | 30 | Mar 2022 soil at BL60/FLM30/MI: recorded "Soil 8 in", measured with the 6-inch dome on a 2 cm collar. |
 | `date_corrections.csv` | 4 | BL60 water 168-171: recorded 2023-03-22, measured 2023-03-16. |
-| `excluded_measurements.csv` | 28 | 7 stem traces that are analyzer artifacts; 15 Mar 2022 measurements with the faulty pilot chambers R2, RA and pneumatophore, and 6 RB10 Mar 2022 measurements with an undimensioned "small root chamber" or a blank chamber ID (Jon, 2026-10-01). |
+| `excluded_measurements.csv` | 31 | 7 stem traces that are analyzer artifacts; 15 Mar 2022 measurements with the faulty pilot chambers R2, RA and pneumatophore, and 6 RB10 Mar 2022 measurements with an undimensioned "small root chamber" or a blank chamber ID (Jon, 2026-10-01); 3 Picarro SRS5 water closures of 2022-10-20 with no Picarro record anywhere (the legacy values were fitted on LGR tree closures). |
 | `trimmed_windows.csv` | 14 | Fit windows chosen interactively for traces that first gave negative CH4 flux, as absolute analyzer-clock times plus the original Etime and its anchor. |
 | `ebullition_confirmed_traces.csv` | 6 | Floating-chamber placements with manually verified bubbles. |
 | `chamber_ids_from_scans.csv` | 21 | Chamber IDs for Mar 2022 trees left blank on the compiled sheet, read from the scanned datasheets (R2/"RZ", RA, small root chamber, pneumatophore chamber; 3 RB10 rows unreadable). Transcribed by Claude, 2026-10-01; to be checked. |
 | `clock_notes_from_scans.csv` | 5 | Instrument-vs-real clock readings written on the Mar 2022 sheets (Picarro display ~2 h behind real time; LGR3 3 min ahead). Transcribed by Claude, 2026-10-01; to be checked. |
+| `analyzer_corrections.csv` | 4 | Closures the sheet lists on LGR3 that were recorded by LGR2 (CP40, 2023-03-15 after the LGR3 record ends at 15:50:26). |
+| `saved_window_rejections.csv` | 1 | Saved manual windows shown to be wrong (not used; the closure gets a scripted window). |
 | `ebullition_exclusions.csv` | 4 | Placements (3) and a time window (1) that are noise or artifacts, not ebullition. |
 
 ## Notes

@@ -36,8 +36,8 @@
     "k.ratio": 1,
     "warn.length": 20
   },
-  "n_closures": 770,
-  "date": "2026-10-01 00:47:52 PDT",
+  "n_closures": 775,
+  "date": "2026-10-01 01:03:12 PDT",
   "hm_min_obs": 30,
   "h2o_correction": "none (H2O_ppm = 0; LGR H2O channel reads negative)",
   "instrument_prec": {
@@ -47,5 +47,5 @@
   "co2_tracer_off_for": ["water", "leaves", "leaf", "cwd"],
   "window_pad_s": 300,
   "qc_note": "ambient_start off: windows start after a dead band by design",
-  "no_raw_data": ["Oct_22_16_SRS6_stem", "Oct_22_9_SRS6_stem", "Oct_22_10_SRS6_root", "Oct_22_11_SRS6_stem", "Oct_22_12_SRS6_stem", "Oct_22_13_SRS6_stem", "Oct_22_14_SRS6_root", "Oct_22_15_SRS6_root", "Oct_22_132_SRS5_CWD", "Oct_22_133_SRS5_CWD", "44854_SRS5_Water_54", "44854_SRS5_Water_55", "44854_SRS5_Water_56", "Oct_22_165_SRS5_stem", "Oct_22_166_SRS5_stem", "Oct_22_167_SRS5_stem", "Oct_22_168_SRS5_root", "Oct_22_169_SRS5_root", "Oct_22_170_SRS5_stem", "Oct_22_171_SRS5_stem", "Oct_22_172_SRS5_stem", "Oct_22_173_SRS5_stem", "Oct_22_174_SRS5_root", "45000_CP40_Water_130", "Mar_23_166_CP40_stem", "Mar_23_167_CP40_stem", "Mar_23_168_CP40_stem", "45000_CP40_Water_131", "45007_BL60_Water_172", "45007_BL60_Water_173", "45007_BL60_Water_174", "45007_BL60_Water_175", "45007_BL60_Water_176", "45007_BL60_Water_177"]
+  "no_raw_data": ["Oct_22_16_SRS6_stem", "Oct_22_9_SRS6_stem", "Oct_22_10_SRS6_root", "Oct_22_11_SRS6_stem", "Oct_22_12_SRS6_stem", "Oct_22_13_SRS6_stem", "Oct_22_14_SRS6_root", "Oct_22_15_SRS6_root", "Oct_22_132_SRS5_CWD", "Oct_22_133_SRS5_CWD", "Oct_22_165_SRS5_stem", "Oct_22_166_SRS5_stem", "Oct_22_167_SRS5_stem", "Oct_22_168_SRS5_root", "Oct_22_169_SRS5_root", "Oct_22_170_SRS5_stem", "Oct_22_171_SRS5_stem", "Oct_22_172_SRS5_stem", "Oct_22_173_SRS5_stem", "Oct_22_174_SRS5_root", "45007_BL60_Water_172", "45007_BL60_Water_173", "45007_BL60_Water_174", "45007_BL60_Water_175", "45007_BL60_Water_176", "45007_BL60_Water_177"]
 }

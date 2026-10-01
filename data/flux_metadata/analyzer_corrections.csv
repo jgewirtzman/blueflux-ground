@@ -1,0 +1,5 @@
+flux_id,recorded_analyzer,analyzer,evidence
+Mar_23_166_CP40_stem,LGR3,LGR2,"LGR3 record ends 2023-03-15 15:50:26; LGR2 shows the closure at 15:51-15:54 and the saved window rows match LGR2 exactly (saved_trace_audit.csv)"
+Mar_23_167_CP40_stem,LGR3,LGR2,"LGR3 record ends 15:50:26; LGR2 shows the closure at 15:57-16:00; saved window rows match LGR2"
+Mar_23_168_CP40_stem,LGR3,LGR2,"LGR3 record ends 15:50:26; LGR2 shows the closure at 16:05-16:08; saved window rows match LGR2"
+45000_CP40_Water_131,LGR3,LGR2,"LGR3 record ends 15:50:26; closure at 16:16-16:19; saved window rows match LGR2"
