@@ -209,6 +209,18 @@ get_site_flux <- function(site_name, camp, comp) {
   return(NULL)
 }
 
+# Water flux estimated from dissolved CH4 where no chamber water flux exists
+# (code/rebuild/11_water_flux_from_pch4.R: SRS5 / SRS6 Oct 2022)
+water_est_file <- file.path(project_dir, "output", "rebuild", "water_flux_estimates.csv")
+water_est <- if (file.exists(water_est_file)) read.csv(water_est_file) else NULL
+get_water_estimate <- function(site_name, camp) {
+  if (is.null(water_est)) return(NULL)
+  row <- water_est[water_est$site == site_name & water_est$campaign == camp, ]
+  if (nrow(row) == 0) return(NULL)
+  list(rate = row$flux_rate[1], ci_lo = row$ci_lo[1], ci_hi = row$ci_hi[1], n = 0L,
+       source = "dissolved CH4 x k (11_water_flux_from_pch4.R)")
+}
+
 flux_table <- list()
 for (camp in campaigns) {
   for (site_name in tls_sites) {
@@ -216,6 +228,9 @@ for (camp in campaigns) {
 
       # Try site-level first
       fl <- get_site_flux(site_name, camp, comp)
+
+      # Dissolved-CH4 estimate for unmeasured water
+      if (is.null(fl) && comp == "water") fl <- get_water_estimate(site_name, camp)
 
       # Targeted gap-fills
       if (is.null(fl)) {
@@ -1804,7 +1819,7 @@ cat("  SOIL:  ground_area × (1-frac_flooded); ground_area uses ground-level TLS
 cat("  WATER: ground_area × frac_flooded\n")
 cat("    CP40/FLM30: always flooded (Oct 2022 & Mar 2023)\n")
 cat("    SRS5/SRS6: tidal — high/low tide endpoints\n")
-cat("    SRS6 Oct 2022 water: gap-filled from SRS5\n")
+cat("    SRS5/SRS6 Oct 2022 water: dissolved CH4 x k where no chamber flux (output/rebuild/water_flux_estimates.csv)\n")
 cat("  CWD:   default", cwd_sa_default, "m2 SA (sensitivity 0-200 m2)\n")
 cat("  Campaigns: Oct 2022 (wet) and Mar 2023 (dry) only; Mar 2022 dropped\n")
 

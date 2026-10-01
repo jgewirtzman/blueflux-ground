@@ -55,3 +55,9 @@ times need no offset.
 start times of the `*_goflux` auxfiles (the `*_all_instruments` files store
 them shifted to UTC, which put 12 windows 4-5 h late).
 | `10_audit_saved_traces.R` | `saved_trace_audit.csv` | Checks that each saved window's rows come from the assigned analyzer's raw record. Legacy imports used `import2RData(merge = TRUE)` on a shared `RData/` folder, so some closures were fitted on another analyzer's record: 5 CP40 closures of 2023-03-15 on LGR2 (fixed via `analyzer_corrections.csv` / `saved_window_rejections.csv`), 8 Oct 2022 closures (7 BL60, CP40 stem 200) on interleaved LGR3 + LGR1/LGR2 rows (the refit reads only the own analyzer), and the 3 Picarro waters of 2022-10-20 on LGR tree closures (excluded: no Picarro record exists). |
+
+### Unmeasured water flux
+
+| Script | Writes | Notes |
+|--------|--------|-------|
+| `11_water_flux_from_pch4.R` | `water_flux_estimates.csv`, `water_k_calibration.csv` | SRS5/SRS6 Oct 2022 have no chamber water flux (Picarro not logging). F = k600 (Sc/600)^-0.5 (Cw - Ceq), Cw from the SRS5 plot GC sample (19 Oct) and aquatic transect station SRS 6 (15 Oct); k600 calibrated on 7 chamber/dissolved pairs (median 1.10, range 0.56-7.07 cm h-1; CP40 Oct 2022 dropped, k600 = 532). SRS5 0.48 (0.25-3.08), SRS6 0.59 (0.30-3.79) nmol m-2 s-1. Read by `08_upscaling/upscale_methane_to_plots.R` for water with no site-level chamber flux. |
