@@ -7,7 +7,7 @@
 # so run from anywhere:
 #
 #   Rscript run_all.R        # run all steps
-#   Rscript run_all.R 12     # run from step 12 onward
+#   Rscript run_all.R 12     # run from step 12 onward (fractional steps, e.g. 12.5, are allowed)
 #
 # TLS surface-area and porewater data are bundled in data/tls/ and
 # data/porewater/. Override the location with env vars if needed:
@@ -19,19 +19,20 @@
 # =============================================================================
 
 args <- commandArgs(trailingOnly = TRUE)
-start_step <- if (length(args) > 0) as.integer(args[1]) else 1L
+start_step <- if (length(args) > 0) as.numeric(args[1]) else 1
 
 run_step <- function(step_num, description, script_path) {
+  lab <- formatC(step_num, width = 2, flag = "0", format = "fg")   # 7 -> "07", 12.5 -> "12.5"
   if (step_num < start_step) {
-    cat(sprintf("[%02g] SKIP: %s\n", step_num, description)); return(invisible(NULL))
+    cat(sprintf("[%s] SKIP: %s\n", lab, description)); return(invisible(NULL))
   }
   cat(sprintf("\n========================================\n"))
-  cat(sprintf("[%02g] %s\n     %s\n", step_num, description, script_path))
+  cat(sprintf("[%s] %s\n     %s\n", lab, description, script_path))
   cat(sprintf("========================================\n"))
   t0 <- Sys.time()
   tryCatch(source(script_path, local = new.env(parent = globalenv())),
-    error = function(e) { cat(sprintf("ERROR in step %02g: %s\n", step_num, conditionMessage(e))); stop(e) })
-  cat(sprintf("[%02g] DONE (%.1f s)\n", step_num, round(difftime(Sys.time(), t0, units = "secs"), 1)))
+    error = function(e) { cat(sprintf("ERROR in step %s: %s\n", lab, conditionMessage(e))); stop(e) })
+  cat(sprintf("[%s] DONE (%.1f s)\n", lab, round(difftime(Sys.time(), t0, units = "secs"), 1)))
 }
 
 cat("=== BlueFlux Ground Analysis Pipeline ===\n")
@@ -66,6 +67,7 @@ run_step(10, "Apply negative-flux corrections",           "code/06_ebullition/ap
 # ---- 07 ANALYSIS ------------------------------------------------------------
 run_step(11, "Summary statistics table",                  "code/07_analysis/summary_table.R")
 run_step(12, "Compute manuscript results/numbers",        "code/07_analysis/manuscript_results.R")
+run_step(12.5, "Derived data products (archival, tree, surface)", "code/07_analysis/create_data_products.R")
 
 # ---- 09 TOWER GPP (upstream input to CO2 upscaling) -------------------------
 run_step(13, "Partition US-Skr tower GPP",                "code/09_tower_gpp/us_skr_gapfill_gpp.R")
@@ -74,6 +76,7 @@ run_step(13, "Partition US-Skr tower GPP",                "code/09_tower_gpp/us_
 # Requires BLUEFLUX_TLS_DIR (surface-area products).
 run_step(14, "Upscale methane to plot budgets",          "code/08_upscaling/upscale_methane_to_plots.R")
 run_step(15, "Upscale CO2 / NEE to plot budgets",        "code/08_upscaling/upscale_co2_to_plots.R")
+run_step(15.5, "Class net forcing (CH4 CO2-eq + NEE)",   "code/08_upscaling/assemble_net_forcing.R")
 run_step(16, "Monte Carlo net forcing",                  "code/08_upscaling/mc_co2_forcing.R")
 run_step(16.5, "Assemble full carbon budget (NECB + lit terms)", "code/08_upscaling/assemble_carbon_budget.R")
 run_step(16.6, "Assemble multi-source budget estimates",         "code/08_upscaling/assemble_budget_sources.R")
@@ -92,6 +95,11 @@ run_step(22.8, "Fig 10: Residual decomposition (waterfall)", "code/10_figures/pl
 run_step(23, "Fig S1: Ebullition partitioning",        "code/10_figures/figS1_ebullition.R")
 run_step(24, "Fig S2: Pneumatophore density vs flux",  "code/10_figures/figS2_pneumatophore.R")
 run_step(25, "Fig S3: Chamber photographs",            "code/10_figures/figS3_chamber_photos.R")
+run_step(25.1, "Fig S5: Stem height extrapolation",    "code/10_figures/plot_extrap_clean.R")
+run_step(25.2, "Fig S8: TLS surface area by height",   "code/10_figures/plot_SA_height_fixedY.R")
+run_step(25.3, "Fig S10: Tower GPP plots",             "code/09_tower_gpp/plot_us_skr_gpp.R")
+run_step(25.4, "Figs S11, S14: Porewater depth / salinity-CH4", "code/10_figures/site_characterization_figures.R")
+run_step(26, "Collect curated figures into figures/main and figures/SI", "code/10_figures/collect_figures.R")
 
 # ---- DONE -------------------------------------------------------------------
 cat("\n========================================\n=== Pipeline complete ===\n")

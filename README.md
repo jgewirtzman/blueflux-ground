@@ -11,6 +11,7 @@ blueflux-ground/
 │   ├── tower/                 # AmeriFlux US-Skr tower data (large CSV gitignored)
 │   ├── field_notes/           # Chamber dimensions, entered data sheets
 │   ├── environmental/         # Salinity, porewater gas covariates
+│   ├── photos/                # Chamber photographs (Fig S3 inputs)
 │   ├── gis/  ├── spatial/     # Site coordinates and spatial layers
 │
 ├── code/                      # Analysis scripts (numbered by workflow stage)
@@ -68,28 +69,36 @@ Rscript run_all.R 5     # run from step 5 onward
 | 4 | `04_qc_rescue/build_missing_auxfiles.R` | Auxfiles for rescued measurements |
 | 5-6 | `05_integration/*` | Assemble clean dataset; chamber corrections |
 | 7-10 | `06_ebullition/*` | Detect, reprocess, integrate, and correct ebullition |
-| 11-12 | `07_analysis/summary_table.R`, `manuscript_results.R` | Bootstrap stats; manuscript numbers |
+| 11-12 | `07_analysis/summary_table.R`, `manuscript_results.R` | Bootstrap stats; manuscript numbers (`manuscript/text/manuscript_results.txt`) |
+| 12.5 | `07_analysis/create_data_products.R` | Archival / tree / surface data products |
 | 13 | `09_tower_gpp/us_skr_gapfill_gpp.R` | Partition US-Skr tower GPP |
-| 14-16 | `08_upscaling/*` | Methane + CO2 stand budgets; Monte Carlo forcing |
+| 14-16 | `08_upscaling/*` | Methane + CO2 stand budgets; class net forcing (15.5); Monte Carlo forcing |
 | 17 | `10_figures/publication_map_composite.R` | **Manual:** Fig 1 (map + photos) |
 | 18-22 | `10_figures/` (fig2, fig3, plot_budget_figs, fig6_porewater_pca, plot_closure) | Main-text Figs 2-6 |
-| 23-25 | `10_figures/figS1-figS3` | Supplementary Figs S1-S3 |
+| 23-25.4 | `10_figures/figS1-figS3`, `plot_extrap_clean.R`, `plot_SA_height_fixedY.R`, `09_tower_gpp/plot_us_skr_gpp.R`, `site_characterization_figures.R` | Supplementary figures |
+| 26 | `10_figures/collect_figures.R` | Copy generated figures to `figures/main` and `figures/SI` |
 
 Steps 3 and 17 require interactive RStudio and are skipped by `run_all.R`. TLS-dependent steps (14-16) read the bundled `data/tls/`.
 
 ## Display Items
 
-Curated figures land in `output/figures/main/` and `output/figures/SI/`; all figure code is in `code/10_figures/`.
+Figure scripts write to `output/figures/other/` (gitignored) and `output/figures/presentation/`; `collect_figures.R` copies each display item into `output/figures/main/` and `output/figures/SI/` (the mapping lives in that script). All figure code is in `code/10_figures/` unless noted.
 
 | Figure | Script | Content |
 |--------|--------|---------|
 | Fig 1 | `publication_map_composite.R` | Disturbance gradient + multi-scale framework |
-| Fig 2 | `fig2_component_boot.R` | Component CH4/CO2 fluxes across the gradient |
+| Fig 2 | `fig2_component_boot.R` | Component CH4/CO2 fluxes across the gradient (also Fig S4, per plot x campaign) |
 | Fig 3 | `fig3_stem_height.R` | Role of trees: stem height x species x status |
 | Fig 4 | `plot_budget_figs.R` | Structure-explicit bottom-up budgets (TLS x chambers) |
 | Fig 5 | `fig6_porewater_pca.R` | Biogeochemical regime shift (porewater PCA) |
 | Fig 6 | `plot_closure.R` | Independent closure + net radiative forcing |
-| Fig S1-S3 | `figS1_ebullition.R`, `figS2_pneumatophore.R`, `figS3_chamber_photos.R` | Ebullition; pneumatophore density; chamber designs |
+| Fig S1-S3 | `figS1_ebullition.R`, `figS2_pneumatophore.R`, `figS3_chamber_photos.R` | Ebullition; pneumatophore density; chamber designs (photos in `data/photos/chambers/`) |
+| Fig S5 | `plot_extrap_clean.R` | Stem height extrapolation |
+| Fig S6, S7, S9 | `08_upscaling/upscale_methane_to_plots.R` | Extrapolation sensitivity; tide/stem scenarios; Monte Carlo decomposition |
+| Fig S8 | `plot_SA_height_fixedY.R` | TLS surface area by height |
+| Fig S10 | `09_tower_gpp/plot_us_skr_gpp.R` | Tower GPP diurnal cycle |
+| Fig S11, S14 | `site_characterization_figures.R` | Porewater depth profiles; salinity vs dissolved CH4 by site |
+| Fig S12-S13 | `fig6_porewater_pca.R` | TA-DIC; excess TA vs SO4 deficit |
 
 ## Instruments
 

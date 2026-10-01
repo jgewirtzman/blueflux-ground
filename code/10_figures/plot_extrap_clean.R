@@ -3,6 +3,7 @@
 # extrapolated above it (clamped >= 0). By disturbance class.
 suppressMessages({library(dplyr);library(ggplot2)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 d<-read.csv("output/data_products/combined_gas_flux_dataset.csv") %>%
   filter(component=="stem", disturbance_level %in% c("ghost","healthy","regenerating"),
          !is.na(CH4_best.flux), !is.na(height)) %>%

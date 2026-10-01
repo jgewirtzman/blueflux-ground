@@ -6,6 +6,7 @@ library(readr)
 library(readxl)
 library(ggplot2)
 library(ggpubr)
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 
 # =============================================
 # Helpers

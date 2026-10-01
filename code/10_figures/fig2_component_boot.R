@@ -1,6 +1,7 @@
 # =============================================================================
 # Figure 2: Component-specific flux rates (CH4 + CO2) — bootstrapped means
-# Output: pub_component_by_plot_campaign_combined_condensed_boot
+# Output: pub_component_by_class_boot (main-text Fig 2: component x class)
+#         pub_component_by_plot_campaign_combined_condensed_boot (Fig S4)
 # =============================================================================
 source("code/10_figures/publication_figures_common.R")
 
@@ -94,4 +95,61 @@ fig2c_combined_boot <- fig2c_ch4_boot / fig2c_co2_boot +
   plot_annotation(theme = theme(legend.position = "bottom"))
 save_pub(fig2c_combined_boot, "component_by_plot_campaign_combined_condensed_boot",
          width = 170, height = 230)
+
+# --- Main-text Fig 2: component x disturbance class ---------------------------
+cat("\n--- Figure 2: Component x class with Bootstrapped Mean + CI ---\n")
+
+class_comp_levels <- c("soil", "water", "root", "stem", "cwd", "leaves")
+class_comp_labels <- c("Soil", "Water", "Root", "Stem", "CWD", "Leaves")
+class_comp_colors <- c("Soil" = "#8B4513", "Water" = "#4682B4", "Root" = "#D2691E",
+                       "Stem" = "#228B22", "CWD" = "#808080", "Leaves" = "#90EE90")
+
+make_class_panel <- function(data, gas = "CH4", tag_label = "a") {
+  if (gas == "CH4") {
+    flux_var <- "CH4_best.flux"
+    status_var <- "CH4_flux_status"
+    brk <- asinh_brk_pos
+    y_lab <- expression(CH[4]~(nmol~m^{-2}~s^{-1}))
+  } else {
+    flux_var <- "CO2_best.flux"
+    status_var <- "CO2_flux_status"
+    brk <- asinh_brk
+    y_lab <- expression(CO[2]~(mu*mol~m^{-2}~s^{-1}))
+  }
+
+  data %>%
+    filter(.data[[status_var]] == "valid",
+           disturbance_level %in% c("healthy", "regenerating", "ghost")) %>%
+    mutate(
+      # Soil collars include pneumatophores within the footprint
+      comp = factor(recode(as.character(component), pneumatophore = "soil"),
+                    levels = class_comp_levels, labels = class_comp_labels),
+      class = factor(tools::toTitleCase(as.character(disturbance_level)),
+                     levels = c("Healthy", "Regenerating", "Ghost"))
+    ) %>%
+    filter(!is.na(comp)) %>%
+    ggplot(aes(x = comp, y = .data[[flux_var]], fill = comp, color = comp)) +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "grey70", linewidth = 0.3) +
+    geom_jitter(alpha = 0.35, size = 1.2, width = 0.12, stroke = 0) +
+    geom_boxplot(alpha = 0.4, outlier.shape = NA, color = "black",
+                 width = 0.55, linewidth = 0.3) +
+    stat_summary(
+      fun.data = function(x) boot_mean_ci(x),
+      geom = "pointrange", shape = 23,
+      size = 0.5, linewidth = 0.5,
+      fill = "white", color = "black", stroke = 0.8,
+      fatten = 4
+    ) +
+    facet_wrap(~ class, nrow = 1) +
+    scale_x_discrete(drop = FALSE) +
+    scale_y_continuous(trans = "asinh", breaks = brk, labels = asinh_labels) +
+    scale_fill_manual(values = class_comp_colors, guide = "none") +
+    scale_color_manual(values = class_comp_colors, guide = "none") +
+    labs(x = NULL, y = y_lab, tag = tag_label) +
+    theme_pub(base_size = 11) +
+    theme(axis.text.x = element_text(angle = 35, hjust = 1))
+}
+
+fig2_class <- make_class_panel(df, "CH4", "a") / make_class_panel(df, "CO2", "b")
+save_pub(fig2_class, "component_by_class_boot", width = 230, height = 200)
 source("code/10_figures/figure_cleanup.R")

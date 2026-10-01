@@ -11,8 +11,9 @@ library(cowplot)
 library(magick)
 library(ggplot2)
 
-photo_dir <- "output/figures/other/photos"
-crop_file <- "output/figures/other/photos/crop_offsets.csv"
+photo_dir <- "data/photos/chambers"
+crop_file <- file.path(photo_dir, "crop_offsets.csv")
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 
 photos <- list(
   list(file = "soil_chamber.jpg",                     label = "(a) Soil cylinder"),

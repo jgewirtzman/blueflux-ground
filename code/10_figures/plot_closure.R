@@ -5,6 +5,7 @@
 # =============================================================================
 suppressMessages({library(dplyr);library(tidyr);library(ggplot2)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 f <- 1e-3/16.04*1e9/86400   # mg CH4 m-2 d-1 -> nmol m-2 s-1
 CAMP <- c("Oct 2022","Mar 2023")            # wet, dry (chronological)
 

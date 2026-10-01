@@ -1,9 +1,13 @@
 # =============================================================================
-# Fig 4: TLS component surface areas per unit ground area, by plot/class.
-# Fig 5: bottom-up CH4 budget by component (stacked), by site/season, MC CIs.
+# Fig 4: structure-explicit bottom-up CH4 budgets.
+#   pub_surface_areas       TLS component surface areas per unit ground area
+#   pub_component_budget_v2 CH4 budget by component (stacked), site/season, MC CIs
+#   pub_budget_composite    main-text Fig 4: (a) surface areas, (b) % of budget,
+#                           (c) stand-level budget with Monte Carlo 95% CI
 # =============================================================================
-suppressMessages({library(dplyr);library(tidyr);library(ggplot2)})
+suppressMessages({library(dplyr);library(tidyr);library(ggplot2);library(patchwork)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 TLS<-Sys.getenv("BLUEFLUX_TLS_DIR", "data/tls")
 f<-1e-3/16.04*1e9/86400   # (not used; CH4 kept in mg/m2/d for Fig 5)
 site_lev<-c("CP40","FLM30","SRS5","SRS6")
@@ -56,4 +60,34 @@ p5<-ggplot()+
         strip.text=element_text(face="bold"),axis.text.x=element_text(angle=35,hjust=1))
 ggsave("output/figures/other/pub_component_budget_v2.pdf",p5,width=9,height=4.8)
 ggsave("output/figures/other/pub_component_budget_v2.png",p5,width=9,height=4.8,dpi=200)
-cat("written pub_surface_areas + pub_component_budget_v2\n")
+
+## ---- Main-text Fig 4 composite ----
+comp7<-read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario=="exponential") %>%
+  group_by(site,campaign) %>%                                  # tide average
+  summarise(Water=mean(water_mg),Soil=mean(soil_mg),Root=mean(root_mg),CWD=mean(cwd_mg),
+            `Stem (meas.)`=mean(stem_meas_mg),`Stem (extrap.)`=mean(stem_extrap_mg),.groups="drop") %>%
+  pivot_longer(-c(site,campaign),names_to="component",values_to="mg") %>%
+  mutate(component=factor(component,levels=c("Water","Soil","Root","CWD","Stem (meas.)","Stem (extrap.)")),
+         site=factor(site,levels=site_lev),
+         campaign=factor(campaign,levels=c("Oct 2022","Mar 2023"))) %>%
+  group_by(site,campaign) %>% mutate(pct=100*mg/sum(mg)) %>% ungroup()
+pal7<-c(Water="#4682B4",Soil="#8B4513",Root="#D2691E",CWD="#808080",
+        "Stem (meas.)"="#228B22","Stem (extrap.)"="#90EE90")
+th4<-theme_bw(base_size=13)+theme(legend.position="bottom",panel.grid.minor=element_blank(),
+      strip.text=element_text(face="bold"),plot.tag=element_text(face="bold"))
+ang<-theme(axis.text.x=element_text(angle=35,hjust=1))
+pa<-p4+labs(y=expression("SA per ground ("*m^2*" "*m^-2*")"),tag="a")+th4
+pb<-ggplot(comp7,aes(campaign,pct,fill=component))+
+  geom_col(width=.7,color="grey30",linewidth=.15)+
+  facet_grid(~site)+scale_fill_manual(values=pal7,guide="none")+
+  labs(x=NULL,y="% of budget",tag="b")+th4+ang
+pc<-ggplot()+
+  geom_col(data=comp7,aes(campaign,mg,fill=component),width=.65,color="grey30",linewidth=.15)+
+  geom_errorbar(data=tot %>% mutate(campaign=factor(campaign,levels=c("Oct 2022","Mar 2023"))),
+                aes(campaign,ymin=lo,ymax=hi),width=.2,linewidth=.45)+
+  facet_wrap(~site,nrow=1,scales="free_y")+scale_fill_manual(values=pal7,name=NULL)+
+  labs(x=NULL,y=expression("CH"[4]*" (mg "*m^-2*" "*d^-1*")"),tag="c")+th4+ang
+fig4<-pa/pb/pc+plot_layout(heights=c(1,1,1.05))
+ggsave("output/figures/other/pub_budget_composite.pdf",fig4,width=10,height=11)
+ggsave("output/figures/other/pub_budget_composite.png",fig4,width=10,height=11,dpi=200)
+cat("written pub_surface_areas + pub_component_budget_v2 + pub_budget_composite\n")
