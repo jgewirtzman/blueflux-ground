@@ -1,10 +1,9 @@
 # Curated flux metadata
 
 Hand-curated values that the flux workflow needs and that are not in the field
-sheets or dimension tables. Written once by `code/rebuild/03_migrate_curated_metadata.R`
+sheets or dimension tables. Written once by `code/qa/migrate_curated_metadata.R`
 from the legacy sources named in each file's `source`/`reason` column; values
-were copied, not edited. Read by `code/rebuild/04_build_auxfile.R` (and, later,
-the fitting and ebullition steps). Change a value here, never in an
+were copied, not edited. Read by stages 01-05 of `run_all.R`. Change a value here, never in an
 intermediate file, and say why in the row.
 
 | File | Rows | Content |
@@ -12,6 +11,7 @@ intermediate file, and say why in the row.
 | `chamber_overrides.csv` | 30 | Mar 2022 soil at BL60/FLM30/MI: recorded "Soil 8 in", measured with the 6-inch dome on a 2 cm collar. |
 | `date_corrections.csv` | 4 | BL60 water 168-171: recorded 2023-03-22, measured 2023-03-16. |
 | `excluded_measurements.csv` | 31 | 7 stem traces that are analyzer artifacts; 15 Mar 2022 measurements with the faulty pilot chambers R2, RA and pneumatophore, and 6 RB10 Mar 2022 measurements with an undimensioned "small root chamber" or a blank chamber ID (Jon, 2026-10-01); 3 Picarro SRS5 water closures of 2022-10-20 with no Picarro record anywhere (the legacy values were fitted on LGR tree closures). |
+| `saved_manual_windows.csv` | 519 | Fit windows clicked in the legacy workflow (click.peak2 / rescue), copied from the gitignored `intermediate/` manual-ID files (analyzer clock), with their offset from the field log and source file. Stage 02 uses them as the default window (Jon's decision 3). |
 | `trimmed_windows.csv` | 14 | Fit windows chosen interactively for traces that first gave negative CH4 flux, as absolute analyzer-clock times plus the original Etime and its anchor. |
 | `ebullition_confirmed_traces.csv` | 6 | Floating-chamber placements with manually verified bubbles. |
 | `chamber_ids_from_scans.csv` | 21 | Chamber IDs for Mar 2022 trees left blank on the compiled sheet, read from the scanned datasheets (R2/"RZ", RA, small root chamber, pneumatophore chamber; 3 RB10 rows unreadable). Transcribed by Claude, 2026-10-01; to be checked. |

@@ -1,114 +1,117 @@
 #!/usr/bin/env Rscript
 # =============================================================================
-# run_all.R — Master pipeline
+# run_all.R -- BlueFlux ground pipeline, raw analyzer files to figures.
+#
+#   Rscript run_all.R                     # everything, in order
+#   Rscript run_all.R --from 05_dataset   # from a stage (or a step, e.g. 07_upscaling/02)
+#   Rscript run_all.R --only 08_figures   # one stage (or one step)
+#   Rscript run_all.R --list              # print the steps
+#   Rscript run_all.R --qa                # also run the QA comparisons (need legacy files)
+#
+# Every step runs in its own R process (Rscript <script>) from the project
+# root, so packages loaded by one step cannot mask functions in another; its
+# output goes to output/logs/<stage>__<script>.log. The run stops at the first
+# failing step.
+#
+# Stages 01-03 read the raw analyzer files (data/analyzer/, gitignored) and the
+# US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored). From
+# stage 05 on, only tracked files are needed.
 # =============================================================================
-# Runs the analysis workflow from preprocessing through figures. Paths are
-# relative to the project root; each script self-anchors with here::here(),
-# so run from anywhere:
-#
-#   Rscript run_all.R        # run all steps
-#   Rscript run_all.R 12     # run from step 12 onward (fractional steps, e.g. 12.5, are allowed)
-#
-# TLS surface-area and porewater data are bundled in data/tls/ and
-# data/porewater/. Override the location with env vars if needed:
-#   BLUEFLUX_TLS_DIR       (default data/tls)
-#   BLUEFLUX_MICROBES_DIR  (default data/porewater)
-#
-# Steps needing interactive RStudio (goFlux click.peak2, time-window picking)
-# are flagged as MANUAL and not executed here.
-# =============================================================================
+
+steps <- c(
+  # 01 metadata: field sheets + dimension tables + curated corrections -> one auxfile
+  "code/01_metadata/00_index_raw_files.R",
+  "code/01_metadata/01_build_auxfile.R",
+  # 02 windows: clock offsets and the fit window of every closure
+  "code/02_windows/01_rise_detection.R",
+  "code/02_windows/02_windows.R",
+  # 03 fit: goFlux + fluxqc per gas; water flux from dissolved CH4 where unmeasured
+  "code/03_fit/01_fit_fluxes.R",
+  "code/03_fit/02_water_flux_from_dissolved.R",
+  # 04 ebullition: to be rebuilt (goAquaFlux); stage 05 uses the legacy partitioning meanwhile
+  # 05 dataset: compiled datasets, written once
+  "code/05_dataset/01_compile_datasets.R",
+  "code/05_dataset/02_data_products.R",
+  "code/05_dataset/03_data_dictionary.R",
+  # 06 analysis: statistics and manuscript numbers
+  "code/06_analysis/01_summary_table.R",
+  "code/06_analysis/02_manuscript_results.R",
+  # 07 upscaling: tower GPP, plot budgets, forcing, carbon budget
+  "code/07_upscaling/01_tower_gpp.R",
+  "code/07_upscaling/02_upscale_methane.R",
+  "code/07_upscaling/03_upscale_co2.R",
+  "code/07_upscaling/04_net_forcing.R",
+  "code/07_upscaling/05_mc_forcing.R",
+  "code/07_upscaling/06_carbon_budget.R",
+  "code/07_upscaling/07_budget_sources.R",
+  "code/07_upscaling/08_supplementary_analyses.R",
+  # 08 figures: display items, then copy into output/figures/main and SI
+  "code/08_figures/fig2_component_boot.R",          # Fig 2, Fig S4
+  "code/08_figures/fig3_stem_height.R",             # Fig 3
+  "code/08_figures/plot_budget_figs.R",             # Fig 4
+  "code/08_figures/fig6_porewater_pca.R",           # Fig 5, Figs S12-S13
+  "code/08_figures/plot_closure.R",                 # Fig 6
+  "code/08_figures/plot_carbon_budget.R",           # Fig 7
+  "code/08_figures/plot_budget_multisource.R",      # Fig 8
+  "code/08_figures/plot_budget_flow.R",             # Fig 9
+  "code/08_figures/plot_budget_waterfall.R",        # Fig 10
+  "code/08_figures/figS1_ebullition.R",             # Fig S1
+  "code/08_figures/figS2_pneumatophore.R",          # Fig S2
+  "code/08_figures/figS3_chamber_photos.R",         # Fig S3
+  "code/08_figures/plot_extrap_clean.R",            # Fig S5
+  "code/08_figures/plot_SA_height_fixedY.R",        # Fig S8
+  "code/08_figures/plot_us_skr_gpp.R",              # Fig S10
+  "code/08_figures/site_characterization_figures.R",# Figs S11, S14
+  "code/08_figures/plot_site_closure.R",            # supplementary per-site closure
+  "code/08_figures/plot_water_positions.R",         # supplementary water positions
+  "code/08_figures/collect_figures.R"
+)
+# Fig 1 (map + photo composite, code/08_figures/publication_map_composite.R) is
+# assembled interactively and is not run here.
+
+qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, intermediate/
+  "code/qa/compare_auxfile_vs_legacy.R",
+  "code/qa/compare_fit_vs_legacy.R",
+  "code/qa/compare_dataset_vs_legacy.R",
+  "code/qa/audit_saved_traces.R",
+  "code/qa/air_temperature_options.R"
+)
 
 args <- commandArgs(trailingOnly = TRUE)
-start_step <- if (length(args) > 0) as.numeric(args[1]) else 1
+opt <- function(name) { i <- match(name, args); if (is.na(i)) NULL else args[i + 1] }
+if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+stage_of <- function(s) basename(dirname(s))
+label_of <- function(s) paste0(stage_of(s), "/", sub("\\.R$", "", basename(s)))
+matches  <- function(s, key) startsWith(label_of(s), key) | stage_of(s) == key
 
-run_step <- function(step_num, description, script_path) {
-  lab <- formatC(step_num, width = 2, flag = "0", format = "fg")   # 7 -> "07", 12.5 -> "12.5"
-  if (step_num < start_step) {
-    cat(sprintf("[%s] SKIP: %s\n", lab, description)); return(invisible(NULL))
-  }
-  cat(sprintf("\n========================================\n"))
-  cat(sprintf("[%s] %s\n     %s\n", lab, description, script_path))
-  cat(sprintf("========================================\n"))
+run <- steps
+if (!is.null(opt("--from"))) { k <- which(matches(steps, opt("--from")))[1]
+  if (is.na(k)) stop("no step matches --from ", opt("--from")); run <- steps[k:length(steps)] }
+if (!is.null(opt("--only"))) { run <- steps[matches(steps, opt("--only"))]
+  if (!length(run)) stop("no step matches --only ", opt("--only")) }
+if ("--qa" %in% args) run <- c(run, qa_steps)
+if ("--list" %in% args) { cat(sprintf("%2d  %s\n", seq_along(steps), label_of(steps)), sep = "")
+  cat("QA (--qa):\n"); cat(sprintf("    %s\n", label_of(qa_steps)), sep = ""); quit(save = "no") }
+
+needs_raw <- stage_of(run) %in% c("01_metadata", "02_windows", "03_fit")
+if (any(needs_raw) && !dir.exists("data/analyzer"))
+  stop("Stages 01-03 need the raw analyzer files in data/analyzer/ (gitignored). ",
+       "Add them, or start from a later stage: Rscript run_all.R --from 05_dataset")
+if (any(stage_of(run) %in% c("01_metadata", "07_upscaling")) && !file.exists("data/tower/AMF_US-Skr_BASE_HH_2-5.csv"))
+  stop("Stages 01 and 07 need data/tower/AMF_US-Skr_BASE_HH_2-5.csv (gitignored).")
+
+dir.create("output/logs", recursive = TRUE, showWarnings = FALSE)
+cat("=== BlueFlux ground pipeline:", length(run), "steps |", format(Sys.time()), "===\n")
+for (s in run) {
+  log <- file.path("output/logs", paste0(stage_of(s), "__", sub("\\.R$", ".log", basename(s))))
   t0 <- Sys.time()
-  tryCatch(source(script_path, local = new.env(parent = globalenv())),
-    error = function(e) { cat(sprintf("ERROR in step %s: %s\n", lab, conditionMessage(e))); stop(e) })
-  cat(sprintf("[%s] DONE (%.1f s)\n", lab, round(difftime(Sys.time(), t0, units = "secs"), 1)))
+  if (file.exists("Rplots.pdf")) file.remove("Rplots.pdf")
+  rc <- system2("Rscript", s, stdout = log, stderr = log)
+  if (file.exists("Rplots.pdf")) {   # a plot drawn without an open device: not an output
+    file.remove("Rplots.pdf"); cat(sprintf("  (note: %s drew to the default device; Rplots.pdf removed)\n", label_of(s))) }
+  cat(sprintf("%-45s %s  %5.0f s\n", label_of(s), if (rc == 0) "ok    " else "FAILED",
+              as.numeric(difftime(Sys.time(), t0, units = "secs"))))
+  if (rc != 0) { cat("\n--- last lines of", log, "---\n"); cat(tail(readLines(log), 20), sep = "\n")
+    stop("step failed: ", s) }
 }
-
-cat("=== BlueFlux Ground Analysis Pipeline ===\n")
-cat("Starting from step:", start_step, " |  Time:", format(Sys.time()), "\n")
-
-# ---- 02 PREPROCESS ----------------------------------------------------------
-run_step(1, "Assign chamber volumes and surface areas",   "code/02_preprocess/assign_tree_vol_area.R")
-run_step(1.5, "Assign soil/water chamber volumes",        "code/02_preprocess/assign_soil_water_vol_area.R")
-run_step(2, "Convert to goFlux auxfiles",                 "code/02_preprocess/convert_to_auxfile.R")
-run_step(2.5, "Convert soil/water to goFlux auxfiles",    "code/02_preprocess/convert_to_auxfile_soil_water.R")
-
-# ---- 03 FLUX CALCULATION (interactive) --------------------------------------
-if (start_step <= 3) {
-  cat("\n[03] MANUAL: goFlux processing in RStudio if auxfiles changed.\n")
-  cat("     code/03_flux_calculation/*.R  ;  rescue: code/04_qc_rescue/*.R\n")
-}
-
-# ---- 04 QC / RESCUE ---------------------------------------------------------
-run_step(4, "Build missing auxfiles for rescued measurements", "code/04_qc_rescue/build_missing_auxfiles.R")
-
-# ---- 05 INTEGRATION ---------------------------------------------------------
-run_step(5, "Assemble clean combined dataset",            "code/05_integration/assemble_clean_dataset.R")
-run_step(6, "Apply chamber volume corrections",           "code/05_integration/apply_chamber_corrections.R")
-run_step(6.5, "Correct Mar 2022 soil chambers (6-inch, LM)", "code/05_integration/correct_mar2022_soil_chambers.R")
-
-# ---- 06 EBULLITION ----------------------------------------------------------
-run_step(7,  "Detect ebullition in raw traces",           "code/06_ebullition/detect_ebullition.R")
-run_step(8,  "Reprocess water traces (partitioned)",      "code/06_ebullition/goflux_reprocess_ebullition.R")
-run_step(9,  "Integrate ebullition into dataset",         "code/06_ebullition/integrate_ebullition.R")
-run_step(10, "Apply negative-flux corrections",           "code/06_ebullition/apply_negative_flux_corrections.R")
-
-# ---- 07 ANALYSIS ------------------------------------------------------------
-run_step(11, "Summary statistics table",                  "code/07_analysis/summary_table.R")
-run_step(12, "Compute manuscript results/numbers",        "code/07_analysis/manuscript_results.R")
-run_step(12.5, "Derived data products (archival, tree, surface)", "code/07_analysis/create_data_products.R")
-
-# ---- 09 TOWER GPP (upstream input to CO2 upscaling) -------------------------
-run_step(13, "Partition US-Skr tower GPP",                "code/09_tower_gpp/us_skr_gapfill_gpp.R")
-
-# ---- 08 UPSCALING (chambers x TLS -> stand budgets) -------------------------
-# Requires BLUEFLUX_TLS_DIR (surface-area products).
-run_step(14, "Upscale methane to plot budgets",          "code/08_upscaling/upscale_methane_to_plots.R")
-run_step(15, "Upscale CO2 / NEE to plot budgets",        "code/08_upscaling/upscale_co2_to_plots.R")
-run_step(15.5, "Class net forcing (CH4 CO2-eq + NEE)",   "code/08_upscaling/assemble_net_forcing.R")
-run_step(16, "Monte Carlo net forcing",                  "code/08_upscaling/mc_co2_forcing.R")
-run_step(16.5, "Assemble full carbon budget (NECB + lit terms)", "code/08_upscaling/assemble_carbon_budget.R")
-run_step(16.6, "Assemble multi-source budget estimates",         "code/08_upscaling/assemble_budget_sources.R")
-run_step(16.7, "Supplementary analyses (inundation, regen, context sites)", "code/08_upscaling/supplementary_analyses.R")
-
-# ---- 10 FIGURES (main -> figures/main, SI -> figures/SI, else figures/other)
-if (start_step <= 17) cat("\n[17] MANUAL: Fig 1 map/photo composite — code/10_figures/publication_map_composite.R\n")
-run_step(18, "Fig 2: Component flux rates",              "code/10_figures/fig2_component_boot.R")
-run_step(19, "Fig 3: Stem height x species",            "code/10_figures/fig3_stem_height.R")
-run_step(20, "Fig 4: Bottom-up budgets",               "code/10_figures/plot_budget_figs.R")
-run_step(21, "Fig 5: Porewater PCA / regime shift",    "code/10_figures/fig6_porewater_pca.R")
-run_step(22, "Fig 6: Closure + net forcing",           "code/10_figures/plot_closure.R")
-run_step(22.5, "Fig 7: Full carbon budget (NECB)",     "code/10_figures/plot_carbon_budget.R")
-run_step(22.6, "Fig 8: Multi-source budget (grouped)", "code/10_figures/plot_budget_multisource.R")
-run_step(22.7, "Fig 9: Carbon flow (box-and-flow)",    "code/10_figures/plot_budget_flow.R")
-run_step(22.8, "Fig 10: Residual decomposition (waterfall)", "code/10_figures/plot_budget_waterfall.R")
-run_step(23, "Fig S1: Ebullition partitioning",        "code/10_figures/figS1_ebullition.R")
-run_step(24, "Fig S2: Pneumatophore density vs flux",  "code/10_figures/figS2_pneumatophore.R")
-run_step(25, "Fig S3: Chamber photographs",            "code/10_figures/figS3_chamber_photos.R")
-run_step(25.1, "Fig S5: Stem height extrapolation",    "code/10_figures/plot_extrap_clean.R")
-run_step(25.2, "Fig S8: TLS surface area by height",   "code/10_figures/plot_SA_height_fixedY.R")
-run_step(25.3, "Fig S10: Tower GPP plots",             "code/09_tower_gpp/plot_us_skr_gpp.R")
-run_step(25.4, "Figs S11, S14: Porewater depth / salinity-CH4", "code/10_figures/site_characterization_figures.R")
-run_step(25.5, "Per-site closure (supp_site_component_contributions)", "code/10_figures/plot_site_closure.R")
-run_step(25.6, "Water CH4 by position (supp_water_positions)", "code/10_figures/plot_water_positions.R")
-run_step(26, "Collect curated figures into figures/main and figures/SI", "code/10_figures/collect_figures.R")
-
-# ---- DONE -------------------------------------------------------------------
-cat("\n========================================\n=== Pipeline complete ===\n")
-cat("Time:", format(Sys.time()), "\n")
-cat("Dataset:  output/data_products/combined_gas_flux_dataset.csv\n")
-cat("Budgets:  output/upscaling/  |  Forcing: output/upscaling/net_forcing_by_class.csv\n")
-cat("Figures:  output/figures/{main,SI,presentation,other}\n")
-cat("Results:  manuscript/text/manuscript_results.txt\n")
-cat("========================================\n")
+cat("=== done ===\n")

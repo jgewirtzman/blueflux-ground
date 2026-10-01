@@ -29,3 +29,6 @@ _archive/
 
 # Temporary Excel files
 ~$*.xlsx
+
+# pipeline step logs (run_all.R)
+output/logs/
