@@ -76,6 +76,7 @@ run_step(14, "Upscale methane to plot budgets",          "code/08_upscaling/upsc
 run_step(15, "Upscale CO2 / NEE to plot budgets",        "code/08_upscaling/upscale_co2_to_plots.R")
 run_step(16, "Monte Carlo net forcing",                  "code/08_upscaling/mc_co2_forcing.R")
 run_step(16.5, "Assemble full carbon budget (NECB + lit terms)", "code/08_upscaling/assemble_carbon_budget.R")
+run_step(16.6, "Assemble multi-source budget estimates",         "code/08_upscaling/assemble_budget_sources.R")
 
 # ---- 10 FIGURES (main -> figures/main, SI -> figures/SI, else figures/other)
 if (start_step <= 17) cat("\n[17] MANUAL: Fig 1 map/photo composite — code/10_figures/publication_map_composite.R\n")
@@ -85,6 +86,9 @@ run_step(20, "Fig 4: Bottom-up budgets",               "code/10_figures/plot_bud
 run_step(21, "Fig 5: Porewater PCA / regime shift",    "code/10_figures/fig6_porewater_pca.R")
 run_step(22, "Fig 6: Closure + net forcing",           "code/10_figures/plot_closure.R")
 run_step(22.5, "Fig 7: Full carbon budget (NECB)",     "code/10_figures/plot_carbon_budget.R")
+run_step(22.6, "Fig 8: Multi-source budget (grouped)", "code/10_figures/plot_budget_multisource.R")
+run_step(22.7, "Fig 9: Carbon flow (box-and-flow)",    "code/10_figures/plot_budget_flow.R")
+run_step(22.8, "Fig 10: Residual decomposition (waterfall)", "code/10_figures/plot_budget_waterfall.R")
 run_step(23, "Fig S1: Ebullition partitioning",        "code/10_figures/figS1_ebullition.R")
 run_step(24, "Fig S2: Pneumatophore density vs flux",  "code/10_figures/figS2_pneumatophore.R")
 run_step(25, "Fig S3: Chamber photographs",            "code/10_figures/figS3_chamber_photos.R")
