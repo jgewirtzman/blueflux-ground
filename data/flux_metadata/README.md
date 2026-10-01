@@ -11,7 +11,7 @@ intermediate file, and say why in the row.
 |------|-----:|---------|
 | `chamber_overrides.csv` | 30 | Mar 2022 soil at BL60/FLM30/MI: recorded "Soil 8 in", measured with the 6-inch dome on a 2 cm collar. |
 | `date_corrections.csv` | 4 | BL60 water 168-171: recorded 2023-03-22, measured 2023-03-16. |
-| `excluded_measurements.csv` | 22 | 7 stem traces that are analyzer artifacts; 15 Mar 2022 measurements with the faulty pilot chambers R2, RA and pneumatophore (Jon, 2026-10-01). |
+| `excluded_measurements.csv` | 28 | 7 stem traces that are analyzer artifacts; 15 Mar 2022 measurements with the faulty pilot chambers R2, RA and pneumatophore, and 6 RB10 Mar 2022 measurements with an undimensioned "small root chamber" or a blank chamber ID (Jon, 2026-10-01). |
 | `trimmed_windows.csv` | 14 | Fit windows chosen interactively for traces that first gave negative CH4 flux, as absolute analyzer-clock times plus the original Etime and its anchor. |
 | `ebullition_confirmed_traces.csv` | 6 | Floating-chamber placements with manually verified bubbles. |
 | `chamber_ids_from_scans.csv` | 21 | Chamber IDs for Mar 2022 trees left blank on the compiled sheet, read from the scanned datasheets (R2/"RZ", RA, small root chamber, pneumatophore chamber; 3 RB10 rows unreadable). Transcribed by Claude, 2026-10-01; to be checked. |

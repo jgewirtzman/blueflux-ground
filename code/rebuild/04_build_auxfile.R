@@ -258,7 +258,7 @@ aux <- bind_rows(geo_trees, geo_sw) %>%
   ) %>%
   transmute(UniqueID = flux_id, measurement_type, component, plot, analyzer, date, start.time, end.time,
             obs.length, chamber_id, geometry_rule, Area, offset, Vcham, Vtube, Vinst, Vtot,
-            Tcham, Tcham_source, Pcham, Pcham_source, end_time_repair,
+            Tcham, Tcham_source, tower_TA_raw, tower_TA_bias = bias, Pcham, Pcham_source, end_time_repair,
             date_corrected = !is.na(date_fixed), excluded) %>%
   arrange(date, analyzer, start.time, UniqueID)
 stopifnot(!anyDuplicated(aux$UniqueID))
