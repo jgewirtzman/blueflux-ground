@@ -32,3 +32,14 @@ LGR3 = SN:3K60180500001584. Picarro `.dat` files carry no serial.
   keeping minutes:seconds and choosing the hour that gives a 0-30 min
   closure (13 rows, all within ~5 min of the saved manual windows); 2 that
   cannot be repaired are dropped. Recorded in `end_time_repair`.
+
+### Step 3: clock offsets and windows
+
+| Script | Writes | Notes |
+|--------|--------|-------|
+| `lib_raw.R` | - | Raw reader (`read_raw(unit, from, to)`): own logger serial only, duplicates skipped, zips read in a temp dir. LGR `[H2O]_ppm` is negative (~ -760 ppm) and the Picarro H2O (%) has spikes; to be handled before goFlux's H2O correction. |
+| `06_clock_offsets.R` | `clock_offsets.csv`, `clock_offsets_closures.csv` | Per-closure CO2-rise detection (`fluxqc::find_rise`, limits scaled to the logging interval) around field start + prior. A diagnostic: `fluxqc::find_clock_offset()` gave flat score curves on most days, and per-closure detection is often pinned at the search edge. |
+| `07_windows.R` | `windows.csv`, `windows_disagreements.csv` | Offset per analyzer-day from the saved manual windows (same day, else same analyzer-campaign; LGR within ~+-30 s of the field watch, Picarro +25093 to +25231 s). Window = curated trimmed window, else saved manual window, else field log + offset (276 closures, mostly LGR2 trees). Where saved and scripted windows both exist they are compared; 127 large disagreements listed, saved kept (Jon's decision 3). |
+
+The 14 trimmed windows were picked on analyzer-clock data, so their absolute
+times need no offset.
