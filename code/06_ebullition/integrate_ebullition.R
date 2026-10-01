@@ -133,6 +133,13 @@ cat("Adding", nrow(add), "additional water traces (",
 # Get representative water row for column template
 water_template <- df %>% filter(component == "water") %>% slice(1)
 
+# System volumes used by goflux_reprocess_ebullition.R for these traces
+source("code/helpers/floating_chamber_params.R")
+floating_lgr     <- floating_chamber_params("LGR")
+floating_picarro <- floating_chamber_params("Picarro")
+drierite_large   <- read_csv("data/field_notes/dimension_csvs/additional_vol.csv",
+                             show_col_types = FALSE)$drierite_large[1]
+
 # Build new rows matching the combined dataset schema
 new_rows <- add %>%
   mutate(
@@ -170,13 +177,15 @@ new_rows <- add %>%
     month = month(as.Date(date)),
     month_year = format(as.Date(date), "%Y-%m"),
     season = ifelse(month == 10, "wet", "dry"),
-    # Chamber params (from existing water fluxes at this site)
+    # Chamber params (floating chamber; system volume depends on the analyzer)
     chamber_volume_cm3 = water_template$chamber_volume_cm3,
     surface_area_cm2 = water_template$surface_area_cm2,
-    total_system_volume_cm3 = water_template$total_system_volume_cm3,
-    total_system_volume_L = water_template$total_system_volume_L,
-    analyzer_cell_volume_cm3 = water_template$analyzer_cell_volume_cm3,
-    tubing_volume_cm3 = water_template$tubing_volume_cm3,
+    total_system_volume_cm3 = ifelse(grepl("LGR", analyzer),
+                                     floating_lgr$Vtot, floating_picarro$Vtot) * 1000,
+    total_system_volume_L = total_system_volume_cm3 / 1000,
+    analyzer_cell_volume_cm3 = total_system_volume_cm3 - chamber_volume_cm3 -
+      floating_lgr$Vtube - drierite_large,
+    tubing_volume_cm3 = floating_lgr$Vtube,
     flux_status = "valid",
     notes = "additional trace from ebullition reprocessing"
   )

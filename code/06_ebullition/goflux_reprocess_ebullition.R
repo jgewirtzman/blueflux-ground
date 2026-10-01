@@ -40,26 +40,15 @@ cat("Processed water fluxes:", nrow(water_fluxes), "\n")
 # All water measurements use "Floating 8 in" chamber.
 # Volume components differ only by analyzer (LGR vs Picarro).
 
+# Built from the dimension tables (see code/helpers/floating_chamber_params.R).
+source("code/helpers/floating_chamber_params.R")
+
 CHAMBER_PARAMS <- list(
-  LGR = list(
-    Area   = 324.3,      # cm2
-    offset = 0,          # cm (floating chamber)
-    Vcham  = 3370,       # cm3 (chamber + collar)
-    Vtube  = 29,         # cm3
-    Vinst  = 919,        # cm3 (analyzer cell 70 + drierite large 849)
-    Vtot   = 4.318,      # L
-    Pcham  = 101.325     # kPa
-  ),
-  Picarro = list(
-    Area   = 324.3,
-    offset = 0,
-    Vcham  = 3370,
-    Vtube  = 29,
-    Vinst  = 884,        # analyzer cell 35 + drierite large 849
-    Vtot   = 4.283,
-    Pcham  = 101.325
-  )
+  LGR     = floating_chamber_params("LGR"),
+  Picarro = floating_chamber_params("Picarro")
 )
+cat(sprintf("Floating chamber Vtot: LGR %.3f L, Picarro %.3f L\n",
+            CHAMBER_PARAMS$LGR$Vtot, CHAMBER_PARAMS$Picarro$Vtot))
 
 # Temperature lookup: mean air_temp per site × date from processed fluxes
 temp_lookup <- water_fluxes %>%
