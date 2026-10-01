@@ -68,6 +68,7 @@ drierite <- function(date) case_when(
 cham_ovr <- rd(file.path(meta_dir, "chamber_overrides.csv"))
 date_fix <- rd(file.path(meta_dir, "date_corrections.csv"))
 excluded <- rd(file.path(meta_dir, "excluded_measurements.csv"))
+scan_ids <- rd(file.path(meta_dir, "chamber_ids_from_scans.csv"))   # chambers missing from the compiled sheet
 parse_date <- function(x) as.Date(coalesce(mdy(x, quiet = TRUE), dmy(x, quiet = TRUE), ymd(x, quiet = TRUE)))
 
 # ---- Tower air temperature and pressure (US-Skr, AmeriFlux BASE) -------------------
@@ -122,7 +123,22 @@ field <- bind_rows(
 #   5. no start time: mean of same-plot readings that day.
 pool <- field %>% filter(!is.na(air_temp_measured), !is.na(t_utc)) %>%
   select(pid = flux_id, plot, date, t_utc, at = air_temp_measured)
-field$tower_TA <- tower_value(field$t_utc, "TA_1_1_1")
+field$tower_TA_raw <- tower_value(field$t_utc, "TA_1_1_1")
+# The tower (SRS6 canopy) reads cooler than chamber-side air at most plots.
+# Calibrate it per plot x campaign by the median (field - tower) difference
+# over measured readings (n >= 3), else the overall median.
+field$campaign <- format(field$date, "%Y-%m")
+tower_bias <- field %>% filter(!is.na(air_temp_measured), !is.na(tower_TA_raw)) %>%
+  mutate(d = air_temp_measured - tower_TA_raw)
+overall_bias <- median(tower_bias$d)
+tower_bias <- tower_bias %>% group_by(plot, campaign) %>%
+  summarise(n_bias = n(), bias = median(d), .groups = "drop") %>% filter(n_bias >= 3)
+field <- field %>% left_join(tower_bias, by = c("plot", "campaign")) %>%
+  mutate(tower_bias_basis = if_else(is.na(bias), "overall", "plot x campaign"),
+         bias = coalesce(bias, overall_bias),
+         tower_TA = tower_TA_raw + bias)
+write_csv(tower_bias %>% add_row(plot = "(overall)", campaign = "all", n_bias = nrow(tower_bias), bias = overall_bias),
+          "output/rebuild/tower_air_temp_bias.csv")
 field$Tcham <- field$air_temp_measured
 field$Tcham_source <- if_else(!is.na(field$Tcham), "field sheet", NA_character_)
 for (i in which(is.na(field$Tcham))) {
@@ -132,7 +148,8 @@ for (i in which(is.na(field$Tcham))) {
     if (any(gap <= 1800)) {
       field$Tcham[i] <- mean(same$at[gap <= 1800]); field$Tcham_source[i] <- "same-plot tree air <=30 min"
     } else if (!is.na(field$tower_TA[i])) {
-      field$Tcham[i] <- field$tower_TA[i]; field$Tcham_source[i] <- "tower TA_1_1_1"
+      field$Tcham[i] <- field$tower_TA[i]
+      field$Tcham_source[i] <- paste0("tower TA_1_1_1 + ", field$tower_bias_basis[i], " bias")
     } else if (nrow(same)) {
       field$Tcham[i] <- same$at[which.min(gap)]; field$Tcham_source[i] <- "same-plot tree air, nearest same day"
     }
@@ -143,8 +160,8 @@ for (i in which(is.na(field$Tcham))) {
     # same-plot measurements that day
     span <- range(field$t_utc[field$plot == field$plot[i] & field$date == field$date[i]], na.rm = TRUE)
     if (all(is.finite(span))) {
-      field$Tcham[i] <- mean(tower_value(seq(span[1], span[2], by = 600), "TA_1_1_1"), na.rm = TRUE)
-      field$Tcham_source[i] <- "tower TA_1_1_1, mean over same-plot session (no start time)"
+      field$Tcham[i] <- mean(tower_value(seq(span[1], span[2], by = 600), "TA_1_1_1"), na.rm = TRUE) + field$bias[i]
+      field$Tcham_source[i] <- "tower TA_1_1_1 + bias, mean over same-plot session (no start time)"
     }
   }
 }
@@ -176,7 +193,9 @@ geo_trees <- field %>% filter(measurement_type == "tree") %>%
       chamber_class %in% c("HA", "HB") ~ paste0(chamber_class, ": ", if_else(chamber_class == "HA", "A", "B"),
                                                  " chamber minus stem cylinder (diameter cm)"),
       TRUE ~ paste0("chamber ", chamber_class)),
-    chamber_id = chamber_class)
+    chamber_id = coalesce(chamber_class, scan_ids$chamber_id[match(flux_id, scan_ids$flux_id)]),
+    geometry_rule = if_else(is.na(chamber_class) & !is.na(chamber_id),
+                            paste0("chamber ", chamber_id, " (from scanned sheet; no dimensions yet)"), geometry_rule))
 
 # ---- Geometry: soil and water ---------------------------------------------------------------
 # Floating chamber: the "collar" in soil_water_dims.csv is the foam float

@@ -1,0 +1,22 @@
+flux_id,chamber_id,source_scan,read_as,confidence
+Mar_22_T1_1_RB10_stem,R2,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,"Chamber ID ""R2"" (8:19)",clear
+Mar_22_T1_2_RB10_stem,R2,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,"Chamber ID ""R2"" (8:42)",clear
+Mar_22_T1_3_RB10_root,small root chamber,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,"""small root chamber"" (9:00)",probable
+Mar_22_T1_4_RB10_root,small root chamber,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,ditto mark under row 3 (9:07),probable
+Mar_22_T1_5_RB10_root,small root chamber,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,"ditto mark, ""root 2"" (9:12)",probable
+Mar_22_T1_6_RB10_stem,,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,Chamber ID blank (10:04 untagged Avicennia),unknown
+Mar_22_T1_7_RB10_stem,,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,ditto mark under a blank cell (10:23),unknown
+Mar_22_T1_8_RB10_stem,,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,ditto mark under a blank cell (10:46),unknown
+Mar_22_T1_27_SRS6_CWD,RA,March_2022_Datasheets/tree/220322_SRS6_Tree_1.jpg,"LGR3 ""RA"" dead wood (14:34-14:42)",clear
+Mar_22_T1_58_FLM30_CWD,RA,March_2022_Datasheets/tree/220323_FLM_Tree_2.jpg,"Picarro ""RA"" unlabelled dead CWD (12:14)",clear
+Mar_22_T1_59_FLM30_pneumatophore,pneumatophore,March_2022_Datasheets/tree/220323_FLM_Tree_2.jpg,"Picarro ""P"" pneumatophore 1",clear
+Mar_22_T1_60_FLM30_pneumatophore,pneumatophore,March_2022_Datasheets/tree/220323_FLM_Tree_2.jpg,"""P"" pneumatophore 2",clear
+Mar_22_T1_61_FLM30_pneumatophore,pneumatophore,March_2022_Datasheets/tree/220323_FLM_Tree_2.jpg,"""P"" pneumatophore 3",clear
+Mar_22_T1_62_BL60_stem,R2,March_2022_Datasheets/tree/220324_BL_Tree_1.jpg,"Picarro ""RZ"" 0 cm (13:22)",clear
+Mar_22_T1_71_BL60_stem,R2,March_2022_Datasheets/tree/220324_BL_Tree_2.jpg,"Picarro ""RZ"" 0 cm (11:42)",clear
+Mar_22_T1_73_BL60_stem,R2,March_2022_Datasheets/tree/220324_BL_Tree_2.jpg,"Picarro ""RZ"" 0 cm (~13:01-13:09)",probable
+Mar_22_T1_76_BL60_root,R2,March_2022_Datasheets/tree/220324_BL_Tree_2.jpg,"Picarro ""RZ"" 0 cm root (12:37)",clear
+Mar_22_T1_83_BL60_stem,R2,March_2022_Datasheets/tree/220324_BL_Tree_3.pg.jpg,"LGR3 ""RZ"" 134 cm (14:39)",clear
+Mar_22_T1_84_BL60_pneumatophore,pneumatophore,March_2022_Datasheets/tree/220324_BL_Tree_3.pg.jpg,"LGR3 ""pneumatophore chamber"" pneum #1 (16:41:33)",clear
+Mar_22_T1_85_BL60_pneumatophore,pneumatophore,March_2022_Datasheets/tree/220324_BL_Tree_3.pg.jpg,pneum #2 (no times),clear
+Mar_22_T1_86_BL60_pneumatophore,pneumatophore,March_2022_Datasheets/tree/220324_BL_Tree_3.pg.jpg,pneum #3 (no times),clear

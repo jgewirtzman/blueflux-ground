@@ -1,8 +1,23 @@
-flux_id,reason
-Oct_22_199_CP40_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
-Oct_22_56_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
-Mar_23_119_BL60_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
-Oct_22_33_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
-Oct_22_54_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
-Mar_23_76_FLM30_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
-Oct_22_51_SRS6_stem,analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)
+"flux_id","reason"
+"Oct_22_199_CP40_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Oct_22_56_SRS6_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Mar_23_119_BL60_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Oct_22_33_SRS6_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Oct_22_54_SRS6_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Mar_23_76_FLM30_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Oct_22_51_SRS6_stem","analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)"
+"Mar_22_T1_1_RB10_stem","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_2_RB10_stem","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_27_SRS6_CWD","faulty pilot chamber (RA); excluded per Jon 2026-10-01"
+"Mar_22_T1_58_FLM30_CWD","faulty pilot chamber (RA); excluded per Jon 2026-10-01"
+"Mar_22_T1_59_FLM30_pneumatophore","faulty pilot chamber (pneumatophore); excluded per Jon 2026-10-01"
+"Mar_22_T1_60_FLM30_pneumatophore","faulty pilot chamber (pneumatophore); excluded per Jon 2026-10-01"
+"Mar_22_T1_61_FLM30_pneumatophore","faulty pilot chamber (pneumatophore); excluded per Jon 2026-10-01"
+"Mar_22_T1_62_BL60_stem","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_71_BL60_stem","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_73_BL60_stem","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_76_BL60_root","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_83_BL60_stem","faulty pilot chamber (R2); excluded per Jon 2026-10-01"
+"Mar_22_T1_84_BL60_pneumatophore","faulty pilot chamber (pneumatophore); excluded per Jon 2026-10-01"
+"Mar_22_T1_85_BL60_pneumatophore","faulty pilot chamber (pneumatophore); excluded per Jon 2026-10-01"
+"Mar_22_T1_86_BL60_pneumatophore","faulty pilot chamber (pneumatophore); excluded per Jon 2026-10-01"

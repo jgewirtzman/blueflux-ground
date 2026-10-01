@@ -1,0 +1,6 @@
+date,analyzer,instrument_time,real_time,source_scan,read_as,confidence
+2022-03-19,Picarro,,,March_2022_Datasheets/tree/220319_RB_Tree_1.jpg,"header: ""Picarro iPad time is off"" (no values)",clear
+2022-03-22,Picarro,11:56,14:10,March_2022_Datasheets/tree/220322_SRS6_Tree_2.jpg,"header: ""Picarro time: 11:56, Real time: 2:10""",clear
+2022-03-23,Picarro,10:57,12:57,March_2022_Datasheets/tree/220323_FLM_Tree_2.jpg,"header: ""iPad: 10:57 = real time 12:57""",probable
+2022-03-24,Picarro,11:06,13:20,March_2022_Datasheets/tree/220324_BL_Tree_2.jpg,"notes: ""instrument time 1106, real time 1320""",probable
+2022-03-24,LGR3,13:05,13:02,March_2022_Datasheets/tree/220324_BL_Tree_3.pg.jpg,"header: ""Time real = 13:02 pm, LGR3 = 13:05 pm""",clear
