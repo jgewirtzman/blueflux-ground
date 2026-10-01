@@ -22,10 +22,11 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 
 dims_dir <- "data/field_notes/dimension_csvs"
 meta_dir <- "data/flux_metadata"
-PCHAM    <- 101.325   # kPa; no reliable per-measurement pressure (see README)
+PCHAM    <- 101.325   # kPa; used only where the tower has no pressure (all of Mar 2022)
 
 rd <- function(f, ...) read_csv(f, show_col_types = FALSE, ...)
 parse_dt <- function(d, t) {
+  t <- sub("^\\s*(\\d{1,2}:\\d{2})\\s*$", "\\1:00", t)   # "12:57" -> "12:57:00"
   x <- suppressWarnings(mdy_hms(paste(d, t), quiet = TRUE))
   i <- is.na(x); x[i] <- suppressWarnings(dmy_hms(paste(d[i], t[i]), quiet = TRUE))
   i <- is.na(x); x[i] <- suppressWarnings(ymd_hms(paste(d[i], t[i]), quiet = TRUE))
@@ -64,45 +65,98 @@ drierite <- function(date) case_when(
   TRUE ~ NA_real_)
 
 # ---- Curated metadata -------------------------------------------------------------
-air_ovr  <- rd(file.path(meta_dir, "air_temperature_overrides.csv"))
 cham_ovr <- rd(file.path(meta_dir, "chamber_overrides.csv"))
 date_fix <- rd(file.path(meta_dir, "date_corrections.csv"))
 excluded <- rd(file.path(meta_dir, "excluded_measurements.csv"))
+parse_date <- function(x) as.Date(coalesce(mdy(x, quiet = TRUE), dmy(x, quiet = TRUE), ymd(x, quiet = TRUE)))
 
-# ---- Trees -------------------------------------------------------------------------
-read_trees <- function(f, sheet) rd(f, col_types = cols(.default = col_character())) %>%
-  mutate(sheet = sheet)
-trees <- bind_rows(read_trees("data/field_notes/blueflux compiled tree fluxes.csv", "main"),
-                   read_trees("data/field_notes/blueflux compiled tree fluxes_additional.csv", "additional")) %>%
+# ---- Tower air temperature and pressure (US-Skr, AmeriFlux BASE) -------------------
+# Timestamps are local standard time (EST, UTC-5); field times are local clock
+# time (America/New_York, so EDT in most campaigns). Both are compared in UTC.
+tower <- read.csv("data/tower/AMF_US-Skr_BASE_HH_2-5.csv", skip = 2, na.strings = "-9999")
+tower_t <- as.numeric(as.POSIXct(as.character(tower$TIMESTAMP_START), format = "%Y%m%d%H%M",
+                                 tz = "Etc/GMT+5")) + 900          # half-hour midpoint
+tower_value <- function(t, var, max_gap_s = 3 * 3600) {
+  ok <- is.finite(tower[[var]])
+  x <- tower_t[ok]; y <- tower[[var]][ok]
+  v <- approx(x, y, xout = t, rule = 1)$y
+  nearest <- vapply(t, function(ti) if (is.na(ti)) NA_real_ else min(abs(x - ti)), 1)
+  v[is.na(nearest) | nearest > max_gap_s] <- NA_real_
+  v
+}
+local_to_utc <- function(x) as.numeric(force_tz(x, "America/New_York"))
+
+# ---- Field rows ----------------------------------------------------------------------
+read_trees <- function(f) rd(f, col_types = cols(.default = col_character()))
+trees <- bind_rows(read_trees("data/field_notes/blueflux compiled tree fluxes.csv"),
+                   read_trees("data/field_notes/blueflux compiled tree fluxes_additional.csv")) %>%
   filter(!is.na(flux_id))
 stopifnot(!anyDuplicated(trees$flux_id))
+sw_raw <- rd("data/field_notes/BlueFlux Dataset_soils_water.csv", col_types = cols(.default = col_character()))
+names(sw_raw)[1] <- "index"
+sw <- sw_raw %>% filter(!is.na(flux_id))
+stopifnot(!anyDuplicated(sw$flux_id))
 
-# Air temperature: as fill_air_temp.R, within each sheet, in row order: mean of
-# same-date values 0 < |dt| <= 30 min, else nearest same-day value, else NA.
-# As in the legacy script, values filled earlier in the loop feed later fills.
-fill_tree_temp <- function(d) {
-  d <- d %>% mutate(dt = parse_dt(date, start_time), day = as.Date(dt), at = as.numeric(air_temp),
-                    Tcham_source = if_else(!is.na(at), "field sheet", NA_character_))
-  for (i in which(is.na(d$at) & !is.na(d$dt))) {
-    gap <- abs(as.numeric(difftime(d$dt, d$dt[i], units = "mins")))
-    pool <- which(!is.na(d$at) & d$day == d$day[i] & !is.na(d$dt))
-    near <- pool[gap[pool] <= 30 & gap[pool] > 0]
-    if (length(near)) { d$at[i] <- mean(d$at[near]); d$Tcham_source[i] <- "tree same-sheet <=30 min" }
-    else if (length(pool)) { d$at[i] <- d$at[pool[which.min(gap[pool])]]; d$Tcham_source[i] <- "tree same-sheet same day" }
+field <- bind_rows(
+  trees %>% transmute(flux_id, measurement_type = "tree", component, plot, analyzer = analyzer_id,
+                      date_rec = parse_date(date), fieldlog_start = start_time, fieldlog_end = end_time,
+                      air_temp_measured = suppressWarnings(as.numeric(air_temp)),
+                      chamber_class, species, diameter = as.numeric(diameter)),
+  sw %>% transmute(flux_id, measurement_type = "surface", component = tolower(Surface), plot = Plot,
+                   analyzer = `Gas Analyzer`, date_rec = parse_date(Date),
+                   fieldlog_start = `Flux Start Time`, fieldlog_end = `Flux End Time`,
+                   air_temp_measured = NA_real_, recorded_chamber_id = `Chamber ID`)
+) %>%
+  # date corrections come first, so everything below uses the true date
+  left_join(date_fix %>% select(flux_id, date_fixed = date), by = "flux_id") %>%
+  mutate(date = coalesce(as.Date(date_fixed), date_rec),
+         dt = parse_dt(format(date, "%m/%d/%Y"), fieldlog_start),
+         t_utc = local_to_utc(dt))
+
+# ---- Chamber air temperature ------------------------------------------------------------
+# Measured values only, never values filled earlier:
+#   1. measured on the sheet;
+#   2. mean of same-plot tree-sheet readings within 30 min (same day);
+#   3. tower air temperature (TA_1_1_1) at the measurement time;
+#   4. nearest same-plot reading on the same day;
+#   5. no start time: mean of same-plot readings that day.
+pool <- field %>% filter(!is.na(air_temp_measured), !is.na(t_utc)) %>%
+  select(pid = flux_id, plot, date, t_utc, at = air_temp_measured)
+field$tower_TA <- tower_value(field$t_utc, "TA_1_1_1")
+field$Tcham <- field$air_temp_measured
+field$Tcham_source <- if_else(!is.na(field$Tcham), "field sheet", NA_character_)
+for (i in which(is.na(field$Tcham))) {
+  same <- pool[pool$plot == field$plot[i] & pool$date == field$date[i] & pool$pid != field$flux_id[i], ]
+  if (!is.na(field$t_utc[i])) {
+    gap <- abs(same$t_utc - field$t_utc[i])
+    if (any(gap <= 1800)) {
+      field$Tcham[i] <- mean(same$at[gap <= 1800]); field$Tcham_source[i] <- "same-plot tree air <=30 min"
+    } else if (!is.na(field$tower_TA[i])) {
+      field$Tcham[i] <- field$tower_TA[i]; field$Tcham_source[i] <- "tower TA_1_1_1"
+    } else if (nrow(same)) {
+      field$Tcham[i] <- same$at[which.min(gap)]; field$Tcham_source[i] <- "same-plot tree air, nearest same day"
+    }
+  } else if (nrow(same)) {
+    field$Tcham[i] <- mean(same$at); field$Tcham_source[i] <- "same-plot daily mean (no start time)"
+  } else {
+    # no start time and no same-plot readings: tower mean over the span of the
+    # same-plot measurements that day
+    span <- range(field$t_utc[field$plot == field$plot[i] & field$date == field$date[i]], na.rm = TRUE)
+    if (all(is.finite(span))) {
+      field$Tcham[i] <- mean(tower_value(seq(span[1], span[2], by = 600), "TA_1_1_1"), na.rm = TRUE)
+      field$Tcham_source[i] <- "tower TA_1_1_1, mean over same-plot session (no start time)"
+    }
   }
-  d
 }
-trees <- trees %>% group_split(sheet) %>% map_dfr(fill_tree_temp)
 
-trees_aux <- trees %>%
+# ---- Chamber pressure ---------------------------------------------------------------------
+field$Pcham <- tower_value(field$t_utc, "PA")
+field$Pcham_source <- if_else(is.na(field$Pcham), "default 101.325 kPa (no tower PA)", "tower PA")
+field$Pcham[is.na(field$Pcham)] <- PCHAM
+
+# ---- Geometry: trees ------------------------------------------------------------------------
+geo_trees <- field %>% filter(measurement_type == "tree") %>%
   mutate(
-    date = as.Date(coalesce(mdy(date, quiet = TRUE), dmy(date, quiet = TRUE), ymd(date, quiet = TRUE))),
-    analyzer = analyzer_id,
-    instrument = if_else(grepl("^LGR", analyzer_id), "LGR", "Picarro"),
-    diameter = as.numeric(diameter),     # cm (HA/HB: stem diameter in cm, see README)
-    cell = if_else(instrument == "LGR", lgr_cell, iv("Picarro", "analyzer_cell")),
-    tube = if_else(instrument == "LGR", lgr_tube, iv("Picarro", "tubing")),
-    filt = drierite(date),
     Vcham = case_when(
       chamber_class %in% c("A", "B", "C", "D") ~ vol_of(chamber_class),
       chamber_class == "HA" ~ vol_of("A") - pi * (diameter / 2)^2 * h_of("A"),
@@ -122,81 +176,71 @@ trees_aux <- trees %>%
       chamber_class %in% c("HA", "HB") ~ paste0(chamber_class, ": ", if_else(chamber_class == "HA", "A", "B"),
                                                  " chamber minus stem cylinder (diameter cm)"),
       TRUE ~ paste0("chamber ", chamber_class)),
-    measurement_type = "tree", chamber_id = chamber_class,
-    fieldlog_start = start_time, fieldlog_end = end_time,
-    Tcham = at
-  )
+    chamber_id = chamber_class)
 
-# ---- Soil and water ------------------------------------------------------------------
-sw_raw <- rd("data/field_notes/BlueFlux Dataset_soils_water.csv", col_types = cols(.default = col_character()))
-names(sw_raw)[1] <- "index"
-sw <- sw_raw %>% filter(!is.na(flux_id)) %>%
-  transmute(flux_id, plot = Plot, component = tolower(Surface), analyzer = `Gas Analyzer`,
-            recorded_chamber_id = `Chamber ID`, date_raw = Date,
-            fieldlog_start = `Flux Start Time`, fieldlog_end = `Flux End Time`,
-            dt = parse_dt(Date, `Flux Start Time`),
-            date = as.Date(coalesce(mdy(Date, quiet = TRUE), dmy(Date, quiet = TRUE), ymd(Date, quiet = TRUE))))
-stopifnot(!anyDuplicated(sw$flux_id))
-
-# Air temperature from the tree sheets (all sites), as fill_soil_air_temp.R:
-# mean within 30 min on the same date, else nearest same-day value, else the
-# frozen weather-station value in air_temperature_overrides.csv.
-tree_temps <- trees %>% filter(!is.na(as.numeric(air_temp)), !is.na(dt)) %>%
-  transmute(dt, day = as.Date(dt), at = as.numeric(air_temp))
-sw$Tcham <- NA_real_; sw$Tcham_source <- NA_character_
-for (i in which(!is.na(sw$dt))) {
-  pool <- which(tree_temps$day == sw$date[i])
-  if (!length(pool)) next
-  gap <- abs(as.numeric(difftime(tree_temps$dt[pool], sw$dt[i], units = "mins")))
-  if (any(gap <= 30)) { sw$Tcham[i] <- mean(tree_temps$at[pool[gap <= 30]]); sw$Tcham_source[i] <- "tree sheets <=30 min" }
-  else { sw$Tcham[i] <- tree_temps$at[pool[which.min(gap)]]; sw$Tcham_source[i] <- "tree sheets same day" }
-}
-ovr <- match(sw$flux_id, air_ovr$flux_id)
-use <- is.na(sw$Tcham) & !is.na(ovr)
-sw$Tcham[use] <- air_ovr$air_temp_C[ovr[use]]
-sw$Tcham_source[use] <- paste0("override: ", air_ovr$legacy_temp_source[ovr[use]])
-
-sw_aux <- sw %>%
+# ---- Geometry: soil and water ---------------------------------------------------------------
+# Floating chamber: the "collar" in soil_water_dims.csv is the foam float
+# (2.54 cm), which adds headspace above the water surface.
+geo_sw <- field %>% filter(measurement_type == "surface") %>%
   left_join(cham_ovr %>% select(flux_id, chamber_override = chamber_id, collar_offset_override = collar_offset_cm),
             by = "flux_id") %>%
-  mutate(
-    chamber_id = coalesce(chamber_override, recorded_chamber_id),
-    instrument = if_else(grepl("^LGR", analyzer), "LGR", "Picarro"),
-    cell = if_else(instrument == "LGR", lgr_cell, iv("Picarro", "analyzer_cell")),
-    tube = if_else(instrument == "LGR", lgr_tube, iv("Picarro", "tubing")),
-    filt = drierite(date)
-  ) %>%
-  left_join(swd %>% select(chamber_id = Chamber, dome_cm3 = Chamber_Volume_cm3, Offset_cm,
-                           Collar_Volume_cm3, `Chamber+Collar_Volume_L`, Area = Ground_Surface_Area_cm2),
+  mutate(chamber_id = coalesce(chamber_override, recorded_chamber_id)) %>%
+  left_join(swd %>% select(chamber_id = Chamber, dome_cm3 = Chamber_Volume_cm3,
+                           `Chamber+Collar_Volume_L`, Area = Ground_Surface_Area_cm2),
             by = "chamber_id") %>%
   mutate(
     Vcham = if_else(is.na(collar_offset_override), `Chamber+Collar_Volume_L` * 1000,
                     dome_cm3 + Area * collar_offset_override),
     geometry_rule = if_else(is.na(collar_offset_override), paste0("soil_water_dims: ", chamber_id),
-                            paste0("override: ", chamber_id, ", collar ", collar_offset_override, " cm")),
-    measurement_type = "surface")
+                            paste0("override: ", chamber_id, ", collar ", collar_offset_override, " cm")))
 
-# ---- Combine ---------------------------------------------------------------------------
-aux <- bind_rows(
-  trees_aux %>% select(flux_id, measurement_type, component, plot, analyzer, date, fieldlog_start, fieldlog_end,
-                       chamber_id, geometry_rule, Area, Vcham, cell, tube, filt, Tcham, Tcham_source),
-  sw_aux %>% select(flux_id, measurement_type, component, plot, analyzer, date, fieldlog_start, fieldlog_end,
-                    chamber_id, geometry_rule, Area, Vcham, cell, tube, filt, Tcham, Tcham_source)
-) %>%
-  left_join(date_fix %>% select(flux_id, date_fixed = date), by = "flux_id") %>%
+# ---- Field-log end times ---------------------------------------------------------------------
+# Some sheets carry the wrong hour on the end time (e.g. start 13:23, end
+# "12:30"; the saved manual window ends at 13:30). Where the logged closure is
+# <= 0 or > MAX_CLOSURE_S, keep the end time's minutes and seconds and take the
+# hour that places it within (0, MAX_CLOSURE_S] after the start; if no hour
+# does, the end time is dropped.
+MAX_CLOSURE_S <- 1800
+repair_end <- function(start, end) {
+  out <- end
+  bad <- !is.na(start) & !is.na(end) &
+    (as.numeric(difftime(end, start, units = "secs")) <= 0 |
+       as.numeric(difftime(end, start, units = "secs")) > MAX_CLOSURE_S)
+  for (i in which(bad)) {
+    ms <- minute(end[i]) * 60 + second(end[i])
+    cand <- floor_date(start[i], "hour") + ms + c(0, 3600)
+    d <- as.numeric(difftime(cand, start[i], units = "secs"))
+    ok <- d > 0 & d <= MAX_CLOSURE_S
+    out[i] <- if (any(ok)) cand[ok][1] else as.POSIXct(NA, tz = tz(end))
+  }
+  out
+}
+
+# ---- Combine ----------------------------------------------------------------------------------
+aux <- bind_rows(geo_trees, geo_sw) %>%
   mutate(
-    date = coalesce(as.Date(date_fixed), date),
-    start.time = format(parse_dt(format(date, "%m/%d/%Y"), fieldlog_start), "%Y-%m-%d %H:%M:%S"),
-    end.time   = format(parse_dt(format(date, "%m/%d/%Y"), fieldlog_end), "%Y-%m-%d %H:%M:%S"),
-    obs.length = as.numeric(difftime(ymd_hms(end.time, quiet = TRUE), ymd_hms(start.time, quiet = TRUE), units = "secs")),
+    instrument = if_else(grepl("^LGR", analyzer), "LGR", "Picarro"),
+    cell = if_else(instrument == "LGR", lgr_cell, iv("Picarro", "analyzer_cell")),
+    tube = if_else(instrument == "LGR", lgr_tube, iv("Picarro", "tubing")),
+    filt = drierite(date),
+    start.time = format(dt, "%Y-%m-%d %H:%M:%S"),
+    end_raw    = parse_dt(format(date, "%m/%d/%Y"), fieldlog_end),
+    end_fixed  = repair_end(dt, end_raw),
+    end_time_repair = case_when(is.na(end_raw) ~ "no end time on sheet",
+                                is.na(end_fixed) ~ "end time inconsistent with start; dropped",
+                                end_fixed != end_raw ~ paste0("hour corrected from ", format(end_raw, "%H:%M:%S")),
+                                TRUE ~ NA_character_),
+    end.time   = format(end_fixed, "%Y-%m-%d %H:%M:%S"),
+    obs.length = as.numeric(difftime(end_fixed, dt, units = "secs")),
     Vtube = tube, Vinst = cell + filt,
     Vtot = (Vcham + tube + cell + filt) / 1000,
-    Pcham = PCHAM, offset = 0,
+    offset = 0,
     excluded = flux_id %in% excluded$flux_id
   ) %>%
   transmute(UniqueID = flux_id, measurement_type, component, plot, analyzer, date, start.time, end.time,
             obs.length, chamber_id, geometry_rule, Area, offset, Vcham, Vtube, Vinst, Vtot,
-            Tcham, Tcham_source, Pcham, date_corrected = !is.na(date_fixed), excluded) %>%
+            Tcham, Tcham_source, Pcham, Pcham_source, end_time_repair,
+            date_corrected = !is.na(date_fixed), excluded) %>%
   arrange(date, analyzer, start.time, UniqueID)
 stopifnot(!anyDuplicated(aux$UniqueID))
 write_csv(aux, "output/rebuild/auxfile.csv")
@@ -231,14 +275,19 @@ cmp <- aux %>% select(UniqueID, measurement_type, component, plot, analyzer, cha
 tol <- 1e-6
 flag <- function(x) !is.na(x) & x > tol
 cmp <- cmp %>% mutate(
-  mismatch_vs_final = flag(d_final_Area) | flag(d_final_Vtot) | flag(d_final_T) |
-    (is.na(Tcham) != is.na(final_Tcham) & !is.na(final_Area)) | !date_matches_final,
-  mismatch_vs_pre   = flag(d_pre_Area) | flag(d_pre_Vtot) | flag(d_pre_T))
+  geometry_mismatch_vs_final = flag(d_final_Area) | flag(d_final_Vtot) | !date_matches_final,
+  Tcham_changed = flag(d_final_T) | (is.na(Tcham) != is.na(final_Tcham)))
 write_csv(cmp, "output/rebuild/auxfile_vs_legacy.csv")
-cat("\nComparison with legacy (tolerance", tol, "):\n")
-cat("  rows in legacy final dataset:", sum(!is.na(cmp$final_Area) | !is.na(cmp$final_Vtot_cm3)),
-    "| mismatching:", sum(cmp$mismatch_vs_final), "\n")
-cat("  rows in legacy preprocessing tables:", sum(!is.na(cmp$pre_Vtot_cm3) | !is.na(cmp$pre_Area)),
-    "| mismatching:", sum(cmp$mismatch_vs_pre), "\n")
-cat("  not in legacy final dataset:", sum(is.na(cmp$final_Area) & is.na(cmp$final_Vtot_cm3)),
-    "(", paste(head(cmp$UniqueID[is.na(cmp$final_Area) & is.na(cmp$final_Vtot_cm3)], 10), collapse = ", "), ")\n")
+n_final <- sum(!is.na(cmp$final_Area) | !is.na(cmp$final_Vtot_cm3))
+cat("\nComparison with the legacy final dataset (", n_final, "rows with geometry):\n")
+cat("  geometry/date mismatches:", sum(cmp$geometry_mismatch_vs_final), "(must be 0)\n")
+stopifnot(sum(cmp$geometry_mismatch_vs_final) == 0)
+cat("  Tcham changed (intended: measured-only, same-plot, tower fallback):", sum(cmp$Tcham_changed), "\n")
+print(as.data.frame(cmp %>% filter(Tcham_changed) %>% left_join(aux %>% select(UniqueID, Tcham_source), by = "UniqueID") %>%
+  group_by(Tcham_source) %>%
+  summarise(n = n(), median_dT = median(Tcham - final_Tcham, na.rm = TRUE),
+            max_abs_dT = max(abs(Tcham - final_Tcham), na.rm = TRUE),
+            now_filled = sum(!is.na(Tcham) & is.na(final_Tcham)), .groups = "drop")), row.names = FALSE)
+cat("\nTcham source:\n"); print(table(aux$Tcham_source, useNA = "ifany"))
+cat("\nPcham source:\n"); print(table(aux$Pcham_source, useNA = "ifany"))
+cat("Pcham range (kPa):", round(range(aux$Pcham), 3), "\n")

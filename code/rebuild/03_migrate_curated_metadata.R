@@ -9,7 +9,6 @@
 # legacy sources are kept until the replacement is verified.
 #
 # Sources (legacy):
-#   intermediate/main_soilwater_complete.csv      weather-station air temps (worldmet)
 #   intermediate/mar2022_soil_correction_log.csv  Mar 2022 6-inch soil chambers
 #   code/05_integration/assemble_clean_dataset.R  BL60 water date fix (step 7b)
 #   output/ebullition/corrected_time_windows.csv  14 trimmed windows (interactive picker)
@@ -29,16 +28,10 @@ dir.create(out, recursive = TRUE, showWarnings = FALSE)
 utc <- function(x) suppressWarnings(parse_date_time(x, c("Ymd HMS", "Ymd HM"), tz = "UTC"))
 fmt <- function(x) format(x, "%Y-%m-%d %H:%M:%S")
 
-# ---- 1. Air temperatures not derivable from the field sheets -------------------
-# fill_soil_air_temp.R took these from a worldmet weather-station download
-# (network-dependent, so not reproducible) and they were then carried forward
-# by hand. Frozen here with their legacy source label.
-sw <- read_csv("intermediate/main_soilwater_complete.csv", show_col_types = FALSE)
-air <- sw %>%
-  filter(temp_source %in% c("Weather station", "Failed datetime")) %>%
-  transmute(flux_id, air_temp_C = air_temp, legacy_temp_source = temp_source,
-            source = "intermediate/main_soilwater_complete.csv (worldmet fill in fill_soil_air_temp.R, carried forward by hand)")
-write_csv(air, file.path(out, "air_temperature_overrides.csv"))
+# ---- 1. Air temperatures ------------------------------------------------------
+# Not migrated: the 20 worldmet weather-station values (and 2 unparseable rows)
+# in intermediate/main_soilwater_complete.csv are replaced by the US-Skr tower
+# air temperature in 04_build_auxfile.R.
 
 # ---- 2. Chamber assignment overrides -------------------------------------------
 # Mar 2022 soil at BL60 / FLM30 / MI: recorded as "Soil 8 in" but measured

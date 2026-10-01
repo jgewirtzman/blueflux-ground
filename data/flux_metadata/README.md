@@ -9,7 +9,6 @@ intermediate file, and say why in the row.
 
 | File | Rows | Content |
 |------|-----:|---------|
-| `air_temperature_overrides.csv` | 22 | Air temperature for soil/water rows with no same-day tree reading: 20 from a worldmet weather-station download (not reproducible, so frozen) and 2 whose date/time could not be parsed (NA). |
 | `chamber_overrides.csv` | 30 | Mar 2022 soil at BL60/FLM30/MI: recorded "Soil 8 in", measured with the 6-inch dome on a 2 cm collar. |
 | `date_corrections.csv` | 4 | BL60 water 168-171: recorded 2023-03-22, measured 2023-03-16. |
 | `excluded_measurements.csv` | 7 | Stem traces that are analyzer artifacts. |
@@ -25,14 +24,17 @@ intermediate file, and say why in the row.
   patch (`apply_chamber_corrections.R`) fixed an earlier step that had
   multiplied these values by 2.54. `Mar_23_13_BL60_root` (HA) has no diameter
   and therefore no geometry.
-- **Weather-station temperatures for BL60 water 168-171** were looked up for
-  the recorded date (2023-03-22), before the date correction. They are kept
-  as they were; a same-day value for 2023-03-16 would be more defensible.
 - **Trimmed windows**: 12 of 14 are anchored on the field-log start time with
   no clock offset (the legacy behaviour when no saved manual window existed).
-- **Pressure** is 101.325 kPa for all measurements. 40 Mar 2023 soil rows have
-  "Pressure start/end" on the field sheet, but in mixed units (values near 30
-  and near 1020) and are not used.
+- **Air temperature and pressure** are not curated here; `04_build_auxfile.R`
+  derives them (see `code/rebuild/README.md`). The legacy worldmet
+  weather-station temperatures were replaced by the US-Skr tower record.
+  Pressure comes from the tower (`PA`) except in Mar 2022, when the tower
+  logged none and 101.325 kPa is used. The 40 field-sheet "Pressure start/end"
+  values (Mar 2023 soil) are in mixed units and not used.
+- **Floating chamber**: the 2.54 cm "collar" in `soil_water_dims.csv` is the
+  foam float, which adds 463 cm3 of headspace above the water (confirmed by Jon,
+  2026-10-01).
 - **Mar 2022 soil, model choice**: the legacy correction also forced the linear
   model for these sparse (~10 s) traces. That is a fitting rule, not metadata;
   it belongs to the fitting step.
