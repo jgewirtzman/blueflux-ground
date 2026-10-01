@@ -40,7 +40,7 @@ set.seed(42)
 project_dir <- here::here()
 tls_dir     <- Sys.getenv("BLUEFLUX_TLS_DIR", "data/tls")
 output_dir  <- file.path(project_dir, "output", "upscaling")
-fig_dir     <- file.path(output_dir, "figures")
+fig_dir     <- file.path(project_dir, "output", "figures", "other")
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 # --- Theme & helpers ---------------------------------------------------------
@@ -134,7 +134,7 @@ print(as.data.frame(sa_summary))
 
 # --- 2. Load raw flux data ---------------------------------------------------
 cat("\n=== 2. Loading flux data ===\n")
-flux_raw <- read.csv(file.path(project_dir, "output", "combined_gas_flux_dataset.csv")) %>%
+flux_raw <- read.csv(file.path(project_dir, "output", "data_products", "combined_gas_flux_dataset.csv")) %>%
   filter(plot %in% tls_sites) %>%
   mutate(
     disturbance_level = site_meta$disturbance_level[match(plot, site_meta$site)],

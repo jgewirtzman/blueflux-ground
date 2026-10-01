@@ -167,6 +167,25 @@ auxfile_goflux <- auxfile %>%
 write_csv(auxfile_goflux, "intermediate/auxfiles/tree_auxfile_all_instruments_goflux.csv")
 cat("goFlux-ready auxfile (all instruments) saved as 'intermediate/auxfiles/tree_auxfile_all_instruments_goflux.csv'\n\n")
 
+# March 2022 "additional" tree measurements (LGR3 + Picarro): same conversion,
+# written to the auxfile names the additional / Picarro flux scripts read.
+additional_file <- "intermediate/main_trees_complete_additional.csv"
+if (file.exists(additional_file)) {
+  tree_data_additional <- read_csv(additional_file)
+  auxfile_additional <- convert_tree_to_auxfile(tree_data_additional) %>%
+    mutate(start.time = format(start.time, "%Y-%m-%d %H:%M:%S"))
+  additional_ids <- function(instrument) {
+    tree_data_additional$flux_id[tree_data_additional$analyzer_id == instrument]
+  }
+  auxfile_additional_lgr3 <- auxfile_additional %>% filter(UniqueID %in% additional_ids("LGR3"))
+  auxfile_additional_picarro <- auxfile_additional %>% filter(UniqueID %in% additional_ids("Picarro"))
+  write_csv(auxfile_additional_lgr3, "intermediate/auxfiles/tree_auxfile_additionallgr3.csv")
+  write_csv(auxfile_additional_lgr3, "intermediate/auxfiles/tree_auxfile_all_instruments_additional.csv")
+  write_csv(auxfile_additional_picarro, "intermediate/auxfiles/tree_auxfile_picarro_complete.csv")
+  cat("Additional (March 2022) auxfiles saved: LGR3", nrow(auxfile_additional_lgr3),
+      "rows, Picarro", nrow(auxfile_additional_picarro), "rows\n\n")
+}
+
 # Display overall data range and unique values for verification
 cat("Overall Data Summary:\n")
 cat("Date range:", min(auxfile$DATE), "to", max(auxfile$DATE), "\n")

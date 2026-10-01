@@ -91,19 +91,20 @@ compiled_fn <- read_excel(
   sheet = "compiled"
 )
 
-# Analyzer specs
-# LGR:    analyzer_cell = 70 cm3, tubing = 29 cm3
-# Picarro: analyzer_cell = 35 cm3, tubing = 29 cm3
-# March 2022: small drierite (277 cm3)
-# Oct 2022 / March 2023: large drierite (849 cm3)
+# Analyzer specs (cm3) from data/field_notes/dimension_csvs/additional_vol.csv
+# March 2022: small drierite; Oct 2022 / March 2023: large drierite
 
+additional_vol <- read_csv("data/field_notes/dimension_csvs/additional_vol.csv",
+                           show_col_types = FALSE)
+analyzer_spec <- function(instrument_name) {
+  iv <- additional_vol %>% filter(tolower(instrument) == instrument_name)
+  list(cell = iv$analyzer_cell, tubing = iv$tubing,
+       Vinst_mar22 = iv$analyzer_cell + iv$drierite_small,
+       Vinst_oct22 = iv$analyzer_cell + iv$drierite_large)
+}
 analyzer_specs <- list(
-  LGR = list(cell = 70, tubing = 29,
-             Vinst_mar22 = 70 + 277,   # = 347
-             Vinst_oct22 = 70 + 849),   # = 919
-  Picarro = list(cell = 35, tubing = 29,
-                 Vinst_mar22 = 35 + 277, # = 312
-                 Vinst_oct22 = 35 + 849) # = 884
+  LGR = analyzer_spec("lgr_mgga"),
+  Picarro = analyzer_spec("picarro")
 )
 
 # =============================================================================
@@ -112,15 +113,22 @@ analyzer_specs <- list(
 
 cat("\nStep 2: Chamber specs from dilution measurements...\n")
 
-# From simplified_volume.csv, total = Vcham + tubing(29) + cell(70) [LGR, no drierite]
-# So Vcham = total - 99
+# From simplified_volume.csv, total = Vcham + tubing + cell [LGR in the loop,
+# no drierite], so Vcham = total - LGR tubing - LGR cell
+simplified_vol <- read_csv("data/field_notes/dimension_csvs/simplified_volume.csv",
+                           show_col_types = FALSE)
+names(simplified_vol) <- gsub("\\s+", "_", gsub("\\(|\\)", "", names(simplified_vol)))
+lgr_plumbing <- analyzer_specs$LGR$tubing + analyzer_specs$LGR$cell
+dilution_vcham <- function(rows) {
+  round(mean(simplified_vol$Total_Volume_mL[rows], na.rm = TRUE) - lgr_plumbing)
+}
 chamber_vcham <- list(
-  A  = 213,   # verified: mean(312-99) = 213
-  B  = 419,   # verified: mean(518-99) = 419
-  C  = 1065,  # verified: mean(1164-99) = 1065
-  D  = 2191,  # from auxfile
-  RA = 269,   # from dilution: mean(368-99) = 269
-  R2 = 229    # from dilution: 328-99 = 229
+  A  = dilution_vcham(simplified_vol$Chamber_Alt_ID %in% "A"),
+  B  = dilution_vcham(simplified_vol$Chamber_Alt_ID %in% "B"),
+  C  = dilution_vcham(simplified_vol$Chamber_Alt_ID %in% "C"),
+  D  = dilution_vcham(simplified_vol$Chamber_Alt_ID %in% "D"),
+  RA = dilution_vcham(simplified_vol$Chamber_ID %in% "RA"),
+  R2 = dilution_vcham(simplified_vol$Chamber_ID %in% "R2")
 )
 
 # Surface areas from surface_area.csv
@@ -132,7 +140,7 @@ chamber_area <- list(
   # RA, R2, RZ, P — UNKNOWN, need user input
 )
 
-cat("  Known Vcham: A=213, B=419, C=1065, D=2191, RA=269, R2=229\n")
+cat("  Known Vcham:", paste0(names(chamber_vcham), "=", unlist(chamber_vcham), collapse = ", "), "\n")
 cat("  Known Area:  A=40, B=108, C=213, D=462\n")
 cat("  Unknown Area: RA, R2, RZ, P, pneumatophore chamber\n")
 cat("  Unknown Vcham: RZ, P, pneumatophore chamber\n")
@@ -181,12 +189,12 @@ review <- tibble(flux_id = no_aux_ids) %>%
 
     # Map chamber to known Vcham
     Vcham = case_when(
-      chamber %in% c("A1","A2","A3","A4","A5","A6","A7") ~ 213,
-      chamber %in% c("B1","B2","B3","B4","B5","B6","B7","B","S3","S4") ~ 419,
-      chamber %in% c("C1","C2","C3","C4","C5","S1") ~ 1065,
-      chamber %in% c("D1","D2","D4","S6") ~ 2191,
-      chamber == "RA" ~ 269,
-      chamber == "R2" ~ 229,
+      chamber %in% c("A1","A2","A3","A4","A5","A6","A7") ~ chamber_vcham$A,
+      chamber %in% c("B1","B2","B3","B4","B5","B6","B7","B","S3","S4") ~ chamber_vcham$B,
+      chamber %in% c("C1","C2","C3","C4","C5","S1") ~ chamber_vcham$C,
+      chamber %in% c("D1","D2","D4","S6") ~ chamber_vcham$D,
+      chamber == "RA" ~ chamber_vcham$RA,
+      chamber == "R2" ~ chamber_vcham$R2,
       chamber_class == "HA" ~ NA_real_,  # needs diameter-based calculation
       TRUE ~ NA_real_  # RZ, P, pneumataphore chamber — UNKNOWN
     ),
@@ -211,13 +219,13 @@ review <- tibble(flux_id = no_aux_ids) %>%
       TRUE ~ NA_character_
     ),
     Vinst = case_when(
-      analyzer == "Picarro" & trip == "mar22" ~ 312,  # 35 + 277
-      analyzer == "Picarro" & trip %in% c("oct22", "mar23") ~ 884,  # 35 + 849
-      analyzer == "LGR" & trip == "mar22" ~ 347,   # 70 + 277
-      analyzer == "LGR" & trip %in% c("oct22", "mar23") ~ 919,  # 70 + 849
+      analyzer == "Picarro" & trip == "mar22" ~ analyzer_specs$Picarro$Vinst_mar22,
+      analyzer == "Picarro" & trip %in% c("oct22", "mar23") ~ analyzer_specs$Picarro$Vinst_oct22,
+      analyzer == "LGR" & trip == "mar22" ~ analyzer_specs$LGR$Vinst_mar22,
+      analyzer == "LGR" & trip %in% c("oct22", "mar23") ~ analyzer_specs$LGR$Vinst_oct22,
       TRUE ~ NA_real_
     ),
-    Vtube = 29,
+    Vtube = analyzer_specs$LGR$tubing,
 
     # Vtot in liters
     Vtot = ifelse(!is.na(Vcham) & !is.na(Vinst),
