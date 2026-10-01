@@ -1,0 +1,114 @@
+Measurement inventory — 874 rows ( 867 in combined_gas_flux_dataset.csv + 7 artifacts)
+
+## Flux source 
+                flux_source   n
+           artifact_removed   7
+ ebullition_added_placement  40
+     ebullition_partitioned  35
+                   original 746
+                  recovered   4
+                    rescued  28
+       trimmed_window_refit  14
+
+## Flux source x analyzer 
+ analyzer ebullition_added_placement ebullition_partitioned original rescued
+     LGR1                         16                      9       42       1
+     LGR2                         15                      8      263       6
+     LGR3                          5                     11      378      18
+  Picarro                          4                      7       63       3
+ artifact_removed trimmed_window_refit recovered
+                0                    0         0
+                5                   11         0
+                2                    3         4
+                0                    0         0
+
+## Measurements by campaign x analyzer x type 
+ campaign analyzer surface tree
+  Mar2022     LGR3      30   44
+  Mar2022  Picarro      10   42
+  Mar2023     LGR1      28   14
+  Mar2023     LGR2      21  143
+  Mar2023     LGR3      71  140
+  Oct2022     LGR1       0   26
+  Oct2022     LGR2      21  123
+  Oct2022     LGR3      11  125
+  Oct2022  Picarro      25    0
+
+## Field-log times 
+ has_fieldlog_start has_fieldlog_end   n
+              FALSE            FALSE   4
+               TRUE            FALSE   2
+               TRUE             TRUE 868
+
+## Raw coverage (as logged, no clock offset) 
+ raw_on_date has_raw_in_fieldlog_window   n
+       FALSE                      FALSE   3
+        TRUE                      FALSE 104
+        TRUE                       TRUE 767
+
+## Saved manual window by analyzer x type 
+ analyzer measurement_type saved_FALSE saved_TRUE
+     LGR1          surface          16         12
+     LGR1             tree           0         40
+     LGR2          surface          15         27
+     LGR2             tree         260          6
+     LGR3          surface          16         96
+     LGR3             tree          25        284
+  Picarro          surface           7         28
+  Picarro             tree          16         26
+
+## Saved-window minus field-log start (s), by analyzer x campaign 
+ analyzer campaign   n  median     q10     q90
+     LGR1  Mar2023  25   -35.0  -244.0     0.6
+     LGR1  Oct2022  26     0.5   -26.5    30.5
+     LGR2  Mar2023  14   -17.5  -134.0    -4.8
+     LGR2  Oct2022  19     1.0   -17.8   104.8
+     LGR3  Mar2022  69     5.0   -14.0    31.4
+     LGR3  Mar2023 196     7.5    -8.0    44.0
+     LGR3  Oct2022 115    10.0   -21.8    43.8
+  Picarro  Mar2022  36 25150.5 25047.5 25225.5
+  Picarro  Oct2022  18 25226.5 25149.0 25264.6
+
+## Logging interval (s), by analyzer x campaign 
+ analyzer campaign   n median_dt min_dt    max_dt n_na
+     LGR1  Mar2023  42 0.9947500 0.9940 0.9950001    0
+     LGR1  Oct2022  26 0.9949999 0.9940 0.9950001    0
+     LGR2  Mar2023 164 0.9949999 0.9940 0.9950001    0
+     LGR2  Oct2022 144 0.9949999 0.9940 0.9950001    0
+     LGR3  Mar2022  74 9.9460001 9.9430 9.9490001    0
+     LGR3  Mar2023 211 0.9949999 0.9940 0.9950001    0
+     LGR3  Oct2022 136 0.9949999 0.9940 0.9950001    0
+  Picarro  Mar2022  52 5.1962500 3.1090 5.5165000    0
+  Picarro  Oct2022  25 5.0775000 3.6815 5.6689999    3
+
+## Patches applied 
+ ha_hb mar2022_soil date_fix trimmed artifacts
+    16           30        4      14         7
+
+## Air-temperature source 
+ air_temp_source   n
+ Failed datetime   2
+      Tree 30min 106
+   Tree same-day  49
+ Weather station  20
+            <NA> 697
+
+## Logger serials found in each analyzer folder (files, first-last date) 
+    unit              serial files      first       last
+    LGR1 SN:3K60180500001585    27 2022-10-04 2023-03-22
+    LGR2 SN:3K60180500001583    33 2022-10-15 2023-03-19
+    LGR3 SN:3K60180500001584    60 2022-03-02 2023-03-22
+ Picarro                <NA>    88 2022-03-08 2022-10-25
+
+## Measurements whose field-log window holds data from >1 logger 
+[1] analyzer              campaign              raw_serials_in_window
+[4] n                    
+<0 rows> (or 0-length row.names)
+
+## Raw files by unit 
+    unit files duplicates empty with_clock_reset             serials
+    LGR1    41         14     0                0 SN:3K60180500001585
+    LGR2    59         26     0                0 SN:3K60180500001583
+    LGR3    92         32     0                0 SN:3K60180500001584
+ Picarro    88          0     0                0                    
+
