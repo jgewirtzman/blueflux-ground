@@ -80,6 +80,7 @@ run_step(15.5, "Class net forcing (CH4 CO2-eq + NEE)",   "code/08_upscaling/asse
 run_step(16, "Monte Carlo net forcing",                  "code/08_upscaling/mc_co2_forcing.R")
 run_step(16.5, "Assemble full carbon budget (NECB + lit terms)", "code/08_upscaling/assemble_carbon_budget.R")
 run_step(16.6, "Assemble multi-source budget estimates",         "code/08_upscaling/assemble_budget_sources.R")
+run_step(16.7, "Supplementary analyses (inundation, regen, context sites)", "code/08_upscaling/supplementary_analyses.R")
 
 # ---- 10 FIGURES (main -> figures/main, SI -> figures/SI, else figures/other)
 if (start_step <= 17) cat("\n[17] MANUAL: Fig 1 map/photo composite — code/10_figures/publication_map_composite.R\n")
@@ -99,6 +100,8 @@ run_step(25.1, "Fig S5: Stem height extrapolation",    "code/10_figures/plot_ext
 run_step(25.2, "Fig S8: TLS surface area by height",   "code/10_figures/plot_SA_height_fixedY.R")
 run_step(25.3, "Fig S10: Tower GPP plots",             "code/09_tower_gpp/plot_us_skr_gpp.R")
 run_step(25.4, "Figs S11, S14: Porewater depth / salinity-CH4", "code/10_figures/site_characterization_figures.R")
+run_step(25.5, "Per-site closure (supp_site_component_contributions)", "code/10_figures/plot_site_closure.R")
+run_step(25.6, "Water CH4 by position (supp_water_positions)", "code/10_figures/plot_water_positions.R")
 run_step(26, "Collect curated figures into figures/main and figures/SI", "code/10_figures/collect_figures.R")
 
 # ---- DONE -------------------------------------------------------------------
