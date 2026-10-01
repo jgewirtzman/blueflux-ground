@@ -85,6 +85,20 @@ water_fluxes <- read_csv("output/data_products/soil_water_surface_fluxes_ORIGINA
                     ifelse(year(date) == 2022, "dry (Mar 2022)", "dry (Mar 2023)"))
   )
 
+# The snapshot is frozen with the system volumes (and fluxes) of the time it
+# was written. Bring both to the current dimension tables; flux is proportional
+# to system volume, so the implied concentration rates are unchanged.
+source("code/helpers/floating_chamber_params.R")
+water_fluxes <- water_fluxes %>%
+  mutate(
+    volume_snapshot_cm3 = total_system_volume_cm3,
+    total_system_volume_cm3 = ifelse(
+      grepl("LGR", analyzer_source),
+      floating_chamber_params("LGR")$Vtot, floating_chamber_params("Picarro")$Vtot) * 1000,
+    CH4_best.flux = CH4_best.flux * total_system_volume_cm3 / volume_snapshot_cm3
+  ) %>%
+  select(-volume_snapshot_cm3)
+
 # Load ALL fluxes to identify non-water measurement windows on the same analyzer
 # IMPORTANT: use the ORIGINAL flux dataset (not combined_gas_flux_dataset.csv)
 # to avoid circular dependency — the combined dataset is modified downstream

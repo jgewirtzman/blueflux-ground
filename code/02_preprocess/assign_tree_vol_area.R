@@ -41,6 +41,10 @@ assign_volumes_and_areas <- function(simplified_vol_file, additional_vol_file, s
   # Calculate base chamber volumes for A, B, C, D series
   # For A, B, C, D chambers in simplified_volume: Total = Analyzer Cell + Tubing + Chamber (NO drierite)
   # So pure chamber volume = Total - Analyzer Cell - Tubing
+  # The injection totals were measured with the LGR in the loop, so the LGR cell
+  # is what gets subtracted here. For LGR measurements the cell is added back
+  # below and the total is independent of the assumed cell volume; for Picarro
+  # measurements the Picarro cell is added to this LGR-derived chamber volume.
   lgr_tubing <- analyzer_lookup$tubing[analyzer_lookup$analyzer_name == "LGR"]
   lgr_analyzer_cell <- analyzer_lookup$analyzer_cell[analyzer_lookup$analyzer_name == "LGR"]
   small_drierite <- analyzer_lookup$drierite_small[1]  # Same for all instruments
@@ -394,6 +398,22 @@ tryCatch({
   # Save results
   write_csv(result, "intermediate/main_trees_complete.csv")
   cat("\nResults saved to: intermediate/main_trees_complete.csv\n")
+
+  # March 2022 "additional" tree measurements (LGR3 + Picarro) are entered in a
+  # separate sheet; assign their volumes with the same rules.
+  additional_file <- "intermediate/blueflux_trees_filled_additional.csv"
+  if (file.exists(additional_file)) {
+    cat("\n=== Additional (March 2022) tree measurements ===\n")
+    result_additional <- assign_volumes_and_areas(
+      simplified_vol_file = "data/field_notes/dimension_csvs/simplified_volume.csv",
+      additional_vol_file = "data/field_notes/dimension_csvs/additional_vol.csv",
+      surface_area_file = "data/field_notes/dimension_csvs/surface_area.csv",
+      mangrove_leaf_file = "data/field_notes/dimension_csvs/mangrove_leaf_data.csv",
+      blueflux_file = additional_file
+    )
+    write_csv(result_additional, "intermediate/main_trees_complete_additional.csv")
+    cat("\nResults saved to: intermediate/main_trees_complete_additional.csv\n")
+  }
   
   # Create visualizations only if we have valid data
   if (sum(!is.na(result$total_system_volume_L)) > 0) {

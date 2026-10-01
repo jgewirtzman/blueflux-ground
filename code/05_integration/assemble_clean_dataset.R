@@ -197,6 +197,10 @@ if (n_dup > 0) {
 # Tag all as original initially
 combined$data_source <- "original"
 
+# Volume each stored flux (original and rescued) was computed with by goFlux.
+# The rescue auxfiles used the same total volumes as the original rows.
+combined$volume_as_processed_cm3 <- combined$total_system_volume_cm3
+
 # =============================================================================
 # STEP 4: Merge rescued fluxes INTO original rows
 # =============================================================================
@@ -257,6 +261,101 @@ cat("  Total rows (should be unchanged):", nrow(combined), "\n")
 rescued_rows <- combined %>% filter(data_source == "rescued")
 cat("  Rescued CH4 non-NA:", sum(!is.na(rescued_rows$CH4_best.flux)), "/", nrow(rescued_rows), "\n")
 cat("  Rescued CO2 non-NA:", sum(!is.na(rescued_rows$CO2_best.flux)), "/", nrow(rescued_rows), "\n")
+
+# =============================================================================
+# STEP 4b: Reconcile system volumes with the current preprocessing tables
+# =============================================================================
+#
+# The goFlux fits in intermediate/results_* and intermediate/rescue were made
+# interactively (click.peak2) with the system volumes in the auxfiles of that
+# time. goFlux flux, its SE and the MDF are all proportional to Vtot
+# (flux.term = Vtot * P * (1 - H2O) / (R * T * Area)); slopes, fit diagnostics
+# and model selection do not depend on it. So when the dimension tables change
+# (e.g. the analyzer cell volume in additional_vol.csv), fluxes are brought to
+# the current volumes exactly by scaling with Vtot_current / Vtot_as-processed,
+# without repeating the manual window selection.
+#
+# HA/HB chambers are excluded here: their geometry (and volume) is replaced by
+# apply_chamber_corrections.R from intermediate/ha_hb_flux_corrections.csv.
+
+cat("\nStep 4b: Reconciling system volumes with current dimension tables...\n")
+
+volume_cols <- c("analyzer_cell_volume_cm3", "tubing_volume_cm3", "filter_volume_cm3",
+                 "chamber_volume_cm3", "total_system_volume_cm3")
+volume_tables <- c("intermediate/main_trees_complete.csv",
+                   "intermediate/main_trees_complete_additional.csv",
+                   "intermediate/main_soilwater_complete.csv")
+current_volumes <- lapply(volume_tables[file.exists(volume_tables)], function(path) {
+  read_csv(path, show_col_types = FALSE) %>% select(flux_id, all_of(volume_cols))
+}) %>%
+  bind_rows() %>%
+  distinct(flux_id, .keep_all = TRUE) %>%
+  rename_with(~ paste0(., ".current"), -flux_id)
+
+# The volume tables are gitignored intermediates: make sure they were written
+# with the instrument volumes currently in additional_vol.csv.
+cells_csv <- read_csv("data/field_notes/dimension_csvs/additional_vol.csv",
+                      show_col_types = FALSE)$analyzer_cell
+cells_tables <- unique(na.omit(current_volumes$analyzer_cell_volume_cm3.current))
+if (!setequal(cells_tables, cells_csv)) {
+  stop("intermediate/main_*_complete*.csv carry analyzer cell volumes (",
+       paste(sort(cells_tables), collapse = ", "), ") that differ from additional_vol.csv (",
+       paste(sort(cells_csv), collapse = ", "),
+       "). Re-run code/02_preprocess (run_all.R steps 1-2.5) first.")
+}
+
+ha_hb_ids <- if (file.exists("intermediate/ha_hb_flux_corrections.csv")) {
+  read_csv("intermediate/ha_hb_flux_corrections.csv", show_col_types = FALSE)$flux_id
+} else character(0)
+
+combined <- combined %>%
+  left_join(current_volumes, by = "flux_id") %>%
+  mutate(
+    volume_ratio = if_else(
+      !flux_id %in% ha_hb_ids &
+        !is.na(volume_as_processed_cm3) & !is.na(total_system_volume_cm3.current),
+      total_system_volume_cm3.current / volume_as_processed_cm3, 1
+    )
+  )
+
+# goFlux outputs in flux units (all linear in Vtot)
+flux_unit_suffixes <- c("LM.flux", "LM.SE", "HM.flux", "HM.SE", "MDF", "flux.term", "best.flux")
+for (col in intersect(c(paste0("CH4_", flux_unit_suffixes), paste0("CO2_", flux_unit_suffixes)),
+                      names(combined))) {
+  combined[[col]] <- combined[[col]] * combined$volume_ratio
+}
+
+# Component volumes follow the current tables (HA/HB totals are set later)
+combined <- combined %>%
+  mutate(
+    analyzer_cell_volume_cm3 = coalesce(analyzer_cell_volume_cm3.current, analyzer_cell_volume_cm3),
+    tubing_volume_cm3 = coalesce(tubing_volume_cm3.current, tubing_volume_cm3),
+    filter_volume_cm3 = coalesce(filter_volume_cm3.current, filter_volume_cm3),
+    chamber_volume_cm3 = coalesce(chamber_volume_cm3.current, chamber_volume_cm3),
+    total_system_volume_cm3 = if_else(
+      flux_id %in% ha_hb_ids, total_system_volume_cm3,
+      coalesce(total_system_volume_cm3.current, total_system_volume_cm3)
+    ),
+    total_system_volume_L = total_system_volume_cm3 / 1000
+  ) %>%
+  select(-ends_with(".current"))
+
+n_rescaled <- sum(abs(combined$volume_ratio - 1) > 1e-12)
+cat("  Rows matched to current volume tables:",
+    sum(combined$flux_id %in% current_volumes$flux_id), "/", nrow(combined), "\n")
+cat("  Rows whose fluxes were rescaled:", n_rescaled, "\n")
+if (n_rescaled > 0) {
+  combined %>%
+    filter(abs(volume_ratio - 1) > 1e-12) %>%
+    group_by(measurement_type, analyzer_source,
+             chamber = coalesce(as.character(chamber_class), as.character(chamber_id)),
+             Vtot_as_processed = round(volume_as_processed_cm3, 1),
+             Vtot_current = round(total_system_volume_cm3, 1)) %>%
+    summarise(n = n(), ratio = round(first(volume_ratio), 5), .groups = "drop") %>%
+    as.data.frame() %>%
+    print()
+}
+combined <- combined %>% select(-volume_ratio, -volume_as_processed_cm3)
 
 # =============================================================================
 # STEP 5: Backfill field metadata for rescued tree rows

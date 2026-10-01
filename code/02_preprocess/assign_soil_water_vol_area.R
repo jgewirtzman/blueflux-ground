@@ -197,6 +197,29 @@ assign_soilwater_volumes_and_areas <- function(soil_water_data, chamber_dims, an
 # Apply the function
 soil_water_complete <- assign_soilwater_volumes_and_areas(soil_water_data, chamber_dims, analyzer_lookup)
 
+# Air temperatures that the weather-station fill could not supply were entered
+# by hand in an earlier intermediate/main_soilwater_complete.csv. Carry those
+# forward so that re-running this script (e.g. after a dimension change) does
+# not drop them.
+previous_file <- "intermediate/main_soilwater_complete.csv"
+if (file.exists(previous_file)) {
+  previous <- read_csv(previous_file, show_col_types = FALSE) %>%
+    select(flux_id, air_temp_prev = air_temp, temp_source_prev = temp_source) %>%
+    distinct(flux_id, .keep_all = TRUE)
+  soil_water_complete <- soil_water_complete %>%
+    left_join(previous, by = "flux_id") %>%
+    mutate(
+      carried = is.na(air_temp) & !is.na(air_temp_prev),
+      temp_source = if_else(is.na(air_temp) & !is.na(temp_source_prev),
+                            temp_source_prev, temp_source),
+      air_temp = coalesce(air_temp, air_temp_prev)
+    )
+  cat("\nAir temperatures carried forward from previous", previous_file, ":",
+      sum(soil_water_complete$carried), "\n")
+  soil_water_complete <- soil_water_complete %>%
+    select(-air_temp_prev, -temp_source_prev, -carried)
+}
+
 # =============================================================================
 # QUALITY CHECKS AND SUMMARY
 # =============================================================================

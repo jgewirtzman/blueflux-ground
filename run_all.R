@@ -23,15 +23,15 @@ start_step <- if (length(args) > 0) as.integer(args[1]) else 1L
 
 run_step <- function(step_num, description, script_path) {
   if (step_num < start_step) {
-    cat(sprintf("[%02d] SKIP: %s\n", step_num, description)); return(invisible(NULL))
+    cat(sprintf("[%02g] SKIP: %s\n", step_num, description)); return(invisible(NULL))
   }
   cat(sprintf("\n========================================\n"))
-  cat(sprintf("[%02d] %s\n     %s\n", step_num, description, script_path))
+  cat(sprintf("[%02g] %s\n     %s\n", step_num, description, script_path))
   cat(sprintf("========================================\n"))
   t0 <- Sys.time()
   tryCatch(source(script_path, local = new.env(parent = globalenv())),
-    error = function(e) { cat(sprintf("ERROR in step %02d: %s\n", step_num, conditionMessage(e))); stop(e) })
-  cat(sprintf("[%02d] DONE (%.1f s)\n", step_num, round(difftime(Sys.time(), t0, units = "secs"), 1)))
+    error = function(e) { cat(sprintf("ERROR in step %02g: %s\n", step_num, conditionMessage(e))); stop(e) })
+  cat(sprintf("[%02g] DONE (%.1f s)\n", step_num, round(difftime(Sys.time(), t0, units = "secs"), 1)))
 }
 
 cat("=== BlueFlux Ground Analysis Pipeline ===\n")
@@ -39,7 +39,9 @@ cat("Starting from step:", start_step, " |  Time:", format(Sys.time()), "\n")
 
 # ---- 02 PREPROCESS ----------------------------------------------------------
 run_step(1, "Assign chamber volumes and surface areas",   "code/02_preprocess/assign_tree_vol_area.R")
+run_step(1.5, "Assign soil/water chamber volumes",        "code/02_preprocess/assign_soil_water_vol_area.R")
 run_step(2, "Convert to goFlux auxfiles",                 "code/02_preprocess/convert_to_auxfile.R")
+run_step(2.5, "Convert soil/water to goFlux auxfiles",    "code/02_preprocess/convert_to_auxfile_soil_water.R")
 
 # ---- 03 FLUX CALCULATION (interactive) --------------------------------------
 if (start_step <= 3) {

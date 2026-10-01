@@ -189,6 +189,12 @@ for (i in seq_len(nrow(windows))) {
   Tcham <- trace$Tcham[1]
   Pcham <- trace$Pcham[1]
 
+  # The manual-ID files and older auxfiles carry the system volume of the time
+  # they were written; use the dataset's current (reconciled) total volume,
+  # in the auxfile's units (L).
+  row_vol <- df$total_system_volume_cm3[df$flux_id == fid]
+  if (length(row_vol) == 1 && !is.na(row_vol)) Vtot <- row_vol / 1000
+
   if (any(is.na(c(Area, Vcham, Vtot, Tcham, Pcham)))) {
     # Fall back to dataset metadata
     row <- df %>% filter(flux_id == fid)
