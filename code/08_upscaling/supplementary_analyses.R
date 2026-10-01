@@ -7,6 +7,7 @@
 # =============================================================================
 suppressMessages({library(dplyr); library(tidyr)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+set.seed(42)  # reproducible bootstrap CIs
 
 conv <- 16.04e-9 * 86400 * 1000    # nmol CH4 m-2 s-1 -> mg CH4 m-2 d-1  (= 1.3859)
 gyr  <- 365 / 1000                 # mg m-2 d-1 -> g m-2 yr-1
