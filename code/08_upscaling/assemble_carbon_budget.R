@@ -3,12 +3,11 @@
 # -----------------------------------------------------------------------------
 # Full ecosystem CARBON (CO2 + CH4) mass balance per disturbance class.
 #
-# This step widens the vertical GHG budget (chambers x TLS + tower GPP) into a
-# Net Ecosystem Carbon Balance (NECB) by adding the lateral-export and burial
-# terms that close a coastal-wetland carbon budget. Measured terms are wired to
-# the manuscript's official numbers (output/upscaling/*). Lateral and burial
-# terms are LITERATURE values the user supplies below; they default to NA so the
-# budget is never populated with fabricated numbers.
+# Widens the vertical GHG budget (chambers x TLS + tower GPP) into a Net
+# Ecosystem Carbon Balance (NECB) by adding the lateral-export and burial terms
+# that close a coastal-wetland carbon budget. Measured terms are wired to the
+# manuscript's official numbers (output/upscaling/*). Lateral / burial / biomass
+# terms are LITERATURE values (section 1) with central + lo/hi + citation.
 #
 # CURRENCY: g C m-2 yr-1  (both gases converted to carbon mass).
 # SIGN:  + = C LEAVES the ecosystem  (respired, emitted, laterally exported)
@@ -31,33 +30,57 @@ CH4_to_C <- 12.011 / 16.043   # g CH4 -> g C
 CAMP     <- c("Oct 2022", "Mar 2023")   # campaigns behind the annual class means
 
 # =============================================================================
-# (1) LITERATURE / EXTERNAL TERMS  — EDIT THESE
+# (1) LITERATURE / EXTERNAL TERMS  — EDIT THESE  (g C m-2 yr-1; + = loss/export,
+#     except burial/dBiomass where + = accumulation retained in ecosystem)
 # -----------------------------------------------------------------------------
-# Fill in per-class values (g C m-2 yr-1) as you pull them from the literature.
-# Keep NA for anything not yet sourced. `cite` is carried through to the output
-# so every external number stays traceable. Positive = export/loss (lateral),
-# positive = accumulation/gain (burial, biomass) — see `role` column below.
+# Values below are for HEALTHY FCE tall riverine mangroves (Shark River / SRS).
+# Where possible they are anchored to Zhao et al. 2021 (Sci. Reports), which
+# reports DIC, litter-POC AND burial for the SAME SRS-4/5/6 sites in one
+# internally-consistent, area-normalized framework — avoiding the forest-polygon
+# vs tidal-contributing-area vs whole-estuary mismatch that inflates single-term
+# estimates elsewhere. GHOST-forest values are left NA: no verified ghost-specific
+# lateral/burial value exists, and healthy Shark River outwelling should NOT be
+# assumed to apply to the ghost stands (different hydrologic setting).
 #
-# Candidate starting points for Everglades / mangrove systems (VERIFY & cite —
-# do not use without checking the source and matching units to g C m-2 yr-1):
-#   Lateral DIC export : Ho et al. 2017; Maher et al. 2013; Rosentreter 2018
-#   Lateral DOC export : Romigh/Twilley; Regier/Rivera-Monroy (FCE LTER)
-#   Lateral POC export : Bouillon et al. 2008 (global mangrove synthesis)
-#   Dissolved CH4 export: Rosentreter et al. 2018; Call et al. 2015
-#   Soil C burial      : Breithaupt et al. 2012 (global); Breithaupt 2020 /
-#                        Marchio et al. 2016 (Everglades-specific)
-#   dBiomass (woody)   : from your own allometry (DBH x TLS) or FCE LTER growth/
-#                        mortality; healthy = accrual (-), ghost = loss (+)
-# =============================================================================
+# DOUBLE-COUNTING NOTE (DIC): our WATER chambers already measure in-situ air-water
+# CO2 evasion. The lateral DIC term below is the tidally EXPORTED (non-degassed,
+# to-ocean) DIC pool — complementary to, not overlapping with, the chamber
+# evasion. Do NOT additionally add a literature air-water CO2 evasion term.
+# (Ho 2017: of DIC entering the rivers, 42-48% degasses [= our water chambers],
+#  the rest is exported to the ocean [= this term].) Ho's SF6 evasion was revised
+#  DOWN from 171-232 (Ho 2014) to 99-105 mmol/m2/d (Ho 2016/17), now concordant
+#  with Reithmaier's 92 -- so no factor-of-2 evasion discrepancy.
+# NORMALIZATION (RESOLVED, read Reithmaier 2020 methods): Reithmaier's lateral
+#  fluxes ARE normalized to the 15.9 km2 tidally-inundated MANGROVE area (per Ho
+#  2017) = SAME basis as our per-ground budget. So DIC 622 IS directly usable;
+#  the 6-8x gap vs Ho is METHOD (Eulerian/radon-222 vs Ho's flooding-fraction-
+#  limited longitudinal flux, an explicit lower bound), not denominator.
+# DECISION: adopt Reithmaier EULERIAN as central for the dissolved terms (he
+#  argues it best represents the mangrove-dominated area). This closes the budget
+#  non-circularly (basis resolved from methods; residual independently pointed
+#  here first). CI spans his reported method range. Conservative (Zhao/Ho) values
+#  retained as the low-sensitivity scenario (section 4b).
+# see [[carbon-budget-lit-values]] for full provenance / verification votes.
 lit <- tibble::tribble(
-  ~class,     ~lateral_DIC, ~lateral_DOC, ~lateral_POC, ~lateral_CH4, ~burial, ~dBiomass,
-  "Healthy",  NA_real_,     NA_real_,     NA_real_,     NA_real_,     NA_real_, NA_real_,
-  "Ghost",    NA_real_,     NA_real_,     NA_real_,     NA_real_,     NA_real_, NA_real_
-)
-lit_cite <- c(
-  lateral_DIC = "TODO", lateral_DOC = "TODO", lateral_POC = "TODO",
-  lateral_CH4 = "TODO", burial = "TODO", dBiomass = "TODO"
-)
+  ~class,    ~term,              ~value, ~lo,   ~hi,   ~citation,
+  # --- HEALTHY (FCE tall riverine mangrove; Shark River / SRS) ---------------
+  "Healthy", "Lateral DIC",       622,   311,  1244,   "Reithmaier 2020 Eulerian (142 mmol/m2/d, 15.9km2 mangrove area; range 71-284). Low bound: Zhao 2021 145 [61-229], Ho 2017 ~86 (flooding-limited lower bound)",
+  "Healthy", "Lateral DOC",       171,   88,    346,   "Reithmaier 2020 Eulerian (39 mmol/m2/d; range 20-79). Low bound: Romigh 2006 (56, SRS-6), Ho 2017 (8-10)",
+  "Healthy", "Lateral POC",       144,   71,    205,   "Zhao et al. 2021 (cyclone litter-POC, SRS-4/5/6 71-205; water-column POC ~0)",
+  "Healthy", "Lateral CH4 (aq)",    0.35, 0.22,  0.48, "Yau et al. 2024 (analog, non-FCE; porewater CH4 strongly oxidized before export)",
+  "Healthy", "Soil C burial",     123,   69,    157,   "Zhao et al. 2021 / Breithaupt et al. (SRS-4/5/6 69-157; whole-estuary ~123)",
+  "Healthy", "dBiomass C",        200,   65,    500,   "Castaneda-Moya et al. 2013 wood NPP, repeat census (SRS-6=197, SRS-4=161, SRS-5=65 gC/m2/yr @ CF0.45); Chen & Twilley 1999 high end ~480-540. Aboveground wood increment; coarse-root adds ~30-50%",
+  # --- GHOST (dieback / relict; ghost-specific values unquantified) ----------
+  "Ghost",   "Lateral DIC",        NA,    NA,    NA,    "no ghost-specific value",
+  "Ghost",   "Lateral DOC",        NA,    NA,    NA,    "no ghost-specific value",
+  "Ghost",   "Lateral POC",        NA,    NA,    NA,    "no ghost-specific value",
+  "Ghost",   "Lateral CH4 (aq)",   NA,    NA,    NA,    "no ghost-specific value",
+  "Ghost",   "Soil C burial",      NA,    NA,    NA,    "no ghost-specific value (relict burial may continue)",
+  "Ghost",   "dBiomass C",         NA,    NA,    NA,    "biomass LOSS; hurricane necromass ~2000-2300 gC/m2 stock (Lagomasino/Irma), but decay flux is largely ALREADY in measured CWD + dead-stem Reco -> only the lateral-POC fraction would be additive"
+) %>%
+  mutate(category = ifelse(term %in% c("Soil C burial", "dBiomass C"), "storage", "lateral"),
+         role     = ifelse(term %in% c("Soil C burial", "dBiomass C"), "storage_accum", "source_flux"),
+         source   = "literature")
 
 # =============================================================================
 # (2) MEASURED VERTICAL TERMS  — from the pipeline's official outputs
@@ -65,8 +88,8 @@ lit_cite <- c(
 # Net vertical CO2 (NEE) and CH4 emission: the annual, class-level numbers that
 # feed net radiative forcing. co2_g_yr = g CO2 m-2 yr-1 (+ source); likewise CH4.
 nf <- read.csv("output/upscaling/net_forcing_by_class.csv") %>%
-  transmute(class    = recode(disturbance_level, healthy = "Healthy", ghost = "Ghost"),
-            NEE_C    = co2_g_yr * CO2_to_C,     # net vertical CO2 as carbon (+ source)
+  transmute(class     = recode(disturbance_level, healthy = "Healthy", ghost = "Ghost"),
+            NEE_C     = co2_g_yr * CO2_to_C,    # net vertical CO2 as carbon (+ source)
             CH4vert_C = ch4_g_yr * CH4_to_C)    # vertical CH4 emission as carbon (+ source)
 
 # GPP / Reco split for display, anchored so (Reco - GPP) == NEE exactly.
@@ -84,69 +107,108 @@ meas <- nf %>% left_join(co2t, by = "class") %>%
   mutate(GPP_C  = coalesce(GPP_C, 0),
          Reco_C = NEE_C + GPP_C)                                  # so Reco - GPP == NEE
 
+# measured terms as a tidy long table (no CI plumbed for chamber terms here)
+meas_long <- meas %>%
+  transmute(class,
+            `GPP (uptake)` = -GPP_C, `Reco (CO2)` = Reco_C, `CH4 emission` = CH4vert_C) %>%
+  pivot_longer(-class, names_to = "term", values_to = "value") %>%
+  mutate(category = "vertical",
+         role     = ifelse(term == "GPP (uptake)", "uptake_flux", "source_flux"),
+         source   = "measured",
+         citation = ifelse(term == "GPP (uptake)", "tower + chambers", "chambers x TLS"),
+         lo = NA_real_, hi = NA_real_)
+
 # =============================================================================
 # (3) ASSEMBLE TIDY BUDGET (one row per class x term)
 # =============================================================================
-# role:  source_flux  (+ = C to atmosphere/laterally out)
-#        uptake_flux  (photosynthetic C in; stored as NEGATIVE)
-#        storage_accum(+ = C retained in ecosystem: burial, biomass gain)
-mk <- function(cl) {
-  m <- meas[meas$class == cl, ]
-  L <- lit[lit$class == cl, ]
-  tibble::tribble(
-    ~term,              ~category,  ~role,          ~value,          ~source,      ~citation,
-    "GPP (uptake)",     "vertical", "uptake_flux",  -m$GPP_C,        "measured",   "tower + chambers",
-    "Reco (CO2)",       "vertical", "source_flux",   m$Reco_C,       "measured",   "chambers x TLS",
-    "CH4 emission",     "vertical", "source_flux",   m$CH4vert_C,    "measured",   "chambers x TLS",
-    "Lateral DIC",      "lateral",  "source_flux",   L$lateral_DIC,  "literature", lit_cite[["lateral_DIC"]],
-    "Lateral DOC",      "lateral",  "source_flux",   L$lateral_DOC,  "literature", lit_cite[["lateral_DOC"]],
-    "Lateral POC",      "lateral",  "source_flux",   L$lateral_POC,  "literature", lit_cite[["lateral_POC"]],
-    "Lateral CH4 (aq)", "lateral",  "source_flux",   L$lateral_CH4,  "literature", lit_cite[["lateral_CH4"]],
-    "Soil C burial",    "storage",  "storage_accum", L$burial,       "literature", lit_cite[["burial"]],
-    "dBiomass C",       "storage",  "storage_accum", L$dBiomass,     "literature", lit_cite[["dBiomass"]]
-  ) %>% mutate(class = cl, pending = is.na(value), .before = 1)
-}
-budget <- bind_rows(lapply(c("Healthy", "Ghost"), mk))
+term_lv <- c("GPP (uptake)", "Reco (CO2)", "CH4 emission",
+             "Lateral DIC", "Lateral DOC", "Lateral POC", "Lateral CH4 (aq)",
+             "Soil C burial", "dBiomass C")
+budget <- bind_rows(meas_long, lit) %>%
+  mutate(pending = is.na(value),
+         term    = factor(term, levels = term_lv),
+         class   = factor(class, levels = c("Healthy", "Ghost"))) %>%
+  arrange(class, term) %>%
+  select(class, term, category, role, value, ci_lo = lo, ci_hi = hi, source, citation, pending)
 
 # =============================================================================
-# (4) NECB + CLOSURE (per class)
+# (4) NECB + CLOSURE (per class), with CI propagated from the literature ranges
 # =============================================================================
-# NECB = -(sum of all source/uptake fluxes). Computed two ways so the reader
-# sees how much of the balance still rests on unfilled literature terms.
+# NECB = -(sum of all source/uptake fluxes). Lateral CI propagated as an
+# envelope (sum of los / sum of his) so the reader sees how much of the balance
+# still rests on the uncertain literature terms.
 summ <- budget %>%
   group_by(class) %>%
   summarise(
-    flux_measured  = sum(value[role %in% c("source_flux","uptake_flux") & source == "measured"], na.rm = TRUE),
-    flux_lateral   = sum(value[category == "lateral"], na.rm = TRUE),
+    flux_measured   = sum(value[role %in% c("source_flux","uptake_flux") & source == "measured"], na.rm = TRUE),
+    flux_lateral    = sum(value[category == "lateral"], na.rm = TRUE),
+    flux_lateral_lo = sum(ci_lo[category == "lateral"], na.rm = TRUE),
+    flux_lateral_hi = sum(ci_hi[category == "lateral"], na.rm = TRUE),
     lateral_pending = any(pending[category == "lateral"]),
-    NECB_vertical_only = -flux_measured,                         # measured vertical NECB
-    NECB_full          = -(flux_measured + flux_lateral),        # incl. lateral (NA->0)
-    burial_accum   = sum(value[term == "Soil C burial"], na.rm = TRUE),
-    dbiomass_accum = sum(value[term == "dBiomass C"],   na.rm = TRUE),
+    burial_accum    = sum(value[term == "Soil C burial"], na.rm = TRUE),
+    burial_lo       = sum(ci_lo[term == "Soil C burial"], na.rm = TRUE),
+    burial_hi       = sum(ci_hi[term == "Soil C burial"], na.rm = TRUE),
+    dbiomass_accum  = sum(value[term == "dBiomass C"], na.rm = TRUE),
     storage_pending = any(pending[category == "storage"]),
     .groups = "drop") %>%
-  mutate(storage_indep  = burial_accum + dbiomass_accum,
-         closure_resid  = NECB_full - storage_indep)             # ~0 when fully sourced & closed
+  mutate(NECB_vertical_only = -flux_measured,                          # measured vertical NECB
+         NECB_full          = -(flux_measured + flux_lateral),         # incl. lateral (NA->0)
+         NECB_full_lo       = -(flux_measured + flux_lateral_hi),      # more export => lower NECB
+         NECB_full_hi       = -(flux_measured + flux_lateral_lo),
+         storage_indep      = burial_accum + dbiomass_accum,
+         closure_resid      = NECB_full - storage_indep)               # ~0 when closed
+
+# =============================================================================
+# (4b) LATERAL-EXPORT SENSITIVITY: how closure depends on the DIC method
+# -----------------------------------------------------------------------------
+# Central (section 1) now adopts Reithmaier EULERIAN dissolved fluxes -> budget
+# closes. The 'low' scenario keeps the conservative forest-area lower bounds
+# (Zhao DIC 145, Romigh DOC 56) to show that closure hinges on the DIC method
+# (Eulerian vs Lagrangian/longitudinal). Both are on the SAME mangrove-area basis.
+lat_scen <- tibble::tribble(
+  ~scenario,                 ~lateral_total,
+  "low (Zhao/Ho conserv.)",  145 + 56 + 144 + 0.35,   # conservative lower bounds
+  "central (Reith. Euler.)", 622 + 171 + 144 + 0.35    # adopted central -> closes
+)
+scen <- summ %>% filter(class == "Healthy") %>%
+  transmute(flux_measured, storage_indep) %>%
+  tidyr::crossing(lat_scen) %>%
+  transmute(class = "Healthy", scenario, lateral_total = round(lateral_total, 0),
+            NECB_full     = round(-(flux_measured + lateral_total), 0),
+            storage_indep = round(storage_indep, 0),
+            closure_resid = round(-(flux_measured + lateral_total) - storage_indep, 0))
 
 # =============================================================================
 # (5) WRITE + REPORT
 # =============================================================================
 dir.create("output/upscaling", showWarnings = FALSE, recursive = TRUE)
-write.csv(budget, "output/upscaling/carbon_budget_full.csv",    row.names = FALSE)
-write.csv(summ,   "output/upscaling/carbon_budget_summary.csv", row.names = FALSE)
+write.csv(budget, "output/upscaling/carbon_budget_full.csv",      row.names = FALSE)
+write.csv(summ,   "output/upscaling/carbon_budget_summary.csv",   row.names = FALSE)
+write.csv(scen,   "output/upscaling/carbon_budget_scenarios.csv", row.names = FALSE)
 
+fmt <- function(x) ifelse(is.na(x), NA, ifelse(abs(x) < 10, sprintf("%.2f", x), sprintf("%.0f", x)))
 cat("=== Full carbon budget (g C m-2 yr-1; + = C loss, - = C gain) ===\n")
-budget %>% mutate(value = ifelse(pending, NA, round(value, 1))) %>%
-  select(class, term, category, value, source) %>% as.data.frame() %>% print(row.names = FALSE)
-cat("\n=== NECB + closure (g C m-2 yr-1) ===\n")
-summ %>% transmute(class,
-                   NECB_vertical = round(NECB_vertical_only, 1),
-                   NECB_full     = round(NECB_full, 1),
-                   burial_biomass = ifelse(storage_pending, NA, round(storage_indep, 1)),
-                   closure_resid = ifelse(storage_pending | lateral_pending, NA, round(closure_resid, 1))) %>%
+budget %>%
+  mutate(CI = ifelse(is.na(ci_lo), "", paste0(" [", fmt(ci_lo), ", ", fmt(ci_hi), "]"))) %>%
+  transmute(class, term, category,
+            value = ifelse(pending, NA, paste0(fmt(value), CI)), source) %>%
   as.data.frame() %>% print(row.names = FALSE)
 
-pend <- budget %>% filter(pending) %>% distinct(term) %>% pull(term)
-if (length(pend)) cat("\nLITERATURE TERMS STILL PENDING (edit section 1):\n  - ",
-                      paste(pend, collapse = "\n  - "), "\n", sep = "")
-cat("\nWritten: carbon_budget_full.csv, carbon_budget_summary.csv\n")
+cat("\n=== NECB + closure (g C m-2 yr-1; + = ecosystem gaining C) ===\n")
+summ %>% transmute(class,
+                   NECB_vertical = round(NECB_vertical_only, 1),
+                   NECB_full     = ifelse(lateral_pending, NA,
+                                    sprintf("%.0f [%.0f, %.0f]", NECB_full, NECB_full_lo, NECB_full_hi)),
+                   burial_biomass = ifelse(storage_pending, NA, round(storage_indep, 1)),
+                   closure_resid  = ifelse(storage_pending | lateral_pending, NA, round(closure_resid, 1))) %>%
+  as.data.frame() %>% print(row.names = FALSE)
+
+cat("\n=== Healthy lateral-export sensitivity (closure_resid ~0 => budget closes) ===\n")
+scen %>% as.data.frame() %>% print(row.names = FALSE)
+
+pend <- budget %>% filter(pending) %>% distinct(class, term)
+if (nrow(pend)) {
+  cat("\nSTILL PENDING (edit section 1):\n")
+  pend %>% as.data.frame() %>% print(row.names = FALSE)
+}
+cat("\nWritten: carbon_budget_full.csv, carbon_budget_summary.csv, carbon_budget_scenarios.csv\n")

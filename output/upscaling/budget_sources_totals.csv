@@ -1,0 +1,40 @@
+"term","source","class","value","lo","hi"
+"NEE","Chambers (this study)","Healthy",-1283.63290391758,-1464.53013792952,-1102.73566990563
+"NEE","Chambers (this study)","Ghost",393.237450070594,334.162974488826,452.311925652363
+"NEE","US-SKR tower (2022-23)","Healthy",-1296.04079793778,-1681.65921259178,-910.422383283782
+"NEE","US-SKR tower (Barr 2004)","Healthy",-1170,-1297,-1043
+"NEE","CARAFE top-down*","Healthy",-818.7850656,-818.7850656,-818.7850656
+"NEE","CARAFE top-down*","Ghost",-322.207086,-379.06716,-265.347012
+"GPP","US-SKR tower (2022-23)","Healthy",-3286.25832642525,-3477.31661477122,-3095.20003807929
+"GPP","US-SKR tower (Barr 2004)","Healthy",-2270,NA,NA
+"GPP","CARAFE (top-down)","Ghost",0,NA,NA
+"Reco","This study: total ER","Healthy",2001.67772197413,1851.07247067482,2152.28297327343
+"Reco","This study: below-canopy","Healthy",1357.53123617264,1203.16655756883,1511.89591477645
+"Reco","This study: total ER","Ghost",393.527775552363,334.409685544806,452.64586555992
+"Reco","This study: below-canopy","Ghost",393.527775552363,334.409685544806,452.64586555992
+"Reco","Troxler 2015: below-canopy","Healthy",715,NA,NA
+"Reco","US-SKR tower (Barr 2004): ER","Healthy",1100,NA,NA
+"Reco","Troxler 2015: total ER","Healthy",1570,NA,NA
+"CH4","Chambers (this study)","Healthy",0.57109525211434,0.341866534725238,0.800323969503442
+"CH4","Chambers (this study)","Ghost",8.81966210660476,4.8039868724975,12.835337340712
+"CH4","CARAFE top-down*","Healthy",5.449090425,-0.09476679,10.99294764
+"CH4","CARAFE top-down*","Ghost",10.51911369,1.70580222,19.33242516
+"Lateral DIC","Zhao 2021 (forest)","Healthy",145,61,229
+"Lateral DIC","Ho 2017 (forest,min)","Healthy",86,75,97
+"Lateral DIC","Reithmaier 2020 (Lagrangian)","Healthy",92,NA,NA
+"Lateral DIC","Reithmaier 2020 (Eulerian)","Healthy",622,311,1244
+"Lateral TAlk","Reithmaier 2020 (DIC subset)","Healthy",425,210,846
+"Lateral DOC","Romigh 2006 (SRS-6)","Healthy",56,NA,NA
+"Lateral DOC","Ho 2017 (forest)","Healthy",9,8,10
+"Lateral DOC","Reithmaier 2020 (Eulerian)","Healthy",171,88,346
+"Lateral POC","Zhao 2021 (litter)","Healthy",144,71,205
+"Lateral POC","He 2014 (tidal/POM)","Healthy",3.5,2,5
+"Lateral CH4aq","Yau 2024 (analog)","Healthy",0.35,0.22,0.48
+"CO2 evasion","Reithmaier 2020 (estuary)","Healthy",403,NA,NA
+"Burial","Zhao 2021 / Breithaupt","Healthy",123,69,157
+"dBiomass","Castaneda 2013 (woodNPP)","Healthy",200,65,247
+"dBiomass","Chen & Twilley 1999","Healthy",480,480,540
+"Litterfall","Castaneda 2013","Healthy",389,345,456
+"Root NPP","Castaneda 2011","Healthy",289,NA,NA
+"CWD prod.","Mortality x AGB (FCE)","Healthy",150,100,300
+"CWD prod.","Mugi 2022 (global)","Healthy",296,146,536
