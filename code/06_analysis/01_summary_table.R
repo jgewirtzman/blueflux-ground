@@ -271,20 +271,3 @@ cat("Done!\n")
 
 # Return the table
 invisible(final_table)
-
-
-
-
-# Simple mean vs median plot
-ggplot(final_table, aes(x = median_CH4, y = mean_CH4)) +
-  geom_point(aes(color = component_base), size = 3, alpha = 0.7) +
-  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "gray50") +
-  scale_x_log10() +
-  scale_y_log10() +
-  labs(
-    x = "Median CH4 Flux",
-    y = "Mean CH4 Flux",
-    color = "Component",
-    title = "Mean vs Median CH4 Flux"
-  ) +
-  theme_bw()
