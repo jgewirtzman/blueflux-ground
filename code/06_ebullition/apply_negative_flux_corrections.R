@@ -182,7 +182,7 @@ for (i in seq_len(nrow(windows))) {
     next
   }
 
-  # Get chamber params
+  # Get chamber params (goFlux auxfile convention: Area cm2, Vcham cm3, Vtot L)
   Area <- trace$Area[1]
   Vcham <- trace$Vcham[1]
   Vtot <- trace$Vtot[1]
@@ -201,7 +201,7 @@ for (i in seq_len(nrow(windows))) {
     if (nrow(row) > 0) {
       Area <- row$surface_area_cm2[1]
       Vcham <- row$chamber_volume_cm3[1]
-      Vtot <- row$total_system_volume_cm3[1]
+      Vtot <- row$total_system_volume_cm3[1] / 1000  # cm3 -> L
       Tcham <- coalesce(row$air_temp[1], 25)
       Pcham <- 101.325
     }
@@ -217,16 +217,19 @@ for (i in seq_len(nrow(windows))) {
   lm_r2 <- summary(lm_fit)$r.squared
   lm_pval <- summary(lm_fit)$coefficients[2, 4]
 
-  # Convert slope to flux: nmol/m2/s
-  # slope_ppb_s * 1e-9 * P / (R * T) * Vtot / Area * 1e9
-  R_gas <- 8.314
-  T_K <- Tcham + 273.15
-  # Vtot in cm3 -> m3, Area in cm2 -> m2
-  Vtot_m3 <- Vtot / 1e6
-  Area_m2 <- Area / 1e4
-  P_Pa <- Pcham * 1000  # kPa -> Pa
+  # Convert slope to flux: nmol/m2/s = slope (ppb/s) * flux.term, goFlux convention:
+  #   flux.term = Vtot[L] * P[kPa] * (1 - H2O) / (R * T[K] * Area[m2])
+  # Prefer the flux.term goFlux stored for this measurement (it carries the
+  # H2O correction); otherwise rebuild it from the chamber params without H2O.
+  flux_term <- df$CH4_flux.term[match(fid, df$flux_id)]
+  if (is.na(flux_term)) {
+    R_gas <- 8.314
+    T_K <- Tcham + 273.15
+    Area_m2 <- Area / 1e4
+    flux_term <- Vtot * Pcham / (R_gas * T_K * Area_m2)
+  }
 
-  lm_flux_nmol <- lm_slope * 1e-9 * P_Pa / (R_gas * T_K) * Vtot_m3 / Area_m2 * 1e9
+  lm_flux_nmol <- lm_slope * flux_term
 
   # Try HM fit via goFlux if possible
   hm_flux_nmol <- NA
@@ -247,7 +250,7 @@ for (i in seq_len(nrow(windows))) {
       hm_Ci <- coef(nls_fit)["Ci"]
       hm_k <- coef(nls_fit)["k"]
       hm_slope_t0 <- -hm_k * (hm_C0 - hm_Ci)  # ppb/s at t=0
-      hm_flux_nmol <- hm_slope_t0 * 1e-9 * P_Pa / (R_gas * T_K) * Vtot_m3 / Area_m2 * 1e9
+      hm_flux_nmol <- hm_slope_t0 * flux_term
       ss_res <- sum(residuals(nls_fit)^2)
       ss_tot <- sum((ch4_ppb - mean(ch4_ppb))^2)
       hm_r2 <- 1 - ss_res / ss_tot
@@ -306,6 +309,8 @@ for (i in seq_len(nrow(reprocessed_df))) {
     df$CH4_HM.flux[idx] <- r$new_CH4_HM.flux
     df$CH4_HM.r2[idx] <- r$new_CH4_HM.r2
   }
+  # Same definition as assemble_clean_dataset.R
+  df$CH4_below_MDF[idx] <- !is.na(df$CH4_MDF[idx]) & abs(r$new_CH4_best.flux) <= df$CH4_MDF[idx]
 
   cat(sprintf("  %s: %.3f -> %.3f (%s)\n", r$flux_id, old_flux, r$new_CH4_best.flux, r$new_CH4_model))
 }

@@ -102,20 +102,3 @@ cls %>% mutate(GWP100=sprintf("%.0f [%.0f, %.0f]",net100_med,net100_lo,net100_hi
                GWP20 =sprintf("%.0f [%.0f, %.0f]",net20_med,net20_lo,net20_hi)) %>%
   select(class,GWP100,GWP20) %>% as.data.frame() %>% print()
 write.csv(cls,"output/upscaling/mc_net_forcing_by_class.csv",row.names=FALSE)
-
-# --- point-estimate class forcing (no MC): read by assemble_carbon_budget.R and
-# plot_closure.R. Class mean over site x campaign of the exponential-scenario CH4
-# budget and of bottom-up NEE; CH4 share = CH4 CO2-eq / (|CO2| + CH4 CO2-eq).
-ch4_cls<-read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario=="exponential") %>%
-  group_by(site,campaign,disturbance_level) %>% summarise(total_mg=mean(total_mg),.groups="drop") %>%
-  group_by(disturbance_level) %>% summarise(ch4_g_yr=mean(total_mg)*mgd_to_gyr,.groups="drop")
-co2_cls<-read.csv("output/upscaling/plot_level_CO2_totals.csv") %>%
-  group_by(disturbance_level) %>% summarise(nee_umol=mean(NEE_bottomup),.groups="drop")
-nf<-inner_join(ch4_cls,co2_cls,by="disturbance_level") %>%
-  mutate(co2_g_yr=nee_umol*umol_to_g_yr,
-         ch4_co2eq100=ch4_g_yr*GWP100, ch4_co2eq20=ch4_g_yr*GWP20,
-         net100=co2_g_yr+ch4_co2eq100, net20=co2_g_yr+ch4_co2eq20,
-         ch4_pct100=round(100*ch4_co2eq100/(abs(co2_g_yr)+ch4_co2eq100),1),
-         ch4_pct20 =round(100*ch4_co2eq20 /(abs(co2_g_yr)+ch4_co2eq20 ),1))
-cat("\n=== Class net forcing, point estimate ===\n"); print(as.data.frame(nf))
-write.csv(nf,"output/upscaling/net_forcing_by_class.csv",row.names=FALSE)

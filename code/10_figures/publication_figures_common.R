@@ -172,6 +172,7 @@ mean_diamond <- function(...) {
 }
 
 # Save helper (PDF + PNG)
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 save_pub <- function(plot, name, width, height, units = "mm") {
   ggsave(paste0("output/figures/other/pub_", name, ".pdf"), plot,
          width = width, height = height, units = units)

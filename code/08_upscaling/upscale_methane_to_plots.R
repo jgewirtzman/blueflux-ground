@@ -451,6 +451,10 @@ for (camp in campaigns) {
       mod <- em$model[[1]]
       vcov_mat <- vcov(mod)
       param_draws <- MASS::mvrnorm(N_MC, coef(mod), vcov_mat)  # [N_MC x 2]
+      # The model is a decay with height: draws with a positive slope (flux
+      # growing up the bole) are held constant with height instead of exploding
+      # over the tall extrapolated canopy for weakly constrained fits.
+      param_draws[, 2] <- pmin(param_draws[, 2], 0)
       # For each MC draw, compute stem total split by measured/extrap
       stem_meas_draws <- numeric(N_MC)
       stem_extrap_draws <- numeric(N_MC)

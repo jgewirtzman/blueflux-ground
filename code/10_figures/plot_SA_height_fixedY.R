@@ -1,6 +1,7 @@
 # Regenerate SA-by-segment-class-and-height on CONSISTENT (fixed) y scales.
 suppressMessages({library(dplyr);library(ggplot2)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 TLS<-Sys.getenv("BLUEFLUX_TLS_DIR", "data/tls")
 sa<-read.csv(file.path(TLS,"all_sites_summary.csv")) %>%
   mutate(height_m=height_bin_num,

@@ -15,6 +15,8 @@ library(emmeans)
 library(boot)
 library(tidyr)
 
+set.seed(42)  # reproducible bootstrap CIs
+
 # --- Output sink -------------------------------------------------------------
 sink("manuscript/text/manuscript_results.txt", split = TRUE)
 cat("Manuscript Results — generated", format(Sys.time(), "%Y-%m-%d %H:%M"), "\n\n")

@@ -51,6 +51,7 @@ theme_pub <- function(base_size = 14) {
     )
 }
 
+dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 save_pub <- function(plot, name, width, height, units = "mm") {
   ggsave(paste0("output/figures/other/pub_", name, ".pdf"), plot,
          width = width, height = height, units = units,
@@ -68,7 +69,7 @@ save_pub <- function(plot, name, width, height, units = "mm") {
 cat("--- Loading merged porewater data ---\n")
 
 microbes_path <- Sys.getenv("BLUEFLUX_MICROBES_DIR", "data/porewater")
-df <- read_csv(paste0(microbes_path, "merged_porewater_all_parameters.csv"),
+df <- read_csv(file.path(microbes_path, "merged_porewater_all_parameters.csv"),
                show_col_types = FALSE)
 
 # Add disturbance classification and clean up
