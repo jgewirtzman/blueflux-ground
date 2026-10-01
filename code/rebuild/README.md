@@ -17,13 +17,12 @@ LGR3 = SN:3K60180500001584. Picarro `.dat` files carry no serial.
 
 - Date corrections are applied before anything else (legacy: after the
   temperature fill, so BL60 water 168-171 got temperatures for the wrong day).
-- Air temperature uses measured values only, from the same plot: field sheet;
-  else mean of same-plot tree readings within 30 min; else tower `TA_1_1_1`
-  at the measurement time; else nearest same-plot reading that day. Legacy
-  fills pooled all sites, reused values filled earlier in the loop, skipped
-  readings at the identical time, and fell back to a worldmet download.
-  138 rows change; the largest changes replace implausible legacy values
-  (e.g. 16.8 C on an October afternoon at SRS6, now 25.4 C from the tower).
+- Air temperature is the US-Skr tower `TA_1_1_1` at the measurement time for
+  every measurement (Jon, 2026-10-01: handheld readings run ~1.3 C warm). The
+  handheld chain (field sheet; same-plot readings within 30 min; calibrated
+  tower; nearest same-plot reading) is kept as `Tcham_handheld` and used only
+  where the tower has no value. `05_air_temperature_options.R` shows the
+  difference: median +0.4% flux (10-90%: -0.9 to +1.4%).
 - Pressure from tower `PA` (706 rows, 100.55-101.87 kPa); 101.325 kPa where
   the tower has none (all of Mar 2022, 128 rows).
 - Field-log times written "HH:MM" are read as HH:MM:00 (one was misread as a
@@ -43,3 +42,15 @@ LGR3 = SN:3K60180500001584. Picarro `.dat` files carry no serial.
 
 The 14 trimmed windows were picked on analyzer-clock data, so their absolute
 times need no offset.
+
+### Step 4: fit
+
+| Script | Writes | Notes |
+|--------|--------|-------|
+| `08_fit_fluxes.R` | `fit/CO2/`, `fit/CH4/` (`fluxes.csv`, `settings.json`) | `fluxqc::process_fluxes()` per gas on windows from `windows.csv` (padded 5 min for the MAD precision); tower Tcham/Pcham; no H2O correction; legacy `best.flux` criteria; HM only with >= 30 points, else LM; group = analyzer x campaign; MDF = 1.96 sigma_MAD / t x flux.term. QC screens: c0, co2_tracer (off for water/leaves/CWD), convex, min_window, noisy; ambient_start off (windows start after a dead band by design). 770 of 804 closures fitted; 34 have no raw data in the window (29 of them have no legacy flux either; 5 legacy-only: 3 Picarro 2022-10-20, 2 LGR3 2023-03-15 after the last file). |
+| `09_compare_fit_vs_legacy.R` | `fit_vs_legacy_CH4.csv` | Saved-window closures: median new/legacy 1.004, 79% within 5%. Scripted windows (legacy windows lost): median 0.985, IQR 0.78-1.27, 18 sign flips. |
+
+`03_migrate_curated_metadata.R` now writes a table only if absent or named in
+`MIGRATE_ONLY`; the trimmed-window anchors were corrected to the local-clock
+start times of the `*_goflux` auxfiles (the `*_all_instruments` files store
+them shifted to UTC, which put 12 windows 4-5 h late).

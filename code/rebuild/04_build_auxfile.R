@@ -166,6 +166,24 @@ for (i in which(is.na(field$Tcham))) {
   }
 }
 
+# Decision (Jon, 2026-10-01): chamber air temperature is the tower record for
+# every measurement; the handheld readings run warm (pocket / sun). The
+# handheld-based value above is kept as Tcham_handheld for comparison and is
+# used only where the tower has no value.
+field$Tcham_handheld <- field$Tcham; field$Tcham_handheld_source <- field$Tcham_source
+no_start <- is.na(field$t_utc)
+session_tower <- vapply(seq_len(nrow(field)), function(i) {
+  if (!no_start[i]) return(NA_real_)
+  span <- range(field$t_utc[field$plot == field$plot[i] & field$date == field$date[i]], na.rm = TRUE)
+  if (!all(is.finite(span))) return(NA_real_)
+  mean(tower_value(seq(span[1], span[2], by = 600), "TA_1_1_1"), na.rm = TRUE)
+}, 1)
+field <- field %>% mutate(
+  Tcham = coalesce(tower_TA_raw, session_tower, Tcham_handheld),
+  Tcham_source = case_when(!is.na(tower_TA_raw) ~ "tower TA_1_1_1",
+                           !is.na(session_tower) ~ "tower TA_1_1_1, mean over same-plot session (no start time)",
+                           TRUE ~ paste0("handheld (no tower value): ", Tcham_handheld_source)))
+
 # ---- Chamber pressure ---------------------------------------------------------------------
 field$Pcham <- tower_value(field$t_utc, "PA")
 field$Pcham_source <- if_else(is.na(field$Pcham), "default 101.325 kPa (no tower PA)", "tower PA")
@@ -258,7 +276,7 @@ aux <- bind_rows(geo_trees, geo_sw) %>%
   ) %>%
   transmute(UniqueID = flux_id, measurement_type, component, plot, analyzer, date, start.time, end.time,
             obs.length, chamber_id, geometry_rule, Area, offset, Vcham, Vtube, Vinst, Vtot,
-            Tcham, Tcham_source, tower_TA_raw, tower_TA_bias = bias, Pcham, Pcham_source, end_time_repair,
+            Tcham, Tcham_source, Tcham_handheld, Tcham_handheld_source, tower_TA_raw, tower_TA_bias = bias, Pcham, Pcham_source, end_time_repair,
             date_corrected = !is.na(date_fixed), excluded) %>%
   arrange(date, analyzer, start.time, UniqueID)
 stopifnot(!anyDuplicated(aux$UniqueID))
@@ -301,7 +319,7 @@ n_final <- sum(!is.na(cmp$final_Area) | !is.na(cmp$final_Vtot_cm3))
 cat("\nComparison with the legacy final dataset (", n_final, "rows with geometry):\n")
 cat("  geometry/date mismatches:", sum(cmp$geometry_mismatch_vs_final), "(must be 0)\n")
 stopifnot(sum(cmp$geometry_mismatch_vs_final) == 0)
-cat("  Tcham changed (intended: measured-only, same-plot, tower fallback):", sum(cmp$Tcham_changed), "\n")
+cat("  Tcham changed (intended: tower air temperature for all):", sum(cmp$Tcham_changed), "\n")
 print(as.data.frame(cmp %>% filter(Tcham_changed) %>% left_join(aux %>% select(UniqueID, Tcham_source), by = "UniqueID") %>%
   group_by(Tcham_source) %>%
   summarise(n = n(), median_dT = median(Tcham - final_Tcham, na.rm = TRUE),

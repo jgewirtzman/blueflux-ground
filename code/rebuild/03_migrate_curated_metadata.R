@@ -22,9 +22,17 @@ suppressMessages({library(dplyr); library(readr); library(lubridate); library(pu
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 
 out <- "data/flux_metadata"
-if (dir.exists(out) && length(list.files(out, "\\.csv$")) && Sys.getenv("MIGRATE_OVERWRITE") != "1")
-  stop(out, " already populated; set MIGRATE_OVERWRITE=1 to regenerate.")
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
+# Tables are written only if absent, or if named in MIGRATE_ONLY (comma-
+# separated, e.g. MIGRATE_ONLY=trimmed_windows): several tables have since
+# been edited by hand with reasons (e.g. excluded_measurements.csv), and a
+# blanket regeneration would drop those edits.
+only <- strsplit(Sys.getenv("MIGRATE_ONLY"), ",")[[1]]
+write_tbl <- function(df, name) {
+  f <- file.path(out, paste0(name, ".csv"))
+  if (file.exists(f) && !name %in% only) { message("kept existing ", f); return(invisible()) }
+  write_csv(df, f); message("wrote ", f)
+}
 utc <- function(x) suppressWarnings(parse_date_time(x, c("Ymd HMS", "Ymd HM"), tz = "UTC"))
 fmt <- function(x) format(x, "%Y-%m-%d %H:%M:%S")
 
@@ -41,7 +49,7 @@ cham <- mar %>%
   transmute(flux_id, recorded_chamber_id = "Soil 8 in", chamber_id = "Soil 6 in",
             collar_offset_cm = 2,
             reason = "Mar 2022 soil at BL60/FLM30/MI used the 6-inch dome on a 2 cm collar (correct_mar2022_soil_chambers.R)")
-write_csv(cham, file.path(out, "chamber_overrides.csv"))
+write_tbl(cham, "chamber_overrides")
 
 # ---- 3. Date corrections --------------------------------------------------------
 dates <- tibble(
@@ -49,7 +57,7 @@ dates <- tibble(
               "45007_BL60_Water_170", "45007_BL60_Water_171"),
   recorded_date = as.Date("2023-03-22"), date = as.Date("2023-03-16"),
   reason = "Field notes give 2023-03-22; LGR3 continuation file micro_2023-03-16_f0001.txt holds the traces (assemble_clean_dataset.R step 7b)")
-write_csv(dates, file.path(out, "date_corrections.csv"))
+write_tbl(dates, "date_corrections")
 
 # ---- 4. Excluded measurements ---------------------------------------------------
 excl <- tibble(
@@ -57,7 +65,7 @@ excl <- tibble(
               "Oct_22_33_SRS6_stem", "Oct_22_54_SRS6_stem", "Mar_23_76_FLM30_stem",
               "Oct_22_51_SRS6_stem"),
   reason = "analyzer artifact; removed in apply_negative_flux_corrections.R (ARTIFACT_IDS)")
-write_csv(excl, file.path(out, "excluded_measurements.csv"))
+write_tbl(excl, "excluded_measurements")
 
 # ---- 5. Trimmed fit windows -----------------------------------------------------
 # corrected_time_windows.csv gives Etime bounds. apply_negative_flux_corrections.R
@@ -78,13 +86,16 @@ anchor_saved <- map_dfr(manual_files, function(f) {
     group_by(flux_id = UniqueID) %>% summarise(anchor = first(start.time_corr), .groups = "drop") %>%
     mutate(anchor_source = sub("^intermediate/", "", f))
 }) %>% distinct(flux_id, .keep_all = TRUE)
-aux_all <- bind_rows(
-  read_csv("intermediate/auxfiles/tree_auxfile_all_instruments.csv", show_col_types = FALSE,
-           col_types = cols(.default = col_character())),
-  read_csv("intermediate/auxfiles/soilwater_auxfile_all_instruments.csv", show_col_types = FALSE,
-           col_types = cols(.default = col_character()))) %>%
+# The legacy refit read start.time from the *_goflux auxfiles, which hold the
+# local field-log clock time ("2022-10-16 13:24:53"); the *_all_instruments
+# files hold the same instant converted to UTC ("...T17:24:53Z") and must not
+# be used here.
+aux_all <- bind_rows(lapply(c("tree_auxfile_lgr1_goflux", "tree_auxfile_lgr2_goflux", "tree_auxfile_lgr3_goflux",
+                              "soilwater_auxfile_lgr2_goflux", "soilwater_auxfile_lgr3_goflux"), function(f)
+  read_csv(file.path("intermediate/auxfiles", paste0(f, ".csv")), show_col_types = FALSE,
+           col_types = cols(.default = col_character())) %>% mutate(src = f))) %>%
   transmute(flux_id = UniqueID, anchor = start.time,
-            anchor_source = "auxfiles/*_all_instruments.csv start.time (field log, no clock offset)") %>%
+            anchor_source = paste0("auxfiles/", src, ".csv start.time (field log, analyzer clock = field clock)")) %>%
   distinct(flux_id, .keep_all = TRUE)
 anchors <- bind_rows(anchor_saved, anti_join(aux_all, anchor_saved, by = "flux_id"))
 trim <- tw %>% left_join(anchors, by = "flux_id") %>%
@@ -94,7 +105,7 @@ trim <- tw %>% left_join(anchors, by = "flux_id") %>%
             etime_end = new_end_etime, etime_anchor = fmt(a), anchor_source, action,
             source = "output/ebullition/corrected_time_windows.csv (interactive_time_picker.R)")
 stopifnot(!anyNA(trim$window_start))
-write_csv(trim, file.path(out, "trimmed_windows.csv"))
+write_tbl(trim, "trimmed_windows")
 
 # ---- 6. Ebullition: confirmed traces and exclusions -----------------------------
 pl <- read_csv("output/ebullition/placements_summary.csv", show_col_types = FALSE)
@@ -116,7 +127,7 @@ exc <- bind_rows(
   tibble(placement_id = NA_character_, analyzer = NA_character_, site = "CP40",
          date = as.Date("2023-03-15"), start = "2023-03-15 12:19:00", end = "2023-03-15 12:27:00",
          type = "window", note = "1.16 ppm analyzer artifact (detect_ebullition.R EXCLUDE_WINDOWS)"))
-write_csv(conf, file.path(out, "ebullition_confirmed_traces.csv"))
+write_tbl(conf, "ebullition_confirmed_traces")
 write_csv(exc,  file.path(out, "ebullition_exclusions.csv"))
 
 cat("Wrote to", out, ":\n")

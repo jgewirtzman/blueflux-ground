@@ -26,8 +26,9 @@ intermediate file, and say why in the row.
   patch (`apply_chamber_corrections.R`) fixed an earlier step that had
   multiplied these values by 2.54. `Mar_23_13_BL60_root` (HA) has no diameter
   and therefore no geometry.
-- **Trimmed windows**: 12 of 14 are anchored on the field-log start time with
-  no clock offset (the legacy behaviour when no saved manual window existed).
+- **Trimmed windows**: 12 of 14 are anchored on the field-log start time (local
+  clock, as in the `*_goflux` auxfiles the legacy refit read); the analyzer
+  clocks are within ~30 s of it, so no offset is applied.
 - **Air temperature and pressure** are not curated here; `04_build_auxfile.R`
   derives them (see `code/rebuild/README.md`). The legacy worldmet
   weather-station temperatures were replaced by the US-Skr tower record.
