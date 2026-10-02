@@ -1,31 +1,31 @@
 "term","source","class","component","value"
 "Reco","This study: total ER","Healthy","soil",233.484409773748
-"Reco","This study: total ER","Healthy","root",164.430833415231
-"Reco","This study: total ER","Healthy","stem",485.705090257067
+"Reco","This study: total ER","Healthy","root",168.639073360492
+"Reco","This study: total ER","Healthy","stem",486.206223902622
 "Reco","This study: total ER","Healthy","water",187.469723755597
 "Reco","This study: total ER","Healthy","cwd",150.925046364478
 "Reco","This study: total ER","Healthy","leaf",710.166857570329
 "Reco","This study: below-canopy","Healthy","soil",233.484409773748
-"Reco","This study: below-canopy","Healthy","root",164.430833415231
-"Reco","This study: below-canopy","Healthy","stem",485.705090257067
+"Reco","This study: below-canopy","Healthy","root",168.639073360492
+"Reco","This study: below-canopy","Healthy","stem",486.206223902622
 "Reco","This study: below-canopy","Healthy","water",187.469723755597
 "Reco","This study: below-canopy","Healthy","cwd",150.925046364478
 "Reco","This study: total ER","Ghost","soil",89.4141534057643
-"Reco","This study: total ER","Ghost","root",17.7502723872964
-"Reco","This study: total ER","Ghost","stem",163.000819993297
+"Reco","This study: total ER","Ghost","root",19.120079053678
+"Reco","This study: total ER","Ghost","stem",164.969141848234
 "Reco","This study: total ER","Ghost","water",154.713822891165
 "Reco","This study: total ER","Ghost","cwd",59.6240322722054
 "Reco","This study: total ER","Ghost","leaf",0
 "Reco","This study: below-canopy","Ghost","soil",89.4141534057643
-"Reco","This study: below-canopy","Ghost","root",17.7502723872964
-"Reco","This study: below-canopy","Ghost","stem",163.000819993297
+"Reco","This study: below-canopy","Ghost","root",19.120079053678
+"Reco","This study: below-canopy","Ghost","stem",164.969141848234
 "Reco","This study: below-canopy","Ghost","water",154.713822891165
 "Reco","This study: below-canopy","Ghost","cwd",59.6240322722054
-"CH4","Chambers (this study)","Healthy","stem",0.0101213770080716
+"CH4","Chambers (this study)","Healthy","stem",0.00995197020868677
 "CH4","Chambers (this study)","Healthy","soil",0.610620366448379
-"CH4","Chambers (this study)","Healthy","root",0.300262918812728
+"CH4","Chambers (this study)","Healthy","root",0.315409402532583
 "CH4","Chambers (this study)","Healthy","water",0.158877550438591
-"CH4","Chambers (this study)","Ghost","stem",0.0535498371267785
+"CH4","Chambers (this study)","Ghost","stem",0.0519845947566911
 "CH4","Chambers (this study)","Ghost","soil",1.10835578853723
-"CH4","Chambers (this study)","Ghost","root",0.00526538201699665
+"CH4","Chambers (this study)","Ghost","root",0.00566957413783089
 "CH4","Chambers (this study)","Ghost","water",7.72272606389599

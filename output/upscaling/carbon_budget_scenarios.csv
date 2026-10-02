@@ -1,4 +1,4 @@
 "class","scenario","lateral_total","TA","NECB_full","storage_indep","closure_resid"
-"Healthy","central (Zhao 2021 SRS synthesis)",346,104,682,254,428
-"Healthy","high (Reithmaier 2020 Eulerian)",938,425,90,254,-164
-"Healthy","low (Lagrangian tracer, Ho 2017)",235,62,793,254,539
+"Healthy","central (Zhao 2021 SRS synthesis)",346,104,678,254,424
+"Healthy","high (Reithmaier 2020 Eulerian)",938,425,86,254,-168
+"Healthy","low (Lagrangian tracer, Ho 2017)",235,62,789,254,535

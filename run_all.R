@@ -36,12 +36,14 @@ steps <- c(
   "code/05_dataset/02_data_products.R",
   "code/05_dataset/03_data_dictionary.R",
   "code/05_dataset/04_porewater_nitrogen.R",
+  "code/05_dataset/05_porewater_N_fce_context.R",
   # 06 analysis: statistics and manuscript numbers
   "code/06_analysis/01_summary_table.R",
   "code/06_analysis/02_manuscript_results.R",
   # 07 upscaling: tower GPP, plot budgets, forcing, carbon budget
   "code/07_upscaling/01_tower_gpp.R",
   "code/07_upscaling/01b_flood_fraction.R",
+  "code/07_upscaling/01c_tls_datum.R",
   "code/07_upscaling/02_upscale_methane.R",
   "code/07_upscaling/03_upscale_co2.R",
   "code/07_upscaling/04_net_forcing.R",
