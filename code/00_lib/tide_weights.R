@@ -19,3 +19,22 @@ tide_weight_setup <- function(project_dir = ".") {
     ifelse(tide_state == "high_tide", f, ifelse(tide_state == "low_tide", 1 - f, 1))
   }
 }
+
+# Share of prop-root surface below the water at high tide: the TLS 0-0.5 m root
+# surface (as a share of all root surface) times the fraction of that bin under
+# the campaign-month mean flooded depth (FCE LTER level), assuming surface is
+# spread evenly within the bin. Submerged root surface exchanges with the water,
+# not the air (as for soil and downed wood). Trunk surface below the water is
+# < 1.5 % and is ignored.
+root_submerged_setup <- function(tls_all, project_dir = ".") {
+  ff <- read.csv(file.path(project_dir, "output", "upscaling", "flood_fraction.csv"))
+  r <- tls_all[tls_all$segment_class == "root", ]
+  share0 <- tapply(r$Total_surface_area_m2 * (r$height_bin_num == 0), r$site, sum, na.rm = TRUE) /
+            tapply(r$Total_surface_area_m2, r$site, sum, na.rm = TRUE)
+  function(site, campaign, tide_state) {
+    if (tide_state != "high_tide") return(0)
+    d <- ff$mean_depth_flooded_cm[ff$site == site & ff$campaign == campaign]
+    if (!length(d) || !is.finite(d) || is.na(share0[site])) return(0)
+    unname(share0[site]) * min(d, 50) / 50
+  }
+}

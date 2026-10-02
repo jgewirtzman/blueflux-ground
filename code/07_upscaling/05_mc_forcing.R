@@ -24,7 +24,7 @@ lt<-gpp_raw %>% filter(campaign %in% CAMP) %>%
   mutate(sw=ifelse(!is.na(SW_IN)&SW_IN>-900,SW_IN,SW_IN_model),is_day=ifelse(!is.na(sw)&sw>5,1,0),
          TA=ifelse(!is.na(TA)&TA>-900,TA,TA_model)) %>%
   group_by(campaign) %>%
-  summarise(fT_day=mean(f_T(TA)*(1-0.30*is_day),na.rm=TRUE),
+  summarise(fT_all=mean(f_T(TA),na.rm=TRUE),fT_light=mean(f_T(TA)*is_day,na.rm=TRUE),   # leaf R = Rd25*(fT_all - inhib*fT_light)*effLAI
             GPP_mean=mean(GPP,na.rm=TRUE),
             GPP_unc=mean(GPP_sd,na.rm=TRUE),   # tower bootstrap GPP uncertainty (partitioning)
             .groups="drop")
@@ -69,9 +69,12 @@ for(i in 1:nrow(comp)){
       if(cc=="cwd") d<-d*rlnorm(1,0,CWD_SDLOG)   # downed-wood area (Krauss et al. 2005 range)
       rsum<-rsum+d
     }
-    # leaf: healthy only; Rd25 ~ U(1.28,1.62), LAI ~ N(2.3,0.3) truncated
+    # leaf: healthy only. Rd25 ~ U(1.28,1.62); LAI lognormal, median 2.8 (SRS-6
+    # ground) with the MODIS 5.55 as the upper ~97.5 % bound; daytime light
+    # inhibition ~ triangular(0.2, mode 0.3, 0.5) (Kok effect, canopy range)
     leaf<-if(dl=="healthy"){
-      Rd<-runif(1,1.28,1.62); LAI<-max(1.5,rnorm(1,2.3,0.3)); Rd*ltc$fT_day*effLAI(LAI)
+      Rd<-runif(1,1.28,1.62); LAI<-rlnorm(1,log(2.8),log(5.55/2.8)/1.96); u<-runif(1); inh<-if(u<1/3) 0.2+sqrt(u*0.3*0.1) else 0.5-sqrt((1-u)*0.3*0.2)
+      Rd*(ltc$fT_all-inh*ltc$fT_light)*effLAI(LAI)
     } else 0
     # GPP: healthy from tower; ghost 0
     G<-if(dl=="healthy") rnorm(1,ltc$GPP_mean,ltc$GPP_unc) else 0

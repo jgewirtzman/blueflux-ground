@@ -367,6 +367,8 @@ is_tidal <- function(site) site %in% c("SRS5", "SRS6")
 # Downed CWD: Krauss et al. 2005 wood volume -> surface (Troxler et al. 2015),
 # exposed to the air only above the water (code/00_lib/cwd_scaling.R)
 source(file.path(project_dir, "code", "00_lib", "cwd_scaling.R"))
+source(file.path(project_dir, "code", "00_lib", "tide_weights.R"))
+root_submerged <- root_submerged_setup(tls_all, project_dir)   # prop-root surface below water at high tide
 cwd_exposed <- cwd_exposure_setup(flux_raw)
 
 # Observed stem flux range (for MC capping)
@@ -437,7 +439,7 @@ for (camp in campaigns) {
     cwd_ci_lo  <- ft %>% filter(component == "cwd") %>% pull(ci_lo)
     cwd_ci_hi  <- ft %>% filter(component == "cwd") %>% pull(ci_hi)
 
-    root_total  <- ifelse(!is.na(root_rate), root_rate * root_sa, 0)
+    root_total_full <- ifelse(!is.na(root_rate), root_rate * root_sa, 0)
     cwd_total_full <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_of(plot_area), 0)
 
     # --- MC draws for uncertainty propagation ---
@@ -507,6 +509,8 @@ for (camp in campaigns) {
       soil_total  <- ifelse(!is.na(soil_rate),  soil_rate * ground_area * fs, 0)
       water_total <- ifelse(!is.na(water_rate), water_rate * ground_area * fw, 0)
       cwd_ex      <- cwd_exposed(site_name, camp, tide)
+      root_ex     <- 1 - root_submerged(site_name, camp, tide)
+      root_total  <- root_total_full * root_ex
       cwd_total   <- cwd_total_full * cwd_ex
       soil_sa_used  <- ground_area * fs
       water_sa_used <- ground_area * fw
@@ -514,7 +518,7 @@ for (camp in campaigns) {
       # MC totals per component (nmol/s)
       soil_mc  <- soil_flux_draws * ground_draws * fs
       water_mc <- water_flux_draws * ground_draws * fw
-      root_mc  <- root_flux_draws * root_sa_draws
+      root_mc  <- root_flux_draws * root_sa_draws * root_ex
       cwd_mc   <- cwd_flux_draws * cwd_sa_draws * cwd_ex
 
       # Convert all MC draws to mg CH4 m-2 d-1

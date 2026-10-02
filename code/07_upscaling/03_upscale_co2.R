@@ -203,19 +203,22 @@ cat("\n=== 4. Leaf canopy respiration (literature) ===\n")
 Rd25_central <- 1.55          # R.mangle-weighted central
 Rd25_lo      <- 1.28          # A.germinans low
 Rd25_hi      <- 1.62          # R.mangle (Barr 2009 at-site)
-LAI_central  <- 2.3           # LAI-01 ground-measured optical (site value; central)
-LAI_lo       <- 2.1           # ground optical lower CI
-LAI_hi       <- 5.55          # LAI-02 MODIS recovered upper bound (reads high; sensitivity)
+LAI_central  <- 2.8           # SRS-6 ground LAI (Barr, unpubl., in Troxler et al. 2015)
+LAI_lo       <- 2.3           # LAI-01 ground optical (lower)
+LAI_hi       <- 5.55          # MODIS at US-Skr (Reed et al. 2025; 24-day maxima, reads high)
+# Canopy LAI recovered within ~1 yr of Wilma and Irma (Reed et al. 2025), so no
+# post-hurricane reduction is applied for 2022-23.
 
 # Beer's-law canopy integration (C-07): leaf respiratory capacity scales with light
 # through the canopy, so total canopy R uses an EFFECTIVE LAI rather than flat Rd*LAI.
 # effective_LAI = (1 - exp(-k*LAI)) / k ; k = canopy light-extinction coefficient.
 K_EXT     <- 0.5
 eff_LAI   <- function(L) (1 - exp(-K_EXT * L)) / K_EXT
-LAIe_central <- eff_LAI(LAI_central)   # 2.3  -> ~1.37
+LAIe_central <- eff_LAI(LAI_central)   # 2.8  -> ~1.51
 LAIe_lo      <- eff_LAI(LAI_lo)
 LAIe_hi      <- eff_LAI(LAI_hi)
-F_INHIB_DAY  <- 0.30          # daytime light inhibition of leaf R
+F_INHIB_DAY  <- as.numeric(Sys.getenv("LEAF_INHIB", "0.30"))   # daytime light inhibition of leaf R
+# (Kok effect; global mean ~30 %, Atkin et al. 2014; canopy range ~20-50 %, in the MC)
 
 # Heskel et al. 2016 short-term T response (C-02)
 f_T_heskel <- function(T_leaf) exp(0.1012 * (T_leaf - 25) - 0.0005 * (T_leaf^2 - 25^2))
@@ -324,6 +327,8 @@ cwd_exposed <- cwd_exposure_setup(flux_raw)
 # 6. Scale to plot level -> areal Reco (umol m-2 ground s-1)
 # =============================================================================
 cat("\n=== 6. Scaling CO2 to plot level ===\n")
+source(file.path(project_dir, "code", "00_lib", "tide_weights.R"))
+root_submerged <- root_submerged_setup(tls_all, project_dir)
 results <- list()
 for (camp in campaigns) {
   for (site_name in tls_sites) {
@@ -354,6 +359,7 @@ for (camp in campaigns) {
     for (tide in tide_states) {
       if (tide == "fixed") { fl <- assign_flood(site_name, camp); fw <- fl["water"]; fs <- fl["soil"] }
       else { fw <- if (tide == "high_tide") 1 else 0; fs <- 1 - fw }
+      root_tot_t <- root_tot * (1 - root_submerged(site_name, camp, tide))
 
       soil_tot  <- ifelse(!is.na(soil_rate),  soil_rate * ground_area * fs, 0)
       cwd_tot_t <- cwd_tot * cwd_exposed(site_name, camp, tide)
@@ -364,7 +370,7 @@ for (camp in campaigns) {
       areal <- data.frame(
         site = site_name, campaign = camp, tide_state = tide, disturbance_level = dist,
         stem  = to_areal(stem_tot),
-        root  = to_areal(root_tot),
+        root  = to_areal(root_tot_t),
         soil  = to_areal(soil_tot),
         water = to_areal(water_tot),
         cwd   = to_areal(cwd_tot_t),

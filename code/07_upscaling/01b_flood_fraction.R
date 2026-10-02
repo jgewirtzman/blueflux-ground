@@ -49,7 +49,8 @@ ff <- wl %>% filter(ym %in% names(CAMPS)) %>% rename(site = SITENAME) %>%
   left_join(cal, by = "site") %>% mutate(h = WaterLevel + offset_cm) %>%
   group_by(site, campaign = unname(CAMPS[ym])) %>%
   summarise(frac_flooded = mean(h > 0), frac_flooded_lo = mean(h > MICRO_CM), frac_flooded_hi = mean(h > -MICRO_CM),
-            frac_flooded_raw = mean(WaterLevel > 0), mean_level_cm = mean(h), n_hours = n(), .groups = "drop") %>%
+            frac_flooded_raw = mean(WaterLevel > 0), mean_level_cm = mean(h), mean_depth_flooded_cm = mean(h[h > 0]),
+            n_hours = n(), .groups = "drop") %>%
   left_join(cal, by = "site") %>%
   left_join(wl %>% filter(Date >= "2010-01-01") %>% group_by(site = SITENAME) %>%
               summarise(frac_flooded_2010_on = mean(WaterLevel > 0), .groups = "drop"), by = "site")
