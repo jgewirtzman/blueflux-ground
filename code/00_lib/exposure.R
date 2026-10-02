@@ -4,7 +4,7 @@
 # Shared by 07_upscaling/02_upscale_methane.R and 03_upscale_co2.R.
 #
 # Stem CH4 is fitted against height above the water surface where water was
-# present (height above the sediment where the floor was dry): emission peaks
+# present (height above the soil surface where no standing water was present): emission peaks
 # just above the water line, where gas diffuses through tissue and air rather
 # than water, and the profile moves up and down with the water level. Bark
 # below the water emits to the water (already in the water-surface flux), not

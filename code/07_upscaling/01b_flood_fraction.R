@@ -12,7 +12,7 @@
 # depth readings differ by up to 27 cm), so part of the plot is under water and
 # part exposed. Every depth reading we took at SRS5/SRS6 is a sample of floor
 # height relative to the logger: a wet reading gives it exactly (depth -
-# logger); a dry reading only says the floor was above the water then (left-
+# logger); a reading without standing water only says the floor was above the water then (left-
 # censored at -logger). A normal distribution of floor height is fitted per
 # site by censored maximum likelihood (survival::survreg), and the flooded share
 # of the plot each hour is Phi((level + mu) / sigma), averaged over the campaign

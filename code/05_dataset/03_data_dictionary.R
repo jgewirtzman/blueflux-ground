@@ -32,7 +32,7 @@ desc <- c(
   date_corrected = "Date changed by date_corrections.csv", analyzer_corrected = "Analyzer changed by analyzer_corrections.csv",
   excluded = "TRUE if excluded from analysis (see exclusion_reason)", exclusion_reason = "Why the closure is excluded",
   species = "Tree species code", status = "alive / dead / CWD", height = "Chamber height on the stem as recorded (cm)",
-  height_corrected = "Analysis height (cm): height above the water surface where standing water was present (sediment-referenced heights minus water depth; water-referenced heights as recorded), otherwise above the sediment; negatives set to 0. Legacy rule; used by the stem height model",
+  height_corrected = "Analysis height (cm): height above the water surface where standing water was present (sediment-referenced heights minus water depth; water-referenced heights as recorded), otherwise (no standing water) above the soil surface; negatives set to 0. Legacy rule; used by the stem height model",
   diameter = "Stem / root diameter (cm)", lenticels = "Lenticels present (field sheet)", above = "Height reference (sediment / water)",
   stem_temp = "Stem temperature (C)", soil_temp = "Soil temperature (C)", water_temp = "Water temperature (C)",
   water_depth = "Water depth (cm)", notes = "Field-sheet notes", surface_type = "soil / water (surface chambers)",
