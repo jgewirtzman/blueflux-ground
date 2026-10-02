@@ -13,6 +13,7 @@ Resolved 2026-10-02: no tree IDs (not tagged); field clocks were local civil tim
 9. **BL60 Mar_23_26/27/28** (2023-03-19): component stem, but status recorded as 'CWD' (two COPE, one RHMA; 9-12.5 cm diameter, 30-60 cm height). Standing dead stems, or downed wood?
 10. **Negative prop-root heights**: Oct_22_80 (FLM30), Oct_22_119/125/130/137 (SRS5) were entered as stems at -25 or -50 cm 'from the water surface' with 3-20 cm water, and are treated as roots with height above sediment 0. What does the negative height mean (distance down a prop root from the stem? below the water line?)
 11. **Downed wood without status**: 7 downed-wood closures have no tissue status (Mar_23_199-202, 207 at SRS5; Mar_23_150-151 at CP40). Should they be labelled dead?
+12. **Height datum check** (raised by the compilation): height_above_sediment_cm is now computed as chamber height + water depth where the datum is the water surface (it previously repeated chamber_height_cm). Some records then give chambers below the water line (height_above_water_cm < 0), e.g. sediment-referenced 14 cm with 11 cm water. Confirm the datum convention in `above`.
 
 ## Proposed dataset metadata (approve or correct)
 

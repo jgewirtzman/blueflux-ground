@@ -119,7 +119,7 @@ CO2_qc_min_window,CO2 QC: window shorter than 60 s,logical
 CO2_qc_noisy,CO2 QC: closure noise > 1.5 x campaign sigma,logical
 CO2_qc_any,CO2 Any QC screen fired,logical
 data_source,"rebuild fit (stage 03), or unlogged placement (stage 04) from data/flux_metadata/unlogged_placements.csv",character
-height_corrected,"Height above sediment, negative set to 0, minus water depth where measured from the water surface (cm)",logical
+height_corrected,"Analysis height (cm): height above the water surface where standing water was present (sediment-referenced heights minus water depth; water-referenced heights as recorded), otherwise above the sediment; negatives set to 0. Legacy rule; used by the stem height model",logical
 year,Year,numeric
 month,Month,numeric
 month_year,YYYY-MM,character
