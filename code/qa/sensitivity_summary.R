@@ -21,7 +21,7 @@ row <- function(choice, setting, ch4_g = cen$ch4, nee = cen$nee, net = cen$net, 
   data.frame(choice, setting, intact_CH4_g = ch4_g, intact_NEE_gC = nee, intact_net100 = net, ghost_net100 = gnet,
              switch_net100 = gnet - net, basis)
 
-out <- list(row("central", "central case", basis = "area-weighted campaign flooding; Q10 1.15; Krauss CWD 67; LAI 2.8; tidal phase 1.0; daytime CH4"))
+out <- list(row("central", "central case", basis = "area-weighted campaign flooding; Q10 1.15; Krauss CWD 67; LAI 2.8; tidal phase 1.0; daytime CH4; ghost floor without standing water from FLM30 2022 soil"))
 
 b <- read.csv("output/qa/budget_scenarios.csv")
 for (q in c("none", "literature", "stem_chambers")) { r <- b[b$q10_case == q & b$cwd_case == "krauss_mean", ]
@@ -43,6 +43,13 @@ for (k in c(0.6, 2.0)) out[[length(out) + 1]] <- row("Tidal phase, intact water 
 out[[length(out) + 1]] <- row("CH4 day -> 24 h", "x 1.30 (all CH4)", ch4_g = hv("healthy")$ch4_g_yr_24h,
   net = hv("healthy")$net100_ch4_24h, gnet = hv("ghost")$net100_ch4_24h, basis = "Zhu et al. 2024 (mangrove EC)")
 
+gf <- read.csv("output/qa/ghost_exposed_floor.csv")
+gf <- gf[!(gf$soil_source == "FLM30 soil, Mar 2022 (same site)" & gf$exposed == "no_water"), ]
+for (i in seq_len(nrow(gf))) out[[length(out) + 1]] <- row("Ghost floor without standing water (Mar 2023)",
+  paste0(gf$soil_source[i], ifelse(gf$exposed[i] == "le2cm", "; <= 2 cm counted as exposed", "")),
+  gnet = gf$ghost_net100[i], basis = "exposed share from our depth readings; soil flux from the named chambers")
+ghost_ch4_override <- setNames(gf$ghost_CH4_g, paste0(gf$soil_source, ifelse(gf$exposed == "le2cm", "; <= 2 cm counted as exposed", "")))
+
 effLAI <- function(L) (1 - exp(-0.5 * L)) / 0.5
 leaf <- mean(co2$leaf[co2$disturbance_level == "healthy"])
 for (s in list(c("Rd25 1.28, LAI 2.3", 1.28, 2.3), c("Rd25 1.62, LAI 5.55", 1.62, 5.55))) {
@@ -60,7 +67,8 @@ out[[length(out) + 1]] <- data.frame(choice = "Monte Carlo 95 % interval", setti
   intact_CH4_g = NA, intact_NEE_gC = NA, intact_net100 = sprintf("%.0f to %.0f", mc$net100_lo[mc$class == "healthy"], mc$net100_hi[mc$class == "healthy"]),
   ghost_net100 = sprintf("%.0f to %.0f", mc$net100_lo[mc$class == "ghost"], mc$net100_hi[mc$class == "ghost"]), switch_net100 = NA,
   basis = "chamber fluxes, TLS areas, CWD area, leaf term, tower GPP, tidal phase")
-gch4 <- function(r) if (grepl("24 h", r$choice)) hv("ghost")$ch4_g_yr_24h else hv("ghost")$ch4_g_yr
+gch4 <- function(r) if (grepl("24 h", r$choice)) hv("ghost")$ch4_g_yr_24h else
+  if (r$setting %in% names(ghost_ch4_override)) ghost_ch4_override[[r$setting]] else hv("ghost")$ch4_g_yr
 out <- lapply(out, function(d) if (d$choice == "Monte Carlo 95 % interval") d else
   mutate(d, intact_net20 = intact_net100 + (81.2 - 27.9) * intact_CH4_g, ghost_net20 = ghost_net100 + (81.2 - 27.9) * gch4(d),
          switch_net20 = ghost_net20 - intact_net20))

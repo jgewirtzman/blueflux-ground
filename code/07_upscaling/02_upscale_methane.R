@@ -226,6 +226,8 @@ get_water_estimate <- function(site_name, camp) {
        source = "dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R)")
 }
 
+source(file.path(project_dir, "code", "00_lib", "ghost_floor.R"))
+ghost_floor <- ghost_floor_setup(project_dir)     # ghost floor without standing water (Mar 2023)
 flux_table <- list()
 for (camp in campaigns) {
   for (site_name in tls_sites) {
@@ -256,6 +258,10 @@ for (camp in campaigns) {
           # SRS6 Oct 2022 water: use SRS5 Oct 2022 water
           fl <- get_site_flux("SRS5", "Oct 2022", "water")
           if (!is.null(fl)) fl$source <- "gap: SRS5 water Oct 2022"
+        } else if (comp == "soil" && site_name %in% c("CP40", "FLM30")) {
+          # ghost floor without standing water: no ghost soil chambers in the
+          # analysed campaigns (00_lib/ghost_floor.R)
+          fl <- ghost_floor$soil_flux("CH4")
         }
       }
 
@@ -368,8 +374,8 @@ scale_stems_zero <- function(site_name, camp, stem_boot_df, tls_stem_df,
 
 # --- 7. Flooding assignment ---------------------------------------------------
 assign_flood <- function(site, camp) {
-  if (site == "CP40") return(c(water = 1, soil = 0))
-  if (site == "FLM30") return(c(water = 1, soil = 0))  # always flooded for Oct/Mar campaigns
+  # ghost sites: share of the floor without standing water (00_lib/ghost_floor.R)
+  if (site %in% c("CP40", "FLM30")) { e <- ghost_floor$share(site, camp); return(c(water = 1 - e, soil = e)) }
   return(c(water = NA, soil = NA))  # tidal
 }
 is_tidal <- function(site) site %in% c("SRS5", "SRS6")

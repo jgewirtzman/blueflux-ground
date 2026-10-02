@@ -105,12 +105,12 @@ Legacy used the three mislabelled tree closures.
 | Intact CH4, g m⁻² yr⁻¹ | 2.2 | 1.5 (area-weighted flooding; 0.9–2.2 across choices, Table S10) |
 | Ghost CH4, g m⁻² yr⁻¹ | 11.7 | 10.7 |
 | Intact CO2, g m⁻² yr⁻¹ | −4,713 (−1,285 g C) | −3,772 (−1,030 g C; tower 2022–23 −1,288 g C) |
-| Ghost CO2, g m⁻² yr⁻¹ | +1,437 | +1,497 |
+| Ghost CO2, g m⁻² yr⁻¹ | +1,437 | +1,775 |
 | Intact net forcing, 100 yr | −4,653 | −3,731 (vertical); −1,841 NECB with alkalinity retained (S.T10) |
-| Ghost net forcing, 100 yr / 20 yr | +1,763 / +2,386 | +1,796 / +2,367 (GWP* +2,677) |
-| Sink-to-source switch | ~6,400–6,900 | ~6,000 GWP20 / ~5,500 GWP100 (vertical); ~5,100 / ~4,600 (NECB, alkalinity retained, central lateral scenario) |
-| Monte Carlo, GWP100 | intact −6,133…−3,521; ghost +1,474…+2,045 | intact −5,297…−2,069; ghost +1,380…+2,660 (still disjoint) |
-| CH4 share of forcing | intact 1.3 % / 3.6 %; ghost 18.5 % / 39.8 % | intact 1.1 % / 3.1 % (vertical), 1.8 % / 5.2 % (NECB, alkalinity retained); ghost 16.6 % / 36.8 % |
+| Ghost net forcing, 100 yr / 20 yr | +1,763 / +2,386 | +2,107 / +2,741 (GWP* +3,104) |
+| Sink-to-source switch | ~6,400–6,900 | ~6,400 GWP20 / ~5,800 GWP100 (vertical); ~5,500 / ~4,900 (NECB, alkalinity retained, central lateral scenario) |
+| Monte Carlo, GWP100 | intact −6,133…−3,521; ghost +1,474…+2,045 | intact −5,309…−2,052; ghost +1,453…+3,213 (still disjoint) |
+| CH4 share of forcing | intact 1.3 % / 3.6 %; ghost 18.5 % / 39.8 % | intact 1.1 % / 3.1 % (vertical), 1.8 % / 5.2 % (NECB, alkalinity retained); ghost 15.8 % / 35.2 % |
 | Regenerating budget, g m⁻² yr⁻¹ | ~29 | ~33 |
 
 The intact net forcing change is +250 (a weaker sink). Of that, in g CO2 m⁻² yr⁻¹:
@@ -227,9 +227,9 @@ Line numbers refer to `manuscript/drafts/manuscript_NCC_draft.md` (D) and
 | D:63 | intact bottom-up CO2 −2.9 to −3.9 | −3.1 to −3.3; recheck "within one standard error" of top-down (−2.2 ± 2) | C |
 | D:65 | intact CO2 −4,713 g (−1,285 g C), "closely matched" tower NEP | −4,427 g (−1,208 g C); "closely matched" still holds | C |
 | D:65 | intact CH4 2.2 g, +60 / +175 CO2-eq, 1.3 % / 3.6 % | 0.9 g, +25 / +72, 0.6 % / 1.6 % | C |
-| D:65 | ghost +1,763 / +2,386; CO2 +1,437; CH4 11.7 g, +326 / +950; 18.5 % / 39.8 % | +1,796 / +2,367; +1,497; 10.7 g, +299 / +870; 16.6 % / 36.8 % (text now leads with GWP20) | C |
+| D:65 | ghost +1,763 / +2,386; CO2 +1,437; CH4 11.7 g, +326 / +950; 18.5 % / 39.8 % | +2,107 / +2,741; +1,775; 11.9 g, +332 / +966; 15.8 % / 35.2 % (text now leads with GWP20; ghost floor partly exposed in Mar 2023) | C |
 | D:67, D:87 | switch ~6,400–6,900 | ~6,200–6,700 | C |
-| D:67, SI:97 | Monte Carlo intact −6,133…−3,521; ghost +1,474…+2,045 | GWP20 −5,219…−1,996 / +1,765…+3,320; GWP100 −5,297…−2,069 / +1,380…+2,660 | C |
+| D:67, SI:97 | Monte Carlo intact −6,133…−3,521; ghost +1,474…+2,045 | GWP20 −5,249…−1,963 / +1,891…+3,925; GWP100 −5,309…−2,052 / +1,453…+3,213 | C |
 | D:81 | amplification stem 23–28×, soil 2–8×, water 28–50× | stem 41–50×, soil 2–9×, water 19–66× | C |
 | D:89 | CH4 share "nearly doubles" GWP100 → GWP20 | "more than doubles" (ghost 2.2×, intact 2.7×) | S |
 | SI:49, SI:87 | ghost water depth dry 8.7 and 6.6 | 8.7 and 6.3 | C |
