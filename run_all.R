@@ -70,7 +70,8 @@ steps <- c(
   "code/08_figures/plot_site_closure.R",            # supplementary per-site closure
   "code/08_figures/plot_water_positions.R",         # supplementary water positions
   "code/08_figures/figS_sampling_design.R",
-  "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)        # sampling design vs tide (candidate SI figure)
+  "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)
+  "code/08_figures/fig_metagenome_placeholder.R",       # PLACEHOLDER metagenome figure        # sampling design vs tide (candidate SI figure)
   "code/08_figures/collect_figures.R",
   "code/09_archive/build_ornl_daac_package.R"     # DRAFT ORNL DAAC package (measured fluxes)
 )
