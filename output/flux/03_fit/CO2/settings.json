@@ -37,12 +37,12 @@
     "warn.length": 20
   },
   "n_closures": 757,
-  "date": "2026-10-02 00:15:58 PDT",
+  "date": "2026-10-02 00:48:58 PDT",
   "sigma_method": "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign",
   "sigma_by_group": {
     "LGR1 Mar2023": 0.9477142885,
     "LGR1 Oct2022": 1.003277184,
-    "LGR2 Mar2023": 0.5247024352,
+    "LGR2 Mar2023": 0.5184122961,
     "LGR2 Oct2022": 0.4832923529,
     "LGR3 Mar2022": 0.6405458299,
     "LGR3 Mar2023": 0.7642518986,

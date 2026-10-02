@@ -3,7 +3,10 @@
 #
 # Clock offset per analyzer-day (analyzer time - field-sheet time):
 #   1. median offset of the saved manual windows that day (checked by eye
-#      against the data when they were clicked);
+#      against the data when they were clicked), if there are at least
+#      MIN_DAY_SAVED of them (one saved window can reflect a closure that was
+#      started before or after its logged time, e.g. SE1 water 144 placed 4 min
+#      before its logged 09:21, which shifted the day's leaf closures);
 #   2. else the analyzer-campaign median (e.g. LGR2 trees share the clock with
 #      the LGR2 soil/water closures of the same campaign);
 #   3. else the per-closure rise detection median (06_clock_offsets.R);
@@ -32,7 +35,7 @@
 suppressMessages({library(dplyr); library(readr); library(lubridate)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/00_lib/lib_raw.R")
-OVERLAP_S <- 30
+OVERLAP_S <- 30; MIN_DAY_SAVED <- 3
 
 utc <- function(x) suppressWarnings(parse_date_time(x, c("Ymd HMS", "Ymd HM"), tz = "UTC"))
 aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE) %>% filter(!excluded)
@@ -58,7 +61,8 @@ w <- aux %>%
 
 # ---- offsets ----------------------------------------------------------------------
 off_day  <- w %>% filter(!is.na(saved_offset)) %>% group_by(analyzer, date) %>%
-  summarise(o_day = median(saved_offset), n_day = n(), .groups = "drop")
+  summarise(o_day = median(saved_offset), n_day = n(), .groups = "drop") %>%
+  filter(n_day >= MIN_DAY_SAVED)
 off_camp <- w %>% filter(!is.na(saved_offset)) %>% group_by(analyzer, campaign) %>%
   summarise(o_camp = median(saved_offset), .groups = "drop")
 w <- w %>% left_join(off_day, by = c("analyzer", "date")) %>% left_join(off_camp, by = c("analyzer", "campaign")) %>%

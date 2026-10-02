@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+set.seed(20221016)   # jitter / label placement reproducible between runs
 # =============================================================================
 # Figure 6: Porewater geochemistry composite
 # Output: pub_pca_porewater_full_composite
