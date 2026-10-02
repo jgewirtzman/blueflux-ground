@@ -6,10 +6,12 @@
 # 07_upscaling/01b_flood_fraction.R). Always-flooded and dry sites ("fixed")
 # weigh 1.
 # Sensitivity: FLOOD_FRAC = <0-1> (e.g. 0.5, the earlier equal split) or
-# "lo" / "hi" (microtopography range).
+# "lo" / "hi" (microtopography range); FLOOD_FRAC_FILE = an alternative table
+# with site, campaign, frac_flooded (code/qa/flooding_scenarios.R).
 # =============================================================================
 tide_weight_setup <- function(project_dir = ".") {
-  ff <- read.csv(file.path(project_dir, "output", "upscaling", "flood_fraction.csv"))
+  f_file <- Sys.getenv("FLOOD_FRAC_FILE", file.path(project_dir, "output", "upscaling", "flood_fraction.csv"))
+  ff <- read.csv(f_file)
   opt <- Sys.getenv("FLOOD_FRAC", "")
   col <- switch(opt, lo = "frac_flooded_lo", hi = "frac_flooded_hi", "frac_flooded")
   fixed <- suppressWarnings(as.numeric(opt))
