@@ -1,0 +1,52 @@
+column,units,description
+measurement_id,,Unique measurement (closure or floating-chamber placement) ID
+site_id,,Site code (see BlueFlux_ground_sites.csv)
+latitude,degrees_north,"Site latitude (WGS84; site level, not per tree)"
+longitude,degrees_east,"Site longitude (WGS84; site level, not per tree)"
+disturbance_class,,"healthy, regenerating, ghost or scrub mangrove"
+campaign,,Campaign month (YYYY-MM)
+date_local,,"Measurement date, local (America/New_York)"
+start_time_local,,"Closure start, local civil time (field log)"
+end_time_local,,"Closure end, local civil time (field log)"
+utc_offset,,"UTC offset of the local time (-0500 EST, -0400 EDT)"
+start_datetime_utc,,"Closure start, ISO 8601 UTC"
+end_datetime_utc,,"Closure end, ISO 8601 UTC"
+component,,"stem, prop_root, downed_wood, leaf, soil or water_surface"
+area_basis,,Surface the flux is expressed per
+species_code,,"Tree species code (RHMA, AVGE, LARA, COER, ...); trees only"
+species_name,,Scientific name; trees only
+tissue_status,,"alive or dead (trees, roots, downed wood)"
+diameter_cm,cm,"Stem, root or wood diameter at the chamber"
+chamber_height_cm,cm,"Chamber height as recorded, measured from height_datum"
+height_datum,,Reference surface for chamber_height_cm: sediment_surface or water_surface
+height_above_sediment_cm,cm,Chamber height above the sediment (water depth added where measured from the water surface; negatives set to 0)
+water_depth_cm,cm,Standing-water depth at the measurement
+pneumatophore_count,count,Pneumatophores inside the soil collar
+pneumatophore_density_m2,count m-2,Pneumatophore density inside the soil collar
+chamber_type,,"Tree chamber class (A-D, HA, HB, LB) or soil/floating chamber (see BlueFlux_ground_chamber_geometry.csv)"
+chamber_area_cm2,cm2,Enclosed area used in the flux
+system_volume_L,L,Total system volume (chamber + collar + tubing + desiccant + analyzer cell)
+analyzer,,"LGR (ABB/LGR GLA131, off-axis ICOS) or Picarro (G4301, cavity ring-down)"
+analyzer_unit,,"Analyzer unit (LGR1-3, Picarro)"
+air_temp_C,degC,Air temperature used in the flux (US-Skr tower TA at the measurement time)
+pressure_kPa,kPa,Pressure used in the flux (US-Skr tower; 101.325 where unavailable)
+placement_duration_s,s,Floating-chamber placement duration (water only)
+CH4_flux,nmol m-2 s-1,"CH4 flux, positive = emission to the atmosphere; water = diffusive + ebullitive"
+CH4_flux_model,,Model of the reported flux: LM (linear) or HM (Hutchinson-Mosier)
+CH4_flux_se,nmol m-2 s-1,Standard error of the reported CH4 flux fit
+CH4_r2,1,R2 of the reported CH4 fit
+CH4_MDF,nmol m-2 s-1,"Minimum detectable CH4 flux, 1.96 sigma / t x flux term (sigma: MAD of within-window first differences, pooled by analyzer and campaign)"
+CH4_below_MDF,1,1 if |CH4_flux| < CH4_MDF (flux retained at its measured value)
+CH4_detection_class,,"emission, uptake or below detection"
+CH4_qc_flag,1,1 if any fluxqc screen fired (flux retained)
+CH4_diffusive_flux,nmol m-2 s-1,"Water only: diffusive CH4 flux (goAquaFlux, de-ebulliated window)"
+CH4_ebullitive_flux,nmol m-2 s-1,Water only: ebullitive CH4 flux over the placement
+CO2_flux,umol m-2 s-1,"CO2 flux, positive = emission to the atmosphere"
+CO2_flux_model,,LM or HM
+CO2_flux_se,umol m-2 s-1,Standard error of the reported CO2 flux fit
+CO2_r2,1,R2 of the reported CO2 fit
+CO2_MDF,umol m-2 s-1,Minimum detectable CO2 flux (as CH4_MDF)
+CO2_below_MDF,1,1 if |CO2_flux| < CO2_MDF
+CO2_detection_class,,"emission, uptake or below detection"
+CO2_qc_flag,1,1 if any fluxqc screen fired
+CO2_flux_source,,"How the CO2 flux was obtained (chamber fit, or dissolved gas x k600 for wet-season intact water)"

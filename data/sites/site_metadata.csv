@@ -1,0 +1,9 @@
+site_id,site_name,latitude,longitude,ecosystem_type,dominant_species,description
+FLM30,Flamingo,25.1414,-80.9370,ghost_forest,"Avicennia germinans, Conocarpus erectus",Ghost forest site in Everglades National Park
+CP40,Christian Point,25.2310,-80.7270,ghost_forest,"Avicennia germinans",Ghost forest site in Everglades National Park
+BL60,Bear Lake,25.1760,-80.9680,regenerating_mangrove,"Rhizophora mangle, Avicennia germinans",Regenerating mangrove forest
+SE1,SE-1 / US-EvM,25.3650,-80.6320,scrub_mangrove,"Rhizophora mangle, Avicennia germinans",Scrub mangrove at ecotone/sawgrass with saltwater intrusion and mangrove invasion
+MI,Marco Island,25.9410,-81.7190,ghost_forest,"Avicennia germinans",Mangrove die-off ghost forest at edge of Ten Thousand Islands
+RB10,Rookery Bay,26.0270,-81.7440,living_mangrove,"Rhizophora mangle",Rookery Bay living mangroves
+SRS5,Gunboat Island / SRS5,25.3640,-81.0770,intermediate_mangrove,"Rhizophora mangle",Intermediate stature mangrove forest in Shark River Slough
+SRS6,Lower Shark / SRS6,25.3650,-81.0780,tall_mangrove,"Rhizophora mangle",Large stature mangrove forest in Shark River Slough

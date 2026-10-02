@@ -1,0 +1,12 @@
+site_id,site_name,latitude,longitude,ecosystem_type,dominant_species,description,n_measurements,first_date,last_date,disturbance_class
+FLM30,Flamingo,25.1414,-80.937,ghost_forest,"Avicennia germinans, Conocarpus erectus",Ghost forest site in Everglades National Park,153,2022-03-21,2023-03-18,ghost
+CP40,Christian Point,25.231,-80.727,ghost_forest,Avicennia germinans,Ghost forest site in Everglades National Park,105,2022-10-23,2023-03-15,ghost
+BL60,Bear Lake,25.176,-80.968,regenerating_mangrove,"Rhizophora mangle, Avicennia germinans",Regenerating mangrove forest,140,2022-03-24,2023-03-19,regenerating
+SE1,SE-1 / US-EvM,25.365,-80.632,scrub_mangrove,"Rhizophora mangle, Avicennia germinans",Scrub mangrove at ecotone/sawgrass with saltwater intrusion and mangrove invasion,17,2023-03-17,2023-03-17,scrub
+MI,Marco Island,25.941,-81.719,ghost_forest,Avicennia germinans,Mangrove die-off ghost forest at edge of Ten Thousand Islands,30,2022-03-18,2023-03-20,ghost
+RB10,Rookery Bay,26.027,-81.744,living_mangrove,Rhizophora mangle,Rookery Bay living mangroves,10,2022-03-19,2022-03-19,healthy
+SRS5,Gunboat Island / SRS5,25.364,-81.077,intermediate_mangrove,Rhizophora mangle,Intermediate stature mangrove forest in Shark River Slough,153,2022-10-19,2023-03-13,healthy
+SRS6,Lower Shark / SRS6,25.365,-81.078,tall_mangrove,Rhizophora mangle,Large stature mangrove forest in Shark River Slough,146,2022-03-22,2023-03-11,healthy
+Cypress Boardwalk,,-9999,-9999,,,,3,2022-10-26,2022-10-26,
+Long Pine Key,,-9999,-9999,,,,3,2022-10-26,2022-10-26,
+Mahogany Hammock,,-9999,-9999,,,,3,2022-10-26,2022-10-26,
