@@ -265,7 +265,10 @@ Our ghost-forest forcing is on-site vertical exchange measured five to six years
 | S16 | Closure residual analysis | [PLACEHOLDER — to build] |
 | S17 | Sampling design relative to tide and standing water. Each chamber measurement in the analysed campaigns (October 2022, March 2023), by site and campaign, coloured by component. At the tidal intact sites (SRS5, SRS6) the line is the FCE LTER hourly water level above the soil surface (knb-lter-fce.1168) and each measurement sits at the logger level at its start time; triangles are the dissolved-gas samples behind the October 2022 intact water fluxes. At BL60, CP40 and FLM30 (no logger) measurements sit at the water depth recorded at the chamber; open circles mark measurements without a recorded depth (plotted at −2 cm). Times are local. | sampling_design (`code/08_figures/figS_sampling_design.R`) |
 
-_[If microbial/metagenomic data are added, they may appear as an added Fig. 5 panel or as a new supplementary figure; see the Results and Discussion placeholders.]_
+| S18 | [PLACEHOLDER] Sediment metagenomes: methanogen and methane-oxidiser families and marker genes (mcrA, mttB, pmoA/mmoX) by site and depth, normalised by sediment mass and organic carbon | Peccia lab |
+| S19 | [PLACEHOLDER] CARAFE airborne fluxes for intact and ghost mangrove, five deployments (April 2022 to July 2024) | Delaria et al. two-class disaggregation |
+
+_[Microbial results may instead appear as an added Fig. 5 panel; see the Results and Discussion placeholders.]_
 
 ---
 

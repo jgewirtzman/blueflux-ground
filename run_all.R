@@ -49,6 +49,7 @@ steps <- c(
   "code/07_upscaling/06_carbon_budget.R",
   "code/07_upscaling/07_budget_sources.R",
   "code/07_upscaling/08_supplementary_analyses.R",
+  "code/07_upscaling/09_regional_scaling.R",
   # 08 figures: display items, then copy into output/figures/main and SI
   "code/08_figures/fig2_component_boot.R",          # Fig 2, Fig S4
   "code/08_figures/fig3_stem_height.R",             # Fig 3
@@ -68,7 +69,8 @@ steps <- c(
   "code/08_figures/site_characterization_figures.R",# Figs S11, S14
   "code/08_figures/plot_site_closure.R",            # supplementary per-site closure
   "code/08_figures/plot_water_positions.R",         # supplementary water positions
-  "code/08_figures/figS_sampling_design.R",        # sampling design vs tide (candidate SI figure)
+  "code/08_figures/figS_sampling_design.R",
+  "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)        # sampling design vs tide (candidate SI figure)
   "code/08_figures/collect_figures.R",
   "code/09_archive/build_ornl_daac_package.R"     # DRAFT ORNL DAAC package (measured fluxes)
 )
