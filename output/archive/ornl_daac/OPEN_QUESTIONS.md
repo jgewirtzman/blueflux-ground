@@ -9,6 +9,10 @@ Resolved 2026-10-02: no tree IDs (not tagged); field clocks were local civil tim
 5. **Leaf area basis**: 15 leaves x literature mean leaf area (Lin & Sternberg 1992), not measured. Fine as is?
 6. **Raw analyzer records** (~1 GB) as a second granule?
 7. **Authors, funding, permits**: see the proposal below.
+8. **Non-mangrove comparison sites.** Cypress Boardwalk stems (*Taxodium*) were measured from the water surface over 34 cm of standing water, so 'upland' is wrong for it; the package now says 'non-mangrove comparison sites'. What habitat label should each of Cypress Boardwalk, Long Pine Key and Mahogany Hammock carry?
+9. **BL60 Mar_23_26/27/28** (2023-03-19): component stem, but status recorded as 'CWD' (two COPE, one RHMA; 9-12.5 cm diameter, 30-60 cm height). Standing dead stems, or downed wood?
+10. **Negative prop-root heights**: Oct_22_80 (FLM30), Oct_22_119/125/130/137 (SRS5) were entered as stems at -25 or -50 cm 'from the water surface' with 3-20 cm water, and are treated as roots with height above sediment 0. What does the negative height mean (distance down a prop root from the stem? below the water line?)
+11. **Downed wood without status**: 7 downed-wood closures have no tissue status (Mar_23_199-202, 207 at SRS5; Mar_23_150-151 at CP40). Should they be labelled dead?
 
 ## Proposed dataset metadata (approve or correct)
 

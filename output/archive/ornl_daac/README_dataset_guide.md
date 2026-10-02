@@ -16,14 +16,14 @@ Per-measurement methane (CH4) and carbon dioxide (CO2) fluxes measured with clos
 
 ## 2. Data Characteristics
 
-- **Spatial coverage:** 11 sites, 25.141 to 26.027 N, 80.632 to 81.744 W. Coordinates are site level (no per-tree positions); SRS5 and SRS6 from FCE LTER, others from the BlueFlux site list (`coord_source`). Three single-visit upland comparison sites (Cypress Boardwalk, Long Pine Key, Mahogany Hammock) have no coordinates yet.
+- **Spatial coverage:** 11 sites, 25.141 to 26.027 N, 80.632 to 81.744 W. Coordinates are site level (no per-tree positions); SRS5 and SRS6 from FCE LTER, others from the BlueFlux site list (`coord_source`). Three single-visit non-mangrove comparison sites (Cypress Boardwalk, Long Pine Key, Mahogany Hammock; October 2022, 3 stem closures each) have no coordinates yet.
 - **Temporal coverage:** 2022-03-18 to 2023-03-20; campaigns March 2022, October 2022, March 2023.
 - **Temporal resolution:** one value per chamber closure (fit windows typically 3-3.5 min) or per floating-chamber placement (median ~6.5 min).
 - **Records:** 763 (downed_wood 27, leaf 19, prop_root 65, soil 118, stem 487, water_surface 47).
 - **By site:** BL60 140, CP40 105, Cypress Boardwalk 3, FLM30 153, Long Pine Key 3, MI 30, Mahogany Hammock 3, RB10 10, SE1 17, SRS5 153, SRS6 146.
 - **Times:** field clocks were local civil time (America/New_York; EDT from 2023-03-12, inside the March 2023 campaign). `utc_offset` and the UTC columns account for this.
 - **Trees:** trees were not tagged, so there is no tree ID. Within a campaign no stem position was remeasured; some trees may have been resampled in a later campaign, but they cannot be linked.
-- **Scope:** all valid fluxes at all sites and campaigns (core, context and upland comparison sites; March 2022 included).
+- **Scope:** all valid fluxes at all sites and campaigns (core, context and non-mangrove comparison sites; March 2022 included).
 - **Sign convention:** positive = emission to the atmosphere. Units: CH4 nmol m-2 s-1; CO2 umol m-2 s-1, per the surface given in `area_basis`.
 - **Missing values:** -9999.
 
