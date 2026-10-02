@@ -12,8 +12,7 @@ baseline in `output/qa/baseline/`. The supporting tables are:
 | `output/qa/ebullition_vs_legacy_*.csv` | Water placements, legacy vs stage 04 |
 | `output/qa/scripted_windows_review.{csv,pdf}` | 92 tree closures on scripted windows that differ from legacy by > 20 % |
 
-**Manuscript prose has not been edited.** Section 4 lists the proposed edits
-for approval.
+Section 4 lists the manuscript edits (approved and applied).
 
 ---
 
@@ -176,7 +175,9 @@ Below-detection fluxes keep their measured value in the analysis set.
 
 ---
 
-## 4. Proposed manuscript edits (for approval; nothing edited)
+## 4. Manuscript edits (approved and applied 2026-10-02)
+
+Applied to the draft and SI with values from the current outputs. Rows marked with the earlier 50/50-tide values (intact CH4 2.0 g, composition 67/23/10 %, plot means, extrapolation) were superseded by the measured-flooding values: intact CH4 0.9 g (roots 44 %, water 35 %, soil 20 %, stems 1.5 %), intact plots 0.9–4.7 mg m⁻² d⁻¹, extrapolation ghost 29.3 vs 30.5 and intact 2.43 vs 2.43, Abstract methane share ~2 % → ~36 % (GWP20).
 
 Line numbers refer to `manuscript/drafts/manuscript_NCC_draft.md` (D) and
 `manuscript/SI/manuscript_NCC_SI.md` (SI). Status key:
