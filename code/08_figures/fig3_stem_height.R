@@ -27,7 +27,7 @@ fig4a <- stem_height %>%
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
   scale_fill_manual(values = disturbance_colors, name = "Disturbance\nLevel") +
-  labs(y = "Height Category") +
+  labs(y = "Height above water (or sediment)") +
   theme_pub() +
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
         axis.ticks.x = element_blank(), legend.position = "right",
@@ -413,7 +413,7 @@ fig9b <- emm_byheight_df %>%
   scale_x_continuous(
     name = expression(Estimated~Marginal~Mean~CH[4]~Flux~(asinh~scale))
   ) +
-  labs(y = "Measurement Height", tag = "(b)",
+  labs(y = "Height above water (or sediment)", tag = "(b)",
        subtitle = "Species x height interaction; shared sites only") +
   theme_pub(base_size = 10) +
   theme(
@@ -449,7 +449,7 @@ fig10a <- stem_height %>%
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
   scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-  labs(y = "Height Category", tag = "(a)") +
+  labs(y = "Height above water (or sediment)", tag = "(a)") +
   theme_pub(base_size = 9) +
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
@@ -606,7 +606,7 @@ fig10d <- emm_d_df %>%
     breaks = emm_breaks, labels = emm_labels,
     name = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))
   ) +
-  labs(y = "Measurement Height", tag = "(d)") +
+  labs(y = "Height above water (or sediment)", tag = "(d)") +
   guides(color = guide_legend(ncol = 3, byrow = TRUE,
                               override.aes = list(size = 3)),
          shape = guide_legend(ncol = 3, byrow = TRUE,
@@ -656,7 +656,7 @@ fig10b_a <- stem_height_co2 %>%
                      breaks = co2_brk, labels = asinh_labels) +
   scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
   scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-  labs(y = "Height Category", tag = "(a)") +
+  labs(y = "Height above water (or sediment)", tag = "(a)") +
   theme_pub(base_size = 9) +
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
@@ -781,7 +781,7 @@ fig10b_d <- emm_d_co2_df %>%
     breaks = emm_co2_breaks, labels = emm_co2_labels,
     name = expression(CO[2]~Flux~(mu*mol~m^{-2}~s^{-1}))
   ) +
-  labs(y = "Measurement Height", tag = "(d)") +
+  labs(y = "Height above water (or sediment)", tag = "(d)") +
   guides(color = guide_legend(ncol = 3, byrow = TRUE,
                               override.aes = list(size = 3)),
          shape = guide_legend(ncol = 3, byrow = TRUE,
@@ -824,7 +824,7 @@ ch4_ridges <- stem_height %>%
                      breaks = asinh_brk_pos, labels = asinh_labels) +
   scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
   scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-  labs(y = "Height Category") +
+  labs(y = "Height above water (or sediment)") +
   theme_pub(base_size = 9) +
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
@@ -867,7 +867,7 @@ ch4_emm <- emm_d_df %>%
   scale_shape_manual(values = spst_shapes, name = NULL) +
   scale_x_continuous(breaks = emm_breaks, labels = emm_labels,
                      name = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))) +
-  labs(y = "Measurement Height") +
+  labs(y = "Height above water (or sediment)") +
   theme_pub(base_size = 9) +
   theme(plot.margin = margin(0, 5, 5, 5)) +
   no_legend
