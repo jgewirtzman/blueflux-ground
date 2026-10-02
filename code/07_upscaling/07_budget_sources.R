@@ -127,6 +127,9 @@ for (klass in c("mangrove_forest","ghost_forest")) {
 # =============================================================================
 # Lateral export — multiple literature estimates per term (Healthy only)
 # =============================================================================
+# NOTE (2026-10-02): Reithmaier 2020 Eulerian fluxes are normalized to 8.7 km2 of
+# inundated mangrove (bracketed x0.5-x2), Lagrangian to 15.9 km2; the carbon budget
+# (06_carbon_budget.R) uses the Zhao 2021 synthesis as central. Earlier note:
 # All Reithmaier 2020 lateral fluxes are normalized to the 15.9 km2 tidally
 # inundated MANGROVE area (per Ho 2017) — SAME basis as our per-ground budget,
 # so directly usable. His DIC spans Eulerian 622 (mangrove-dominated lower

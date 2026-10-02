@@ -50,26 +50,30 @@ CAMP     <- c("Oct 2022", "Mar 2023")   # campaigns behind the annual class mean
 #  the rest is exported to the ocean [= this term].) Ho's SF6 evasion was revised
 #  DOWN from 171-232 (Ho 2014) to 99-105 mmol/m2/d (Ho 2016/17), now concordant
 #  with Reithmaier's 92 -- so no factor-of-2 evasion discrepancy.
-# NORMALIZATION (RESOLVED, read Reithmaier 2020 methods): Reithmaier's lateral
-#  fluxes ARE normalized to the 15.9 km2 tidally-inundated MANGROVE area (per Ho
-#  2017) = SAME basis as our per-ground budget. So DIC 622 IS directly usable;
-#  the 6-8x gap vs Ho is METHOD (Eulerian/radon-222 vs Ho's flooding-fraction-
-#  limited longitudinal flux, an explicit lower bound), not denominator.
-# DECISION: adopt Reithmaier EULERIAN as central for the dissolved terms (he
-#  argues it best represents the mangrove-dominated area). This closes the budget
-#  non-circularly (basis resolved from methods; residual independently pointed
-#  here first). CI spans his reported method range. Conservative (Zhao/Ho) values
-#  retained as the low-sensitivity scenario (section 4b).
+# LATERAL SCENARIOS (2026-10-02, literature review): three coherent single-study
+#  scenarios replace the earlier summed min/max envelope and the Reithmaier-
+#  Eulerian central, which overcloses the budget (lateral should be about NEE -
+#  wood increment - burial, ~700 g C m-2 yr-1, Troxler 2013 upper bound 784).
+#   low     : Lagrangian SF6/3He tracer dissolved export, Ho et al. 2017 (83-107,
+#             a stated minimum; Volta 2020, Reithmaier 2020 Lagrangian agree) ~90
+#   central : Zhao et al. 2021 SRS synthesis: DIC 145 (61-229; Ho/Reithmaier/
+#             Volta), DOC 56 (Romigh 2006 SRS-6 flume)
+#   high    : Reithmaier 2020 Eulerian (one 29-h deployment, Nov 2018; area
+#             normalisation bracketed x0.5-x2 by the authors): DIC 622 + DOC 171
+#  Litter POC (Zhao 2021, 2001-2018) is the same in all three: mean of our two
+#  intact sites, SRS-5 84 and SRS-6 205 = 145. Alkalinity (durable fraction of
+#  DIC): TA/DIC 0.76 (Lagrangian) and 0.68 (Eulerian) (Reithmaier 2020); 0.72 for
+#  the central DIC. Wood increment: mean of SRS-5 (65) and SRS-6 (197) = 131.
 # see [[carbon-budget-lit-values]] for full provenance / verification votes.
 lit <- tibble::tribble(
   ~class,    ~term,              ~value, ~lo,   ~hi,   ~citation,
   # --- HEALTHY (FCE tall riverine mangrove; Shark River / SRS) ---------------
-  "Healthy", "Lateral DIC",       622,   311,  1244,   "Reithmaier 2020 Eulerian (142 mmol/m2/d, 15.9km2 mangrove area; range 71-284). Low bound: Zhao 2021 145 [61-229], Ho 2017 ~86 (flooding-limited lower bound)",
-  "Healthy", "Lateral DOC",       171,   88,    346,   "Reithmaier 2020 Eulerian (39 mmol/m2/d; range 20-79). Low bound: Romigh 2006 (56, SRS-6), Ho 2017 (8-10)",
-  "Healthy", "Lateral POC",       144,   71,    205,   "Zhao et al. 2021 (cyclone litter-POC, SRS-4/5/6 71-205; water-column POC ~0)",
+  "Healthy", "Lateral DIC",       145,   61,    229,   "Zhao et al. 2021 synthesis (Ho 2017, Reithmaier 2020, Volta 2020); scenarios: low Lagrangian ~81, high Reithmaier 2020 Eulerian 622",
+  "Healthy", "Lateral DOC",        56,   NA,     NA,   "Romigh et al. 2006 (SRS-6 flume, 2003); scenarios: low Lagrangian ~9, high Reithmaier 2020 Eulerian 171",
+  "Healthy", "Lateral POC",       145,   84,    205,   "Zhao et al. 2021 litter POC 2001-2018: mean of SRS-5 (84) and SRS-6 (205)",
   "Healthy", "Lateral CH4 (aq)",    0.35, 0.22,  0.48, "Yau et al. 2024 (analog, non-FCE; porewater CH4 strongly oxidized before export)",
   "Healthy", "Soil C burial",     123,   69,    157,   "Zhao et al. 2021 / Breithaupt et al. (SRS-4/5/6 69-157; whole-estuary ~123)",
-  "Healthy", "dBiomass C",        200,   65,    500,   "Castaneda-Moya et al. 2013 wood NPP, repeat census (SRS-6=197, SRS-4=161, SRS-5=65 gC/m2/yr @ CF0.45); Chen & Twilley 1999 high end ~480-540. Aboveground wood increment; coarse-root adds ~30-50%",
+  "Healthy", "dBiomass C",        131,   65,    197,   "Castaneda-Moya et al. 2013 wood NPP, repeat census (SRS-6=197, SRS-4=161, SRS-5=65 gC/m2/yr @ CF0.45); Chen & Twilley 1999 high end ~480-540. Aboveground wood increment; coarse-root adds ~30-50%",
   # --- GHOST (dieback / relict; ghost-specific values unquantified) ----------
   "Ghost",   "Lateral DIC",        NA,    NA,    NA,    "no ghost-specific value",
   "Ghost",   "Lateral DOC",        NA,    NA,    NA,    "no ghost-specific value",
@@ -166,17 +170,25 @@ summ <- budget %>%
 # (Zhao DIC 145, Romigh DOC 56) to show that closure hinges on the DIC method
 # (Eulerian vs Lagrangian/longitudinal). Both are on the SAME mangrove-area basis.
 lat_scen <- tibble::tribble(
-  ~scenario,                 ~lateral_total,
-  "low (Zhao/Ho conserv.)",  145 + 56 + 144 + 0.35,   # conservative lower bounds
-  "central (Reith. Euler.)", 622 + 171 + 144 + 0.35    # adopted central -> closes
+  ~scenario,                                   ~lateral_total,             ~TA,
+  "low (Lagrangian tracer, Ho 2017)",          90 + 145 + 0.35,            0.76 * 0.9 * 90,
+  "central (Zhao 2021 SRS synthesis)",         145 + 56 + 145 + 0.35,      0.72 * 145,
+  "high (Reithmaier 2020 Eulerian)",           622 + 171 + 145 + 0.35,     425
 )
 scen <- summ %>% filter(class == "Healthy") %>%
   transmute(flux_measured, storage_indep) %>%
   tidyr::crossing(lat_scen) %>%
-  transmute(class = "Healthy", scenario, lateral_total = round(lateral_total, 0),
+  transmute(class = "Healthy", scenario, lateral_total = round(lateral_total, 0), TA = round(TA, 0),
             NECB_full     = round(-(flux_measured + lateral_total), 0),
             storage_indep = round(storage_indep, 0),
             closure_resid = round(-(flux_measured + lateral_total) - storage_indep, 0))
+
+# Healthy NECB range from the low / high lateral scenarios (not a summed envelope)
+summ <- summ %>% mutate(
+  flux_lateral_lo = ifelse(class == "Healthy", min(lat_scen$lateral_total), flux_lateral_lo),
+  flux_lateral_hi = ifelse(class == "Healthy", max(lat_scen$lateral_total), flux_lateral_hi),
+  NECB_full_lo = -(flux_measured + flux_lateral_hi), NECB_full_hi = -(flux_measured + flux_lateral_lo),
+  lateral_expected_from_closure = ifelse(class == "Healthy", -flux_measured - storage_indep, NA))   # NEE - wood - burial
 
 # =============================================================================
 # (4c) RADIATIVE-FORCING FRAMINGS: what the CO2 term is compared with
@@ -193,22 +205,24 @@ scen <- summ %>% filter(class == "Healthy") %>%
 # class is reported on the vertical framing alone.
 # GWP: 27.9 (100 yr), 81.2 (20 yr); g CO2-eq m-2 yr-1; + = warming.
 C_to_CO2 <- 44.01 / 12.011; C_to_CH4 <- 16.04 / 12.011
-TALK <- c(central = 425, lo = 210, hi = 846)
 h <- summ %>% filter(class == "Healthy")
+sc <- function(k) lat_scen[grepl(k, lat_scen$scenario), ]
+NECB_s <- function(k) -(h$flux_measured + sc(k)$lateral_total)    # NECB under a lateral scenario
 ch4_v <- meas$CH4vert_C[meas$class == "Healthy"] * C_to_CH4                     # g CH4
 ch4_l <- lit$value[lit$class == "Healthy" & lit$term == "Lateral CH4 (aq)"] * C_to_CH4
 frame <- function(name, co2_C, ch4_g, co2_C_lo = NA, co2_C_hi = NA) tibble(
   class = "Healthy", framing = name, CO2_gCO2 = co2_C * C_to_CO2, CH4_g = ch4_g,
   net100 = co2_C * C_to_CO2 + ch4_g * 27.9, net20 = co2_C * C_to_CO2 + ch4_g * 81.2,
   net100_lo = co2_C_lo * C_to_CO2 + ch4_g * 27.9, net100_hi = co2_C_hi * C_to_CO2 + ch4_g * 27.9,
+  net20_lo = co2_C_lo * C_to_CO2 + ch4_g * 81.2, net20_hi = co2_C_hi * C_to_CO2 + ch4_g * 81.2,
   ch4_pct100 = 100 * ch4_g * 27.9 / (abs(co2_C * C_to_CO2) + ch4_g * 27.9),
   ch4_pct20  = 100 * ch4_g * 81.2 / (abs(co2_C * C_to_CO2) + ch4_g * 81.2))
 framings <- bind_rows(
   frame("vertical", h$flux_measured - meas$CH4vert_C[meas$class == "Healthy"], ch4_v),
-  frame("necb_all_export", -h$NECB_full - meas$CH4vert_C[meas$class == "Healthy"] - lit$value[lit$class == "Healthy" & lit$term == "Lateral CH4 (aq)"],
-        ch4_v + ch4_l, -h$NECB_full_hi, -h$NECB_full_lo),
-  frame("necb_alk_retained", -(h$NECB_full + TALK[["central"]]) - meas$CH4vert_C[meas$class == "Healthy"],
-        ch4_v + ch4_l, -(h$NECB_full_hi + TALK[["hi"]]), -(h$NECB_full_lo + TALK[["lo"]])),
+  frame("necb_all_export", -NECB_s("central") - meas$CH4vert_C[meas$class == "Healthy"] - lit$value[lit$class == "Healthy" & lit$term == "Lateral CH4 (aq)"],
+        ch4_v + ch4_l, -NECB_s("low"), -NECB_s("high")),
+  frame("necb_alk_retained", -(NECB_s("central") + sc("central")$TA) - meas$CH4vert_C[meas$class == "Healthy"],
+        ch4_v + ch4_l, -(NECB_s("low") + sc("low")$TA), -(NECB_s("high") + sc("high")$TA)),
   frame("storage", -h$storage_indep, ch4_v),
   { g <- meas %>% filter(class == "Ghost")
     frame("vertical", g$NEE_C, g$CH4vert_C * C_to_CH4) %>% mutate(class = "Ghost") })
@@ -220,6 +234,12 @@ dir.create("output/upscaling", showWarnings = FALSE, recursive = TRUE)
 write.csv(budget, "output/upscaling/carbon_budget_full.csv",      row.names = FALSE)
 write.csv(summ,   "output/upscaling/carbon_budget_summary.csv",   row.names = FALSE)
 write.csv(scen,   "output/upscaling/carbon_budget_scenarios.csv", row.names = FALSE)
+# GWP* (Smith et al. 2021): intact = steady emission (0.28 x GWP100 x E);
+# ghost = first 20 yr after conversion, baseline = intact rate.
+ch4_int_g <- ch4_v
+framings <- framings %>% mutate(
+  netstar = CO2_gCO2 + ifelse(class == "Ghost", 27.9 * (4.53 * CH4_g - 4.25 * ch4_int_g), 27.9 * 0.28 * CH4_g),
+  ch4_pct_star = 100 * (netstar - CO2_gCO2) / (abs(CO2_gCO2) + (netstar - CO2_gCO2)))
 write.csv(framings, "output/upscaling/forcing_framings.csv", row.names = FALSE)
 cat("\nForcing framings (g CO2-eq m-2 yr-1):\n"); print(as.data.frame(framings %>% mutate(across(where(is.numeric), ~ round(.x, 1)))))
 

@@ -101,32 +101,41 @@ cat("written closure CH4 + CO2 separately\n")
 
 ## ---- MERGED closure + forcing figure (revised Fig 6) ----
 suppressMessages(library(patchwork))
-f<-read.csv("output/upscaling/net_forcing_by_class.csv") %>%
-  mutate(class=factor(recode(disturbance_level,healthy="Healthy",ghost="Ghost"),levels=c("Healthy","Ghost")))
+# Forcing by metric (GWP20 first: headline), for intact (vertical exchange),
+# intact as NECB with exported alkalinity retained (lateral scenarios: Zhao 2021
+# central, Lagrangian low / Eulerian high as the range), and ghost (vertical).
+fr<-read.csv("output/upscaling/forcing_framings.csv") %>%
+  filter(framing=="vertical" | (class=="Healthy" & framing=="necb_alk_retained")) %>%
+  mutate(bar=factor(case_when(class=="Ghost"~"Ghost", framing=="vertical"~"Intact", TRUE~"Intact\n(NECB)"),
+                    levels=c("Intact","Intact\n(NECB)","Ghost")))
+mets<-c("GWP20","GWP100","GWP*")
 flong<-bind_rows(
-  f %>% transmute(class,horizon="GWP100",CO2=co2_g_yr,CH4=ch4_co2eq100),
-  f %>% transmute(class,horizon="GWP20", CO2=co2_g_yr,CH4=ch4_co2eq20)) %>%
-  tidyr::pivot_longer(c(CO2,CH4),names_to="gas",values_to="val") %>%
-  mutate(horizon=factor(horizon,levels=c("GWP100","GWP20")))
-fnet<-bind_rows(f %>% transmute(class,horizon="GWP100",net=net100),
-                f %>% transmute(class,horizon="GWP20",net=net20)) %>%
-  mutate(horizon=factor(horizon,levels=c("GWP100","GWP20")))
+  fr %>% transmute(bar,horizon="GWP20", CO2=CO2_gCO2,CH4=net20-CO2_gCO2,net=net20,lo=net20_lo,hi=net20_hi),
+  fr %>% transmute(bar,horizon="GWP100",CO2=CO2_gCO2,CH4=net100-CO2_gCO2,net=net100,lo=net100_lo,hi=net100_hi),
+  fr %>% transmute(bar,horizon="GWP*",  CO2=CO2_gCO2,CH4=netstar-CO2_gCO2,net=netstar,lo=NA,hi=NA)) %>%
+  mutate(horizon=factor(horizon,levels=mets))
+fnet<-flong %>% select(bar,horizon,net,lo,hi)
+flong<-flong %>% select(-net,-lo,-hi) %>% tidyr::pivot_longer(c(CO2,CH4),names_to="gas",values_to="val")
 th6<-theme_bw(base_size=13)+theme(legend.position="bottom",panel.grid.minor=element_blank(),
       strip.text=element_text(face="bold"),plot.tag=element_text(face="bold"))
 p_net<-ggplot()+geom_hline(yintercept=0,color="grey55",linewidth=.3)+
-  geom_col(data=flong,aes(class,val,fill=gas),width=.6)+
-  geom_point(data=fnet,aes(class,net),shape=23,size=3,fill="white",stroke=.8)+
+  geom_col(data=flong,aes(bar,val,fill=gas),width=.6)+
+  geom_errorbar(data=fnet %>% filter(!is.na(lo)),aes(bar,ymin=lo,ymax=hi),width=.15,linewidth=.4)+
+  geom_point(data=fnet,aes(bar,net),shape=23,size=3,fill="white",stroke=.8)+
   facet_wrap(~horizon)+scale_fill_manual(values=c(CO2="#2166ac",CH4="#d6604d"),name=NULL)+
-  labs(x=NULL,y=expression("Forcing (g "*CO[2]*"-eq "*m^-2*" "*yr^-1*")"),tag="c")+th6
-share<-bind_rows(f %>% transmute(class,horizon="GWP100",pct=ch4_pct100),
-                 f %>% transmute(class,horizon="GWP20",pct=ch4_pct20)) %>%
-  mutate(horizon=factor(horizon,levels=c("GWP100","GWP20")))
-p_share<-ggplot(share,aes(class,pct,fill=horizon))+
-  geom_col(position=position_dodge(.7),width=.6,color="grey30",linewidth=.2)+
-  geom_text(aes(label=paste0(round(pct),"%")),position=position_dodge(.7),vjust=-.4,size=3.5)+
-  scale_fill_manual(values=c(GWP100="#bdbdbd",GWP20="#636363"),name=NULL)+
+  labs(x=NULL,y=expression("Forcing (g "*CO[2]*"-eq "*m^-2*" "*yr^-1*")"),tag="c",
+       caption="Intact (NECB): net ecosystem carbon balance with exported alkalinity retained; bar = lateral range (low/high scenarios).\nGWP*: intact = steady emission; ghost = first 20 years after conversion (intact rate as baseline).")+th6+
+  theme(plot.caption=element_text(size=8,hjust=0))
+share<-bind_rows(fr %>% transmute(bar,horizon="GWP20",pct=ch4_pct20),
+                 fr %>% transmute(bar,horizon="GWP100",pct=ch4_pct100),
+                 fr %>% transmute(bar,horizon="GWP*",pct=ch4_pct_star)) %>%
+  mutate(horizon=factor(horizon,levels=mets))
+p_share<-ggplot(share,aes(bar,pct,fill=horizon))+
+  geom_col(position=position_dodge(.75),width=.7,color="grey30",linewidth=.2)+
+  geom_text(aes(label=paste0(round(pct),"%")),position=position_dodge(.75),vjust=-.4,size=3.2)+
+  scale_fill_manual(values=c(GWP20="#252525",GWP100="#969696","GWP*"="#d9d9d9"),name=NULL)+
   labs(x=NULL,y=expression("CH"[4]*" share of forcing (%)"),tag="d")+th6+
-  coord_cartesian(ylim=c(0,46))
+  coord_cartesian(ylim=c(0,50))
 pc2<-pc+labs(tag="a"); po2<-po+labs(tag="b")
 merged<-(pc2|po2)/(p_net|p_share)+plot_layout(heights=c(1,0.95))
 ggsave("output/figures/presentation/FigClosureForcing.png",merged,width=12,height=10,dpi=200)

@@ -60,7 +60,13 @@ out[[length(out) + 1]] <- data.frame(choice = "Monte Carlo 95 % interval", setti
   intact_CH4_g = NA, intact_NEE_gC = NA, intact_net100 = sprintf("%.0f to %.0f", mc$net100_lo[mc$class == "healthy"], mc$net100_hi[mc$class == "healthy"]),
   ghost_net100 = sprintf("%.0f to %.0f", mc$net100_lo[mc$class == "ghost"], mc$net100_hi[mc$class == "ghost"]), switch_net100 = NA,
   basis = "chamber fluxes, TLS areas, CWD area, leaf term, tower GPP, tidal phase")
-res <- bind_rows(lapply(out, function(d) mutate(d, across(c(intact_net100, ghost_net100), as.character))))
+gch4 <- function(r) if (grepl("24 h", r$choice)) hv("ghost")$ch4_g_yr_24h else hv("ghost")$ch4_g_yr
+out <- lapply(out, function(d) if (d$choice == "Monte Carlo 95 % interval") d else
+  mutate(d, intact_net20 = intact_net100 + (81.2 - 27.9) * intact_CH4_g, ghost_net20 = ghost_net100 + (81.2 - 27.9) * gch4(d),
+         switch_net20 = ghost_net20 - intact_net20))
+mc20 <- sprintf("%.0f to %.0f", mc$net20_lo, mc$net20_hi)
+out[[length(out)]] <- out[[length(out)]] %>% mutate(intact_net20 = mc20[mc$class == "healthy"], ghost_net20 = mc20[mc$class == "ghost"], switch_net20 = NA)
+res <- bind_rows(lapply(out, function(d) mutate(d, across(c(intact_net100, ghost_net100, intact_net20, ghost_net20), as.character))))
 write.csv(res, "output/qa/sensitivity_summary.csv", row.names = FALSE)
 print(res %>% mutate(across(c(intact_CH4_g), ~ round(.x, 2)), intact_NEE_gC = round(intact_NEE_gC),
                      switch_net100 = round(switch_net100)) %>% select(-basis), row.names = FALSE)
