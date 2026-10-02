@@ -1,0 +1,5 @@
+"site","scan_dates","n_scans","w_scan_cm","source"
+"SRS5","2022-10-21",36,0.74,"FCE logger at scan hours + plot mean floor height"
+"SRS6","2022-10-15;2022-10-18",49,6.76,"FCE logger at scan hours + plot mean floor height"
+"CP40","2023-03-10",14,10,"median of our March 2023 depth readings (proxy)"
+"FLM30","2023-03-12",10,2,"median of our March 2023 depth readings (proxy)"

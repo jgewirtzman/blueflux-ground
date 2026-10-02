@@ -17,7 +17,10 @@
 #     plot (01b_flood_fraction.R): depth = max(0, level + floor_mu).
 #   non-tidal sites (CP40, FLM30): the water depths we recorded at stem, root
 #     and downed-wood positions (zeros included), one sample per reading.
-# TLS woody surface is in 0.5 m bins above the ground (z0 = bin lower edge).
+# TLS woody surface is in 0.5 m bins above the TLS ground (z0 = bin lower
+# edge). Where water stood at scan time the TLS ground is the water surface, so
+# depths are taken relative to the scan-time level: w - w_scan
+# (01c_tls_datum.R; TLS_DATUM=ground treats the TLS ground as the sediment).
 # For a bin [z0, z1] and depth w the exposed part is [max(z0, w), z1]; with the
 # fitted profile f(h) = exp(a + b h), h = z - w, the mean flux per unit bark
 # area over the bin is exactly integrated and averaged over the depth samples.
@@ -27,18 +30,22 @@ depth_samples_setup <- function(flux, project_dir = ".", max_n = 60) {
   wl <- read.csv(file.path(project_dir, "data", "environmental", "water_level", "FCE_LTER_1168_water_levels.csv"))
   wl <- wl[wl$SITENAME %in% c("SRS5", "SRS6") & wl$WaterLevel > -9000, ]
   camp_ym <- c("Oct 2022" = "2022-10", "Mar 2023" = "2023-03", "Mar 2022" = "2022-03")
+  dat <- file.path(project_dir, "output", "upscaling", "tls_datum_offset.csv")
+  w_scan <- if (Sys.getenv("TLS_DATUM", "water") == "ground" || !file.exists(dat)) list() else {
+    d <- read.csv(dat); as.list(setNames(d$w_scan_cm, d$site)) }
+  off <- function(site) if (is.null(w_scan[[site]])) 0 else w_scan[[site]]
   thin <- function(x) if (length(x) > max_n) unname(quantile(x, (seq_len(max_n) - 0.5) / max_n, type = 1)) else x
   function(site, camp) {
     camp <- as.character(camp)
     if (site %in% c("SRS5", "SRS6")) {
       mu <- ff$floor_mu_cm[ff$site == site][1]
       h <- wl$WaterLevel[wl$SITENAME == site & substr(wl$Date, 1, 7) == camp_ym[[camp]]]
-      return(thin(pmax(0, h + mu)) / 100)
+      return((thin(pmax(0, h + mu)) - off(site)) / 100)
     }
     r <- flux$water_depth[flux$plot == site & as.character(flux$campaign) == camp &
                             flux$component %in% c("stem", "root", "cwd") & !is.na(flux$water_depth)]
-    if (!length(r)) return(0)
-    thin(pmax(0, r)) / 100
+    if (!length(r)) return(-off(site) / 100)
+    (thin(pmax(0, r)) - off(site)) / 100
   }
 }
 
