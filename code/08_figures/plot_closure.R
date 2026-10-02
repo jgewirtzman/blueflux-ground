@@ -49,7 +49,15 @@ co2bu <- comp %>% left_join(gpp,by=c("campaign","disturbance_level")) %>%
 co2_long <- co2bu %>% transmute(campaign,class,Soil=soil,Water=water,Root=root,Stem=stem,CWD=cwd,Leaf=leaf,GPP=-GPP) %>%
   pivot_longer(-c(campaign,class),names_to="component",values_to="value") %>%
   mutate(method="Bottom-up",gas="CO2 (umol m-2 s-1)")
-co2_net <- co2bu %>% transmute(campaign,class,method="Bottom-up",gas="CO2 (umol m-2 s-1)",total=NEE,lo=NA,hi=NA)
+mcco2 <- read.csv("output/upscaling/mc_CO2_forcing.csv") %>%
+  transmute(campaign,class=recode(class,healthy="Healthy",ghost="Ghost"),lo=nee_lo,hi=nee_hi)
+co2_net <- co2bu %>% transmute(campaign,class,method="Bottom-up",gas="CO2 (umol m-2 s-1)",total=NEE) %>%
+  left_join(mcco2,by=c("campaign","class"))
+## ---- Tower NEE (US-Skr, intact): campaign month, 95 % CI over days ----
+tw <- read.csv("output/gpp/US-Skr_campaign_fluxes.csv") %>% filter(gas=="NEE") %>%
+  mutate(campaign=case_when(year==2022 & month==10 ~ "Oct 2022", year==2023 & month==3 ~ "Mar 2023")) %>%
+  filter(!is.na(campaign)) %>%
+  transmute(campaign,class="Healthy",total=mean,lo,hi,method="Tower",gas="CO2 (umol m-2 s-1)",component="Tower")
 
 ## ---- CARAFE CO2 (daily) ----
 tdco <- read.csv("data/carafe_topdown/delaria_CO2_daily_converted.csv") %>%
@@ -61,16 +69,16 @@ tdco2 <- bind_rows(
   mutate(method="CARAFE",gas="CO2 (umol m-2 s-1)",lo=total-se,hi=total+se,component="CARAFE")
 
 ## ---- assemble & plot ----
-lev_comp <- c("Water","Soil","Root","Stem","CWD","Leaf","GPP","CARAFE")
+lev_comp <- c("Water","Soil","Root","Stem","CWD","Leaf","GPP","Tower","CARAFE")
 # established component palette (matches pub_component_budget / decomposition figs)
 pal <- c(Water="#4682B4",Soil="#8B4513",Root="#D2691E",Stem="#228B22",CWD="#808080",
-         Leaf="#E6AB02",GPP="#006837",CARAFE="grey40")
+         Leaf="#E6AB02",GPP="#006837",Tower="#7a5195",CARAFE="grey40")
 stack_long <- bind_rows(buc_long,co2_long) %>%
   mutate(component=factor(component,levels=lev_comp),
          campaign=factor(campaign,levels=CAMP))
-carafe <- bind_rows(td_ch4,tdco2) %>% mutate(campaign=factor(campaign,levels=CAMP))
+carafe <- bind_rows(td_ch4,tdco2,tw) %>% mutate(campaign=factor(campaign,levels=CAMP))
 net_bu <- bind_rows(buc_tot,co2_net) %>% mutate(campaign=factor(campaign,levels=CAMP))
-xof <- function(cl,meth) as.numeric(factor(cl,levels=c("Ghost","Healthy")))+ifelse(meth=="Bottom-up",-0.21,0.21)
+xof <- function(cl,meth) as.numeric(factor(cl,levels=c("Ghost","Healthy")))+c(`Bottom-up`=-0.28,Tower=0,CARAFE=0.28)[meth]
 stack_long$x <- xof(stack_long$class,stack_long$method)
 carafe$x     <- xof(carafe$class,carafe$method)
 net_bu$x     <- xof(net_bu$class,net_bu$method)
@@ -79,10 +87,11 @@ dir.create("data/carafe_topdown/figures",showWarnings=FALSE)
 mk_closure <- function(g, ylab){
   ggplot()+
     geom_hline(yintercept=0,color="grey55",linewidth=.3)+
-    geom_col(data=stack_long %>% filter(gas==g),aes(x,value,fill=component),width=0.38)+
-    geom_col(data=carafe %>% filter(gas==g),aes(x,total,fill=component),width=0.38,color="black",linewidth=.25)+
-    geom_errorbar(data=carafe %>% filter(gas==g),aes(x,ymin=lo,ymax=hi),width=.12,linewidth=.4)+
-    geom_errorbar(data=net_bu %>% filter(gas==g,!is.na(lo)),aes(x,ymin=lo,ymax=hi),width=.12,linewidth=.4)+
+    geom_col(data=stack_long %>% filter(gas==g),aes(x,value,fill=component),width=0.26)+
+    geom_col(data=carafe %>% filter(gas==g),aes(x,total,fill=component),width=0.26,color="black",linewidth=.25)+
+    geom_errorbar(data=carafe %>% filter(gas==g),aes(x,ymin=lo,ymax=hi),width=.09,linewidth=.4)+
+    geom_errorbar(data=net_bu %>% filter(gas==g,!is.na(lo)),aes(x,ymin=lo,ymax=hi),width=.09,linewidth=.4)+
+    geom_point(data=carafe %>% filter(gas==g),aes(x,total),shape=21,fill="white",size=2.2,stroke=.7)+
     geom_point(data=net_bu %>% filter(gas==g),aes(x,total),shape=23,fill="white",size=2.4,stroke=.7)+
     facet_wrap(~campaign,nrow=1)+
     scale_x_continuous(breaks=c(1,2),labels=c("Ghost","Healthy"))+

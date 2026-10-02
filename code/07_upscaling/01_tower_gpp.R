@@ -290,6 +290,30 @@ out_export <- out[, .(
 # effect per year x month so the slope reflects day-to-night and day-to-day
 # temperature swings within a month, not the seasonal cycle (which also carries
 # phenology, water level and salinity).
+# Campaign-month tower fluxes for the closure figure (intact class):
+#   NEE: gap-filled (this script), daily means -> campaign mean, 95 % CI by
+#   bootstrap over days.
+#   CH4: AmeriFlux BASE FCH4 + SCH4 (storage, where reported), u* > 0.2, no gap
+#   filling; daily means of the available half-hours -> campaign mean and 95 %
+#   bootstrap CI over days. Raw, not partitioned or gap-filled: an indicative
+#   third estimate only.
+ch4raw <- fread(infile, select = c("TIMESTAMP_START", "FCH4", "SCH4", "USTAR"))
+for (nm in c("FCH4", "SCH4", "USTAR")) set(ch4raw, which(ch4raw[[nm]] <= -9990), nm, NA_real_)
+ch4raw[, `:=`(day = as.Date(substr(as.character(TIMESTAMP_START), 1, 8), "%Y%m%d"),
+              F = FCH4 + fifelse(is.finite(SCH4), SCH4, 0))]
+ch4raw <- ch4raw[is.finite(F) & is.finite(USTAR) & USTAR > 0.2]
+boot_ci <- function(x, n = 2000) { x <- x[is.finite(x)]; if (length(x) < 3) return(c(mean = NA, lo = NA, hi = NA, n_days = length(x))); b <- replicate(n, mean(sample(x, replace = TRUE)))
+  c(mean = mean(x), lo = unname(quantile(b, 0.025)), hi = unname(quantile(b, 0.975)), n_days = length(x)) }
+camp_rows <- list()
+for (k in seq_len(nrow(target_months))) {
+  y <- target_months$year[k]; m <- target_months$month[k]
+  nee_d <- out_export[year == y & month == m, .(v = mean(NEE_gapfilled, na.rm = TRUE)), by = .(d = as.Date(timestamp_mid))]$v
+  ch4_d <- ch4raw[as.integer(format(day, "%Y")) == y & as.integer(format(day, "%m")) == m, .(v = mean(F), n = .N), by = day][n >= 12]$v
+  camp_rows[[k]] <- rbind(data.table(year = y, month = m, gas = "NEE", units = "umol m-2 s-1", t(boot_ci(nee_d))),
+                          data.table(year = y, month = m, gas = "CH4", units = "nmol m-2 s-1", t(boot_ci(ch4_d))))
+}
+fwrite(rbindlist(camp_rows), "output/gpp/US-Skr_campaign_fluxes.csv")
+
 q10file <- "output/gpp/US-Skr_Q10_within_month.csv"
 qn <- dt[is.finite(NEE_OBS) & is.finite(TA_1_1_1) & is.finite(SW_IN) & SW_IN < night_sw_threshold &
            NEE_OBS > 0 & NEE_OBS < 30 & is.finite(USTAR) & USTAR > 0.2]
