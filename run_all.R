@@ -89,7 +89,8 @@ qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, in
   "code/qa/net_forcing_attribution.R",
   "code/qa/scripted_windows_review.R",
   "code/qa/report_old_new.R",
-  "code/qa/budget_scenarios.R"
+  "code/qa/budget_scenarios.R",
+  "code/qa/flight_window_comparison.R"
 )
 
 args <- commandArgs(trailingOnly = TRUE)
