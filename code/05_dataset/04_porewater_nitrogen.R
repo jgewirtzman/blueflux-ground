@@ -7,9 +7,11 @@
 # porewater figures and results.
 #   - site and depth parsed from the sample ID ("surface" -> Surface; "C" at
 #     CP40 -> 0 cm, the only CP40 depth otherwise missing)
-#   - values <= 0 mg N/L are below detection: set to NA, flagged
-# NH4/NO3 are added for profiles and description; they are not added to the
-# porewater PCA (02_manuscript_results.R, publication_figures_soilprofile.R).
+#   - values <= 0 mg N/L are below detection: flagged, and entered as 0 in
+#     NH4_N_mgL / NO3_N_mgL (used in the profiles and the porewater PCA; the
+#     detection limit was not reported); raw values kept in *_raw
+#   - units as reported (mg N/L); whether the samples were diluted before the
+#     run is unconfirmed (the IC anions were run 1:10)
 # =============================================================================
 suppressMessages({library(dplyr); library(readr)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
@@ -20,7 +22,7 @@ n <- n %>%
          Site = sub(" .*$", "", id), dep = sub("^\\S+ ", "", id),
          Depth_cm = case_when(tolower(dep) == "surface" ~ "Surface", dep == "C" ~ "0", TRUE ~ dep),
          NO3_N_mgL_raw = `mg N-NO3/L`, NH4_N_mgL_raw = `mg N-NH4/L`,
-         NO3_N_mgL = ifelse(NO3_N_mgL_raw > 0, NO3_N_mgL_raw, NA), NH4_N_mgL = ifelse(NH4_N_mgL_raw > 0, NH4_N_mgL_raw, NA),
+         NO3_N_mgL = pmax(NO3_N_mgL_raw, 0), NH4_N_mgL = pmax(NH4_N_mgL_raw, 0),
          NO3_N_bdl = NO3_N_mgL_raw <= 0, NH4_N_bdl = NH4_N_mgL_raw <= 0,
          N_depth_note = ifelse(dep == "C", "sample labelled 'C', taken as 0 cm", NA)) %>%
   select(Site, Depth_cm, NO3_N_mgL, NH4_N_mgL, NO3_N_mgL_raw, NH4_N_mgL_raw, NO3_N_bdl, NH4_N_bdl, N_depth_note)

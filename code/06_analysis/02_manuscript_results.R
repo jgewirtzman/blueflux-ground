@@ -726,7 +726,7 @@ co2_cols <- names(pw)[grepl("CO2", names(pw))]
 pca_vars <- pw %>%
   select(where(is.numeric)) %>%
   select(-any_of(c(remove_cols, sd_cols, co2_cols))) %>%
-  select(-matches("^(NO3|NH4)_N_mgL"))          # Oct 2025 inorganic N: profiles only, not in the PCA
+  select(-matches("_raw$|_bdl$"))               # inorganic N enters as NH4_N_mgL / NO3_N_mgL (BDL = 0)
 
 # Keep vars with <= 20% missing
 keep_vars <- names(pca_vars)[colMeans(is.na(pca_vars)) <= 0.20]

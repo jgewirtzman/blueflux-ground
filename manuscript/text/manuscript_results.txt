@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-10-02 15:35 
+Manuscript Results — generated 2026-10-02 15:47 
 
 
 ================================================================
@@ -646,27 +646,29 @@ R.6: POREWATER GEOCHEMISTRY (Fig 6)
     CP40   Surface    36.90 +/- 0.00 (n=1)
 
 --- Porewater PCA ---
-  PCA variables (11): ORP, pH, ppmDO, PSU, Sulfide, Total Iron, SO4_ppm, Alkalinity_uM, DOC_mg_L, CH4_mean_uM, d13C_CH4_mean
+  PCA variables (13): ORP, pH, ppmDO, PSU, Sulfide, Total Iron, SO4_ppm, Alkalinity_uM, DOC_mg_L, CH4_mean_uM, d13C_CH4_mean, NO3_N_mgL, NH4_N_mgL
   Complete cases for PCA: 16 (of 20)
 
   Variance explained:
-    PC1: 40.4%
-    PC2: 27.4%
-    PC3: 15.8%
-    Cumulative PC1-PC3: 83.5%
+    PC1: 42.6%
+    PC2: 23.9%
+    PC3: 14.9%
+    Cumulative PC1-PC3: 81.4%
 
   Loadings (PC1, PC2):
-    PSU                  PC1 = +0.430   PC2 = +0.047
-    CH4_mean_uM          PC1 = +0.400   PC2 = +0.096
-    ORP                  PC1 = -0.378   PC2 = -0.281
-    SO4_ppm              PC1 = +0.372   PC2 = +0.118
-    ppmDO                PC1 = -0.358   PC2 = -0.199
-    d13C_CH4_mean        PC1 = +0.355   PC2 = -0.332
-    Alkalinity_uM        PC1 = +0.235   PC2 = -0.357
-    DOC_mg_L             PC1 = +0.181   PC2 = -0.411
-    pH                   PC1 = +0.160   PC2 = -0.155
-    Total Iron           PC1 = -0.072   PC2 = -0.430
-    Sulfide              PC1 = -0.020   PC2 = +0.491
+    CH4_mean_uM          PC1 = +0.388   PC2 = +0.029
+    PSU                  PC1 = +0.386   PC2 = -0.041
+    NH4_N_mgL            PC1 = +0.380   PC2 = +0.096
+    SO4_ppm              PC1 = +0.362   PC2 = +0.054
+    ORP                  PC1 = -0.348   PC2 = -0.177
+    ppmDO                PC1 = -0.301   PC2 = -0.085
+    NO3_N_mgL            PC1 = +0.284   PC2 = +0.115
+    d13C_CH4_mean        PC1 = +0.280   PC2 = -0.387
+    pH                   PC1 = +0.158   PC2 = -0.150
+    Alkalinity_uM        PC1 = +0.121   PC2 = -0.428
+    Total Iron           PC1 = -0.090   PC2 = -0.377
+    DOC_mg_L             PC1 = +0.078   PC2 = -0.462
+    Sulfide              PC1 = +0.030   PC2 = +0.472
 
 --- Multi-campaign dissolved CH4 and salinity (Fig S3) ---
 

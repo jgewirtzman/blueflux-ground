@@ -279,7 +279,7 @@ fig4a <- make_depth_panel(df, "SO4_ppm",  expression(SO[4]^{"2-"}~(ppm)), "(a)")
 fig4b <- make_depth_panel(df, "Cl_ppm",   expression(Cl^{"-"}~(ppm)), "(b)")
 fig4c <- make_depth_panel(df, "NO3_N_ppm", expression(NO[3]*"-N"~(ppm)), "(c)")
 fig4d <- make_depth_panel(df, "PO4_P_ppm", expression(PO[4]*"-P"~(ppm)), "(d)")
-# NH4-N (October 2025; SRS5/SRS6 below detection, not plotted)
+# NH4-N (October 2025; SRS5/SRS6 below detection, plotted as 0)
 fig4e <- make_depth_panel(df, "NH4_N_mgL", expression(NH[4]^{"+"}*"-N"~(mg~L^{-1})), "(e)")
 
 fig4 <- (fig4a | fig4b) / (fig4c | fig4d) / (fig4e | patchwork::plot_spacer()) /
@@ -303,7 +303,7 @@ co2_cols <- names(df)[grepl("CO2", names(df))]
 pca_vars <- df %>%
   select(where(is.numeric)) %>%
   select(-any_of(c(remove_cols, sd_cols, co2_cols))) %>%
-  select(-matches("^(NO3|NH4)_N_mgL"))          # Oct 2025 inorganic N: profiles only, not in the PCA
+  select(-matches("_raw$|_bdl$"))               # inorganic N enters as NH4_N_mgL / NO3_N_mgL (BDL = 0)
 
 # Keep only variables with <= 20% missing
 keep_vars <- names(pca_vars)[colMeans(is.na(pca_vars)) <= 0.20]
