@@ -7,7 +7,7 @@ paper whether or not a budget value was taken. Status key:
 - **CONTEXT** — reviewed/compared but no value used (analog, superseded, corroborating, or method)
 - **PENDING** — under review by an active agent (values not yet extracted)
 
-Last updated: 2026-07-06. Sources: deep-research workflow + targeted agents (David Ho,
+Last updated: 2026-10-02. Sources: deep-research workflow + targeted agents (David Ho,
 Castañeda biomass, Troxler Reco, CWD, 8-URL cross-check). Append as agents return.
 
 ---
@@ -65,10 +65,19 @@ Castañeda biomass, Troxler Reco, CWD, 8-URL cross-check). Append as agents retu
 ## Chamber / eddy-covariance ecosystem respiration & fluxes
 | Citation | DOI / URL | Status | Budget use |
 |---|---|---|---|
-| Troxler et al. 2015, *Agric. For. Meteorol.* 213:273 | 10.1016/j.agrformet.2014.12.012 | USED | Reco below-canopy (715) + total ER (1570); component breakdown; CWD method (Krauss volume, 10 cm pieces), CWD efflux 2.34 µmol/m2, scaled CWD respiration 1.6 t C/ha/yr; soil vs soil+pneumatophores 1.27 vs 3.17 |
+| Troxler et al. 2015, *Agric. For. Meteorol.* 213:273 | 10.1016/j.agrformet.2014.12.012 | USED | Reco below-canopy (715) + total ER (1570); component breakdown; CWD method (Krauss volume, 10 cm pieces), CWD efflux 2.34 µmol/m2, scaled CWD respiration 1.6 t C/ha/yr; soil vs soil+pneumatophores 1.27 vs 3.17. SRS6 LAI 2.80 ± 1.38 (Barr, unpubl., ground); leaf term 1.62 × 2.80 for 12 h only (implies 100 % daytime inhibition); prop roots 1.94; water 1.02 (opaque floating LI-8100) |
 | Barr et al. 2010, *JGR-Biogeosciences* 115:G02020 | 10.1029/2009JG001186 | USED | US-SKR EC (2004): NEE −1170±127, GPP ≈2270, R_E ≈1100. Same tower as ours, ~18 yr earlier. Its lateral-export Table 4 and R_S(360) are LITERATURE-compiled (Romigh/Twilley/Heald/Bouillon/Duarte/Troxler), not measured here |
 | Chambers et al. 2014, *Hydrobiologia* 726:195 | 10.1007/s10750-013-1764-6 | CONTEXT | Soil respiration 360±180; inundation suppression |
 | Delaria et al. 2024 (CARAFE airborne) | — | USED | Top-down NEE + CH4 (mangrove + ghost endmembers) |
+| FCE LTER water level above soil, SRS4–6 (Castañeda-Moya et al., knb-lter-fce.1168.15) | EDI knb-lter-fce.1168.15 | USED | Hourly water level relative to soil surface. Flooded fraction of the floor sets the tide-state weights (SRS5 1.00 Oct 2022 / 0.69 Mar 2023; SRS6 0.98 / 0.72; long-term 0.62 / 0.46). `code/07_upscaling/01b_flood_fraction.R` |
+| Reed et al. 2025, *Global Change Biology* 31:e70124 | 10.1111/gcb.70124 | CONTEXT | MODIS LAI at US-Skr, mean 5.55 (4–7; 24-day maxima, biased high); scrub 2.87. LAI recovered within ~1 yr after Wilma and Irma. Upper LAI bound |
+| Atkin, Meir & Turnbull 2014, *New Phytologist* 202:743 | 10.1111/nph.12686 | CONTEXT | Light inhibition of leaf R ~30 % global mean (Kok); supports the 30 % daytime factor |
+| Heskel et al. 2013, *Ecosphere* 4:art98; Souza et al. 2021, *Front. For. Glob. Change* 4:723539; Keenan et al. 2019, *Nat. Ecol. Evol.* 3:407 | 10.1890/ES13-00120.1; 10.3389/ffgc.2021.723539; 10.1038/s41559-019-0809-2 | CONTEXT | Inhibition 25–100 %; Amazon canopy 37 ± 10 %; partitioning bias up to 25 %. No mangrove Kok data found |
+| Zhu et al. 2024, *GRL* 51:e2023GL107235 | 10.1029/2023GL107235 | CONTEXT | Mangrove EC CH4 night/day ≈ 1.7 (6.8 vs 11.5 nmol m-2 s-1; via search snippet, abstract confirms night > day). Candidate day→24 h CH4 sensitivity |
+| Yong et al. 2025, *ES&T*; Gao et al. 2024, *Biogeosciences* 21:5247; Jeffrey et al. 2019, *New Phytol.* 224:146 | 10.1021/acs.est.5c11290 | CONTEXT | Mangrove stem CH4: daytime only or diel differences mostly n.s.; tides dominate. No usable night/day ratio |
+| Malone et al. 2021, *Ecosystems* 25:567 | 10.1007/s10021-021-00672-2 | CONTEXT | Everglades marsh aquatic metabolism: gross −0.7, respiration 0.8–1.0, net +0.3–0.4 g C m-2 d-1 (net heterotrophic). Context for ghost standing water |
+| Jia et al. 2022, *Chin. J. Appl. Ecol.* 33 | 10.13287/j.1001-9332.202206.019 | CONTEXT | Opaque vs transparent floating chambers (pond): opaque overstates daytime CO2 emission up to 90 %. Our floating and soil chambers are transparent; Troxler 2015 water chambers opaque |
+| Cole et al. 2010, *Wetlands* (Krauss co-author) | 10.1007/s13157-010-0114-y | CONTEXT | Brown planar-intersect classes (≤0.64, 0.65–2.54, 2.55–7.5, ≥7.6 cm), likely those of Krauss 2005; quotes Krauss 2005 as 16–98 m3/ha (mean 67) vs 13–181 in the abstract |
 
 ## Closure / double-counting / synthesis / seasonal & interannual
 | Citation | DOI / URL | Status | Budget use |
