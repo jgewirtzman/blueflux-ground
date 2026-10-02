@@ -19,6 +19,11 @@ GWP100 <- 27.9; GWP20 <- 81.2
 umol_to_g_yr <- 44e-6*3.156e7          # umol CO2 m-2 s-1 -> g CO2 m-2 yr-1
 mgd_to_gyr   <- 365/1000               # mg CH4 m-2 d-1 -> g CH4 m-2 yr-1
 CH4_DAY_TO_24H <- 1 / (1 - 0.233)      # sensitivity only (Zhu et al. 2024): x 1.30
+# GWP* (Smith et al. 2021): CO2-warming-equivalent = GWP100 x (4.53 E(t) - 4.25 E(t-20)).
+# Intact forest: steady emission, so 0.28 x GWP100 x E. Ghost forest: converted
+# by Hurricane Irma (2017), within 20 years, so E(t-20) = the intact rate; the
+# value holds for the first 20 years after conversion, after which it decays to
+# 0.28 x GWP100 x E(ghost).
 
 ch4 <- read.csv("output/upscaling/plot_level_CH4_totals.csv") %>%
   filter(scenario=="exponential") %>%
@@ -40,6 +45,11 @@ out <- inner_join(ch4,co2,by="disturbance_level") %>%
          ch4_pct20 =round(100*ch4_co2eq20 /(abs(co2_g_yr)+ch4_co2eq20),1),
          ch4_g_yr_24h = ch4_g_yr*CH4_DAY_TO_24H,
          net100_ch4_24h = co2_g_yr+ch4_g_yr_24h*GWP100)
+ch4_int <- out$ch4_g_yr[out$disturbance_level=="healthy"]
+out <- out %>% mutate(
+  ch4_co2we_gwpstar = ifelse(disturbance_level=="ghost", GWP100*(4.53*ch4_g_yr - 4.25*ch4_int), GWP100*(4.53-4.25)*ch4_g_yr),
+  net_gwpstar = co2_g_yr + ch4_co2we_gwpstar,
+  ch4_pct_gwpstar = round(100*ch4_co2we_gwpstar/(abs(co2_g_yr)+ch4_co2we_gwpstar),1))
 
 write.csv(out,"output/upscaling/net_forcing_by_class.csv",row.names=FALSE)
 cat("=== Class net forcing (g CO2-eq m-2 yr-1) ===\n")
