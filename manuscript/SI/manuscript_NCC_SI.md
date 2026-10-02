@@ -218,7 +218,7 @@ Chamber flux dataset (combined_gas_flux_dataset.csv) and analysis workflow at [r
 ---
 
 ### Outstanding to complete SI
-1. TLS methods (S.M6) — Powell/Stovall; ask whether downed wood can be extracted from the point clouds, especially at the ghost sites (S.T3).
+1. TLS methods (S.M6) — Powell/Stovall.
 2. Tower (S.M8) and CARAFE (S.M9) instrument/processing detail — tower PIs / Delaria.
 3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 6e,f.
 4. Build Fig. S16 (closure residual) and source Fig. S15 (CARAFE footprint).
