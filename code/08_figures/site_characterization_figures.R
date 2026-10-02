@@ -82,7 +82,7 @@ gc <- bind_rows(d1c, d2c) %>%
 # 2. Oct 2025 Picarro data
 # =============================================
 cat("Loading Picarro data...\n")
-pw <- read_csv(file.path(Sys.getenv("BLUEFLUX_MICROBES_DIR", "data/porewater"), "merged_porewater_all_parameters.csv"),
+pw <- read_csv("output/data_products/porewater_all_parameters.csv",
                show_col_types = FALSE) %>%
   mutate(
     site = Site,

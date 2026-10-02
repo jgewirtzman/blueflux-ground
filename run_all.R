@@ -35,6 +35,7 @@ steps <- c(
   "code/05_dataset/01_compile_datasets.R",
   "code/05_dataset/02_data_products.R",
   "code/05_dataset/03_data_dictionary.R",
+  "code/05_dataset/04_porewater_nitrogen.R",
   # 06 analysis: statistics and manuscript numbers
   "code/06_analysis/01_summary_table.R",
   "code/06_analysis/02_manuscript_results.R",

@@ -660,7 +660,7 @@ cat("\n================================================================\n")
 cat("R.6: POREWATER GEOCHEMISTRY (Fig 6)\n")
 cat("================================================================\n\n")
 
-pw <- read_csv(file.path(Sys.getenv("BLUEFLUX_MICROBES_DIR", "data/porewater"), "merged_porewater_all_parameters.csv"),
+pw <- read_csv("output/data_products/porewater_all_parameters.csv",
                show_col_types = FALSE)
 
 # Apply DO correction
@@ -725,7 +725,8 @@ co2_cols <- names(pw)[grepl("CO2", names(pw))]
 
 pca_vars <- pw %>%
   select(where(is.numeric)) %>%
-  select(-any_of(c(remove_cols, sd_cols, co2_cols)))
+  select(-any_of(c(remove_cols, sd_cols, co2_cols))) %>%
+  select(-matches("^(NO3|NH4)_N_mgL"))          # Oct 2025 inorganic N: profiles only, not in the PCA
 
 # Keep vars with <= 20% missing
 keep_vars <- names(pca_vars)[colMeans(is.na(pca_vars)) <= 0.20]

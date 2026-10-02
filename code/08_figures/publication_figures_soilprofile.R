@@ -69,7 +69,7 @@ save_pub <- function(plot, name, width, height, units = "mm") {
 cat("--- Loading merged porewater data ---\n")
 
 microbes_path <- Sys.getenv("BLUEFLUX_MICROBES_DIR", "data/porewater")
-df <- read_csv(file.path(microbes_path, "merged_porewater_all_parameters.csv"),
+df <- read_csv("output/data_products/porewater_all_parameters.csv",   # + inorganic N (05_dataset/04)
                show_col_types = FALSE)
 
 # Add disturbance classification and clean up
@@ -279,12 +279,14 @@ fig4a <- make_depth_panel(df, "SO4_ppm",  expression(SO[4]^{"2-"}~(ppm)), "(a)")
 fig4b <- make_depth_panel(df, "Cl_ppm",   expression(Cl^{"-"}~(ppm)), "(b)")
 fig4c <- make_depth_panel(df, "NO3_N_ppm", expression(NO[3]*"-N"~(ppm)), "(c)")
 fig4d <- make_depth_panel(df, "PO4_P_ppm", expression(PO[4]*"-P"~(ppm)), "(d)")
+# NH4-N (October 2025; SRS5/SRS6 below detection, not plotted)
+fig4e <- make_depth_panel(df, "NH4_N_mgL", expression(NH[4]^{"+"}*"-N"~(mg~L^{-1})), "(e)")
 
-fig4 <- (fig4a | fig4b) / (fig4c | fig4d) /
+fig4 <- (fig4a | fig4b) / (fig4c | fig4d) / (fig4e | patchwork::plot_spacer()) /
   patchwork::wrap_elements(legend_grob) +
-  plot_layout(heights = c(1, 1, 0.1))
+  plot_layout(heights = c(1, 1, 1, 0.1))
 
-save_pub(fig4, "soil_anion_profiles", width = 220, height = 200)
+save_pub(fig4, "soil_anion_profiles", width = 220, height = 290)
 
 
 # =============================================================================
@@ -300,7 +302,8 @@ co2_cols <- names(df)[grepl("CO2", names(df))]
 
 pca_vars <- df %>%
   select(where(is.numeric)) %>%
-  select(-any_of(c(remove_cols, sd_cols, co2_cols)))
+  select(-any_of(c(remove_cols, sd_cols, co2_cols))) %>%
+  select(-matches("^(NO3|NH4)_N_mgL"))          # Oct 2025 inorganic N: profiles only, not in the PCA
 
 # Keep only variables with <= 20% missing
 keep_vars <- names(pca_vars)[colMeans(is.na(pca_vars)) <= 0.20]
@@ -1228,7 +1231,7 @@ if (!is.null(fig8_left)) {
     ) %>%
     filter(!is.na(site), !is.na(sample_type), site %in% core_sites_mc)
 
-  pw_mc <- read_csv(file.path(Sys.getenv("BLUEFLUX_MICROBES_DIR", "data/porewater"), "merged_porewater_all_parameters.csv"),
+  pw_mc <- read_csv("output/data_products/porewater_all_parameters.csv",
                     show_col_types = FALSE) %>%
     mutate(site = Site, season = "Oct 2025",
            sample_type = ifelse(Depth_cm == "Surface", "surface_water", "porewater"),
