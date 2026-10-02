@@ -16,11 +16,14 @@ Per-measurement methane (CH4) and carbon dioxide (CO2) fluxes measured with clos
 
 ## 2. Data Characteristics
 
-- **Spatial coverage:** 11 sites, 25.141 to 26.027 N, 80.632 to 81.744 W (site-level coordinates; three upland comparison sites lack coordinates, see OPEN_QUESTIONS.md).
+- **Spatial coverage:** 11 sites, 25.141 to 26.027 N, 80.632 to 81.744 W. Coordinates are site level (no per-tree positions); SRS5 and SRS6 from FCE LTER, others from the BlueFlux site list (`coord_source`). Three single-visit upland comparison sites (Cypress Boardwalk, Long Pine Key, Mahogany Hammock) have no coordinates yet.
 - **Temporal coverage:** 2022-03-18 to 2023-03-20; campaigns March 2022, October 2022, March 2023.
 - **Temporal resolution:** one value per chamber closure (fit windows typically 3-3.5 min) or per floating-chamber placement (median ~6.5 min).
 - **Records:** 763 (downed_wood 27, leaf 19, prop_root 65, soil 118, stem 487, water_surface 47).
 - **By site:** BL60 140, CP40 105, Cypress Boardwalk 3, FLM30 153, Long Pine Key 3, MI 30, Mahogany Hammock 3, RB10 10, SE1 17, SRS5 153, SRS6 146.
+- **Times:** field clocks were local civil time (America/New_York; EDT from 2023-03-12, inside the March 2023 campaign). `utc_offset` and the UTC columns account for this.
+- **Trees:** trees were not tagged, so there is no tree ID. Within a campaign no stem position was remeasured; some trees may have been resampled in a later campaign, but they cannot be linked.
+- **Scope:** all valid fluxes at all sites and campaigns (core, context and upland comparison sites; March 2022 included).
 - **Sign convention:** positive = emission to the atmosphere. Units: CH4 nmol m-2 s-1; CO2 umol m-2 s-1, per the surface given in `area_basis`.
 - **Missing values:** -9999.
 
@@ -41,7 +44,7 @@ Component-resolved fluxes for scaling ecosystem CH4 and CO2 exchange with struct
 
 - Minimum detectable flux per measurement: 1.96 sigma / t x the flux term, sigma = median absolute deviation of within-window first differences, centred per closure and pooled by analyzer and campaign. Below-detection fluxes are retained at their measured values and flagged (`*_below_MDF`, `*_detection_class`).
 - QC screens (fluxqc 0.2.3: initial concentration, CO2 tracer, curvature, minimum window, noise) are reported as `*_qc_flag`; flagged fluxes are retained.
-- Measurements with analyzer artefacts were excluded and are not in the file.
+- Not in the file: closures with no analyzer record in the window, analyzer artefacts, duplicate data entries, three pilot chamber designs and March 2022 chambers without recorded dimensions.
 - Fit uncertainty: `*_flux_se` and `*_r2` of the reported model.
 
 ## 5. Data Acquisition, Materials, and Methods
