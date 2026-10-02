@@ -1,9 +1,9 @@
 # Open questions for Jon (ORNL DAAC draft)
 
-Resolved 2026-10-02: no tree IDs (not tagged); field clocks were local civil time; include all fluxes and all sites; SRS5/SRS6 coordinates from FCE LTER.
+Resolved 2026-10-02: no tree IDs (not tagged); field clocks were local civil time; include all fluxes and all sites; SRS5/SRS6 coordinates from FCE LTER; COPE = *Conocarpus erectus*; HA/HB = hollow (open-ended) chambers fitted around a small stem or root.
 
-1. **Species code COPE**: 15 stem measurements at BL60, March 2023 (chambers A, B, C). BL60 stems were coded COER (*Conocarpus erectus*) in October 2022 and COPE in March 2023, with no COER in March, so COPE is probably *Conocarpus erectus* under another code. Confirm? Codes Cyprus / Mahogany / Slash Pine are mapped to *Taxodium distichum*, *Swietenia mahagoni* and *Pinus elliottii*: confirm.
-2. **Chamber classes HA and HB**: 16 measurements, all March 2023 (BL60: 3 roots, 2 stems; SE1: 6 roots, 5 stems). The geometry rule is 'A (or B) chamber minus stem cylinder', with area from the stem diameter, which reads as the A or B chamber fitted around the whole circumference of a small stem or root. One record is written 'Hollow HB'; if H means 'hollow' (open-ended chamber around a small stem or root), the rule fits. Correct?
+1. **Species codes** Cyprus / Mahogany / Slash Pine are mapped to *Taxodium distichum*, *Swietenia mahagoni* and *Pinus elliottii*: confirm.
+2. (resolved: HA/HB are hollow chambers)
 3. **Coordinates** for BL60, CP40, FLM30, MI, RB10 and SE1 come from the BlueFlux site list (3-4 decimals); better GPS values? Cypress Boardwalk, Long Pine Key and Mahogany Hammock have none.
 4. **Pneumatophores** are counted inside soil collars (count, density), not chambered separately. Fine as is?
 5. **Leaf area basis**: 15 leaves x literature mean leaf area (Lin & Sternberg 1992), not measured. Fine as is?
