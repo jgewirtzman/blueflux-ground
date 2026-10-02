@@ -154,10 +154,21 @@ get_site_flux <- function(boot_df, site_name, camp, comp) {
   NULL
 }
 
+# water CO2 from dissolved CO2 x k where no chamber water CO2 exists
+# (code/03_fit/02_water_flux_from_dissolved.R), ahead of the SRS5 -> SRS6 gap-fill
+water_est <- read.csv(file.path(project_dir, "output", "flux", "03_fit", "water_flux_estimates.csv"))
+get_water_estimate <- function(site_name, camp) {
+  row <- water_est[water_est$site == site_name & water_est$campaign == camp & water_est$gas == "CO2", ]
+  if (nrow(row) == 0) return(NULL)
+  list(rate = row$flux_rate[1], ci_lo = row$ci_lo[1], ci_hi = row$ci_hi[1], n = 0L,
+       source = "dissolved CO2 x k (code/03_fit/02_water_flux_from_dissolved.R)")
+}
+
 flux_table <- list()
 for (camp in campaigns) for (site_name in tls_sites) for (comp in c("root","soil","water","cwd","stem")) {
   bd <- if (comp == "stem") stem_boot else nonstem_boot
   fl <- get_site_flux(bd, site_name, camp, comp)
+  if (is.null(fl) && comp == "water") fl <- get_water_estimate(site_name, camp)
   if (is.null(fl)) {
     if (comp == "root" && site_name == "CP40") {
       fl <- get_site_flux(nonstem_boot, "FLM30", camp, "root")

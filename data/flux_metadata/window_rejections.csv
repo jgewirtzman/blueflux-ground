@@ -16,3 +16,5 @@ Oct_22_29_SRS6_stem,trimmed,"legacy re-trim moved the window 7 min past the logg
 Mar_23_137_CP40_stem,trimmed,"legacy re-trim moved the window 5 min past the logged time onto Mar_23_138's logged closure"
 Mar_23_90_FLM30_stem,trimmed,"legacy re-trim moved the window 5 min past the logged time onto the first half of Mar_23_91's closure; its own closure (12:07:30-12:14, CO2 rising, CH4 flat) is at the logged time"
 Mar_23_14_BL60_stem,trimmed,"legacy re-trim moved the window 4 min past the logged time onto the next placement (13:36-13:41, unlogged); its own closure (13:27:30-13:36, CO2 rising, CH4 flat) is at the logged time"
+Oct_22_7_SRS6_stem,saved,"saved window 12:56:51-12:58:43 is crew JG/SC's Oct_22_21 closure (logged 12:56:00, LGR3 at ~0 s offset; analyzer_corrections.csv); it also set a false -139 s LGR3 offset for the day"
+Oct_22_8_SRS6_stem,saved,"saved window 13:00:27-13:03:29 is crew JG/SC's Oct_22_22 closure (logged 13:00:30), 3.6 min before Oct_22_8's own logged start (13:04:05)"

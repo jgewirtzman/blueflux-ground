@@ -215,7 +215,7 @@ water_est_file <- file.path(project_dir, "output", "flux", "03_fit", "water_flux
 water_est <- if (file.exists(water_est_file)) read.csv(water_est_file) else NULL
 get_water_estimate <- function(site_name, camp) {
   if (is.null(water_est)) return(NULL)
-  row <- water_est[water_est$site == site_name & water_est$campaign == camp, ]
+  row <- water_est[water_est$site == site_name & water_est$campaign == camp & water_est$gas == "CH4", ]
   if (nrow(row) == 0) return(NULL)
   list(rate = row$flux_rate[1], ci_lo = row$ci_lo[1], ci_hi = row$ci_hi[1], n = 0L,
        source = "dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R)")

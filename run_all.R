@@ -83,7 +83,9 @@ qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, in
   "code/qa/compare_ebullition_vs_legacy.R",
   "code/qa/review_traces.R",
   "code/qa/picarro_update_cadence.R",
-  "code/qa/sigma_pooling_check.R"
+  "code/qa/sigma_pooling_check.R",
+  "code/qa/trace_co2_shift.R",
+  "code/qa/net_forcing_attribution.R"
 )
 
 args <- commandArgs(trailingOnly = TRUE)
