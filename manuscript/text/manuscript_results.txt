@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-10-02 00:21 
+Manuscript Results — generated 2026-10-02 00:29 
 
 
 ================================================================
@@ -182,30 +182,29 @@ R.2: COMPONENT FLUX RATES (Fig 2)
 R.2b: EBULLITION
 ----------------------------------------------------------------
 
-  Site x season ebullition summary:
-    BL60   dry (Mar 2023): 2 traces, 0 with ebullition (0.0%)
-    BL60   wet (Oct 2022): 5 traces, 2 with ebullition (40.0%)
-    CP40   dry (Mar 2023): 5 traces, 0 with ebullition (0.0%)
-    CP40   wet (Oct 2022): 12 traces, 3 with ebullition (25.0%)
-    FLM30  dry (Mar 2023): 25 traces, 0 with ebullition (0.0%)
-    FLM30  wet (Oct 2022): 6 traces, 1 with ebullition (16.7%)
-    SE1    dry (Mar 2023): 5 traces, 0 with ebullition (0.0%)
-    SRS5   dry (Mar 2023): 9 traces, 0 with ebullition (0.0%)
-    SRS6   dry (Mar 2023): 6 traces, 0 with ebullition (0.0%)
+  Site x season ebullition summary (stage 04 placements):
+    BL60   wet  : 5 placements, 1 with bubbles (20.0%), 3.9% of CH4 ebullitive
+    CP40   dry  : 11 placements, 2 with bubbles (18.2%), 2.1% of CH4 ebullitive
+    CP40   wet  : 6 placements, 3 with bubbles (50.0%), 34.0% of CH4 ebullitive
+    FLM30  dry  : 12 placements, 3 with bubbles (25.0%), 0.3% of CH4 ebullitive
+    FLM30  wet  : 4 placements, 2 with bubbles (50.0%), 0.0% of CH4 ebullitive
+    SE1    dry  : 1 placements, 0 with bubbles (0.0%), 0.0% of CH4 ebullitive
+    SRS5   dry  : 5 placements, 0 with bubbles (0.0%), 0.0% of CH4 ebullitive
+    SRS6   dry  : 3 placements, 0 with bubbles (0.0%), 0.0% of CH4 ebullitive
 
-  Total traces analyzed: 75
-  Total with ebullition: 6
-  Overall % with ebullition: 8.0%
+  Total placements analyzed: 47
+  Total with bubbles: 11
+  Overall % with bubbles: 23.4%
+  Ebullitive share of summed water CH4: 14.1%
 
-  Partitioned flux rates (from individual traces):
-    Total traces in partitioned file: 75
-    Traces with ebullition events: 6
-    Mean diffusive flux (nmol/m2/s): 53.480
-    Mean ebullitive flux (nmol/m2/s): 25.640
-    Mean total flux (nmol/m2/s): 79.120
-    Mean ebullitive fraction: 35.5%
+  Placements with bubbles: 11
+    Mean diffusive flux (nmol/m2/s): 19.507
+    Mean ebullitive flux (nmol/m2/s): 10.340
+    Mean total flux (nmol/m2/s): 29.847
+    Mean ebullitive fraction: 13.8%
 
-  Note: 0 ebullition events detected in dry season
+  Wet season % ebullitive (site-level mean): 12.6%
+  Dry season placements with bubbles: 5 of 32
 
 ================================================================
 R.3: STEM HEIGHT & SPECIES (Fig 3)

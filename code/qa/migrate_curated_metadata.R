@@ -11,10 +11,10 @@
 # Sources (legacy):
 #   intermediate/mar2022_soil_correction_log.csv  Mar 2022 6-inch soil chambers
 #   code/05_integration/assemble_clean_dataset.R  BL60 water date fix (step 7b)
-#   output/ebullition/corrected_time_windows.csv  14 trimmed windows (interactive picker)
+#   output/qa/baseline/output__ebullition__corrected_time_windows.csv  14 trimmed windows (interactive picker)
 #   code/06_ebullition/apply_negative_flux_corrections.R  7 artifact IDs
 #   code/06_ebullition/detect_ebullition.R        confirmed bubble traces, exclusions
-#   output/ebullition/placements_summary.csv      times of the listed placements
+#   _archive/superseded_output/ebullition_legacy/placements_summary.csv      times of the listed placements
 #
 # Refuses to overwrite data/flux_metadata/ unless MIGRATE_OVERWRITE=1.
 # =============================================================================
@@ -72,7 +72,7 @@ write_tbl(excl, "excluded_measurements")
 # takes Etime from the first saved manual-ID file holding the trace (Etime is
 # relative to that file's start.time_corr), else relative to the auxfile
 # start.time. Convert to absolute analyzer-clock times with the same rule.
-tw <- read_csv("output/ebullition/corrected_time_windows.csv", show_col_types = FALSE)
+tw <- read_csv("output/qa/baseline/output__ebullition__corrected_time_windows.csv", show_col_types = FALSE)
 manual_files <- c(   # order as in apply_negative_flux_corrections.R
   "intermediate/results_trees/lgr1_manual_identification_results.csv",
   "intermediate/results_trees/lgr3_manual_identification_results.csv",
@@ -103,12 +103,12 @@ trim <- tw %>% left_join(anchors, by = "flux_id") %>%
          window_start = fmt(a + new_start_etime), window_end = fmt(a + new_end_etime)) %>%
   transmute(flux_id, window_start, window_end, etime_start = new_start_etime,
             etime_end = new_end_etime, etime_anchor = fmt(a), anchor_source, action,
-            source = "output/ebullition/corrected_time_windows.csv (interactive_time_picker.R)")
+            source = "output/qa/baseline/output__ebullition__corrected_time_windows.csv (interactive_time_picker.R)")
 stopifnot(!anyNA(trim$window_start))
 write_tbl(trim, "trimmed_windows")
 
 # ---- 6. Ebullition: confirmed traces and exclusions -----------------------------
-pl <- read_csv("output/ebullition/placements_summary.csv", show_col_types = FALSE)
+pl <- read_csv("_archive/superseded_output/ebullition_legacy/placements_summary.csv", show_col_types = FALSE)
 confirmed_ids <- c("LGR2_2022-10-23_CP40_P02", "LGR2_2022-10-23_CP40_P06",
                    "LGR2_2022-10-23_CP40_P10", "Picarro_2022-10-18_FLM30_P08",
                    "Picarro_2022-10-25_BL60_P02", "Picarro_2022-10-25_BL60_P03")

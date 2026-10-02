@@ -190,8 +190,8 @@ rescued   <- union(ids_from("intermediate/rescue/ALL_RESCUED_CH4_BEST_FLUX.csv")
 recovered <- unique(c(ids_from("intermediate/rescue/recovered_all_CH4_fluxes.csv"),
                       ids_from("intermediate/rescue/recovered_lgr3_tree_fluxes.csv"),
                       ids_from("intermediate/rescue/recovered_lgr3_water_fluxes.csv")))
-trimmed   <- read_csv("output/ebullition/corrected_time_windows.csv", show_col_types = FALSE)
-partitioned <- read_csv("output/ebullition/partitioned_fluxes.csv", show_col_types = FALSE)
+trimmed   <- read_csv("output/qa/baseline/output__ebullition__corrected_time_windows.csv", show_col_types = FALSE)
+partitioned <- read_csv("_archive/superseded_output/ebullition_legacy/partitioned_fluxes.csv", show_col_types = FALSE)
 ebull_processed <- unique(na.omit(partitioned$matched_flux_id[partitioned$trace_type == "processed"]))
 ha_hb   <- ids_from("intermediate/ha_hb_flux_corrections.csv", "flux_id")
 mar2022 <- ids_from("intermediate/mar2022_soil_correction_log.csv", "flux_id")
@@ -310,7 +310,7 @@ meas <- meas %>%
          saved_minus_fieldlog_s = as.numeric(difftime(saved_start, fieldlog_start, units = "secs")))
 
 # Windows held elsewhere (ebullition placements and trimmed refits)
-pl <- read_csv("output/ebullition/placements_summary.csv", show_col_types = FALSE)
+pl <- read_csv("_archive/superseded_output/ebullition_legacy/placements_summary.csv", show_col_types = FALSE)
 meas <- meas %>%
   mutate(other_window_source = case_when(
     flux_id %in% trimmed$flux_id ~ "ebullition/corrected_time_windows.csv",

@@ -32,7 +32,10 @@
 # Geometry, Tcham and Pcham come from the closure named in geometry_from
 # (stage-01 auxfile); no water-vapour correction (H2O set to 0, as in stage 03).
 #
-# Writes output/flux/04_ebullition/partition.csv and settings.json.
+# Writes output/flux/04_ebullition/partition.csv, settings.json, bubbles.csv
+# (detected bubbles over each placement, Etime s from the placement start, CH4
+# ppb) and traces.csv.gz (placement CH4, de-ebulliated CH4, diffusive window;
+# read by the Fig S1 script, which runs without the raw records).
 # =============================================================================
 suppressMessages({library(dplyr); library(readr)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
@@ -75,11 +78,18 @@ aqua <- function(d, gas, args) callr::r(function(d, gas, args, lib) {
       warning = function(wn) { w <<- c(w, conditionMessage(wn)); invokeRestart("muffleWarning") })
     if (inherits(res, "error")) return(data.frame(UniqueID = x$UniqueID[1], error = conditionMessage(res)))
     s <- as.data.frame(res$flux_summary)
-    s$n_bubbles <- if (!is.null(res$bubbles)) sum(res$bubbles$UniqueID == x$UniqueID[1]) else 0L
+    b <- res$bubbles; if (!is.null(b)) b <- b[b$UniqueID == x$UniqueID[1], , drop = FALSE]
+    s$n_bubbles <- if (!is.null(b)) nrow(b) else 0L
     s$warnings <- paste(unique(w), collapse = " | ")
+    attr(s, "bubbles") <- if (!is.null(b) && nrow(b)) data.frame(UniqueID = b$UniqueID, start = b$start, end = b$end, magnitude = b$magnitude) else NULL
+    attr(s, "deeb") <- if (!is.null(res$deebulliated)) data.frame(UniqueID = x$UniqueID[1], Etime = res$deebulliated$Etime,
+                                                                   CH4_deebulliated = res$deebulliated[[gas]]) else NULL
     s
   }
-  out <- do.call(dplyr::bind_rows, lapply(split(d, d$UniqueID), one))
+  parts <- lapply(split(d, d$UniqueID), one)
+  out <- do.call(dplyr::bind_rows, parts)
+  attr(out, "bubbles") <- do.call(rbind, lapply(parts, attr, "bubbles"))
+  attr(out, "deeb") <- do.call(rbind, lapply(parts, attr, "deeb"))
   attr(out, "goFlux") <- c(version = as.character(utils::packageVersion("goFlux")), path = find.package("goFlux"))
   out
 }, args = list(d = d, gas = gas, args = args, lib = fork_lib))
@@ -88,7 +98,9 @@ pic_ids <- pl$placement_id[pl$analyzer == "Picarro"]
 aqua2 <- function(tr, gas) {
   a <- aqua(tr[!tr$UniqueID %in% pic_ids, ], gas, AQUA_ARGS$LGR)
   b <- aqua(tr[tr$UniqueID %in% pic_ids, ], gas, AQUA_ARGS$Picarro)
-  out <- dplyr::bind_rows(a, b); attr(out, "goFlux") <- attr(a, "goFlux"); out
+  out <- dplyr::bind_rows(a, b); attr(out, "goFlux") <- attr(a, "goFlux")
+  attr(out, "bubbles") <- rbind(attr(a, "bubbles"), attr(b, "bubbles")); attr(out, "deeb") <- rbind(attr(a, "deeb"), attr(b, "deeb"))
+  out
 }
 pic_tr <- bind_rows(lapply(which(pl$analyzer == "Picarro"), function(i)
   trace_of(pl[i, ], pl$placement_start[i], pl$diffusive_end[i], pl$placement_id[i])))
@@ -146,6 +158,19 @@ out <- res %>% transmute(placement_id, logged = as.logical(logged), analyzer, pl
                          CH4_total_whole_placement, CO2_flux, CO2_flux_SE, ebullition_flag,
                          diff_error, full_error, diff_warnings, full_warnings)
 write_csv(out, "output/flux/04_ebullition/partition.csv")
+
+# traces for the display items (stage 08 runs without the raw records): every
+# placement's CH4 (fresh rows), the de-ebulliated series and the diffusive window
+tr_out <- full_tr %>% select(placement_id = UniqueID, Etime, POSIX.time, CH4_ppb = CH4dry_ppb) %>%
+  left_join(as.data.frame(attr(ch4_full, "deeb")) %>% rename(placement_id = UniqueID), by = c("placement_id", "Etime")) %>%
+  left_join(pl %>% select(placement_id, diffusive_start, diffusive_end), by = "placement_id") %>%
+  mutate(in_diffusive_window = POSIX.time >= diffusive_start & POSIX.time <= diffusive_end,
+         CH4_ppb = round(CH4_ppb, 2), CH4_deebulliated = round(CH4_deebulliated, 2), Etime = round(Etime, 1)) %>%
+  select(placement_id, Etime, CH4_ppb, CH4_deebulliated, in_diffusive_window)
+write_csv(tr_out, "output/flux/04_ebullition/traces.csv.gz")
+bub <- attr(ch4_full, "bubbles")
+write_csv(if (is.null(bub)) tibble(placement_id = character(), start = numeric(), end = numeric(), magnitude = numeric())
+          else as_tibble(bub) %>% rename(placement_id = UniqueID), "output/flux/04_ebullition/bubbles.csv")
 jsonlite::write_json(list(goFlux = as.list(attr(ch4_full, "goFlux")), tarball = GOFLUX_FORK_TARBALL,
                           goAquaFlux_args = AQUA_ARGS, prec = PREC, min_ch4_ppb = MIN_CH4_PPB, min_co2_ppm = MIN_CO2_PPM),
                      "output/flux/04_ebullition/settings.json", auto_unbox = TRUE, pretty = TRUE)

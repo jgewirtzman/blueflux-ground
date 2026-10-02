@@ -4,7 +4,7 @@
 # traces (ebullition_window_comparison.R), so every approach is compared on all
 # logged Picarro water closures, each fitted on its stage-02 window:
 #   total        stage-03 goFlux fit of the whole window (no partition)
-#   legacy       legacy hand-built jump partition (output/ebullition/partitioned_fluxes.csv)
+#   legacy       legacy hand-built jump partition (output/qa/baseline/output__ebullition__partitioned_fluxes.csv)
 #   A / D        released goFlux 0.4.0 goAquaFlux, detection window 30 / 6 obs
 #   B / E        fork de-ebulliated goAquaFlux, detection window 15 / 6 obs
 # Writes output/qa/picarro_water_comparison.csv.
@@ -17,7 +17,7 @@ fork_lib <- Sys.getenv("GOFLUX_FORK_LIB"); stopifnot(nzchar(fork_lib), dir.exist
 aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
 win <- read_csv("output/flux/02_windows/windows.csv", show_col_types = FALSE)
 fit <- read_csv("output/flux/03_fit/CH4/fluxes.csv", show_col_types = FALSE)
-legacy <- read_csv("output/ebullition/partitioned_fluxes.csv", show_col_types = FALSE)
+legacy <- read_csv("output/qa/baseline/output__ebullition__partitioned_fluxes.csv", show_col_types = FALSE)
 
 cl <- aux %>% filter(analyzer == "Picarro", component == "water", !excluded) %>%
   inner_join(win %>% select(UniqueID, start, end), by = "UniqueID")

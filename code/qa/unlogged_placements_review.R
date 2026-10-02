@@ -19,7 +19,7 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/00_lib/lib_raw.R")
 utc <- function(x) as.POSIXct(sub("Z$", "", sub("T", " ", x)), tz = "UTC")
 
-pl  <- read_csv("output/ebullition/placements_summary.csv", show_col_types = FALSE,
+pl  <- read_csv("output/qa/baseline/output__ebullition__placements_summary.csv", show_col_types = FALSE,
                 col_types = cols(start_time = col_character(), end_time = col_character(), .default = col_guess())) %>%
   filter(!excluded, trace_type == "additional")
 win <- read_csv("output/flux/02_windows/windows.csv", show_col_types = FALSE) %>%

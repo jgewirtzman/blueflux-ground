@@ -1,7 +1,7 @@
 # =============================================================================
 # QA / decision support (stage 04): long floating-chamber deployments.
 # Runs of >= 15 min without a chamber lift (consecutive legacy placement chunks,
-# output/ebullition/placements_summary.csv; legacy offsets inverted to the
+# output/qa/baseline/output__ebullition__placements_summary.csv; legacy offsets inverted to the
 # analyzer clock) are cut into 10-min slices; per slice the CH4 and CO2 linear
 # flux (floating-chamber flux term). Compared with: the first slice of the same
 # run, and the separate (short) water placements at the same site and day.
@@ -17,7 +17,7 @@ legacy_offsets <- tibble(analyzer = c("LGR2", "LGR2", "LGR3", "LGR3", "LGR3", "L
                          date = as.Date(c("2022-10-23", "2023-03-11", "2023-03-12", "2023-03-15", "2023-03-16",
                                           "2023-03-17", "2023-03-18", "2023-03-22")),
                          lo = c(-1091, -28, -24, -13, -24, -28, -14, -24))
-p <- read_csv("output/ebullition/placements_summary.csv", show_col_types = FALSE,
+p <- read_csv("output/qa/baseline/output__ebullition__placements_summary.csv", show_col_types = FALSE,
               col_types = cols(start_time = col_character(), end_time = col_character(), .default = col_guess())) %>%
   mutate(date = as.Date(date), s = utc(start_time), e = utc(end_time)) %>%
   left_join(legacy_offsets, by = c("analyzer", "date")) %>%

@@ -24,7 +24,7 @@ blueflux-ground/
 ├── output/
 │   ├── flux/                  # Stage outputs: 00_raw, 01_metadata, 02_windows, 03_fit, 04_ebullition
 │   ├── data_products/         # Compiled datasets + data dictionary (stage 05)
-│   ├── ebullition/            # Legacy ebullition partitioning (read only by code/qa comparisons)
+│   ├── (legacy ebullition outputs and orphan tables: _archive/superseded_output/)
 │   ├── upscaling/  gpp/       # Stage 07
 │   ├── figures/main, SI/      # Curated display items (written by stage 08)
 │   ├── figures/presentation/  # Deck figures written alongside

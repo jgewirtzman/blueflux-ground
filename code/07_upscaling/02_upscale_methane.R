@@ -951,6 +951,13 @@ extrap_sens_df %>%
 
 # --- Save tables --------------------------------------------------------------
 write.csv(results_df, file.path(output_dir, "plot_level_CH4_totals.csv"), row.names = FALSE)
+# site x campaign CH4 by component (mg CH4 m-2 d-1), tide states averaged 50/50
+# as in 04_net_forcing.R; read by 07_budget_sources.R
+summary_ch4 <- results_df %>%
+  group_by(site, campaign, disturbance_level, scenario) %>%
+  summarise(stem = mean(stem_mg), soil = mean(soil_mg), root = mean(root_mg), water = mean(water_mg),
+            cwd = mean(cwd_mg), total = mean(total_mg), .groups = "drop")
+write.csv(summary_ch4, file.path(output_dir, "summary_CH4_by_component.csv"), row.names = FALSE)
 write.csv(flux_table, file.path(output_dir, "flux_rates_with_gapfills.csv"), row.names = FALSE)
 write.csv(budget_df, file.path(output_dir, "budget_decomposition.csv"), row.names = FALSE)
 write.csv(cwd_sens_df, file.path(output_dir, "cwd_sensitivity.csv"), row.names = FALSE)

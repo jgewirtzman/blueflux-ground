@@ -331,48 +331,39 @@ cat("\n----------------------------------------------------------------\n")
 cat("R.2b: EBULLITION\n")
 cat("----------------------------------------------------------------\n\n")
 
-ebull_site <- read_csv("output/ebullition/site_season_ebullition.csv", show_col_types = FALSE)
-ebull_part <- read_csv("output/ebullition/partitioned_fluxes.csv", show_col_types = FALSE)
+# stage 04: one flux per floating-chamber placement (analysis set, water rows)
+ebull_part <- read_csv("output/flux/04_ebullition/partition.csv", show_col_types = FALSE) %>%
+  filter(placement_id %in% df$flux_id[df$component == "water"]) %>%
+  mutate(season = ifelse(format(as.Date(date), "%m") == "10", "wet", "dry"))
+ebull_site <- ebull_part %>% group_by(site = plot, season) %>%
+  summarise(n_traces = n(), n_with_ebull = sum(n_bubbles > 0, na.rm = TRUE),
+            pct_with_ebull = 100 * n_with_ebull / n_traces,
+            pct_CH4_ebullitive = 100 * sum(CH4_ebullitive, na.rm = TRUE) / sum(CH4_total, na.rm = TRUE), .groups = "drop")
 
-cat("  Site x season ebullition summary:\n")
+cat("  Site x season ebullition summary (stage 04 placements):\n")
 for (i in seq_len(nrow(ebull_site))) {
-  cat(sprintf("    %-6s %-5s: %d traces, %d with ebullition (%.1f%%)\n",
-              ebull_site$site[i], ebull_site$season[i],
-              ebull_site$n_traces[i], ebull_site$n_with_ebull[i],
-              ebull_site$pct_with_ebull[i]))
+  cat(sprintf("    %-6s %-5s: %d placements, %d with bubbles (%.1f%%), %.1f%% of CH4 ebullitive\n",
+              ebull_site$site[i], ebull_site$season[i], ebull_site$n_traces[i], ebull_site$n_with_ebull[i],
+              ebull_site$pct_with_ebull[i], ebull_site$pct_CH4_ebullitive[i]))
 }
+cat(sprintf("\n  Total placements analyzed: %d\n", sum(ebull_site$n_traces)))
+cat(sprintf("  Total with bubbles: %d\n", sum(ebull_site$n_with_ebull)))
+cat(sprintf("  Overall %% with bubbles: %.1f%%\n", 100 * sum(ebull_site$n_with_ebull) / sum(ebull_site$n_traces)))
+cat(sprintf("  Ebullitive share of summed water CH4: %.1f%%\n",
+            100 * sum(ebull_part$CH4_ebullitive, na.rm = TRUE) / sum(ebull_part$CH4_total, na.rm = TRUE)))
 
-cat(sprintf("\n  Total traces analyzed: %d\n", sum(ebull_site$n_traces)))
-cat(sprintf("  Total with ebullition: %d\n", sum(ebull_site$n_with_ebull)))
-cat(sprintf("  Overall %% with ebullition: %.1f%%\n",
-            100 * sum(ebull_site$n_with_ebull) / sum(ebull_site$n_traces)))
-
-# Partitioned fluxes: mean diffusive vs ebullitive
-cat("\n  Partitioned flux rates (from individual traces):\n")
-cat(sprintf("    Total traces in partitioned file: %d\n", nrow(ebull_part)))
-
-has_ebull <- ebull_part %>% filter(n_jumps > 0)
-cat(sprintf("    Traces with ebullition events: %d\n", nrow(has_ebull)))
-
+has_ebull <- ebull_part %>% filter(n_bubbles > 0)
+cat(sprintf("\n  Placements with bubbles: %d\n", nrow(has_ebull)))
 if (nrow(has_ebull) > 0) {
-  cat(sprintf("    Mean diffusive flux (nmol/m2/s): %.3f\n",
-              mean(has_ebull$diffusive_flux_nmol, na.rm = TRUE)))
-  cat(sprintf("    Mean ebullitive flux (nmol/m2/s): %.3f\n",
-              mean(has_ebull$ebull_flux_nmol, na.rm = TRUE)))
-  cat(sprintf("    Mean total flux (nmol/m2/s): %.3f\n",
-              mean(has_ebull$total_flux_nmol, na.rm = TRUE)))
-  cat(sprintf("    Mean ebullitive fraction: %.1f%%\n",
-              100 * mean(has_ebull$ebullitive_fraction, na.rm = TRUE)))
+  cat(sprintf("    Mean diffusive flux (nmol/m2/s): %.3f\n", mean(has_ebull$CH4_diffusive, na.rm = TRUE)))
+  cat(sprintf("    Mean ebullitive flux (nmol/m2/s): %.3f\n", mean(has_ebull$CH4_ebullitive, na.rm = TRUE)))
+  cat(sprintf("    Mean total flux (nmol/m2/s): %.3f\n", mean(has_ebull$CH4_total, na.rm = TRUE)))
+  cat(sprintf("    Mean ebullitive fraction: %.1f%%\n", 100 * mean(has_ebull$CH4_ebullitive_fraction, na.rm = TRUE)))
 }
-
-# Wet-only ebullitive %
 ebull_wet <- ebull_site %>% filter(season == "wet")
-if (nrow(ebull_wet) > 0) {
-  cat(sprintf("\n  Wet season %% ebullitive (site-level mean): %.1f%%\n",
-              mean(ebull_wet$pct_CH4_ebullitive, na.rm = TRUE)))
-}
-
-cat("\n  Note: 0 ebullition events detected in dry season\n")
+if (nrow(ebull_wet) > 0) cat(sprintf("\n  Wet season %% ebullitive (site-level mean): %.1f%%\n", mean(ebull_wet$pct_CH4_ebullitive, na.rm = TRUE)))
+cat(sprintf("  Dry season placements with bubbles: %d of %d\n",
+            sum(ebull_site$n_with_ebull[ebull_site$season == "dry"]), sum(ebull_site$n_traces[ebull_site$season == "dry"])))
 
 
 # =============================================================================

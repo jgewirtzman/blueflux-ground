@@ -8,7 +8,7 @@
 #      window (diffusion.window = "deebulliated"; bubble.window.size 15)
 #   C  same fork, pre-bubble window (isolates the bubble.window.size change)
 # and compared with the legacy hand-built partitioning
-# (output/ebullition/partitioned_fluxes.csv).
+# (output/qa/baseline/output__ebullition__partitioned_fluxes.csv).
 #
 # The fork is installed into a private library given by GOFLUX_FORK_LIB
 # (R CMD INSTALL -l <lib> of `git archive feat/aqua-diffusive-deebulliated`);
@@ -23,7 +23,7 @@ fork_lib <- Sys.getenv("GOFLUX_FORK_LIB"); stopifnot(nzchar(fork_lib), dir.exist
 conf <- read_csv("data/flux_metadata/ebullition_confirmed_traces.csv", show_col_types = FALSE)
 win  <- read_csv("output/flux/02_windows/windows.csv", show_col_types = FALSE)
 aux  <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
-legacy <- read_csv("output/ebullition/partitioned_fluxes.csv", show_col_types = FALSE)
+legacy <- read_csv("output/qa/baseline/output__ebullition__partitioned_fluxes.csv", show_col_types = FALSE)
 
 # Placement times in the legacy tables are analyzer time + a hard-coded offset
 # (detect_ebullition.R: Picarro -25220 s; LGR per-day LGR_OFFSETS). Undo exactly
