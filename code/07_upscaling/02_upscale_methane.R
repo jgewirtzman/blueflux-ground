@@ -115,6 +115,10 @@ tls_stem <- tls_all %>%
   summarise(stem_SA_m2 = sum(Total_surface_area_m2, na.rm = TRUE), .groups = "drop") %>%
   mutate(height_mid_m = height_bin_num + 0.25)
 
+# TLS root SA by height bin (for above-water exposure)
+tls_root_bins <- tls_all %>% filter(segment_class == "root") %>%
+  group_by(site, height_bin_num) %>% summarise(root_SA_m2 = sum(Total_surface_area_m2, na.rm = TRUE), .groups = "drop")
+
 # TLS root SA
 tls_root_sa <- tls_all %>%
   filter(segment_class == "root") %>%
@@ -320,13 +324,18 @@ assign_flux_height_cat <- function(h_m) {
   )
 }
 
+# Stem CH4 profile referenced to the water surface, integrated over each TLS
+# bin's above-water part and averaged over the water-depth samples (00_lib/exposure.R)
 scale_stems_exp <- function(site_name, camp, models_df, tls_stem_df,
                             split_height = 1.5) {
   stls <- tls_stem_df %>% filter(site == site_name)
+  mr <- models_df %>% filter(plot == site_name, campaign == camp)
+  w <- depth_samples(site_name, camp)
   stls %>%
     rowwise() %>%
     mutate(
-      flux_pred = predict_stem_flux(height_mid_m, site_name, camp, models_df),
+      flux_pred = if (nrow(mr) == 0 || is.null(mr$model[[1]])) NA_real_ else
+        stem_bin_flux(mr$intercept, mr$slope, height_bin_num, height_bin_num + 0.5, w),
       total = ifelse(is.na(flux_pred), 0, flux_pred * stem_SA_m2),
       zone = ifelse(height_mid_m <= split_height, "measured", "extrapolated")
     ) %>%
@@ -340,14 +349,15 @@ scale_stems_zero <- function(site_name, camp, stem_boot_df, tls_stem_df,
                              split_height = 1.5) {
   stls <- tls_stem_df %>% filter(site == site_name)
   sflux <- stem_boot_df %>% filter(plot == site_name, campaign == camp)
+  w <- depth_samples(site_name, camp)
+  cat_flux <- function(hc) { if (hc == "above_max") return(0)
+    fr <- sflux %>% filter(height_category == hc); if (nrow(fr) > 0 && !is.na(fr$mean[1])) fr$mean[1] else 0 }
   stls %>%
     mutate(
-      h_cat = assign_flux_height_cat(height_mid_m),
-      flux_val = sapply(h_cat, function(hc) {
-        if (hc == "above_max") return(0)
-        fr <- sflux %>% filter(height_category == hc)
-        if (nrow(fr) > 0 && !is.na(fr$mean[1])) fr$mean[1] else 0
-      }),
+      # height-class means applied at the bin's height above the water;
+      # bins below the water do not emit to the air
+      flux_val = sapply(height_mid_m, function(z) mean(sapply(w, function(wk)
+        if (z <= wk) 0 else cat_flux(assign_flux_height_cat(z - wk))))),
       total = flux_val * stem_SA_m2,
       zone = ifelse(height_mid_m <= split_height, "measured", "extrapolated")
     ) %>%
@@ -368,8 +378,14 @@ is_tidal <- function(site) site %in% c("SRS5", "SRS6")
 # exposed to the air only above the water (code/00_lib/cwd_scaling.R)
 source(file.path(project_dir, "code", "00_lib", "cwd_scaling.R"))
 source(file.path(project_dir, "code", "00_lib", "tide_weights.R"))
-root_submerged <- root_submerged_setup(tls_all, project_dir)   # prop-root surface below water at high tide
 cwd_exposed <- cwd_exposure_setup(flux_raw)
+source(file.path(project_dir, "code", "00_lib", "exposure.R"))
+depth_samples <- depth_samples_setup(flux_raw, project_dir)        # water depth at the trees
+root_exposed <- function(site, camp) {                              # time-averaged above-water root share
+  rb <- tls_root_bins %>% filter(site == !!site); w <- depth_samples(site, camp)
+  if (!nrow(rb)) return(1)
+  sum(rb$root_SA_m2 * sapply(rb$height_bin_num, function(z) exposed_frac(z, z + 0.5, w))) / sum(rb$root_SA_m2)
+}
 
 # Observed stem flux range (for MC capping)
 obs_stem_max <- max(flux_raw$CH4_best.flux[flux_raw$component == "stem"], na.rm = TRUE)
@@ -491,10 +507,12 @@ for (camp in campaigns) {
       # For each MC draw, compute stem total split by measured/extrap
       stem_meas_draws <- numeric(N_MC)
       stem_extrap_draws <- numeric(N_MC)
+      w_mc <- depth_samples(site_name, camp)
+      if (length(w_mc) > 15) w_mc <- unname(quantile(w_mc, (1:15 - 0.5) / 15, type = 1))
+      a_mc <- pmin(param_draws[, 1], log(obs_stem_max))   # cap the peak (just above water) at max observed flux
       for (j in seq_len(nrow(stls))) {
         h <- stls$height_mid_m[j]; sa <- stls$stem_SA_m2[j]
-        flux_j <- pmin(exp(param_draws[, 1] + param_draws[, 2] * h),
-                       obs_stem_max)  # cap at max observed flux
+        flux_j <- stem_bin_flux(a_mc, param_draws[, 2], stls$height_bin_num[j], stls$height_bin_num[j] + 0.5, w_mc)
         total_j <- flux_j * sa * stem_sa_mult
         if (h <= 1.5) {
           stem_meas_draws <- stem_meas_draws + total_j
@@ -521,7 +539,7 @@ for (camp in campaigns) {
       soil_total  <- ifelse(!is.na(soil_rate),  soil_rate * ground_area * fs, 0)
       water_total <- ifelse(!is.na(water_rate), water_rate * ground_area * fw, 0)
       cwd_ex      <- cwd_exposed(site_name, camp, tide)
-      root_ex     <- 1 - root_submerged(site_name, camp, tide)
+      root_ex     <- root_exposed(site_name, camp)             # time-averaged, all states
       root_total  <- root_total_full * root_ex
       cwd_total   <- cwd_total_full * cwd_ex
       soil_sa_used  <- ground_area * fs

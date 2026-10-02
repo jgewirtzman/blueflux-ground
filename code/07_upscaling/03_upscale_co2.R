@@ -328,14 +328,23 @@ cwd_exposed <- cwd_exposure_setup(flux_raw)
 # =============================================================================
 cat("\n=== 6. Scaling CO2 to plot level ===\n")
 source(file.path(project_dir, "code", "00_lib", "tide_weights.R"))
-root_submerged <- root_submerged_setup(tls_all, project_dir)
+# above-water exposure of stems and prop roots (00_lib/exposure.R): bark below
+# the water exchanges with the water, not the air; time-averaged over the
+# water-depth samples of each site x campaign
+source(file.path(project_dir, "code", "00_lib", "exposure.R"))
+depth_samples <- depth_samples_setup(flux_raw, project_dir)
+woody_bins <- tls_all %>% filter(segment_class %in% c("trunk", "branch", "root")) %>%
+  mutate(cls = ifelse(segment_class == "root", "root", "stem")) %>%
+  group_by(site, cls, height_bin_num) %>% summarise(SA = sum(Total_surface_area_m2, na.rm = TRUE), .groups = "drop")
+exposed_SA <- function(site, camp, cl) { b <- woody_bins[woody_bins$site == site & woody_bins$cls == cl, ]
+  w <- depth_samples(site, camp); sum(b$SA * sapply(b$height_bin_num, function(z) exposed_frac(z, z + 0.5, w))) }
 results <- list()
 for (camp in campaigns) {
   for (site_name in tls_sites) {
     ground_area <- tree_stats %>% filter(site == site_name) %>% pull(ground_area_m2)
     plot_area   <- tree_stats %>% filter(site == site_name) %>% pull(area_m2)
-    root_sa     <- tls_root_sa %>% filter(site == site_name) %>% pull(root_SA_m2)
-    stem_sa_tot <- tls_stem_total %>% filter(site == site_name) %>% pull(total_stem_SA_m2)
+    root_sa     <- exposed_SA(site_name, camp, "root")     # above-water root surface (time-averaged)
+    stem_sa_tot <- exposed_SA(site_name, camp, "stem")     # above-water trunk + branch surface
     if (length(root_sa) == 0) root_sa <- 0
     dist <- site_meta$disturbance_level[match(site_name, site_meta$site)]
 
@@ -359,7 +368,7 @@ for (camp in campaigns) {
     for (tide in tide_states) {
       if (tide == "fixed") { fl <- assign_flood(site_name, camp); fw <- fl["water"]; fs <- fl["soil"] }
       else { fw <- if (tide == "high_tide") 1 else 0; fs <- 1 - fw }
-      root_tot_t <- root_tot * (1 - root_submerged(site_name, camp, tide))
+      root_tot_t <- root_tot
 
       soil_tot  <- ifelse(!is.na(soil_rate),  soil_rate * ground_area * fs, 0)
       cwd_tot_t <- cwd_tot * cwd_exposed(site_name, camp, tide)
