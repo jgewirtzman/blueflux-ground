@@ -92,7 +92,8 @@ qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, in
   "code/qa/report_old_new.R",
   "code/qa/budget_scenarios.R",
   "code/qa/flight_window_comparison.R",
-  "code/qa/flooding_scenarios.R"
+  "code/qa/flooding_scenarios.R",
+  "code/qa/sensitivity_summary.R"
 )
 
 args <- commandArgs(trailingOnly = TRUE)

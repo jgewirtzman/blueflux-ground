@@ -102,15 +102,15 @@ Legacy used the three mislabelled tree closures.
 | Ghost / regenerating stem amplification vs intact | 23× / 28× | 41× / 50× |
 | Water CH4, regenerating | 34.5 | 56.9 |
 | Ebullitive share of water CH4 | CP40 20.4 %, BL60 7.3 %, FLM30 5.0 % | CP40 34.0 %, BL60 3.9 %, FLM30 not separable (Picarro); 14.1 % overall; bubbles also in 5 of 32 dry-season placements |
-| Intact CH4, g m⁻² yr⁻¹ | 2.2 | 0.9 (measured flooding: the floor was mostly under water) |
+| Intact CH4, g m⁻² yr⁻¹ | 2.2 | 1.5 (area-weighted flooding; 0.9–2.2 across choices, Table S10) |
 | Ghost CH4, g m⁻² yr⁻¹ | 11.7 | 10.7 |
-| Intact CO2, g m⁻² yr⁻¹ | −4,713 (−1,285 g C) | −4,427 (−1,208 g C; tower 2022–23 −1,288 g C) |
+| Intact CO2, g m⁻² yr⁻¹ | −4,713 (−1,285 g C) | −3,772 (−1,030 g C; tower 2022–23 −1,288 g C) |
 | Ghost CO2, g m⁻² yr⁻¹ | +1,437 | +1,523 |
-| Intact net forcing, 100 yr | −4,653 | −4,402 |
+| Intact net forcing, 100 yr | −4,653 | −3,731 (vertical); −1,841 NECB with alkalinity retained (S.T10) |
 | Ghost net forcing, 100 yr / 20 yr | +1,763 / +2,386 | +1,822 / +2,393 |
-| Sink-to-source switch | ~6,400–6,900 | ~6,200–6,700 |
-| Monte Carlo, GWP100 | intact −6,133…−3,521; ghost +1,474…+2,045 | intact −5,889…−3,319; ghost +1,403…+2,689 (still disjoint) |
-| CH4 share of forcing | intact 1.3 % / 3.6 %; ghost 18.5 % / 39.8 % | intact 0.6 % / 1.6 %; ghost 16.4 % / 36.3 % |
+| Sink-to-source switch | ~6,400–6,900 | ~5,600–6,000 (vertical); ~3,700 (NECB, alkalinity retained) |
+| Monte Carlo, GWP100 | intact −6,133…−3,521; ghost +1,474…+2,045 | intact −5,298…−2,068; ghost +1,403…+2,689 (still disjoint) |
+| CH4 share of forcing | intact 1.3 % / 3.6 %; ghost 18.5 % / 39.8 % | intact 1.1 % / 3.1 % (vertical), 2.8 % / 7.7 % (NECB, alkalinity retained); ghost 16.4 % / 36.3 % |
 | Regenerating budget, g m⁻² yr⁻¹ | ~29 | ~33 |
 
 The intact net forcing change is +250 (a weaker sink). Of that, in g CO2 m⁻² yr⁻¹:
@@ -136,6 +136,8 @@ Intact NEE (−1,208 g C m⁻² yr⁻¹) is within ~6 % of the 2022–23 tower N
 "closely matched" (D:65) holds again. Bottom-up respiration is 4.63 vs tower
 4.45 µmol m⁻² s⁻¹.
 
+> Numbers above and in section 4 were refreshed 2026-10-02 to the area-weighted flooding central case. Every analytical choice is compared one at a time in SI Table S10 (`output/qa/sensitivity_summary.csv`); carbon-balance framings are in `output/upscaling/forcing_framings.csv` (SI S.T10).
+
 ### Upscaling changes after the dataset rebuild
 
 | Change | Basis | Where |
@@ -144,7 +146,7 @@ Intact NEE (−1,208 g C m⁻² yr⁻¹) is within ~6 % of the 2022–23 tower N
 | Chamber stem, root, soil and CWD CO2 scaled from measurement time to 24 h, Q10 1.15 | Tower within-month night-respiration Q10 (2004–2023) | `01_tower_gpp.R`, `03_upscale_co2.R` 4b |
 | Downed CWD area from Krauss et al. 2005 (67; 13–181 m³ ha⁻¹), 4V/d with d = 10 cm | No plot inventory; method of Troxler et al. 2015 | `00_lib/cwd_scaling.R` |
 | Downed CWD and submerged prop roots exchange with the air only above water | FCE LTER water level; mean flooded depth | `00_lib/cwd_scaling.R`, `00_lib/tide_weights.R` |
-| High/low tide weighted by the measured flooded fraction (SRS5 1.00/0.69, SRS6 0.98/0.72) | FCE LTER knb-lter-fce.1168.15, checked against our depth readings | `07_upscaling/01b_flood_fraction.R` |
+| High/low tide weighted by the share of the plot floor under water (SRS5 0.62/0.37, SRS6 0.74/0.55) | FCE LTER knb-lter-fce.1168.15 × censored floor-height model fitted to our depth readings | `07_upscaling/01b_flood_fraction.R` |
 | Central LAI 2.8 (2.3–5.55); Kok inhibition 30 % (MC 20–50 %) | Troxler 2015 / Barr; Reed et al. 2025; Atkin et al. 2014 | `03_upscale_co2.R`, `05_mc_forcing.R` |
 | Sensitivities | Q10 × CWD grid; flooding ±5 cm; CH4 night/day 1.7 | `output/qa/budget_scenarios.csv`; `FLOOD_FRAC`; `net_forcing_by_class.csv` |
 
