@@ -58,14 +58,14 @@ Castañeda biomass, Troxler Reco, CWD, 8-URL cross-check). Append as agents retu
 | Citation | DOI / URL | Status | Budget use |
 |---|---|---|---|
 | Mugi et al. 2022, *Front. For. Glob. Change* 5:767337 | 10.3389/ffgc.2022.767337 | USED | CWD production global (296 [146–536]); flags Neotropical data gap |
-| Krauss et al. 2005, *Biotropica* 37 (Woody debris, S. Florida) | 10.1111/j.1744-7429.2005.03058.x | CONTEXT | Post-Andrew CWD volume 67 m3/ha (~35–45 Mg/ha), regional analog |
+| Krauss et al. 2005, *Biotropica* 37 (Woody debris, S. Florida) | 10.1111/j.1744-7429.2005.03058.x | USED | Downed CWD volume 67 (13–181; eyewall 132) m3/ha, 9–10 yr after Andrew; ~half fine debris <7.5 cm. Converted to surface 4V/d (d = 10 cm, as Troxler 2015) for CWD CO2/CH4 (2026-10-02) |
 | Romero, Smith & Fourqurean 2005, *J. Ecology* 93:618 | 10.1111/j.1365-2745.2005.00970.x | CONTEXT | Shark River wood decay k: aerial 0.05/yr, surface/buried 0.14–0.26/yr |
 | *Mortality × AGB (FCE)* — derived, this study | (Castañeda 2013 AGB × Rivera-Monroy 2019 mortality) | USED | CWD production (150 [100–300]) |
 
 ## Chamber / eddy-covariance ecosystem respiration & fluxes
 | Citation | DOI / URL | Status | Budget use |
 |---|---|---|---|
-| Troxler et al. 2015, *Agric. For. Meteorol.* 213:273 | 10.1016/j.agrformet.2014.12.012 | USED | Reco below-canopy (715) + total ER (1570); component breakdown |
+| Troxler et al. 2015, *Agric. For. Meteorol.* 213:273 | 10.1016/j.agrformet.2014.12.012 | USED | Reco below-canopy (715) + total ER (1570); component breakdown; CWD method (Krauss volume, 10 cm pieces), CWD efflux 2.34 µmol/m2, scaled CWD respiration 1.6 t C/ha/yr; soil vs soil+pneumatophores 1.27 vs 3.17 |
 | Barr et al. 2010, *JGR-Biogeosciences* 115:G02020 | 10.1029/2009JG001186 | USED | US-SKR EC (2004): NEE −1170±127, GPP ≈2270, R_E ≈1100. Same tower as ours, ~18 yr earlier. Its lateral-export Table 4 and R_S(360) are LITERATURE-compiled (Romigh/Twilley/Heald/Bouillon/Duarte/Troxler), not measured here |
 | Chambers et al. 2014, *Hydrobiologia* 726:195 | 10.1007/s10750-013-1764-6 | CONTEXT | Soil respiration 360±180; inundation suppression |
 | Delaria et al. 2024 (CARAFE airborne) | — | USED | Top-down NEE + CH4 (mangrove + ghost endmembers) |
@@ -76,7 +76,7 @@ Castañeda biomass, Troxler Reco, CWD, 8-URL cross-check). Append as agents retu
 | Stegehuis, Ho, Bopp & Guenet 2026, *Commun. Earth Environ.* 7:395 (URL #1) | 10.1038/s43247-026-03249-w | CONTEXT | Post-Irma ~50% reduction in DIC/DOC outwelling up to 2 yr; interannual/disturbance caveat (whole-estuary mol/d, not forest-normalized) |
 | Volta et al. 2020, *Global Biogeochem. Cycles* 34 (URL #2) | 10.1029/2019GB006515 | CONTEXT | Seasonal DIC/DOC longitudinal flux; DIC = 80–87% of dissolved C (whole-estuary) |
 | Breithaupt, Smoak, Smith & Sanders 2014, *JGR-BG* 119:2032 (URL #5) | 10.1002/2014JG002715 | USED | Soil C burial ~139 (31.7 mmol/m2/d, SRS-6) — the Breithaupt half of burial 123 |
-| Castañeda-Moya et al. 2025, EDI/NSF-PAR litterfall dataset (URL #8) | par.nsf.gov/biblio/10643728 | CONTEXT | Source data behind Castañeda 2013 litterfall (SRS-4/5/6) |
+| Castañeda-Moya et al. 2025, EDI/NSF-PAR litterfall dataset (URL #8) | par.nsf.gov/biblio/10643728 | CONTEXT | Source data behind Castañeda 2013 litterfall (SRS-4/5/6). knb-lter-fce.1195.12 Wood fraction: 68–95 g dry m-2 yr-1 (2001–04), 149–389 (Wilma 2005), 264–276 (Irma 2017), 47–56 (2022–23); context for the CWD volume (SI S.T3) |
 | (URL #6) JSTOR 24862070 | jstor.org/stable/24862070 | PENDING | 403-blocked; user providing PDF. Likely Barr EC synthesis — Barr 2010 (above) already supplies GPP/Re/NEE |
 
 ## Provenance note (measured vs compiled)

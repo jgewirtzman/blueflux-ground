@@ -74,6 +74,36 @@ Component CH4 fluxes were converted to CO2 equivalents using 100- and 20-year gl
 
 Fluxes were transformed with the inverse hyperbolic sine (asinh) before modelling; asinh accommodates positive and negative values, approximates the natural logarithm for large values and is linear near zero. Component summaries and 95% CIs used nonparametric bootstrap resampling (5,000 iterations, percentile method) stratified by component, site, season and class. Stem species and height effects used linear mixed-effects models (lme4/lmerTest) with site as a random intercept; three formulations were evaluated — (1) species + continuous height + season; (2) species × height category (0–50, 50–100, 100–150 cm) + season; (3) species–status combinations (alive/dead *A. germinans* and *R. mangle* separate; *C. erectus* and *L. racemosa* pooled) + height category + season — restricted to sites with species identification (BL60, SRS5, SRS6; species with n ≥ 5). Estimated marginal means were computed on the asinh scale, back-transformed via sinh, and compared with Tukey-adjusted contrasts and Type III F-tests. Porewater structure used principal-components analysis on 11 centred, scaled variables (salinity, dissolved CH4, sulfate, δ13C-CH4, ORP, dissolved O2, sulfide, iron, DOC, alkalinity, dissolved CO2) across all site–depth combinations. Budget and forcing uncertainty was propagated by Monte Carlo (5,000 draws) combining bootstrapped chamber flux densities, the leaf term (Rd25 ~ U[1.28, 1.62]; LAI ~ N[2.3, 0.3] truncated at 1.5), tower GPP uncertainty and the CH4 budget total. Analyses were run in R (≥4.3).
 
+### S.M14 Literature-derived values and how they enter the budget
+
+Wherever a budget term could not be measured in this study, we used a published value. Table S9 lists every such value, with its source, how it was obtained or converted, how it is used, and what alternatives were considered. Measured terms (chamber fluxes, TLS areas, tower NEE, dissolved gas) are not listed. Values are given in the units used in the code (`code/07_upscaling/`). Literature terms for lateral export, burial and biomass are in `06_carbon_budget.R` section 1, and the full reading list is `manuscript/carbon_budget_literature.md`.
+
+**Table S9. Literature-derived values.**
+
+| Term | Value used (range) | Source | How obtained / converted | Use | Alternatives considered |
+|---|---|---|---|---|---|
+| Leaf dark respiration at 25 °C, Rd25 | 1.55 (1.28–1.62) µmol m⁻² leaf s⁻¹ | Barr et al. 2009 (*R. mangle*, at site); Sturchio et al. 2022 (*A. germinans*) | Species-weighted central value (S.M10) | Canopy leaf respiration, healthy class | Leaf chambers here were transparent (net exchange), so they cannot give Rd |
+| Leaf area index | 2.3 (2.1–5.55) | Ground optical (site); MODIS (recovered canopy) | Effective LAI with Beer's law, k = 0.5 | Canopy leaf respiration | 5.55 as an upper sensitivity |
+| Leaf temperature response | f(T) = exp[0.1012(T−25) − 0.0005(T²−25²)] | Heskel et al. 2016 | Driven by tower air temperature; 30 % daytime light inhibition | Canopy leaf respiration, 24 h | — |
+| Downed coarse woody debris volume | 67 (13–181) m³ ha⁻¹ | Krauss et al. 2005 (line-intersect surveys, South Florida mangroves, 9–10 yr after Hurricane Andrew) | Lateral surface = 4V/d with d = 10 cm (as Troxler et al. 2015 did at SRS-6), i.e. 0.27 (0.05–0.72) m² of wood per m² of ground. Exchanges with the air only above the water (S.T3). | CWD CO2 and CH4, all classes | Placeholder of 10 m² per plot (superseded); eyewall value 132 m³ ha⁻¹ as sensitivity. No ghost-specific inventory exists, so the same distribution is used. |
+| Woody litterfall (context only) | 68–95 (2001–04); 47–56 (2022–23) g dry m⁻² yr⁻¹ | FCE LTER, Castañeda-Moya et al., knb-lter-fce.1195.12 (SRS-4/5/6, monthly baskets, 2001–2023) | Annual sums of the Wood fraction | Supports using the Krauss volume (S.T3) | — |
+| Component CO2 effluxes at SRS-6 (context) | soil 1.27; soil + pneumatophores 3.17; prop roots 1.94; CWD 2.34 µmol m⁻² s⁻¹; scaled CWD respiration 1.6 t C ha⁻¹ yr⁻¹; below-canopy 715 g C m⁻² yr⁻¹ | Troxler et al. 2015 | As published | Comparison with our component rates and below-canopy respiration | — |
+| Temperature sensitivity of chamber respiration (day → 24 h) | Q10 = 1.15 [1.13–1.18] (central: tower within-month); 2 (literature) and 4.3 (our stem chambers) as sensitivity | Tower night-time NEE (US-Skr, 2004–2023; SW_IN < 10 W m⁻², u* > 0.2 m s⁻¹, n = 46,641), log(NEE) ~ T with a year × month fixed effect (`code/07_upscaling/01_tower_gpp.R`); our stem CO2 vs temperature | Factor = mean over 24 h of Q10^(T/10) ÷ mean over measurement times | Stem, root, soil and CWD CO2 (not water, not leaf) | The within-month slope matches what the correction spans (day–night and day-to-day swings). Across seasons the tower gives 1.8, which also carries phenology, water level and salinity. Stem chambers give 4.3, likely inflated because daytime stem efflux also follows sap flow. See S.T5. |
+| CH4 solubility | Bunsen coefficient (T, S) | Yamamoto et al. 1976 | — | Water CH4 flux from dissolved CH4 | — |
+| CO2 solubility | K0 (T, S) | Weiss 1974 | — | Water CO2 flux from dissolved CO2 | — |
+| Schmidt numbers (CH4, CO2) | Freshwater polynomials | Wanninkhof 2014 | k = k600 (Sc/600)^−0.5 | Water fluxes from dissolved gas | k600 itself is calibrated on our chamber/dissolved pairs (median 1.10 cm h⁻¹, range 0.56–7.07) |
+| Atmospheric mixing ratios | CH4 1.95 ppm; CO2 417 µatm | Global/regional means for 2022–23 | Equilibrium concentrations | Water fluxes from dissolved gas | — |
+| Lateral DIC export | 622 (311–1244) g C m⁻² yr⁻¹ | Reithmaier et al. 2020 (Eulerian, normalized to the 15.9 km² tidally inundated mangrove area) | Area basis checked against our per-ground basis | NECB, healthy | Zhao et al. 2021 (145) and Ho et al. 2017 (~86, lower bound) as the low scenario |
+| Lateral DOC export | 171 (88–346) | Reithmaier et al. 2020 | As above | NECB, healthy | Romigh et al. 2006 (56); Ho et al. 2017 (8–10) |
+| Lateral POC export | 144 (71–205) | Zhao et al. 2021 (litter POC, SRS-4/5/6) | — | NECB, healthy | — |
+| Lateral aqueous CH4 | 0.35 (0.22–0.48) | Yau et al. 2024 (non-FCE analog) | — | NECB, healthy | — |
+| Soil C burial | 123 (69–157) | Zhao et al. 2021; Breithaupt et al. | — | Storage check, healthy | — |
+| Biomass change (wood increment) | 200 (65–500) | Castañeda-Moya et al. 2013 (SRS-6 repeat census); Chen & Twilley 1999 (high end) | Carbon fraction 0.45 | Storage check, healthy | Coarse roots would add ~30–50 % |
+| Ghost-class lateral, burial, biomass | none | — | No ghost-specific values exist | Not included | Healthy values are not transferred to ghost stands |
+| GWP of CH4 | 27.9 (100 yr); 81.2 (20 yr) | IPCC AR6 | — | Net radiative forcing | — |
+| Earlier tower budget (context) | NEE −1,170 ± 127; GPP ≈ 2,270; ER ≈ 1,100 g C m⁻² yr⁻¹ (2004) | Barr et al. 2010 (same tower) | As published | Comparison only | — |
+| Airborne end-members | per-flight CH4 and CO2 fluxes | Delaria et al. 2024 (CARAFE) | Matched to our campaigns: Oct 2022, plus a Mar 2023 analog = mean of Feb and Apr 2023 | Top-down comparison | Daytime flights (S.T5) |
+
 ---
 
 ## Supplementary Text
@@ -88,9 +118,30 @@ Inundation determines which surfaces emit. Tidal sites (SRS5, SRS6) were represe
 
 As a robustness check we recomputed the annual ghost budget substituting the exposed-soil pathway (the ghost soil CH4 rate measured when sites were dry, pooled from FLM30 and MI, ≈17.5 mg CH4 m−2 d−1) for the flooded water-surface pathway. The ghost annual budget was ≈13.0 g CH4 m−2 yr−1 (flooded, water) versus ≈7.7 (dry, exposed soil), and ≈13.7 for a wet-flooded / dry-exposed seasonal mix. Treating ghost surfaces as exposed soil would therefore lower the ghost methane budget by up to ~40%, but the ghost class remains a net radiative source under every inundation assumption because its CO2 balance is already positive. The sink-to-source result is therefore insensitive to the inundation assumption. Because ghost emission is overwhelmingly a directly measured surface flux scaled by inundated area, structural uncertainty is concentrated in the intact class (Fig. S7).
 
-### S.T3 Coarse-woody-debris surface-area sensitivity
+### S.T3 Coarse woody debris
 
-CWD surface area was extracted from TLS where resolvable and supplemented with field measurements. CWD contributed <1% of the methane budget in all classes; plausible variation in CWD surface area does not affect budget totals or the sink-to-source conclusion. [PLACEHOLDER — final CWD area treatment with TLS collaborators.]
+**What TLS covers.** TLS represents standing trees, both live and dead, as trunk and branch segments. Standing dead trees therefore enter the budget through the stem term; our stem chambers include dead stems. Downed wood is not modelled by the TLS products, and no plot inventory of downed wood exists for these sites.
+
+**Area.** Following Troxler et al. (2015), who measured CWD efflux at SRS-6, we took downed-wood volume from Krauss et al. (2005). Krauss et al. made line-intersect surveys of South Florida mangroves 9–10 years after Hurricane Andrew and reported 67 m³ ha⁻¹ on average across sites, ranging from 13 to 181. That range reflected forest height, distance from the storm track and wind speed, and the eyewall region held 132. About half of that volume was fine woody debris (< 7.5 cm). We converted volume to lateral surface with a 10 cm piece diameter (SA = 4V/d), as Troxler et al. did. This gives 0.27 (0.05–0.72) m² of wood surface per m² of ground. The fine-debris fraction means this conversion probably underestimates the surface.
+
+**Context from the FCE LTER litterfall record.** Woody litterfall at SRS-4/5/6 (knb-lter-fce.1195.12; monthly baskets, 2001–2023) was:
+
+- 68–95 g dry m⁻² yr⁻¹ in 2001–04, around the time of the Krauss survey;
+- 149–389 in 2005 (Hurricane Wilma);
+- 264–276 in 2017 (Hurricane Irma);
+- 34–46 in 2018–21;
+- 47–56 in 2022–23, during our campaigns.
+
+Litter baskets catch fine woody material, not felled stems, so this record indexes inputs, not the standing pool. Our campaigns came about 5 years after Irma, whereas the Krauss survey came 9–10 years after Andrew. With less time for decay since the last major storm, the present downed-wood pool is plausibly at least comparable to the Krauss mean. We therefore use 67 m³ ha⁻¹ as the central value and 13–181 as the range (Monte Carlo: lognormal with these as approximate 95 % bounds). The eyewall value (132) is reported as a sensitivity. For the ghost stands, which have no downed-wood inventory, the same distribution is used, and we flag this as a key data gap.
+
+**Inundation.** Downed wood exchanges gas with the atmosphere only above the water:
+
+- **Tidal (healthy) sites:** CWD contributes at low tide only, as soil does.
+- **Always-flooded (ghost) sites:** CWD contributes through the arc of a lying log of the median measured CWD diameter (11 cm) that sits above the waterline, at the site × campaign mean water depth (field records). The exposed fraction is acos((h−r)/r)/π.
+
+At the ghost sites the water was 7–23 cm deep, so most downed wood is submerged there. Respiration from submerged wood goes to the water column and is partly captured by the water-surface chambers.
+
+**Effect.** Relative to the earlier 10 m² per plot placeholder, the Krauss central value adds about 0.4–0.5 µmol CO2 m⁻² s⁻¹ (ground) to healthy-class respiration and about 0.1 to ghost-class respiration. The healthy figure is the same order as Troxler et al.'s 1.6 t C ha⁻¹ yr⁻¹ at SRS-6 (~0.42 µmol m⁻² s⁻¹). CH4 from CWD remains < 1 % of the methane budget in all classes. Across the full Krauss range, healthy NEE spans about −1,150 to −660 g C m⁻² yr⁻¹. Ghost NEE stays a source, about +370 to +520 (`output/qa/budget_scenarios.csv`, which also crosses the CWD volume with the Q10 options; CH4: `output/upscaling/cwd_sensitivity.csv`).
 
 ### S.T4 Monte Carlo uncertainty decomposition
 
@@ -150,6 +201,7 @@ _[If microbial/metagenomic data are added, they may appear as an added Fig. 5 pa
 - **S5** Stand-level budgets and net forcing by class, with Monte Carlo 95% CIs. [net_forcing_by_class; mc_*]
 - **S6** Literature leaf Rd25 and LAI values used in the CO2 budget. [manuscript/literature/value_catalog.csv]
 - **S7** Context-site component areal CH4/CO2 rates (MI, RB10, SE1) with 95% CIs and n, alongside core-site rates. [supp_context_site_areal_rates.csv]
+- **S9** Literature-derived values: source, conversion, use and alternatives considered (S.M14).
 - **S8** Ghost inundation sensitivity (flooded vs exposed-soil vs mixed) and the regenerating upscaled estimate. [supp_ghost_inundation_sensitivity.csv; supp_regen_budget.csv]
 
 ---
@@ -160,12 +212,12 @@ Chamber flux dataset (combined_gas_flux_dataset.csv) and analysis workflow at [r
 
 ## Supplementary References
 
-[To compile: Poulter et al. 2023 (BlueFlux ERL); Delaria et al. 2024 (CARAFE JGR); Lagomasino et al. 2021; Kljun et al. 2015; Hutjes et al. 2010; Hannun et al. 2020; Heskel et al. 2016; Barr et al. 2009, 2010; Sturchio 2022; Troxler et al. 2015; IPCC AR6.]
+[To compile: Poulter et al. 2023 (BlueFlux ERL); Krauss et al. 2005; Castañeda-Moya et al. FCE LTER litterfall (knb-lter-fce.1195.12); Castañeda-Moya et al. 2013; Chen & Twilley 1999; Reithmaier et al. 2020; Zhao et al. 2021; Ho et al. 2017; Romigh et al. 2006; Breithaupt et al.; Yau et al. 2024; Yamamoto et al. 1976; Weiss 1974; Wanninkhof 2014; Delaria et al. 2024 (CARAFE JGR); Lagomasino et al. 2021; Kljun et al. 2015; Hutjes et al. 2010; Hannun et al. 2020; Heskel et al. 2016; Barr et al. 2009, 2010; Sturchio 2022; Troxler et al. 2015; IPCC AR6.]
 
 ---
 
 ### Outstanding to complete SI
-1. TLS methods (S.M6) and CWD area (S.T3) — Powell/Stovall.
+1. TLS methods (S.M6) — Powell/Stovall; ask whether downed wood can be extracted from the point clouds, especially at the ghost sites (S.T3).
 2. Tower (S.M8) and CARAFE (S.M9) instrument/processing detail — tower PIs / Delaria.
 3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 6e,f.
 4. Build Fig. S16 (closure residual) and source Fig. S15 (CARAFE footprint).

@@ -36,11 +36,11 @@ ggsave("output/figures/other/pub_surface_areas.png",p4,width=7,height=4.5,dpi=20
 
 ## ---- Fig 5: CH4 component budget ----
 comp<-read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario=="exponential") %>%
-  group_by(site,campaign) %>%
-  summarise(Stem=mean(stem_mg),Root=mean(root_mg),Soil=mean(soil_mg),
-            Water=mean(water_mg),CWD=mean(cwd_mg),total=mean(total_mg),.groups="drop")
+  group_by(site,campaign) %>%                                  # tide average, weighted by flooded fraction
+  summarise(across(c(Stem=stem_mg,Root=root_mg,Soil=soil_mg,Water=water_mg,CWD=cwd_mg,total=total_mg),
+                   ~weighted.mean(.x,tide_weight)),.groups="drop")
 mc<-read.csv("output/upscaling/mc_component_uncertainty.csv") %>% filter(component=="total") %>%
-  group_by(site,campaign) %>% summarise(lo=mean(mc_ci_lo),hi=mean(mc_ci_hi),.groups="drop")
+  group_by(site,campaign) %>% summarise(lo=weighted.mean(mc_ci_lo,tide_weight),hi=weighted.mean(mc_ci_hi,tide_weight),.groups="drop")
 long<-comp %>% select(-total) %>%
   pivot_longer(c(Water,Soil,Root,Stem,CWD),names_to="component",values_to="mg") %>%
   mutate(component=factor(component,levels=c("Water","Soil","Root","Stem","CWD")),
@@ -63,9 +63,10 @@ ggsave("output/figures/other/pub_component_budget_v2.png",p5,width=9,height=4.8,
 
 ## ---- Main-text Fig 4 composite ----
 comp7<-read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario=="exponential") %>%
-  group_by(site,campaign) %>%                                  # tide average
-  summarise(Water=mean(water_mg),Soil=mean(soil_mg),Root=mean(root_mg),CWD=mean(cwd_mg),
-            `Stem (meas.)`=mean(stem_meas_mg),`Stem (extrap.)`=mean(stem_extrap_mg),.groups="drop") %>%
+  group_by(site,campaign) %>%                                  # tide average, weighted by flooded fraction
+  summarise(Water=weighted.mean(water_mg,tide_weight),Soil=weighted.mean(soil_mg,tide_weight),Root=weighted.mean(root_mg,tide_weight),
+            CWD=weighted.mean(cwd_mg,tide_weight),`Stem (meas.)`=weighted.mean(stem_meas_mg,tide_weight),
+            `Stem (extrap.)`=weighted.mean(stem_extrap_mg,tide_weight),.groups="drop") %>%
   pivot_longer(-c(site,campaign),names_to="component",values_to="mg") %>%
   mutate(component=factor(component,levels=c("Water","Soil","Root","CWD","Stem (meas.)","Stem (extrap.)")),
          site=factor(site,levels=site_lev),

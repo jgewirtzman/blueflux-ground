@@ -35,3 +35,6 @@ output/logs/
 
 # Project R library for the vendored goFlux fork (code/00_lib/goflux_fork.R)
 .Rlib/
+
+# Large raw FCE LTER water-level file (downloaded by code/07_upscaling/01b_flood_fraction.R)
+data/environmental/water_level/FCE_LTER_1168_water_levels.csv

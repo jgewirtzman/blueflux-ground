@@ -260,10 +260,15 @@ leaf_term %>% mutate(across(where(is.numeric), ~round(.x,3))) %>% as.data.frame(
 # Chambers were run in daytime (mean ~13:00) and their fluxes stand for the
 # whole day. Respiration components (stem, root, soil, CWD) are scaled from the
 # temperatures at measurement (tower TA, = Tcham) to the campaign month's 24-h
-# tower TA with an exponential (Q10) response fitted on our own chamber CO2:
-# log(CO2) ~ T + (1 | site x campaign), stems (the only component with enough
-# temperature range and n; roots / soil / CWD alone are uninformative).
+# tower TA with an exponential (Q10) response:
 #   factor = mean_24h(Q10^(T/10)) / mean_measurements(Q10^(T/10))
+# Q10 (central) is the tower's within-month night-respiration Q10
+# (01_tower_gpp.R; ~1.15), i.e. the response to day-night and day-to-day
+# temperature swings, which is what this correction spans. Our stem chambers
+# give a much steeper slope (log(CO2) ~ T + (1 | site x campaign), ~4.3),
+# reported here for comparison: within a day stem CO2 efflux tracks sap flow and
+# xylem CO2 transport as well as temperature, so it overstates the respiration
+# response. Sensitivity: CO2_Q10 = <number> or "stem".
 # Water CO2 (air-water gas exchange) and the leaf term (already 24-h) are not
 # corrected. Q10, its CI and the factors: output/upscaling/co2_temperature_correction.csv.
 # =============================================================================
@@ -271,8 +276,16 @@ cat("\n=== 4b. Time-of-day temperature correction ===\n")
 q10_dat <- flux_raw %>% filter(component == "stem", CO2_best.flux > 0, !is.na(air_temp)) %>%
   mutate(grp = paste(plot, campaign))
 q10_fit <- lme4::lmer(log(CO2_best.flux) ~ air_temp + (1 | grp), data = q10_dat)
-q10_b <- lme4::fixef(q10_fit)[["air_temp"]]; q10_se <- sqrt(as.matrix(vcov(q10_fit))["air_temp", "air_temp"])
-if (nzchar(Sys.getenv("CO2_Q10"))) q10_b <- log(as.numeric(Sys.getenv("CO2_Q10"))) / 10   # sensitivity override
+stem_b <- lme4::fixef(q10_fit)[["air_temp"]]; stem_se <- sqrt(as.matrix(vcov(q10_fit))["air_temp", "air_temp"])
+tower_q10 <- read.csv(file.path(project_dir, "output", "gpp", "US-Skr_Q10_within_month.csv"))
+q10_src <- Sys.getenv("CO2_Q10", "tower")
+if (q10_src == "tower") {
+  q10_b <- log(tower_q10$Q10) / 10; q10_se <- (log(tower_q10$Q10_hi) - log(tower_q10$Q10_lo)) / (2 * 1.96 * 10)
+} else if (q10_src == "stem") {
+  q10_b <- stem_b; q10_se <- stem_se
+} else {
+  q10_b <- log(as.numeric(q10_src)) / 10; q10_se <- 0                                    # sensitivity override
+}
 Q10 <- exp(10 * q10_b)
 f_q10 <- function(T) exp(q10_b * T)
 T24 <- gpp_raw %>% filter(campaign %in% campaigns) %>% group_by(campaign) %>%
@@ -283,9 +296,10 @@ t_corr <- flux_raw %>% filter(component %in% resp_comps, !is.na(CO2_best.flux), 
   summarise(n = n(), T_meas_mean = mean(air_temp), f_meas = mean(f_q10(air_temp)), .groups = "drop") %>%
   left_join(T24 %>% mutate(campaign = as.character(campaign)), by = "campaign") %>%
   mutate(factor = f24 / f_meas, Q10 = Q10, Q10_lo = exp(10 * (q10_b - 1.96 * q10_se)), Q10_hi = exp(10 * (q10_b + 1.96 * q10_se)),
-         q10_n = nrow(q10_dat))
+         Q10_source = q10_src, Q10_stem_chambers = exp(10 * stem_b), Q10_stem_n = nrow(q10_dat))
 write.csv(t_corr, file.path(output_dir, "co2_temperature_correction.csv"), row.names = FALSE)
-cat(sprintf("Q10 (stems, n = %d) = %.2f [%.2f-%.2f]\n", nrow(q10_dat), Q10, t_corr$Q10_lo[1], t_corr$Q10_hi[1]))
+cat(sprintf("Q10 used (%s) = %.2f [%.2f-%.2f]; stem chambers (n = %d) = %.2f [%.2f-%.2f]\n", q10_src, Q10, t_corr$Q10_lo[1],
+            t_corr$Q10_hi[1], nrow(q10_dat), exp(10 * stem_b), exp(10 * (stem_b - 1.96 * stem_se)), exp(10 * (stem_b + 1.96 * stem_se))))
 print(as.data.frame(t_corr %>% select(campaign, component, n, T_meas_mean, T24_mean, factor) %>% mutate(across(where(is.numeric), ~ round(.x, 3)))))
 flux_table <- flux_table %>% mutate(.c = as.character(campaign)) %>%
   left_join(t_corr %>% select(.c = campaign, component, .f = factor), by = c(".c", "component")) %>%
@@ -301,7 +315,10 @@ assign_flood <- function(site, camp) {
   c(water = NA, soil = NA)
 }
 is_tidal <- function(site) site %in% c("SRS5", "SRS6")
-cwd_sa_default <- 10
+# Downed CWD: Krauss et al. 2005 wood volume -> surface (Troxler et al. 2015),
+# exposed to the air only above the water (code/00_lib/cwd_scaling.R)
+source(file.path(project_dir, "code", "00_lib", "cwd_scaling.R"))
+cwd_exposed <- cwd_exposure_setup(flux_raw)
 
 # =============================================================================
 # 6. Scale to plot level -> areal Reco (umol m-2 ground s-1)
@@ -325,7 +342,7 @@ for (camp in campaigns) {
     # Total umol/s over plot
     stem_tot <- ifelse(!is.na(stem_rate), stem_rate * stem_sa_tot, 0)
     root_tot <- ifelse(!is.na(root_rate), root_rate * root_sa, 0)
-    cwd_tot  <- ifelse(!is.na(cwd_rate),  cwd_rate * cwd_sa_default, 0)
+    cwd_tot  <- ifelse(!is.na(cwd_rate),  cwd_rate * cwd_sa_of(plot_area), 0)
 
     # leaf canopy term (per m2 ground) -> only live-canopy (healthy); ghost = 0
     lt <- leaf_term %>% filter(campaign == camp)
@@ -339,6 +356,7 @@ for (camp in campaigns) {
       else { fw <- if (tide == "high_tide") 1 else 0; fs <- 1 - fw }
 
       soil_tot  <- ifelse(!is.na(soil_rate),  soil_rate * ground_area * fs, 0)
+      cwd_tot_t <- cwd_tot * cwd_exposed(site_name, camp, tide)
       water_tot <- ifelse(!is.na(water_rate), water_rate * ground_area * fw, 0)
 
       # areal umol m-2 ground s-1
@@ -349,7 +367,7 @@ for (camp in campaigns) {
         root  = to_areal(root_tot),
         soil  = to_areal(soil_tot),
         water = to_areal(water_tot),
-        cwd   = to_areal(cwd_tot),
+        cwd   = to_areal(cwd_tot_t),
         leaf  = Rleaf, leaf_lo = Rleaf_lo, leaf_hi = Rleaf_hi,
         stringsAsFactors = FALSE
       )
@@ -391,13 +409,17 @@ tower_co2 <- gpp_raw %>%
 cat("Tower campaign-window means (umol m-2 s-1; NEE>0 = source):\n")
 tower_co2 %>% mutate(across(where(is.numeric), ~round(.x,3))) %>% as.data.frame() %>% print()
 
-# Tide-average tidal sites (50/50 high/low) for tower comparison; ghost = fixed.
+# Tide-average tidal sites, weighting high tide by the measured fraction of
+# time the floor is flooded that month (00_lib/tide_weights.R); ghost = fixed.
 # Both tide states are retained in results_df / plot_level output.
+source(file.path(project_dir, "code", "00_lib", "tide_weights.R"))
+tide_weight <- tide_weight_setup(project_dir)
+results_df <- results_df %>% mutate(tide_weight = tide_weight(site, as.character(campaign), tide_state))
 comp_cols <- c("stem","root","soil","water","cwd","leaf","leaf_lo","leaf_hi",
                "Reco","Reco_noleaf")
 tide_avg <- results_df %>%
   group_by(site, campaign, disturbance_level) %>%
-  summarise(across(all_of(comp_cols), ~ mean(.x, na.rm = TRUE)), .groups = "drop") %>%
+  summarise(across(all_of(comp_cols), ~ weighted.mean(.x, tide_weight, na.rm = TRUE)), .groups = "drop") %>%
   mutate(tide_state = "tide_avg")
 
 # Bottom-up NEE on the tide-averaged budget: healthy uses tower GPP; ghost GPP ~ 0
@@ -422,7 +444,7 @@ write.csv(summary_co2, file.path(output_dir, "summary_CO2_by_component.csv"), ro
 
 # Per-tide detail (both tide states retained) + tide-avg NEE
 plot_level_co2 <- bind_rows(
-  results_df %>% select(site, campaign, tide_state, disturbance_level,
+  results_df %>% select(site, campaign, tide_state, tide_weight, disturbance_level,
                         stem, root, soil, water, cwd, leaf, Reco, Reco_noleaf),
   nee_df %>% select(site, campaign, tide_state, disturbance_level,
                     stem, root, soil, water, cwd, leaf, Reco, Reco_noleaf)

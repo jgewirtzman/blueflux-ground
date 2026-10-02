@@ -283,6 +283,25 @@ out_export <- out[, .(
   ameriflux_source = "AmeriFlux BASE US-Skr Shark River Slough (Tower SRS-6) Everglades, Ver. 2-5, DOI 10.17190/AMF/1246105"
 )]
 
+
+# Within-month temperature sensitivity of night-time ecosystem respiration,
+# used to scale daytime chamber respiration to 24 h (03_upscale_co2.R, 4b).
+# Night NEE (SW_IN < 10, 0 < NEE < 30, USTAR > 0.2), all years, with a fixed
+# effect per year x month so the slope reflects day-to-night and day-to-day
+# temperature swings within a month, not the seasonal cycle (which also carries
+# phenology, water level and salinity).
+q10file <- "output/gpp/US-Skr_Q10_within_month.csv"
+qn <- dt[is.finite(NEE_OBS) & is.finite(TA_1_1_1) & is.finite(SW_IN) & SW_IN < night_sw_threshold &
+           NEE_OBS > 0 & NEE_OBS < 30 & is.finite(USTAR) & USTAR > 0.2]
+qn[, ym := paste(year, month)]
+q10_fit <- lm(log(NEE_OBS) ~ TA_1_1_1 + factor(ym), data = qn)
+q10_b <- coef(q10_fit)[["TA_1_1_1"]]; q10_se <- summary(q10_fit)$coefficients["TA_1_1_1", 2]
+fwrite(data.table(Q10 = exp(10 * q10_b), Q10_lo = exp(10 * (q10_b - 1.96 * q10_se)), Q10_hi = exp(10 * (q10_b + 1.96 * q10_se)),
+                  n = nrow(qn), years = paste(range(qn$year), collapse = "-"),
+                  method = "night NEE ~ TA + year-month fixed effect; SW_IN < 10, USTAR > 0.2"), q10file)
+cat(sprintf("Within-month night respiration Q10 = %.2f [%.2f-%.2f], n = %d\n", exp(10 * q10_b),
+            exp(10 * (q10_b - 1.96 * q10_se)), exp(10 * (q10_b + 1.96 * q10_se)), nrow(qn)))
+
 fwrite(out_export, outfile)
 fwrite(rbindlist(diagnostics), diagfile)
 

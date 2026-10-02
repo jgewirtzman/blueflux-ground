@@ -11,8 +11,8 @@ CAMP <- c("Oct 2022","Mar 2023")            # wet, dry (chronological)
 
 ## ---- CH4 bottom-up components ----
 buc <- read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario=="exponential") %>%
-  group_by(site,campaign,disturbance_level) %>%
-  summarise(across(c(stem_mg,root_mg,soil_mg,water_mg,cwd_mg,total_mg),~mean(.x)),.groups="drop") %>%
+  group_by(site,campaign,disturbance_level) %>%               # tide average, weighted by flooded fraction
+  summarise(across(c(stem_mg,root_mg,soil_mg,water_mg,cwd_mg,total_mg),~weighted.mean(.x,tide_weight)),.groups="drop") %>%
   group_by(campaign,disturbance_level) %>%
   summarise(across(c(stem_mg,root_mg,soil_mg,water_mg,cwd_mg,total_mg),~mean(.x)),.groups="drop") %>%
   filter(campaign %in% CAMP) %>%

@@ -6,6 +6,7 @@
 # =============================================================================
 suppressMessages({library(dplyr);library(tidyr)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+source("code/00_lib/cwd_scaling.R")   # CWD_SDLOG
 set.seed(42)
 N <- 5000
 GWP100 <- 27.9; GWP20 <- 81.2
@@ -48,7 +49,8 @@ comp<-read.csv("output/upscaling/summary_CO2_by_component.csv") %>%
 
 # --- CH4 budget MC total (mg CH4 m-2 d-1) -> class mean + sd ---
 ch4mc<-read.csv("output/upscaling/mc_component_uncertainty.csv") %>% filter(component=="total") %>%
-  group_by(site,campaign,disturbance_level) %>% summarise(m=mean(mc_mean),se=mean(mc_se),.groups="drop") %>%
+  group_by(site,campaign,disturbance_level) %>%                               # tide states weighted by flooded fraction
+  summarise(m=weighted.mean(mc_mean,tide_weight),se=weighted.mean(mc_se,tide_weight),.groups="drop") %>%
   group_by(campaign,disturbance_level) %>% summarise(ch4_m=mean(m),ch4_se=mean(se),.groups="drop") %>%
   filter(campaign %in% CAMP)
 
@@ -63,7 +65,9 @@ for(i in 1:nrow(comp)){
     for(cc in c("soil","water","root","stem","cwd")){
       v<-r[[cc]]; rs<-relse$rel_se[relse$campaign==cap & relse$disturbance_level==dl & relse$component==cc]
       if(length(rs)==0) rs<-0.5
-      rsum<-rsum+rnorm(1,v,abs(v)*rs)
+      d<-rnorm(1,v,abs(v)*rs)
+      if(cc=="cwd") d<-d*rlnorm(1,0,CWD_SDLOG)   # downed-wood area (Krauss et al. 2005 range)
+      rsum<-rsum+d
     }
     # leaf: healthy only; Rd25 ~ U(1.28,1.62), LAI ~ N(2.3,0.3) truncated
     leaf<-if(dl=="healthy"){

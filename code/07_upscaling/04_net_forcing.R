@@ -17,7 +17,7 @@ mgd_to_gyr   <- 365/1000               # mg CH4 m-2 d-1 -> g CH4 m-2 yr-1
 ch4 <- read.csv("output/upscaling/plot_level_CH4_totals.csv") %>%
   filter(scenario=="exponential") %>%
   group_by(site,campaign,disturbance_level) %>%
-  summarise(total_mg=mean(total_mg),.groups="drop") %>%      # tide average
+  summarise(total_mg=weighted.mean(total_mg,tide_weight),.groups="drop") %>%   # tide average, weighted by flooded fraction
   group_by(disturbance_level) %>%
   summarise(ch4_g_yr=mean(total_mg)*mgd_to_gyr,.groups="drop")
 

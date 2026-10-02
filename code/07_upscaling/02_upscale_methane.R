@@ -18,7 +18,8 @@
 #     CP40  — always 100% water
 #     FLM30 — Oct 2022 & Mar 2023 = 100% water (flooded)
 #     SRS5/SRS6 — tidal: both high-tide (100% water) and low-tide (100% soil)
-#   CWD:   Estimated at 10 m2 per plot (sensitivity over 0–200 m2).
+#   CWD:   downed wood from Krauss et al. 2005 volume (67 m3 ha-1; 13-181) as 10 cm pieces
+#          (Troxler et al. 2015), exposed to the air only above water (code/00_lib/cwd_scaling.R).
 #
 # Gap-filling (targeted, not blanket):
 #   CP40 root:  from FLM30 root (same campaign) — tiny root SA (58 m2)
@@ -363,7 +364,10 @@ assign_flood <- function(site, camp) {
 }
 is_tidal <- function(site) site %in% c("SRS5", "SRS6")
 
-cwd_sa_default <- 10  # m2 per plot
+# Downed CWD: Krauss et al. 2005 wood volume -> surface (Troxler et al. 2015),
+# exposed to the air only above the water (code/00_lib/cwd_scaling.R)
+source(file.path(project_dir, "code", "00_lib", "cwd_scaling.R"))
+cwd_exposed <- cwd_exposure_setup(flux_raw)
 
 # Observed stem flux range (for MC capping)
 obs_stem_max <- max(flux_raw$CH4_best.flux[flux_raw$component == "stem"], na.rm = TRUE)
@@ -373,7 +377,7 @@ obs_stem_max <- max(flux_raw$CH4_best.flux[flux_raw$component == "stem"], na.rm 
 cv_stem_sa  <- 0.12   # ~12% from voxelization/occlusion (Calders et al. 2015)
 cv_root_sa  <- 0.20   # higher due to below-water occlusion
 cv_ground   <- 0.03   # plot boundary well-constrained
-cv_cwd_sa   <- 1.00   # CWD SA is a rough estimate
+cv_cwd_sa   <- sqrt(exp(CWD_SDLOG^2) - 1)   # lognormal spread matching the Krauss range (13-181 m3 ha-1)
 
 # Helper: SE from bootstrap CI (assuming ~normal)
 ci_to_se <- function(ci_lo, ci_hi) {
@@ -434,7 +438,7 @@ for (camp in campaigns) {
     cwd_ci_hi  <- ft %>% filter(component == "cwd") %>% pull(ci_hi)
 
     root_total  <- ifelse(!is.na(root_rate), root_rate * root_sa, 0)
-    cwd_total   <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_default, 0)
+    cwd_total_full <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_of(plot_area), 0)
 
     # --- MC draws for uncertainty propagation ---
     # Flux rate draws (normal, truncated at 0 for components that can't be negative...
@@ -454,7 +458,7 @@ for (camp in campaigns) {
     # SA draws (lognormal, correlated within site for stem)
     root_sa_draws  <- rlnorm_cv(N_MC, root_sa, cv_root_sa)
     ground_draws   <- rlnorm_cv(N_MC, ground_area, cv_ground)
-    cwd_sa_draws   <- rlnorm_cv(N_MC, cwd_sa_default, cv_cwd_sa)
+    cwd_sa_draws   <- rlnorm_cv(N_MC, cwd_sa_of(plot_area), cv_cwd_sa)
 
     # Stem SA draws: single correlated multiplier across all height bins
     stem_sa_mult <- rlnorm_cv(N_MC, 1, cv_stem_sa)  # multiplier centered at 1
@@ -502,6 +506,8 @@ for (camp in campaigns) {
 
       soil_total  <- ifelse(!is.na(soil_rate),  soil_rate * ground_area * fs, 0)
       water_total <- ifelse(!is.na(water_rate), water_rate * ground_area * fw, 0)
+      cwd_ex      <- cwd_exposed(site_name, camp, tide)
+      cwd_total   <- cwd_total_full * cwd_ex
       soil_sa_used  <- ground_area * fs
       water_sa_used <- ground_area * fw
 
@@ -509,7 +515,7 @@ for (camp in campaigns) {
       soil_mc  <- soil_flux_draws * ground_draws * fs
       water_mc <- water_flux_draws * ground_draws * fw
       root_mc  <- root_flux_draws * root_sa_draws
-      cwd_mc   <- cwd_flux_draws * cwd_sa_draws
+      cwd_mc   <- cwd_flux_draws * cwd_sa_draws * cwd_ex
 
       # Convert all MC draws to mg CH4 m-2 d-1
       mc_conv <- 16.04e-9 * 1e3 * 86400 / plot_area
@@ -562,7 +568,7 @@ for (camp in campaigns) {
         flux_rate = c(NA, NA, root_rate, soil_rate, water_rate, cwd_rate),
         flux_ci_lo = c(NA, NA, root_ci_lo, soil_ci_lo, water_ci_lo, cwd_ci_lo),
         flux_ci_hi = c(NA, NA, root_ci_hi, soil_ci_hi, water_ci_hi, cwd_ci_hi),
-        surface_area_m2 = c(NA, NA, root_sa, soil_sa_used, water_sa_used, cwd_sa_default),
+        surface_area_m2 = c(NA, NA, root_sa, soil_sa_used, water_sa_used, cwd_sa_of(plot_area) * cwd_ex),
         total_nmol_s = c(stem_meas_nmol, stem_extrap_nmol, root_total,
                          soil_total, water_total, cwd_total),
         stringsAsFactors = FALSE
@@ -571,13 +577,18 @@ for (camp in campaigns) {
   }
 }
 
+# tide states weighted by the measured flooded fraction (00_lib/tide_weights.R)
+source(file.path(project_dir, "code", "00_lib", "tide_weights.R"))
+tide_weight <- tide_weight_setup(project_dir)
 mc_budget_df <- bind_rows(mc_budget) %>%
   left_join(site_meta, by = "site") %>%
-  mutate(campaign = factor(campaign, levels = campaigns))
+  mutate(tide_weight = tide_weight(site, campaign, tide_state),
+         campaign = factor(campaign, levels = campaigns))
 
 results_df <- bind_rows(results) %>%
   left_join(site_meta, by = "site") %>%
   mutate(
+    tide_weight = tide_weight(site, campaign, tide_state),
     campaign = factor(campaign, levels = campaigns),
     conv = 16.04e-9 * 1e3 * 86400 / plot_area_m2,
     stem_mg  = stem_nmol_s * conv,
@@ -648,21 +659,23 @@ class_avg %>%
 # --- 10. Sensitivity analyses ------------------------------------------------
 cat("\n=== 10. Sensitivity analyses ===\n")
 
-# CWD SA sensitivity
-cwd_sa_values <- c(0, 5, 10, 25, 50, 100, 200)
+# CWD sensitivity over downed-wood volume (Krauss et al. 2005 range), with exposure
+cwd_vol_values <- c(0, CWD_VOL_LO, CWD_VOL_CENTRAL, 132, CWD_VOL_HI)
 cwd_sens <- list()
-for (cwd_sa in cwd_sa_values) {
+for (cwd_vol in cwd_vol_values) {
   for (i in seq_len(nrow(results_df))) {
     r <- results_df[i, ]
     ft_row <- flux_table %>% filter(site == r$site, campaign == r$campaign, component == "cwd")
     cr <- if (nrow(ft_row) > 0) ft_row$flux_rate[1] else NA_real_
+    pa <- tree_stats$area_m2[tree_stats$site == r$site]
+    cwd_sa <- cwd_sa_of(pa, cwd_vol) * cwd_exposed(r$site, r$campaign, r$tide_state)
     cwd_mg_new <- if (!is.na(cr)) cr * cwd_sa * r$conv else 0
     total_new <- r$stem_mg + r$root_mg + r$soil_mg + r$water_mg + cwd_mg_new
     cwd_sens <- c(cwd_sens, list(data.frame(
       site = r$site, campaign = as.character(r$campaign),
       scenario = r$scenario, tide_state = r$tide_state,
       disturbance_level = r$disturbance_level,
-      cwd_SA_m2 = cwd_sa, cwd_mg = cwd_mg_new, total_mg = total_new,
+      cwd_vol_m3ha = cwd_vol, cwd_SA_m2 = cwd_sa, cwd_mg = cwd_mg_new, total_mg = total_new,
       stringsAsFactors = FALSE
     )))
   }
@@ -692,7 +705,7 @@ for (ff in flood_fracs) {
       root_total  <- ifelse(!is.na(root_rate), root_rate * root_sa, 0)
       soil_total  <- ifelse(!is.na(soil_rate), soil_rate * ground_area * (1 - ff), 0)
       water_total <- ifelse(!is.na(water_rate), water_rate * ground_area * ff, 0)
-      cwd_total   <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_default, 0)
+      cwd_total   <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_of(plot_area) * (1 - ff), 0)   # exposed when not flooded
       total <- (stem_exp_val + root_total + soil_total + water_total + cwd_total) * conv
 
       flood_sens <- c(flood_sens, list(data.frame(
@@ -887,7 +900,8 @@ for (camp in campaigns) {
       root_total  <- ifelse(!is.na(root_rate), root_rate * root_sa, 0)
       soil_total  <- ifelse(!is.na(soil_rate), soil_rate * ground_area * fs, 0)
       water_total <- ifelse(!is.na(water_rate), water_rate * ground_area * fw, 0)
-      cwd_total   <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_default, 0)
+      cwd_total   <- ifelse(!is.na(cwd_rate), cwd_rate * cwd_sa_of(tree_stats$area_m2[tree_stats$site == site_name]) *
+                              cwd_exposed(site_name, camp, if (is_tidal(site_name)) "high_tide" else "fixed"), 0)
       nonstem_total <- (root_total + soil_total + water_total + cwd_total) * conv
       stem_mg <- total_flux * conv
 
@@ -951,12 +965,12 @@ extrap_sens_df %>%
 
 # --- Save tables --------------------------------------------------------------
 write.csv(results_df, file.path(output_dir, "plot_level_CH4_totals.csv"), row.names = FALSE)
-# site x campaign CH4 by component (mg CH4 m-2 d-1), tide states averaged 50/50
-# as in 04_net_forcing.R; read by 07_budget_sources.R
+# site x campaign CH4 by component (mg CH4 m-2 d-1), tide states weighted by
+# the flooded fraction as in 04_net_forcing.R; read by 07_budget_sources.R
 summary_ch4 <- results_df %>%
   group_by(site, campaign, disturbance_level, scenario) %>%
-  summarise(stem = mean(stem_mg), soil = mean(soil_mg), root = mean(root_mg), water = mean(water_mg),
-            cwd = mean(cwd_mg), total = mean(total_mg), .groups = "drop")
+  summarise(across(c(stem = stem_mg, soil = soil_mg, root = root_mg, water = water_mg, cwd = cwd_mg, total = total_mg),
+                   ~ weighted.mean(.x, tide_weight)), .groups = "drop")
 write.csv(summary_ch4, file.path(output_dir, "summary_CH4_by_component.csv"), row.names = FALSE)
 write.csv(flux_table, file.path(output_dir, "flux_rates_with_gapfills.csv"), row.names = FALSE)
 write.csv(budget_df, file.path(output_dir, "budget_decomposition.csv"), row.names = FALSE)
@@ -1119,14 +1133,14 @@ p6_data <- cwd_sens_df %>%
     site_label = paste0(site, tide_label)
   )
 
-p6 <- ggplot(p6_data, aes(x = cwd_SA_m2, y = total_mg, color = campaign)) +
+p6 <- ggplot(p6_data, aes(x = cwd_vol_m3ha, y = total_mg, color = campaign)) +
   geom_line(linewidth = 0.8) + geom_point(size = 1.2) +
-  geom_vline(xintercept = cwd_sa_default, linetype = "dashed", color = "grey50") +
+  geom_vline(xintercept = CWD_VOL_CENTRAL, linetype = "dashed", color = "grey50") +
   facet_wrap(~ site_label, scales = "free_y") +
-  labs(x = expression(CWD~SA~(m^2~plot^{-1})),
+  labs(x = expression(Downed~wood~volume~(m^3~ha^{-1})),
        y = expression(Total~CH[4]~(mg~m^{-2}~d^{-1})),
-       title = "CWD surface area sensitivity",
-       subtitle = paste0("Dashed = default (", cwd_sa_default, " m2)"),
+       title = "Downed CWD sensitivity (Krauss et al. 2005 range; exposure to air applied)",
+       subtitle = paste0("Dashed = central (", CWD_VOL_CENTRAL, " m3 ha-1)"),
        color = "Campaign") +
   theme_pub(11)
 save_pub(p6, "cwd_sensitivity", 260, 160)
@@ -1281,7 +1295,7 @@ sa_long <- data.frame(
       component == "root"      ~ tls_root_sa$root_SA_m2[tls_root_sa$site == site],
       component == "soil_max"  ~ tree_stats$ground_area_m2[tree_stats$site == site],
       component == "water_max" ~ tree_stats$ground_area_m2[tree_stats$site == site],
-      component == "cwd"       ~ cwd_sa_default
+      component == "cwd"       ~ cwd_sa_of(tree_stats$area_m2[tree_stats$site == site])
     ),
     sa_per_m2 = surface_area_m2 / plot_area,
     sa_per_ha = sa_per_m2 * 10000,
@@ -1290,14 +1304,14 @@ sa_long <- data.frame(
       component == "root"      ~ "Root",
       component == "soil_max"  ~ "Soil\n(max = ground)",
       component == "water_max" ~ "Water\n(max = ground)",
-      component == "cwd"       ~ paste0("CWD\n(est. ", cwd_sa_default, " m2)")
+      component == "cwd"       ~ paste0("CWD\n(", CWD_VOL_CENTRAL, " m3 ha-1)")
     )
   ) %>%
   ungroup()
 
 sa_long$comp_label <- factor(sa_long$comp_label,
   levels = c("Soil\n(max = ground)", "Water\n(max = ground)",
-             "Root", paste0("CWD\n(est. ", cwd_sa_default, " m2)"),
+             "Root", paste0("CWD\n(", CWD_VOL_CENTRAL, " m3 ha-1)"),
              "Stem\n(trunk+branch)"))
 
 p9 <- ggplot(sa_long, aes(x = comp_label, y = sa_per_m2, fill = site)) +
@@ -1827,7 +1841,7 @@ cat("  WATER: ground_area × frac_flooded\n")
 cat("    CP40/FLM30: always flooded (Oct 2022 & Mar 2023)\n")
 cat("    SRS5/SRS6: tidal — high/low tide endpoints\n")
 cat("    SRS5/SRS6 Oct 2022 water: dissolved CH4 x k where no chamber flux (output/flux/03_fit/water_flux_estimates.csv)\n")
-cat("  CWD:   default", cwd_sa_default, "m2 SA (sensitivity 0-200 m2)\n")
+cat("  CWD:   downed wood", CWD_VOL_CENTRAL, "m3 ha-1 (Krauss et al. 2005; range 13-181), 10 cm pieces, exposed only above water\n")
 cat("  Campaigns: Oct 2022 (wet) and Mar 2023 (dry) only; Mar 2022 dropped\n")
 
 cat("\nDone. Outputs in:", output_dir, "\n")

@@ -40,6 +40,7 @@ steps <- c(
   "code/06_analysis/02_manuscript_results.R",
   # 07 upscaling: tower GPP, plot budgets, forcing, carbon budget
   "code/07_upscaling/01_tower_gpp.R",
+  "code/07_upscaling/01b_flood_fraction.R",
   "code/07_upscaling/02_upscale_methane.R",
   "code/07_upscaling/03_upscale_co2.R",
   "code/07_upscaling/04_net_forcing.R",
@@ -87,7 +88,8 @@ qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, in
   "code/qa/trace_co2_shift.R",
   "code/qa/net_forcing_attribution.R",
   "code/qa/scripted_windows_review.R",
-  "code/qa/report_old_new.R"
+  "code/qa/report_old_new.R",
+  "code/qa/budget_scenarios.R"
 )
 
 args <- commandArgs(trailingOnly = TRUE)
