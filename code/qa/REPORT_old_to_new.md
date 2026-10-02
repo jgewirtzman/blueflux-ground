@@ -103,29 +103,51 @@ Legacy used the three mislabelled tree closures.
 | Ghost / regenerating stem amplification vs intact | 23× / 28× | 41× / 50× |
 | Water CH4, regenerating | 34.5 | 56.9 |
 | Ebullitive share of water CH4 | CP40 20.4 %, BL60 7.3 %, FLM30 5.0 % | CP40 34.0 %, BL60 3.9 %, FLM30 not separable (Picarro); 14.1 % overall; bubbles also in 5 of 32 dry-season placements |
-| Intact CH4, g m⁻² yr⁻¹ | 2.2 | 2.0 |
+| Intact CH4, g m⁻² yr⁻¹ | 2.2 | 0.9 (measured flooding: the floor was mostly under water) |
 | Ghost CH4, g m⁻² yr⁻¹ | 11.7 | 10.7 |
-| Intact CO2, g m⁻² yr⁻¹ | −4,713 | −5,439 |
-| Intact net forcing, 100 yr | −4,653 | −5,383 |
-| Ghost net forcing, 100 yr / 20 yr | +1,763 / +2,386 | +1,645 / +2,215 |
-| Sink-to-source switch | ~6,400–6,900 | ~7,000–7,500 |
-| Monte Carlo, GWP100 | intact −6,133…−3,521; ghost +1,474…+2,045 | intact −6,617…−4,476; ghost +1,354…+1,933 (still disjoint) |
-| CH4 share of forcing | intact 1.3 % / 3.6 %; ghost 18.5 % / 39.8 % | intact 1.0 % / 2.9 %; ghost 18.1 % / 39.2 % |
+| Intact CO2, g m⁻² yr⁻¹ | −4,713 (−1,285 g C) | −4,427 (−1,208 g C; tower 2022–23 −1,288 g C) |
+| Ghost CO2, g m⁻² yr⁻¹ | +1,437 | +1,523 |
+| Intact net forcing, 100 yr | −4,653 | −4,402 |
+| Ghost net forcing, 100 yr / 20 yr | +1,763 / +2,386 | +1,822 / +2,393 |
+| Sink-to-source switch | ~6,400–6,900 | ~6,200–6,700 |
+| Monte Carlo, GWP100 | intact −6,133…−3,521; ghost +1,474…+2,045 | intact −5,889…−3,319; ghost +1,403…+2,689 (still disjoint) |
+| CH4 share of forcing | intact 1.3 % / 3.6 %; ghost 18.5 % / 39.8 % | intact 0.6 % / 1.6 %; ghost 16.4 % / 36.3 % |
 | Regenerating budget, g m⁻² yr⁻¹ | ~29 | ~33 |
 
-The intact net forcing change is −731. Of that:
+The intact net forcing change is +250 (a weaker sink). Of that, in g CO2 m⁻² yr⁻¹:
 
-- **Stem respiration: −602 (82 %).** Legacy stem CO2 included a breath bump
-  fitted as a closure (Mar_23_191, 29.7) and the mixed-analyzer SRS6 fits
-  (Oct_22_17/18/20, 13–21).
-- **Water CO2: −140.** See the gap-filled water fluxes above.
-- **CH4: −5.**
-- **Roots: +19.**
+- **Tower GPP: +1,188.** Legacy tower GPP was clipped at zero, which put
+  1.2–1.4 µmol m⁻² s⁻¹ of GPP into the night. Unclipped, with GPP = 0 at night,
+  the 24-h mean is 7.8 instead of 8.7.
+- **Soil: −804.** The floor was flooded 98–100 % of the time in Oct 2022 and
+  ~70 % in Mar 2023 (FCE LTER water level), not 50 %.
+- **Stem respiration: −644.** The breath bump (Mar_23_191) and the mixed-analyzer
+  SRS6 fits are gone, partly offset by the 24-h temperature correction (Q10 1.15).
+- **Leaf: +242.** Central LAI 2.8 (SRS-6 ground) instead of 2.3.
+- **Water CO2: +227.** Gap-filled water fluxes and more water surface under
+  measured flooding.
+- **Downed wood: +128.** Krauss et al. 2005 volume, exposed only above water.
+- **Roots: −52**, including the submerged prop-root area at high tide.
+- **CH4: −35.**
 
 `output/qa/net_forcing_attribution.csv` has the full split.
 
-Intact CO2 (−1,483 g C m⁻² yr⁻¹) is now ~27 % above the tower NEP
-(1,170 ± 127), so "closely matched" (D:65) no longer holds.
+Intact NEE (−1,208 g C m⁻² yr⁻¹) is within ~6 % of the 2022–23 tower NEE
+(−1,288) and ~3 % of the long-term tower NEP (1,170 ± 127, Barr et al. 2010), so
+"closely matched" (D:65) holds again. Bottom-up respiration is 4.63 vs tower
+4.45 µmol m⁻² s⁻¹.
+
+### Upscaling changes after the dataset rebuild
+
+| Change | Basis | Where |
+|---|---|---|
+| Tower GPP not clipped; GPP = 0 at night | Clipping biases GPP high (noise in NEE) | `07_upscaling/01_tower_gpp.R` |
+| Chamber stem, root, soil and CWD CO2 scaled from measurement time to 24 h, Q10 1.15 | Tower within-month night-respiration Q10 (2004–2023) | `01_tower_gpp.R`, `03_upscale_co2.R` 4b |
+| Downed CWD area from Krauss et al. 2005 (67; 13–181 m³ ha⁻¹), 4V/d with d = 10 cm | No plot inventory; method of Troxler et al. 2015 | `00_lib/cwd_scaling.R` |
+| Downed CWD and submerged prop roots exchange with the air only above water | FCE LTER water level; mean flooded depth | `00_lib/cwd_scaling.R`, `00_lib/tide_weights.R` |
+| High/low tide weighted by the measured flooded fraction (SRS5 1.00/0.69, SRS6 0.98/0.72) | FCE LTER knb-lter-fce.1168.15, checked against our depth readings | `07_upscaling/01b_flood_fraction.R` |
+| Central LAI 2.8 (2.3–5.55); Kok inhibition 30 % (MC 20–50 %) | Troxler 2015 / Barr; Reed et al. 2025; Atkin et al. 2014 | `03_upscale_co2.R`, `05_mc_forcing.R` |
+| Sensitivities | Q10 × CWD grid; flooding ±5 cm; CH4 night/day 1.7 | `output/qa/budget_scenarios.csv`; `FLOOD_FRAC`; `net_forcing_by_class.csv` |
 
 ---
 
@@ -199,14 +221,14 @@ Line numbers refer to `manuscript/drafts/manuscript_NCC_draft.md` (D) and
 | D:51, D:81, SI:107 | regenerating soil 55, water 35; budget ~29 g | soil 56, water 57; ~33 g | C |
 | D:51, SI:115 | Marco Island soil 2.3 vs up to 34; stems 0.5 vs 12–13 | 2.6 vs up to 31; 0.5 vs 11–14 | C |
 | D:63 | bottom-up wet 36.3 vs 6.9; dry ghost 9.9, intact 1.6 | 35.9 vs 6.1; 6.4 and 1.7 | C |
-| D:63 | intact bottom-up CO2 −2.9 to −3.9 | −3.6 to −4.2; recheck "within one standard error" of top-down (−2.2 ± 2) | C |
-| D:65 | intact CO2 −4,713 g (−1,285 g C), "closely matched" tower NEP | −5,439 g (−1,483 g C); "comparable to" | C |
-| D:65 | intact CH4 2.2 g, +60 / +175 CO2-eq, 1.3 % / 3.6 % | 2.0 g, +55 / +160, 1.0 % / 2.9 % | C |
-| D:65 | ghost +1,763 / +2,386; CO2 +1,437; CH4 11.7 g, +326 / +950; 18.5 % / 39.8 % | +1,645 / +2,215; +1,347; 10.7 g, +298 / +868; 18.1 % / 39.2 % | C |
-| D:67, D:87 | switch ~6,400–6,900 | ~7,000–7,500 | C |
-| D:67, SI:97 | Monte Carlo intact −6,133…−3,521; ghost +1,474…+2,045 | −6,617…−4,476; +1,354…+1,933 | C |
+| D:63 | intact bottom-up CO2 −2.9 to −3.9 | −3.1 to −3.3; recheck "within one standard error" of top-down (−2.2 ± 2) | C |
+| D:65 | intact CO2 −4,713 g (−1,285 g C), "closely matched" tower NEP | −4,427 g (−1,208 g C); "closely matched" still holds | C |
+| D:65 | intact CH4 2.2 g, +60 / +175 CO2-eq, 1.3 % / 3.6 % | 0.9 g, +25 / +72, 0.6 % / 1.6 % | C |
+| D:65 | ghost +1,763 / +2,386; CO2 +1,437; CH4 11.7 g, +326 / +950; 18.5 % / 39.8 % | +1,822 / +2,393; +1,523; 10.7 g, +299 / +870; 16.4 % / 36.3 % | C |
+| D:67, D:87 | switch ~6,400–6,900 | ~6,200–6,700 | C |
+| D:67, SI:97 | Monte Carlo intact −6,133…−3,521; ghost +1,474…+2,045 | −5,889…−3,319; +1,403…+2,689 | C |
 | D:81 | amplification stem 23–28×, soil 2–8×, water 28–50× | stem 41–50×, soil 2–9×, water 19–66× | C |
-| D:89 | CH4 share "nearly doubles" GWP100 → GWP20 | "more than doubles" (ghost 2.2×, intact 2.9×) | S |
+| D:89 | CH4 share "nearly doubles" GWP100 → GWP20 | "more than doubles" (ghost 2.2×, intact 2.7×) | S |
 | SI:49, SI:87 | ghost water depth dry 8.7 and 6.6 | 8.7 and 6.3 | C |
 | SI:89 | exposed-soil ghost ≈ 17.5; budget 13.0 / 7.7 / 13.7 | ≈ 16.2; 12.0 / 7.3 / 13.4 (the flooded case still differs from the main ghost budget, 10.7; it did in legacy too) | C/S |
 | SI:107 | BL60 soil 55 (27–89); water 35 (15–55); stem 15 (4–33) | 56 (27–91); 57 (33–89); 14 (3–34) | C |
