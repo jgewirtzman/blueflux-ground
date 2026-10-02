@@ -3,16 +3,12 @@
 # representation and on the tidal-phase water flux.
 #
 # Flooding (weights of the high- and low-tide states):
-#   equal_split        0.5 (the earlier assumption)
-#   campaign_month     FCE LTER logger, campaign calendar month, level > 0 (current)
-#   campaign_micro_lo / _hi   same, level > +5 / > -5 cm
-#   longterm_annual    logger 2010 onward, all months
-#   longterm_same_month logger 2010 onward, October and March only
-#   area_campaign      area-weighted: each of our depth readings is a sample of
-#                      floor height relative to the logger (field depth - logger;
-#                      dry readings at the water edge); hourly share of samples
-#                      under water, averaged over the campaign month
-#   area_longterm      the same over 2010 onward
+#   equal_split       0.5 (the earlier assumption)
+#   switch_campaign   whole floor flooded when the logger level > 0, campaign month
+#   switch_longterm   the same, 2010 onward
+#   area_campaign     area-weighted (censored floor-height model; central; 01b)
+#   area_campaign_lo / _hi   floor mean -/+ 1.96 SE
+#   area_longterm     area-weighted, 2010 onward
 # Tidal-phase water flux (applied to the intact water term after the run):
 #   x1 (as measured), x2, x3.
 # Writes output/qa/flooding_scenarios.csv (and restores the default outputs).
@@ -25,29 +21,21 @@ u_gC <- 12.011e-6 * 3.156e7; GWP100 <- 27.9
 wl <- read.csv("data/environmental/water_level/FCE_LTER_1168_water_levels.csv") %>%
   filter(SITENAME %in% TIDAL, WaterLevel > -9000) %>%
   mutate(t = as.numeric(as.POSIXct(paste(Date, Time), tz = "Etc/GMT+5")), ym = substr(Date, 1, 7), mo = substr(Date, 6, 7))
-fx <- read.csv("output/data_products/combined_gas_flux_dataset.csv") %>%
-  filter(plot %in% TIDAL, !is.na(water_depth)) %>%
-  mutate(t = as.numeric(as.POSIXct(paste(date, start_time), tz = "America/New_York")))
-fx$logger <- NA_real_
-for (p in TIDAL) { i <- fx$plot == p; w <- wl[wl$SITENAME == p, ]; fx$logger[i] <- approx(w$t, w$WaterLevel, fx$t[i])$y }
-fx <- fx %>% filter(!is.na(logger)) %>% mutate(offset = ifelse(water_depth > 0, water_depth - logger, -logger))
 ff0 <- read.csv("output/upscaling/flood_fraction.csv")
 off_cal <- setNames(ff0$offset_cm[match(TIDAL, ff0$site)], TIDAL)
 
-area_frac <- function(levels, offs) mean(vapply(levels, function(h) mean(h + offs > 0), numeric(1)))
 tab <- function(fun) bind_rows(lapply(TIDAL, function(s) bind_rows(lapply(names(CAMPS), function(m)
   data.frame(site = s, campaign = CAMPS[[m]], frac_flooded = fun(s, m))))))
 lvl <- function(s, filt) { w <- wl[wl$SITENAME == s, ]; w$WaterLevel[filt(w)] + off_cal[[s]] }
+col <- function(cc) function(s, m) ff0[[cc]][ff0$site == s & ff0$campaign == CAMPS[[m]]]
 scen <- list(
-  equal_split         = tab(function(s, m) 0.5),
-  campaign_month      = tab(function(s, m) mean(lvl(s, function(w) w$ym == m) > 0)),
-  campaign_micro_lo   = tab(function(s, m) mean(lvl(s, function(w) w$ym == m) > 5)),
-  campaign_micro_hi   = tab(function(s, m) mean(lvl(s, function(w) w$ym == m) > -5)),
-  longterm_annual     = tab(function(s, m) mean(lvl(s, function(w) w$Date >= "2010-01-01") > 0)),
-  longterm_same_month = tab(function(s, m) mean(lvl(s, function(w) w$Date >= "2010-01-01" & w$mo == substr(m, 6, 7)) > 0)),
-  area_campaign       = tab(function(s, m) area_frac(wl$WaterLevel[wl$SITENAME == s & wl$ym == m], fx$offset[fx$plot == s])),
-  area_longterm       = tab(function(s, m) { w <- wl[wl$SITENAME == s & wl$Date >= "2010-01-01", ]
-                                              area_frac(sample(w$WaterLevel, min(5000, nrow(w))), fx$offset[fx$plot == s]) })
+  equal_split          = tab(function(s, m) 0.5),
+  switch_campaign      = tab(col("frac_flooded_switch")),
+  switch_longterm      = tab(function(s, m) mean(lvl(s, function(w) w$Date >= "2010-01-01") > 0)),
+  area_campaign        = tab(col("frac_flooded")),          # central
+  area_campaign_lo     = tab(col("frac_flooded_lo")),
+  area_campaign_hi     = tab(col("frac_flooded_hi")),
+  area_longterm        = tab(col("frac_flooded_longterm"))
 )
 set.seed(1)
 

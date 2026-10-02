@@ -179,12 +179,49 @@ scen <- summ %>% filter(class == "Healthy") %>%
             closure_resid = round(-(flux_measured + lateral_total) - storage_indep, 0))
 
 # =============================================================================
+# (4c) RADIATIVE-FORCING FRAMINGS: what the CO2 term is compared with
+# -----------------------------------------------------------------------------
+# vertical         : on-site exchange only, CO2 = NEE (the net-forcing figure).
+# necb_all_export  : all laterally exported C eventually returns to the air as
+#                    CO2 (upper bound), so CO2 = -NECB_full; exported dissolved
+#                    CH4 is emitted downstream as CH4.
+# necb_alk_retained: as above, but exported alkalinity (Reithmaier 2020 TAlk,
+#                    a subset of DIC, 425 [210-846]) stays in the ocean as
+#                    bicarbonate, so CO2 = -(NECB_full + TAlk).
+# storage          : independent storage only, CO2 = -(burial + wood increment).
+# Healthy only: ghost lateral terms are not available (pending), so the ghost
+# class is reported on the vertical framing alone.
+# GWP: 27.9 (100 yr), 81.2 (20 yr); g CO2-eq m-2 yr-1; + = warming.
+C_to_CO2 <- 44.01 / 12.011; C_to_CH4 <- 16.04 / 12.011
+TALK <- c(central = 425, lo = 210, hi = 846)
+h <- summ %>% filter(class == "Healthy")
+ch4_v <- meas$CH4vert_C[meas$class == "Healthy"] * C_to_CH4                     # g CH4
+ch4_l <- lit$value[lit$class == "Healthy" & lit$term == "Lateral CH4 (aq)"] * C_to_CH4
+frame <- function(name, co2_C, ch4_g, co2_C_lo = NA, co2_C_hi = NA) tibble(
+  class = "Healthy", framing = name, CO2_gCO2 = co2_C * C_to_CO2, CH4_g = ch4_g,
+  net100 = co2_C * C_to_CO2 + ch4_g * 27.9, net20 = co2_C * C_to_CO2 + ch4_g * 81.2,
+  net100_lo = co2_C_lo * C_to_CO2 + ch4_g * 27.9, net100_hi = co2_C_hi * C_to_CO2 + ch4_g * 27.9,
+  ch4_pct100 = 100 * ch4_g * 27.9 / (abs(co2_C * C_to_CO2) + ch4_g * 27.9),
+  ch4_pct20  = 100 * ch4_g * 81.2 / (abs(co2_C * C_to_CO2) + ch4_g * 81.2))
+framings <- bind_rows(
+  frame("vertical", h$flux_measured - meas$CH4vert_C[meas$class == "Healthy"], ch4_v),
+  frame("necb_all_export", -h$NECB_full - meas$CH4vert_C[meas$class == "Healthy"] - lit$value[lit$class == "Healthy" & lit$term == "Lateral CH4 (aq)"],
+        ch4_v + ch4_l, -h$NECB_full_hi, -h$NECB_full_lo),
+  frame("necb_alk_retained", -(h$NECB_full + TALK[["central"]]) - meas$CH4vert_C[meas$class == "Healthy"],
+        ch4_v + ch4_l, -(h$NECB_full_hi + TALK[["hi"]]), -(h$NECB_full_lo + TALK[["lo"]])),
+  frame("storage", -h$storage_indep, ch4_v),
+  { g <- meas %>% filter(class == "Ghost")
+    frame("vertical", g$NEE_C, g$CH4vert_C * C_to_CH4) %>% mutate(class = "Ghost") })
+
+# =============================================================================
 # (5) WRITE + REPORT
 # =============================================================================
 dir.create("output/upscaling", showWarnings = FALSE, recursive = TRUE)
 write.csv(budget, "output/upscaling/carbon_budget_full.csv",      row.names = FALSE)
 write.csv(summ,   "output/upscaling/carbon_budget_summary.csv",   row.names = FALSE)
 write.csv(scen,   "output/upscaling/carbon_budget_scenarios.csv", row.names = FALSE)
+write.csv(framings, "output/upscaling/forcing_framings.csv", row.names = FALSE)
+cat("\nForcing framings (g CO2-eq m-2 yr-1):\n"); print(as.data.frame(framings %>% mutate(across(where(is.numeric), ~ round(.x, 1)))))
 
 fmt <- function(x) ifelse(is.na(x), NA, ifelse(abs(x) < 10, sprintf("%.2f", x), sprintf("%.0f", x)))
 cat("=== Full carbon budget (g C m-2 yr-1; + = C loss, - = C gain) ===\n")

@@ -455,6 +455,18 @@ for (camp in campaigns) {
     root_flux_draws  <- draw_flux(root_rate, root_ci_lo, root_ci_hi, N_MC)
     soil_flux_draws  <- draw_flux(soil_rate, soil_ci_lo, soil_ci_hi, N_MC)
     water_flux_draws <- draw_flux(water_rate, water_ci_lo, water_ci_hi, N_MC)
+    # Tidal phase (tidal sites only): our forest-floor water fluxes were taken
+    # near slack / low water. In mangrove creeks dissolved CH4 peaks at low tide
+    # (2-7x high tide: Bouillon et al. 2007; Reithmaier et al. 2020, Shark River),
+    # while flood- and ebb-onset pulses add short peaks (Lin et al. 2024; Yong et
+    # al. 2024). The tidal-cycle mean / slack-water ratio is therefore taken as
+    # 1.0 (central, no correction) with a log-triangular range 0.6-2.0 in the MC.
+    if (is_tidal(site_name)) {
+      u_tp <- runif(N_MC)
+      lt <- log(c(0.6, 1, 2.0)); fc <- (lt[2] - lt[1]) / (lt[3] - lt[1])
+      water_flux_draws <- water_flux_draws * exp(ifelse(u_tp < fc, lt[1] + sqrt(u_tp * (lt[3] - lt[1]) * (lt[2] - lt[1])),
+                                                         lt[3] - sqrt((1 - u_tp) * (lt[3] - lt[1]) * (lt[3] - lt[2]))))
+    }
     cwd_flux_draws   <- draw_flux(cwd_rate, cwd_ci_lo, cwd_ci_hi, N_MC)
 
     # SA draws (lognormal, correlated within site for stem)
