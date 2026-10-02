@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-10-02 16:18 
+Manuscript Results — generated 2026-10-02 16:50 
 
 
 ================================================================
@@ -697,11 +697,10 @@ R.6: POREWATER GEOCHEMISTRY (Fig 6)
     SRS6   wet (Oct 2022)     porewater      CH4=9.5 uM (n=3), PSU=26.6
 
   Pearson correlations (PSU vs log1p(CH4)) by disturbance class (depth-level):
-  (Values from site_characterization_figures.R merged at site x season x depth)
+  (site_characterization_figures.R, site x sampling round x depth; all three rounds)
     ghost          r = 0.600, p = 0.0301, n = 13
     healthy        r = -0.483, p = 0.1573, n = 10
     regenerating   r = -0.484, p = 0.1568, n = 10
-  NOTE: healthy and regenerating have near-identical stats (verified independently)
 
 ================================================================
 R.7: NET CO2-EQUIVALENT FORCING

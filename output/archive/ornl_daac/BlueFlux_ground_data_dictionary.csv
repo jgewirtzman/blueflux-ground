@@ -24,7 +24,7 @@ height_above_water_cm,cm,Chamber height above the standing-water surface where w
 water_depth_cm,cm,Standing-water depth at the measurement
 pneumatophore_count,count,Pneumatophores inside the soil collar
 pneumatophore_density_m2,count m-2,Pneumatophore density inside the soil collar
-chamber_type,,"Tree chamber class (A-D, HA, HB, LB) or soil/floating chamber (see BlueFlux_ground_chamber_geometry.csv)"
+chamber_type,,"Tree chamber class (A-D; HA, HB = hollow chambers around a small stem or root; LB = leaf) or soil/floating chamber (see BlueFlux_ground_chamber_geometry.csv)"
 chamber_area_cm2,cm2,Enclosed area used in the flux
 system_volume_L,L,Total system volume (chamber + collar + tubing + desiccant + analyzer cell)
 analyzer,,"LGR (ABB/LGR GLA131, off-axis ICOS) or Picarro (G4301, cavity ring-down)"

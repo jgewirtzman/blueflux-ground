@@ -786,11 +786,10 @@ if (file.exists("data/environmental/site_characterization_salinity_ch4.csv")) {
   # Correlations per disturbance class (depth-level, matching Fig S3c)
   # These are computed by site_characterization_figures.R on merged depth-level data
   cat("\n  Pearson correlations (PSU vs log1p(CH4)) by disturbance class (depth-level):\n")
-  cat("  (Values from site_characterization_figures.R merged at site x season x depth)\n")
-  cat("    ghost          r = 0.600, p = 0.0301, n = 13\n")
-  cat("    healthy        r = -0.483, p = 0.1573, n = 10\n")
-  cat("    regenerating   r = -0.484, p = 0.1568, n = 10\n")
-  cat("  NOTE: healthy and regenerating have near-identical stats (verified independently)\n")
+  cat("  (site_characterization_figures.R, site x sampling round x depth; all three rounds)\n")
+  cs <- "output/data_products/porewater_salinity_ch4_correlations.csv"
+  if (file.exists(cs)) for (r in split(read.csv(cs), seq_len(nrow(read.csv(cs)))))
+    cat(sprintf("    %-14s r = %.3f, p = %.4f, n = %d\n", r$disturbance, r$r, r$p_val, r$n))
 } else {
   cat("  site_characterization_salinity_ch4.csv not found -- run site_characterization_figures.R first\n")
 }
