@@ -255,6 +255,45 @@ cat("Leaf canopy respiration (umol CO2 m-2 ground s-1), healthy canopy:\n")
 leaf_term %>% mutate(across(where(is.numeric), ~round(.x,3))) %>% as.data.frame() %>% print()
 
 # =============================================================================
+# 4b. Time-of-day temperature correction of chamber respiration
+# -----------------------------------------------------------------------------
+# Chambers were run in daytime (mean ~13:00) and their fluxes stand for the
+# whole day. Respiration components (stem, root, soil, CWD) are scaled from the
+# temperatures at measurement (tower TA, = Tcham) to the campaign month's 24-h
+# tower TA with an exponential (Q10) response fitted on our own chamber CO2:
+# log(CO2) ~ T + (1 | site x campaign), stems (the only component with enough
+# temperature range and n; roots / soil / CWD alone are uninformative).
+#   factor = mean_24h(Q10^(T/10)) / mean_measurements(Q10^(T/10))
+# Water CO2 (air-water gas exchange) and the leaf term (already 24-h) are not
+# corrected. Q10, its CI and the factors: output/upscaling/co2_temperature_correction.csv.
+# =============================================================================
+cat("\n=== 4b. Time-of-day temperature correction ===\n")
+q10_dat <- flux_raw %>% filter(component == "stem", CO2_best.flux > 0, !is.na(air_temp)) %>%
+  mutate(grp = paste(plot, campaign))
+q10_fit <- lme4::lmer(log(CO2_best.flux) ~ air_temp + (1 | grp), data = q10_dat)
+q10_b <- lme4::fixef(q10_fit)[["air_temp"]]; q10_se <- sqrt(as.matrix(vcov(q10_fit))["air_temp", "air_temp"])
+if (nzchar(Sys.getenv("CO2_Q10"))) q10_b <- log(as.numeric(Sys.getenv("CO2_Q10"))) / 10   # sensitivity override
+Q10 <- exp(10 * q10_b)
+f_q10 <- function(T) exp(q10_b * T)
+T24 <- gpp_raw %>% filter(campaign %in% campaigns) %>% group_by(campaign) %>%
+  summarise(T24_mean = mean(TA_use, na.rm = TRUE), f24 = mean(f_q10(TA_use), na.rm = TRUE), .groups = "drop")
+resp_comps <- c("stem", "root", "soil", "cwd")
+t_corr <- flux_raw %>% filter(component %in% resp_comps, !is.na(CO2_best.flux), !is.na(air_temp)) %>%
+  group_by(campaign = as.character(campaign), component) %>%
+  summarise(n = n(), T_meas_mean = mean(air_temp), f_meas = mean(f_q10(air_temp)), .groups = "drop") %>%
+  left_join(T24 %>% mutate(campaign = as.character(campaign)), by = "campaign") %>%
+  mutate(factor = f24 / f_meas, Q10 = Q10, Q10_lo = exp(10 * (q10_b - 1.96 * q10_se)), Q10_hi = exp(10 * (q10_b + 1.96 * q10_se)),
+         q10_n = nrow(q10_dat))
+write.csv(t_corr, file.path(output_dir, "co2_temperature_correction.csv"), row.names = FALSE)
+cat(sprintf("Q10 (stems, n = %d) = %.2f [%.2f-%.2f]\n", nrow(q10_dat), Q10, t_corr$Q10_lo[1], t_corr$Q10_hi[1]))
+print(as.data.frame(t_corr %>% select(campaign, component, n, T_meas_mean, T24_mean, factor) %>% mutate(across(where(is.numeric), ~ round(.x, 3)))))
+flux_table <- flux_table %>% mutate(.c = as.character(campaign)) %>%
+  left_join(t_corr %>% select(.c = campaign, component, .f = factor), by = c(".c", "component")) %>%
+  mutate(.f = ifelse(component %in% resp_comps, coalesce(.f, 1), 1),
+         flux_rate = flux_rate * .f, ci_lo = ci_lo * .f, ci_hi = ci_hi * .f, temp_factor = .f) %>%
+  select(-.c, -.f)
+
+# =============================================================================
 # 5. Flooding / tide assignment (same as CH4)
 # =============================================================================
 assign_flood <- function(site, camp) {

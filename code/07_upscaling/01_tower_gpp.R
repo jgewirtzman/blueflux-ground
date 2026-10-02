@@ -102,7 +102,7 @@ fit_light <- function(train, temp_coef) {
     stop("Not enough daytime NEE records for light response.")
   }
   reco <- exp(temp_coef[1] + temp_coef[2] * day$TA_MODEL)
-  day[, gpp_obs := pmax(reco - NEE_OBS, 0)]
+  day[, gpp_obs := reco - NEE_OBS]   # unclipped (clipping biases the light curve high)
   start_pmax <- max(stats::quantile(day$gpp_obs, 0.95, na.rm = TRUE), 1)
   obj <- function(par) {
     alpha <- exp(par[1])
@@ -165,7 +165,11 @@ predict_partition <- function(target, temp_fit, light_fit, boots) {
 
   nee_gapfilled <- fifelse(is.finite(target$NEE_OBS), target$NEE_OBS, nee_model)
   gapfilled_flag <- !is.finite(target$NEE_OBS)
-  gpp <- pmax(reco - nee_gapfilled, 0)
+  # GPP = Reco - NEE in daytime, 0 at night. Not clipped at 0: clipping keeps the
+  # positive half of the NEE noise and drops the negative half, biasing GPP high
+  # (it also produced 1.2-1.4 umol m-2 s-1 of "GPP" at night); so GPP - Reco = -NEE.
+  is_day <- is.finite(target$SW_MODEL) & target$SW_MODEL > day_sw_threshold
+  gpp <- fifelse(is_day, reco - nee_gapfilled, 0)
 
   nb <- nrow(boots$temp)
   reco_boot <- matrix(NA_real_, nrow = nrow(target), ncol = nb)
@@ -181,7 +185,7 @@ predict_partition <- function(target, temp_fit, light_fit, boots) {
     reco_boot[, i] <- reco_i
     gpp_model_boot[, i] <- gpp_i
     nee_model_boot[, i] <- nee_i
-    gpp_boot[, i] <- pmax(reco_i - nee_gap_i, 0)
+    gpp_boot[, i] <- ifelse(is_day, reco_i - nee_gap_i, 0)
   }
 
   qfun <- function(x, p) as.numeric(stats::quantile(x, p, na.rm = TRUE, names = FALSE))

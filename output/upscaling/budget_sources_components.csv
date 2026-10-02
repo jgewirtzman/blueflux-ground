@@ -1,26 +1,26 @@
 "term","source","class","component","value"
-"Reco","This study: total ER","Healthy","soil",296.116583451059
-"Reco","This study: total ER","Healthy","root",176.98952439307
-"Reco","This study: total ER","Healthy","stem",498.353229420309
+"Reco","This study: total ER","Healthy","soil",265.091709583119
+"Reco","This study: total ER","Healthy","root",168.162974461447
+"Reco","This study: total ER","Healthy","stem",408.072277406876
 "Reco","This study: total ER","Healthy","water",178.585227106986
-"Reco","This study: total ER","Healthy","cwd",7.47145634330078
+"Reco","This study: total ER","Healthy","cwd",5.9770710180568
 "Reco","This study: total ER","Healthy","leaf",644.146485801486
-"Reco","This study: below-canopy","Healthy","soil",296.116583451059
-"Reco","This study: below-canopy","Healthy","root",176.98952439307
-"Reco","This study: below-canopy","Healthy","stem",498.353229420309
+"Reco","This study: below-canopy","Healthy","soil",265.091709583119
+"Reco","This study: below-canopy","Healthy","root",168.162974461447
+"Reco","This study: below-canopy","Healthy","stem",408.072277406876
 "Reco","This study: below-canopy","Healthy","water",178.585227106986
-"Reco","This study: below-canopy","Healthy","cwd",7.47145634330078
+"Reco","This study: below-canopy","Healthy","cwd",5.9770710180568
 "Reco","This study: total ER","Ghost","soil",0
-"Reco","This study: total ER","Ghost","root",20.8979277379516
-"Reco","This study: total ER","Ghost","stem",170.666781978467
+"Reco","This study: total ER","Ghost","root",19.3815804964158
+"Reco","This study: total ER","Ghost","stem",144.08230551326
 "Reco","This study: total ER","Ghost","water",168.237977102257
-"Reco","This study: total ER","Ghost","cwd",7.90041503412779
+"Reco","This study: total ER","Ghost","cwd",6.31656595799338
 "Reco","This study: total ER","Ghost","leaf",0
 "Reco","This study: below-canopy","Ghost","soil",0
-"Reco","This study: below-canopy","Ghost","root",20.8979277379516
-"Reco","This study: below-canopy","Ghost","stem",170.666781978467
+"Reco","This study: below-canopy","Ghost","root",19.3815804964158
+"Reco","This study: below-canopy","Ghost","stem",144.08230551326
 "Reco","This study: below-canopy","Ghost","water",168.237977102257
-"Reco","This study: below-canopy","Ghost","cwd",7.90041503412779
+"Reco","This study: below-canopy","Ghost","cwd",6.31656595799338
 "CH4","Chambers (this study)","Healthy","stem",0.00995306351341634
 "CH4","Chambers (this study)","Healthy","soil",0.991147514020801
 "CH4","Chambers (this study)","Healthy","root",0.33429159314265
