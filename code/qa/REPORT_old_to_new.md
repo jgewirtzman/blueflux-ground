@@ -252,6 +252,8 @@ Unchanged (no edit needed):
 
 ### Methods text (M)
 
+Methods describe the analysis only. Work on our own field records (time typos, mislabelled analyzers or dates, duplicate entries, window curation) is data preparation upstream of the analysis; it is documented in this report, the commit history and `data/flux_metadata/`, not in the manuscript.
+
 | Where | Now in text | Proposed |
 |---|---|---|
 | D:131, SI:29 | "Los Gatos Research … cavity ring-down" / "Ultra-Portable … (UGGA)" | "three ABB/LGR GLA131 microportable greenhouse-gas analyzers (off-axis ICOS, 28 cm³ cell) and a Picarro G4301 cavity ring-down analyzer" |
@@ -262,9 +264,9 @@ Unchanged (no edit needed):
 | D:135, SI:37 | best model by AICc | goFlux `best.flux` criteria; HM considered only with ≥ 30 points, else linear |
 | D:135, SI:37 | field air temperature, gap-filled; default pressure | air temperature and pressure from the co-located US-Skr tower at each measurement time (101.325 kPa where the tower had no pressure, March 2022) |
 | D:135, SI:29, SI:37 | MDF from volume, analyzer precision and duration | "Minimum detectable fluxes were computed per measurement as 1.96 σ / t × the flux term, with σ the median absolute deviation of within-window first differences, centred per closure and pooled by analyzer and campaign; below-detection fluxes were retained at their measured values" |
-| D:135, SI:37 | 7 artefacts excluded | "Measurements with analyzer artefacts, faulty pilot chambers, duplicate data entries or no trace of their own were excluded (Supplementary Methods; curated list in the repository)" |
+| D:135, SI:37 | 7 artefacts excluded | "Measurements with analyzer artefacts were excluded." (Pilot chambers, duplicate entries and data-sheet corrections are data preparation upstream of the analysis and are not described.) |
 | D:135, SI:41 (S.M5) | jump detector > 0.10 ppm, 15 s buffer, step correction | "Floating-chamber placements (chamber on to lift) were identified in the analyzer record, giving one flux per placement. Ebullition was separated with goAquaFlux (goFlux; de-ebulliated diffusive window): the diffusive flux was fitted on the de-ebulliated series (first 10 min for placements > 12 min) and ebullition was the summed bubble steps over the whole placement. For the Picarro, whose ~5 s readings do not resolve bubbles, the total is the two-point flux over the placement." |
-| SI:37 | 14 manually trimmed windows; manual recovery; post hoc volume corrections | "Fit windows were the saved manual windows where available, otherwise the field-log time plus a scripted per-analyzer-day clock offset; 9 curated trimmed windows were retained (5 had been placed on a neighbouring closure); chamber geometry and volumes are computed in one step from the dimension tables" |
+| SI:37 | 14 manually trimmed windows; manual recovery; post hoc volume corrections | Delete these sentences (data preparation, not analysis). If a sentence is wanted: "Each flux was fitted over the chamber closure recorded in the field log; system volumes were computed from measured chamber dimensions." |
 | D:143 (new sentence) | n/a | "Wet-season water-surface fluxes at the intact sites, where no floating-chamber record exists, were estimated from dissolved CH4 and CO2 and a gas-transfer velocity calibrated on paired chamber and dissolved-gas measurements (k600 median 1.1 cm h⁻¹)." |
 
 ---
