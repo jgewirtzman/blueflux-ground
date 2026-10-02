@@ -32,3 +32,6 @@ _archive/
 
 # pipeline step logs (run_all.R)
 output/logs/
+
+# Project R library for the vendored goFlux fork (code/00_lib/goflux_fork.R)
+.Rlib/

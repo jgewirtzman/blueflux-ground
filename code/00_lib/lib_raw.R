@@ -7,6 +7,13 @@
 # Files come from output/flux/00_raw/raw_file_index.csv (02_measurement_inventory.R):
 # only the unit's own logger serial, duplicates skipped, zipped files read
 # from a temporary directory. Nothing is written next to the raw data.
+#
+# fresh_ch4(tr, unit) / fresh_co2(tr, unit): the Picarro G4301 measures one
+# gas per logged row, alternating: CH4 is fresh on every other row and carried
+# forward (|dCH4| < PICARRO_HELD_PPB) on the rows in between, which are the
+# rows where CO2 is fresh (CO2 changes 13-16x more on them;
+# code/qa/picarro_update_cadence.R). Fits, noise and bubble detection use each
+# gas's fresh rows only. TRUE for every LGR row.
 # =============================================================================
 suppressMessages({library(dplyr); library(readr); library(stringr)})
 
@@ -61,6 +68,17 @@ raw_index <- function() {
   if (!is.null(d)) d <- d %>% filter(!is.na(POSIX.time)) %>% mutate(source_file = file)
   assign(file, d, envir = .raw_cache)
   d
+}
+
+PICARRO_HELD_PPB <- 0.3
+fresh_ch4 <- function(tr, unit) {
+  if (unit != "Picarro" || nrow(tr) < 2) return(rep(TRUE, nrow(tr)))
+  c(TRUE, abs(diff(tr$CH4dry_ppb)) >= PICARRO_HELD_PPB)
+}
+
+fresh_co2 <- function(tr, unit) {
+  if (unit != "Picarro" || nrow(tr) < 2) return(rep(TRUE, nrow(tr)))
+  f <- !fresh_ch4(tr, unit); f[1] <- TRUE; f
 }
 
 read_raw <- function(unit, from, to) {

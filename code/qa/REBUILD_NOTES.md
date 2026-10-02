@@ -65,7 +65,7 @@ times need no offset.
 `MIGRATE_ONLY`; the trimmed-window anchors were corrected to the local-clock
 start times of the `*_goflux` auxfiles (the `*_all_instruments` files store
 them shifted to UTC, which put 12 windows 4-5 h late).
-| `10_audit_saved_traces.R` | `saved_trace_audit.csv` | Checks that each saved window's rows come from the assigned analyzer's raw record. Legacy imports used `import2RData(merge = TRUE)` on a shared `RData/` folder, so some closures were fitted on another analyzer's record: 5 CP40 closures of 2023-03-15 on LGR2 (fixed via `analyzer_corrections.csv` / `saved_window_rejections.csv`), 8 Oct 2022 closures (7 BL60, CP40 stem 200) on interleaved LGR3 + LGR1/LGR2 rows (the refit reads only the own analyzer), and the 3 Picarro waters of 2022-10-20 on LGR tree closures (excluded: no Picarro record exists). |
+| `10_audit_saved_traces.R` | `saved_trace_audit.csv` | Checks that each saved window's rows come from the assigned analyzer's raw record. Legacy imports used `import2RData(merge = TRUE)` on a shared `RData/` folder, so some closures were fitted on another analyzer's record: 5 CP40 closures of 2023-03-15 on LGR2 (fixed via `analyzer_corrections.csv` / `window_rejections.csv`), 8 Oct 2022 closures (7 BL60, CP40 stem 200) on interleaved LGR3 + LGR1/LGR2 rows (the refit reads only the own analyzer), and the 3 Picarro waters of 2022-10-20 on LGR tree closures (excluded: no Picarro record exists). |
 
 ### Unmeasured water flux
 

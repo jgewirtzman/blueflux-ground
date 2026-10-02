@@ -1,7 +1,7 @@
 "class","term","category","role","value","ci_lo","ci_hi","source","citation","pending"
 "Healthy","GPP (uptake)","vertical","uptake_flux",-3283.83388629394,NA,NA,"measured","tower + chambers",FALSE
-"Healthy","Reco (CO2)","vertical","source_flux",1736.19610982065,NA,NA,"measured","chambers x TLS",FALSE
-"Healthy","CH4 emission","vertical","source_flux",1.42764238939893,NA,NA,"measured","chambers x TLS",FALSE
+"Healthy","Reco (CO2)","vertical","source_flux",1742.94392725027,NA,NA,"measured","chambers x TLS",FALSE
+"Healthy","CH4 emission","vertical","source_flux",1.41826214093828,NA,NA,"measured","chambers x TLS",FALSE
 "Healthy","Lateral DIC","lateral","source_flux",622,311,1244,"literature","Reithmaier 2020 Eulerian (142 mmol/m2/d, 15.9km2 mangrove area; range 71-284). Low bound: Zhao 2021 145 [61-229], Ho 2017 ~86 (flooding-limited lower bound)",FALSE
 "Healthy","Lateral DOC","lateral","source_flux",171,88,346,"literature","Reithmaier 2020 Eulerian (39 mmol/m2/d; range 20-79). Low bound: Romigh 2006 (56, SRS-6), Ho 2017 (8-10)",FALSE
 "Healthy","Lateral POC","lateral","source_flux",144,71,205,"literature","Zhao et al. 2021 (cyclone litter-POC, SRS-4/5/6 71-205; water-column POC ~0)",FALSE
@@ -9,8 +9,8 @@
 "Healthy","Soil C burial","storage","storage_accum",123,69,157,"literature","Zhao et al. 2021 / Breithaupt et al. (SRS-4/5/6 69-157; whole-estuary ~123)",FALSE
 "Healthy","dBiomass C","storage","storage_accum",200,65,500,"literature","Castaneda-Moya et al. 2013 wood NPP, repeat census (SRS-6=197, SRS-4=161, SRS-5=65 gC/m2/yr @ CF0.45); Chen & Twilley 1999 high end ~480-540. Aboveground wood increment; coarse-root adds ~30-50%",FALSE
 "Ghost","GPP (uptake)","vertical","uptake_flux",0,NA,NA,"measured","tower + chambers",FALSE
-"Ghost","Reco (CO2)","vertical","source_flux",378.742883890472,NA,NA,"measured","chambers x TLS",FALSE
-"Ghost","CH4 emission","vertical","source_flux",8.7482736109427,NA,NA,"measured","chambers x TLS",FALSE
+"Ghost","Reco (CO2)","vertical","source_flux",367.627905235823,NA,NA,"measured","chambers x TLS",FALSE
+"Ghost","CH4 emission","vertical","source_flux",8.00347399020153,NA,NA,"measured","chambers x TLS",FALSE
 "Ghost","Lateral DIC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE
 "Ghost","Lateral DOC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE
 "Ghost","Lateral POC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE

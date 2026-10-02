@@ -8,10 +8,10 @@
 #   output/flux/01_metadata/auxfile.csv           geometry, Tcham, Pcham, dates, analyzers
 #   output/flux/02_windows/windows.csv            fit window per closure
 #   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux + fluxqc results
+#   output/flux/04_ebullition/partition.csv       floating-chamber placements: diffusive /
+#                                                 ebullitive CH4 and CO2 per placement
 #   output/qa/baseline/...combined_gas_flux_dataset.csv
-#       legacy values, kept side by side (legacy_* columns) and, until stage 04
-#       (ebullition) is rebuilt, the legacy ebullition partitioning: CH4 totals
-#       for the matched water closures and the added placements.
+#       legacy values, kept side by side (legacy_* columns)
 #
 # Data hygiene, in order (nothing is deleted; every decision is a column):
 #   1. field metadata cleaning      auxfile: date / analyzer corrections, end-time
@@ -26,7 +26,7 @@
 #                                   carried, not applied (Jon, 2026-10-01).
 #
 # Writes
-#   output/data_products/flux_measurements_all.csv   every closure + added placements
+#   output/data_products/flux_measurements_all.csv   every closure + unlogged placements
 #   output/data_products/combined_gas_flux_dataset.csv  analysis set (use_in_analysis),
 #       legacy-compatible column names; read by stages 06-08
 #   output/data_products/data_dictionary.csv
@@ -41,6 +41,9 @@ num <- function(x) suppressWarnings(as.numeric(x))
 aux  <- rd("output/flux/01_metadata/auxfile.csv")
 win  <- rd("output/flux/02_windows/windows.csv")
 excl <- rd("data/flux_metadata/excluded_measurements.csv")
+part <- rd("output/flux/04_ebullition/partition.csv", col_types = cols(placement_start = col_character(),
+           placement_end = col_character(), diffusive_start = col_character(), diffusive_end = col_character(), .default = col_guess()))
+unl_meta <- rd("data/flux_metadata/unlogged_placements.csv")
 dims <- rd("data/field_notes/dimension_csvs/soil_water_dims.csv")
 instr <- rd("data/field_notes/dimension_csvs/additional_vol.csv")
 legacy <- rd("output/qa/baseline/output__data_products__combined_gas_flux_dataset.csv",
@@ -116,6 +119,51 @@ d <- d %>% mutate(
   pneumatophore_density = if_else(!is.na(pneumatophore_count) & surface_area_cm2 > 0,
                                   pneumatophore_count / (surface_area_cm2 / 1e4), NA_real_))
 
+# ---- 4b. Floating-chamber placements (stage 04) ---------------------------------------------
+# One flux per placement (Jon, 2026-10-01). Water rows take the stage-04 values:
+# CH4 = diffusive (goAquaFlux fork, de-ebulliated) + ebullitive (whole
+# placement); CO2 = stage-04 diffusive window (stage-03 fit where it failed).
+# The stage-03 window fit stays in *_stage03_best.flux; the fit diagnostics
+# (LM/HM, MDF, qc_*) describe that window. Unlogged placements
+# (unlogged_placements.csv, decision add) become rows of their own, with the
+# descriptive and geometry columns of the same-day closure in geometry_from.
+fit_names <- setdiff(names(fit), "flux_id")
+unl_rows <- part %>% filter(!logged) %>%
+  select(placement_id, geometry_from, placement_start, placement_end) %>%
+  inner_join(d, by = c("geometry_from" = "flux_id")) %>%
+  left_join(unl_meta %>% select(placement_id, unlogged_reason = reason), by = "placement_id") %>%
+  mutate(flux_id = placement_id, start_time = substr(placement_start, 12, 19), end_time = substr(placement_end, 12, 19),
+         window_source = "placement (unlogged)", window_start = as.POSIXct(placement_start, tz = "UTC"),
+         window_end = as.POSIXct(placement_end, tz = "UTC"),
+         clock_offset_s = 0, clock_offset_source = "analyzer clock (no field log)",
+         index = NA_character_, water_depth = NA_real_, water_temp = NA_real_, collar_id = NA_character_,
+         notes = paste("unlogged placement:", unlogged_reason), data_source = "unlogged placement (stage 04)",
+         end_time_repair = NA_character_, date_corrected = FALSE, analyzer_corrected = FALSE, excluded = FALSE) %>%
+  mutate(across(all_of(fit_names), ~ NA)) %>%
+  select(all_of(names(d)))
+d <- bind_rows(d, unl_rows)
+pw <- part %>% transmute(flux_id = placement_id, placement_start, placement_end, placement_duration_s = duration_s,
+                         placement_end_by = end_by, diffusive_rule, diffusive_window_start = diffusive_start,
+                         diffusive_window_end = diffusive_end, p_CH4_total = CH4_total, p_CH4_diffusive = CH4_diffusive,
+                         p_CH4_ebull = CH4_ebullitive, p_n_bubbles = n_bubbles, p_frac = CH4_ebullitive_fraction,
+                         p_CO2 = CO2_flux, ebullition_flag)
+d <- d %>% left_join(pw, by = "flux_id") %>%
+  mutate(in_placement = component == "water" & !is.na(placement_start),
+         CH4_stage03_best.flux = if_else(component == "water", CH4_best.flux, NA_real_),
+         CO2_stage03_best.flux = if_else(component == "water", CO2_best.flux, NA_real_),
+         CH4_best.flux = if_else(in_placement, p_CH4_total, CH4_best.flux),
+         CO2_source = case_when(in_placement & !is.na(p_CO2) ~ "stage 04 diffusive window",
+                                component == "water" & !is.na(CO2_best.flux) ~ "stage 03 fit window",
+                                TRUE ~ NA_character_),
+         CO2_best.flux = if_else(in_placement & !is.na(p_CO2), p_CO2, CO2_best.flux),
+         CH4_diffusive_flux = if_else(component == "water", if_else(in_placement, p_CH4_diffusive, CH4_best.flux), NA_real_),
+         CH4_ebull_flux = if_else(in_placement, coalesce(p_CH4_ebull, 0), 0),
+         CH4_n_ebull_events = if_else(in_placement, coalesce(p_n_bubbles, 0), 0),
+         CH4_ebullitive_fraction = if_else(in_placement, coalesce(p_frac, 0), 0),
+         ebullition_reprocessed = in_placement,
+         ebullition_source = if_else(in_placement, "stage 04: goAquaFlux fork 2ed7224, de-ebulliated diffusive + whole-placement ebullition", NA_character_)) %>%
+  select(-starts_with("p_"), -in_placement)
+
 # ---- 5. Legacy-compatible flux columns (fluxqc conventions) ---------------------------------
 for (g in c("CH4", "CO2")) {
   bf <- d[[paste0(g, "_best.flux")]]; mdl <- d[[paste0(g, "_model")]]
@@ -127,37 +175,22 @@ for (g in c("CH4", "CO2")) {
 }
 d <- d %>% mutate(flux_status = if_else(CH4_flux_status == "valid" | CO2_flux_status == "valid", "valid", "no_data"))
 
-# ---- 6. Ebullition (legacy partitioning until stage 04 is rebuilt) --------------------------
-eb_cols <- c("CH4_ebull_flux", "CH4_diffusive_flux", "CH4_ebullitive_fraction", "CH4_n_ebull_events", "ebullition_reprocessed")
-leg_eb <- legacy %>% filter(ebullition_reprocessed %in% TRUE, data_source != "ebullition_reprocessing") %>%
-  select(flux_id, legacy_total = CH4_best.flux, all_of(eb_cols))
-d <- d %>% left_join(leg_eb, by = "flux_id") %>%
-  mutate(ebullition_source = if_else(!is.na(legacy_total), "legacy partitioning (pending stage 04)", NA_character_),
-         CH4_diffusive_flux = if_else(!is.na(legacy_total), CH4_diffusive_flux,
-                                      if_else(component == "water", CH4_best.flux, NA_real_)),
-         CH4_best.flux = if_else(!is.na(legacy_total), legacy_total, CH4_best.flux),
-         CH4_ebull_flux = coalesce(CH4_ebull_flux, 0), CH4_ebullitive_fraction = coalesce(CH4_ebullitive_fraction, 0),
-         CH4_n_ebull_events = coalesce(CH4_n_ebull_events, 0), ebullition_reprocessed = coalesce(ebullition_reprocessed, FALSE)) %>%
-  select(-legacy_total)
-added <- legacy %>% filter(data_source == "ebullition_reprocessing") %>%
-  mutate(data_source = "legacy ebullition placement (pending stage 04)",
-         ebullition_source = "legacy partitioning (pending stage 04)", excluded = FALSE,
-         date = as.Date(date), window_source = "ebullition placement")
+# ---- 6. Ebullition: from stage 04 (section 4b) -------------------------------------------------
 
 # ---- 7. Exclusions and the analysis rule -----------------------------------------------------
 d <- d %>% left_join(excl %>% rename(exclusion_reason = reason), by = "flux_id") %>%
   mutate(exclusion_reason = case_when(!is.na(exclusion_reason) ~ exclusion_reason,
                                       is.na(surface_area_cm2) | is.na(total_system_volume_cm3) ~ "no chamber geometry",
                                       is.na(window_source) | window_source == "none" ~ "no closure time on the field sheet",
+                                      data_source == "unlogged placement (stage 04)" & flux_status == "no_data" ~
+                                        "stage 04: placement too short for goAquaFlux (< 30 observations)",
                                       flux_status == "no_data" ~ "no raw analyzer data in the window",
                                       TRUE ~ NA_character_),
          excluded = !is.na(exclusion_reason))
-all_rows <- bind_rows(d, added %>% select(any_of(names(d)))) %>%
-  left_join(legacy %>% filter(data_source != "ebullition_reprocessing") %>%
-              select(flux_id, legacy_data_source = data_source, legacy_CH4_best.flux = CH4_best.flux,
-                     legacy_CO2_best.flux = CO2_best.flux), by = "flux_id") %>%
-  mutate(legacy_CH4_best.flux = if_else(data_source == "legacy ebullition placement (pending stage 04)", CH4_best.flux, legacy_CH4_best.flux),
-         use_in_analysis = !excluded & flux_status == "valid",
+all_rows <- d %>%
+  left_join(legacy %>% select(flux_id, legacy_data_source = data_source, legacy_CH4_best.flux = CH4_best.flux,
+                              legacy_CO2_best.flux = CO2_best.flux), by = "flux_id") %>%
+  mutate(use_in_analysis = !excluded & flux_status == "valid",
          analysis_note = case_when(excluded ~ paste("excluded:", exclusion_reason),
                                    CH4_below_MDF & CH4_flagged ~ "kept; CH4 below MDF and QC-flagged",
                                    CH4_below_MDF ~ "kept; CH4 below MDF (measured value retained)",

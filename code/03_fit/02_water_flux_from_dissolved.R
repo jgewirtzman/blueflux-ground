@@ -22,9 +22,14 @@
 # coefficient (~4% above tabulated values at 25 C); Schmidt number:
 # Wanninkhof (2014).
 #
+# Cross-check: for every plot x campaign with surface-water CH4 (and no
+# standing-water flag against it), the dissolved estimate with k600 from the
+# OTHER calibration pairs (leave-one-out, so a site's own chamber flux does not
+# set its k) beside the chamber mean.
+#
 # Writes output/flux/03_fit/water_flux_estimates.csv (read by
-# code/08_upscaling/upscale_methane_to_plots.R) and
-# output/flux/03_fit/water_k_calibration.csv.
+# code/07_upscaling/02_upscale_methane.R), output/flux/03_fit/water_k_calibration.csv
+# and output/flux/03_fit/water_flux_dissolved_crosscheck.csv.
 # =============================================================================
 suppressMessages({library(dplyr); library(readr); library(readxl)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
@@ -95,10 +100,24 @@ est <- targets %>% inner_join(dis, by = c("plot", "campaign")) %>%
             n_k_pairs = length(k_use), method = "F = k600 (Sc/600)^-0.5 (Cw - Ceq); k from chamber/dissolved pairs")
 write_csv(est, "output/flux/03_fit/water_flux_estimates.csv")
 
+# ---- cross-check: every plot x campaign with dissolved CH4, leave-one-out k ------------------
+xc <- dis %>% left_join(chamber, by = c("plot", "campaign")) %>% rowwise() %>%
+  mutate(k_loo = median(cal$k600_cm_h[cal$used & !(cal$plot == plot & cal$campaign == campaign & cal$source == source)]),
+         F_dissolved = F_from(k_loo, dC_nM, T_C),
+         F_dissolved_lo = F_from(k_lo, dC_nM, T_C), F_dissolved_hi = F_from(k_hi, dC_nM, T_C)) %>% ungroup() %>%
+  transmute(plot, campaign, dissolved_source = source, n_samples, Cw_nM = round(Cw_nM, 1), T_C, S,
+            k600_loo_cm_h = round(k_loo, 2), F_dissolved, F_dissolved_lo, F_dissolved_hi,
+            n_chamber, F_chamber, ratio_chamber_to_dissolved = F_chamber / F_dissolved)
+write_csv(xc, "output/flux/03_fit/water_flux_dissolved_crosscheck.csv")
+
 cat("k calibration (k600, cm h-1):\n")
 print(as.data.frame(cal %>% transmute(plot, campaign, source = substr(source, 1, 40), Cw_nM = round(Cw_nM, 1),
                                       n_chamber, F_chamber = round(F_chamber, 2), k600 = round(k600_cm_h, 2), used)), row.names = FALSE)
 cat(sprintf("\nk600 used: median %.2f, range %.2f-%.2f (n = %d)\n", k_mid, k_lo, k_hi, length(k_use)))
+cat("\nCross-check, all plot x campaign with dissolved CH4 (nmol m-2 s-1):\n")
+print(as.data.frame(xc %>% transmute(plot, campaign, src = substr(dissolved_source, 1, 22), Cw_nM, k_loo = k600_loo_cm_h,
+                                     F_dis = round(F_dissolved, 2), n_chamber, F_ch = round(F_chamber, 2),
+                                     ratio = round(ratio_chamber_to_dissolved, 2))), row.names = FALSE)
 cat("\nEstimates (nmol m-2 s-1):\n")
 print(as.data.frame(est %>% select(site, campaign, flux_rate, ci_lo, ci_hi, Cw_nM, dissolved_source) %>%
                       mutate(across(c(flux_rate, ci_lo, ci_hi), ~ round(.x, 2)))), row.names = FALSE)

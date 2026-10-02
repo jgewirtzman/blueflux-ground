@@ -1,3 +1,3 @@
 site,campaign,component,flux_rate,ci_lo,ci_hi,Cw_nM,dissolved_source,k600_median_cm_h,k600_range_cm_h,n_k_pairs,method
-SRS5,Oct 2022,water,0.48074996520469615,0.24504299792353926,3.0802650865254226,133.7,"own GC, plot surface water",1.1,0.56-7.07,7,F = k600 (Sc/600)^-0.5 (Cw - Ceq); k from chamber/dissolved pairs
-SRS6,Oct 2022,water,0.5907779231775614,0.3011253330841799,3.785237113598162,162,"aquatic transect, station SRS 6 (2022-10-15)",1.1,0.56-7.07,7,F = k600 (Sc/600)^-0.5 (Cw - Ceq); k from chamber/dissolved pairs
+SRS5,Oct 2022,water,0.48074996520469615,0.24407706987525835,3.0802650865254226,133.7,"own GC, plot surface water",1.1,0.56-7.07,7,F = k600 (Sc/600)^-0.5 (Cw - Ceq); k from chamber/dissolved pairs
+SRS6,Oct 2022,water,0.5907779231775614,0.2999383356684663,3.785237113598162,162,"aquatic transect, station SRS 6 (2022-10-15)",1.1,0.56-7.07,7,F = k600 (Sc/600)^-0.5 (Cw - Ceq); k from chamber/dissolved pairs

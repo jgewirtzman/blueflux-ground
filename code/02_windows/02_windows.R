@@ -10,8 +10,8 @@
 #   4. else 0 (LGR) / 25200 s (Picarro).
 #
 # Window per closure (decision 3, Jon 2026-10-01: saved windows win):
-#   - trimmed_windows.csv (curated) if present;
-#   - else the saved manual window (start.time_corr / end.time_corr, primary
+#   - trimmed_windows.csv (curated) if present and not rejected;
+#   - else the saved manual window, unless rejected (start.time_corr / end.time_corr, primary
 #     copy, data/flux_metadata/saved_manual_windows.csv);
 #   - else scripted: field start + offset + dead band to field end + offset,
 #     the dead band being the median (saved start - field start - offset) of
@@ -20,20 +20,30 @@
 # Where a saved window exists the scripted window is built too and the two are
 # compared (overlap, start/end differences); large disagreements are listed for
 # review, the saved window is kept.
+# Saved or trimmed windows shown to be wrong are listed in window_rejections.csv
+# (the closure falls back to the next source). Windows that run across a chamber
+# lift or start before the chamber goes on are cut at it (window_clips.csv; the
+# lift / step is found in the raw CO2 trace). Finally no two closures on one
+# analyzer may share more than OVERLAP_S of record: the step stops if they do.
 #
 # Writes output/flux/02_windows/windows.csv (the tracked window table the fit uses) and
 # output/flux/02_windows/windows_disagreements.csv.
 # =============================================================================
 suppressMessages({library(dplyr); library(readr); library(lubridate)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+source("code/00_lib/lib_raw.R")
+OVERLAP_S <- 30
 
 utc <- function(x) suppressWarnings(parse_date_time(x, c("Ymd HMS", "Ymd HM"), tz = "UTC"))
 aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE) %>% filter(!excluded)
 saved_win <- read_csv("data/flux_metadata/saved_manual_windows.csv", show_col_types = FALSE)
 det <- read_csv("output/flux/02_windows/rise_detection_days.csv", show_col_types = FALSE)
 cl  <- read_csv("output/flux/02_windows/rise_detection_closures.csv", show_col_types = FALSE)
-trim <- read_csv("data/flux_metadata/trimmed_windows.csv", show_col_types = FALSE)
-rejected <- read_csv("data/flux_metadata/saved_window_rejections.csv", show_col_types = FALSE)
+rejections <- read_csv("data/flux_metadata/window_rejections.csv", show_col_types = FALSE)
+clips <- read_csv("data/flux_metadata/window_clips.csv", show_col_types = FALSE)
+rejected <- rejections %>% filter(window == "saved")
+trim <- read_csv("data/flux_metadata/trimmed_windows.csv", show_col_types = FALSE) %>%
+  filter(!flux_id %in% rejections$flux_id[rejections$window == "trimmed"])
 
 w <- aux %>%
   transmute(UniqueID, analyzer, date, measurement_type, component,
@@ -42,7 +52,7 @@ w <- aux %>%
   left_join(saved_win %>% transmute(UniqueID = flux_id, saved_start = utc(start), saved_end = utc(end),
                                     saved_window_file = source_file, saved_offset = offset_from_fieldlog_s),
             by = "UniqueID") %>%
-  # saved windows shown to be wrong (saved_window_rejections.csv) are not used
+  # saved windows shown to be wrong (window_rejections.csv) are not used
   mutate(across(c(saved_start, saved_end), ~ if_else(UniqueID %in% rejected$flux_id, as.POSIXct(NA, tz = "UTC"), .x)),
          saved_offset = if_else(UniqueID %in% rejected$flux_id, NA_real_, saved_offset))
 
@@ -91,6 +101,26 @@ w <- w %>% left_join(trim %>% transmute(UniqueID = flux_id, trim_start = utc(win
   left_join(cl %>% select(UniqueID, rise_start, closure_flag), by = "UniqueID") %>%
   mutate(rise_minus_window_start_s = as.numeric(difftime(utc(format(rise_start)), start, units = "secs")))
 
+# ---- clips at a chamber lift / placement step (window_clips.csv) ---------------------------
+#   end_before_lift : end 10 s before the steepest CO2 drop in the window
+#   start_after_lift: start 10 s after the CO2 minimum within 180 s of the steepest drop
+#   start_after_step: start 10 s after the steepest CO2 rise in the window
+clip_one <- function(an, s, e, rule) {
+  r <- read_raw(an, s, e); stopifnot(nrow(r) > 10)
+  d <- c(NA, diff(r$CO2dry_ppm)); t <- r$POSIX.time
+  switch(rule,
+    end_before_lift  = c(s, t[which.min(d)] - 10),
+    start_after_lift = { L <- t[which.min(d)]; k <- which(t > L & t <= L + 180); c(t[k][which.min(r$CO2dry_ppm[k])] + 10, e) },
+    start_after_step = c(t[which.max(d)] + 10, e),
+    stop("unknown clip rule ", rule))
+}
+w$clip_rule <- clips$rule[match(w$UniqueID, clips$flux_id)]
+for (i in which(!is.na(w$clip_rule))) {
+  se <- clip_one(w$analyzer[i], w$start[i], w$end[i], w$clip_rule[i])
+  w$start[i] <- se[1]; w$end[i] <- se[2]
+  w$window_source[i] <- paste0(w$window_source[i], ", clipped (", w$clip_rule[i], ")")
+}
+
 out <- w %>% transmute(UniqueID, analyzer, date, campaign, measurement_type, component, window_source,
                        start = format(start, "%Y-%m-%d %H:%M:%S"), end = format(end, "%Y-%m-%d %H:%M:%S"),
                        length_s = as.numeric(difftime(utc(end), utc(start), units = "secs")),
@@ -99,6 +129,13 @@ out <- w %>% transmute(UniqueID, analyzer, date, campaign, measurement_type, com
                        saved_window_file, overlap_frac_of_saved = round(overlap_frac_of_saved, 3),
                        d_start_s, d_end_s, rise_minus_window_start_s, rise_check = closure_flag) %>%
   arrange(date, analyzer, start)
+# ---- no shared record ------------------------------------------------------------------------
+ov <- out %>% filter(!is.na(start)) %>% mutate(s = utc(start), e = utc(end)) %>% select(UniqueID, analyzer, s, e)
+ov <- ov %>% inner_join(ov, by = "analyzer", suffix = c("_a", "_b"), relationship = "many-to-many") %>%
+  filter(UniqueID_a < UniqueID_b) %>%
+  mutate(shared_s = as.numeric(pmin(e_a, e_b)) - as.numeric(pmax(s_a, s_b))) %>% filter(shared_s > OVERLAP_S)
+if (nrow(ov)) { print(as.data.frame(ov)); stop(nrow(ov), " pairs of closures share more than ", OVERLAP_S,
+  " s of record on one analyzer; resolve them in data/flux_metadata (code/qa/window_overlaps.R shows the traces)") }
 write_csv(out, "output/flux/02_windows/windows.csv")
 
 dis <- out %>% filter(!is.na(overlap_frac_of_saved),

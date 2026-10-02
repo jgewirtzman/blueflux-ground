@@ -13,7 +13,7 @@
 # output goes to output/logs/<stage>__<script>.log. The run stops at the first
 # failing step.
 #
-# Stages 01-03 read the raw analyzer files (data/analyzer/, gitignored) and the
+# Stages 01-04 read the raw analyzer files (data/analyzer/, gitignored) and the
 # US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored). From
 # stage 05 on, only tracked files are needed.
 # =============================================================================
@@ -28,7 +28,9 @@ steps <- c(
   # 03 fit: goFlux + fluxqc per gas; water flux from dissolved CH4 where unmeasured
   "code/03_fit/01_fit_fluxes.R",
   "code/03_fit/02_water_flux_from_dissolved.R",
-  # 04 ebullition: to be rebuilt (goAquaFlux); stage 05 uses the legacy partitioning meanwhile
+  # 04 ebullition: floating-chamber placements, diffusive / ebullitive CH4 (goFlux fork, vendored)
+  "code/04_ebullition/01_placements.R",
+  "code/04_ebullition/02_partition.R",
   # 05 dataset: compiled datasets, written once
   "code/05_dataset/01_compile_datasets.R",
   "code/05_dataset/02_data_products.R",
@@ -74,7 +76,14 @@ qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, in
   "code/qa/compare_fit_vs_legacy.R",
   "code/qa/compare_dataset_vs_legacy.R",
   "code/qa/audit_saved_traces.R",
-  "code/qa/air_temperature_options.R"
+  "code/qa/air_temperature_options.R",
+  "code/qa/window_overlaps.R",
+  "code/qa/long_deployments.R",
+  "code/qa/placements_review.R",
+  "code/qa/compare_ebullition_vs_legacy.R",
+  "code/qa/review_traces.R",
+  "code/qa/picarro_update_cadence.R",
+  "code/qa/sigma_pooling_check.R"
 )
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -93,9 +102,9 @@ if ("--qa" %in% args) run <- c(run, qa_steps)
 if ("--list" %in% args) { cat(sprintf("%2d  %s\n", seq_along(steps), label_of(steps)), sep = "")
   cat("QA (--qa):\n"); cat(sprintf("    %s\n", label_of(qa_steps)), sep = ""); quit(save = "no") }
 
-needs_raw <- stage_of(run) %in% c("01_metadata", "02_windows", "03_fit")
+needs_raw <- stage_of(run) %in% c("01_metadata", "02_windows", "03_fit", "04_ebullition")
 if (any(needs_raw) && !dir.exists("data/analyzer"))
-  stop("Stages 01-03 need the raw analyzer files in data/analyzer/ (gitignored). ",
+  stop("Stages 01-04 need the raw analyzer files in data/analyzer/ (gitignored). ",
        "Add them, or start from a later stage: Rscript run_all.R --from 05_dataset")
 if (any(stage_of(run) %in% c("01_metadata", "07_upscaling")) && !file.exists("data/tower/AMF_US-Skr_BASE_HH_2-5.csv"))
   stop("Stages 01 and 07 need data/tower/AMF_US-Skr_BASE_HH_2-5.csv (gitignored).")

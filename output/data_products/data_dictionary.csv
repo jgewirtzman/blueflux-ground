@@ -45,12 +45,12 @@ rh_start,Field-sheet relative humidity (not used),logical
 pneumatophore_count,Pneumatophores inside the collar,logical
 collar_offset_cm,"Collar height (soil chambers, table default; Mar 2022 6-inch override 2 cm in geometry_rule)",numeric
 collar_volume_cm3,Collar volume from soil_water_dims.csv,numeric
-window_source,"Fit window: trimmed (curated), saved manual window, scripted (field log + offset), ebullition placement",character
+window_source,"Stage-02 fit window: trimmed (curated), saved manual window, scripted (field log + offset), optionally clipped at a lift; placement (unlogged)",character
 window_start,Fit window start (analyzer clock),POSIXct
 window_end,Fit window end (analyzer clock),POSIXct
 clock_offset_s,Analyzer clock minus field-log clock (s),numeric
 clock_offset_source,How the offset was obtained,character
-CH4_best.flux,"CH4 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for ebullition-processed water, total flux",numeric
+CH4_best.flux,"CH4 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for water, the stage-04 placement value (CH4 total; CO2 diffusive window); fit diagnostics describe the stage-02 window",numeric
 CH4_model,CH4 Model selected by best.flux (LM / HM; HM only with >= 30 points),character
 CH4_quality.check,CH4 goFlux quality flags,character
 CH4_LM.flux,CH4 Linear-model flux,numeric
@@ -84,7 +84,7 @@ CH4_qc_convex,CH4 QC: concave-down trace (saturation / leak),logical
 CH4_qc_min_window,CH4 QC: window shorter than 60 s,logical
 CH4_qc_noisy,CH4 QC: closure noise > 1.5 x campaign sigma,logical
 CH4_qc_any,CH4 Any QC screen fired,logical
-CO2_best.flux,"CO2 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for ebullition-processed water, total flux",numeric
+CO2_best.flux,"CO2 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for water, the stage-04 placement value (CH4 total; CO2 diffusive window); fit diagnostics describe the stage-02 window",numeric
 CO2_model,CO2 Model selected by best.flux (LM / HM; HM only with >= 30 points),character
 CO2_quality.check,CO2 goFlux quality flags,character
 CO2_LM.flux,CO2 Linear-model flux,numeric
@@ -118,7 +118,7 @@ CO2_qc_convex,CO2 QC: concave-down trace (saturation / leak),logical
 CO2_qc_min_window,CO2 QC: window shorter than 60 s,logical
 CO2_qc_noisy,CO2 QC: closure noise > 1.5 x campaign sigma,logical
 CO2_qc_any,CO2 Any QC screen fired,logical
-data_source,rebuild fit (stage 03) or legacy ebullition placement (pending stage 04),character
+data_source,"rebuild fit (stage 03), or unlogged placement (stage 04) from data/flux_metadata/unlogged_placements.csv",character
 height_corrected,"Height above sediment, negative set to 0, minus water depth where measured from the water surface (cm)",logical
 year,Year,numeric
 month,Month,numeric
@@ -126,6 +126,23 @@ month_year,YYYY-MM,character
 season,"dry (Mar, Dec) / wet (Oct)",character
 disturbance_level,"healthy (SRS5, SRS6, RB10), regenerating (BL60), ghost (CP40, FLM30, MI), scrub (SE1)",character
 pneumatophore_density,Pneumatophores per m2,logical
+placement_start,Floating-chamber placement start (chamber on the water; analyzer clock),logical
+placement_end,"Placement end (chamber lifted, record gap or end of record; analyzer clock)",logical
+placement_duration_s,Placement length (s),logical
+placement_end_by,"What ends the placement: lift, record gap, end of record, curated",logical
+diffusive_rule,"Diffusive window rule: first 600 s of a placement > 12 min, else the stage-02 window",logical
+diffusive_window_start,Diffusive window start (analyzer clock),logical
+diffusive_window_end,Diffusive window end (analyzer clock),logical
+ebullition_flag,"Stage-04 caveat: Picarro 6-observation (~30 s) bubble window, or detection skipped (< 30 observations)",logical
+CH4_stage03_best.flux,"Water only: stage-03 CH4 fit of the stage-02 window, before the placement partition",logical
+CO2_stage03_best.flux,Water only: stage-03 CO2 fit of the stage-02 window,logical
+CO2_source,"Water only: CO2_best.flux from the stage-04 diffusive window, or the stage-03 fit where stage 04 gave none",logical
+CH4_diffusive_flux,Diffusive CH4 flux (nmol m-2 s-1): de-ebulliated goAquaFlux fit on the diffusive window,logical
+CH4_ebull_flux,Ebullitive CH4 flux over the whole floating-chamber placement (nmol m-2 s-1),numeric
+CH4_n_ebull_events,Bubble events detected over the placement,numeric
+CH4_ebullitive_fraction,Ebullitive share of total water CH4 flux,numeric
+ebullition_reprocessed,TRUE for water rows whose CH4_best.flux is the stage-04 placement total (diffusive + ebullitive),logical
+ebullition_source,Origin of the ebullition partitioning,logical
 CH4_flux_status,CH4 valid / no_data,character
 CH4_below_MDF,"CH4 Below detection (= below_MDF_emp, lab convention)",logical
 CH4_flagged,CH4 QC-flagged (= qc_any),logical
@@ -135,12 +152,6 @@ CO2_below_MDF,"CO2 Below detection (= below_MDF_emp, lab convention)",logical
 CO2_flagged,CO2 QC-flagged (= qc_any),logical
 CO2_SNR,CO2 |best.flux| / SE of the selected model,numeric
 flux_status,valid if either gas has a flux,character
-CH4_ebull_flux,Ebullitive CH4 flux (nmol m-2 s-1),numeric
-CH4_diffusive_flux,Diffusive CH4 flux (nmol m-2 s-1),logical
-CH4_ebullitive_fraction,Ebullitive share of total water CH4 flux,numeric
-CH4_n_ebull_events,Bubble events in the trace,numeric
-ebullition_reprocessed,CH4_best.flux is the total (diffusive + ebullitive) from ebullition processing,logical
-ebullition_source,Origin of the ebullition partitioning,logical
 exclusion_reason,Why the closure is excluded,logical
 legacy_data_source,Legacy flux source (original / rescued),character
 legacy_CH4_best.flux,Legacy pipeline CH4 flux (comparison),numeric

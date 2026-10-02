@@ -1,0 +1,4 @@
+flux_id,rule,reason
+Mar_22_T1_64_BL60_stem,end_before_lift,"the saved window (20:40:24-20:49:39) runs past the chamber lift (~20:48) into the flush and Mar_22_T1_65's placement"
+Mar_23_185_SRS5_stem,start_after_step,"logged 11:40-11:49 but the chamber goes on at the CO2 step at 11:45:19; the 4.5 min before it are ambient after Mar_23_184's lift"
+Mar_23_16_BL60_stem,start_after_lift,"logged 13:41:30-13:50:30 (9 min) across a chamber lift at ~13:46; the part before the lift is Mar_23_15's closure"
