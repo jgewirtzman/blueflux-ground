@@ -123,6 +123,24 @@ area_stack_panel <- function() {
     theme_fig() + theme(panel.grid.major.y = element_blank(), axis.ticks.y = element_blank(),
                         axis.text.y = element_text(colour = pal_class[c("ghost", "intact")], face = "bold"))
 }
+# pie alternative: one pie per class, area proportional to total surface per ground area
+area_pie_panel <- function() {
+  lv <- c("water", "soil", "prop root", "stem", "downed wood", "leaf")
+  pd <- area %>% filter(!is.na(class)) %>% mutate(comp = factor(as.character(comp), lv)) %>% arrange(class, comp) %>%
+    group_by(class) %>% mutate(tot = sum(sa), end = 2 * pi * cumsum(sa) / tot, start = lag(end, default = 0),
+                               r = sqrt(tot / max(area %>% group_by(class) %>% summarise(t = sum(sa)) %>% pull(t))),
+                               x0 = ifelse(class == "intact", 0, 1.9)) %>% ungroup()
+  lab <- pd %>% distinct(class, x0, r, tot)
+  ggplot(pd) +
+    ggforce::geom_arc_bar(aes(x0 = x0, y0 = 0, r0 = 0, r = r, start = start, end = end, fill = comp), colour = "white", linewidth = 0.3) +
+    geom_text(data = lab, aes(x0, -1.12, label = sprintf("%s\n%.1f m\u00b2 m\u207b\u00b2", class, tot), colour = class),
+              size = 2.5, fontface = "bold", lineheight = 0.9, vjust = 1) +
+    scale_fill_manual(values = setNames(pal_comp, lv), name = "component") +
+    scale_colour_manual(values = pal_class, guide = "none") +
+    coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.6, 1.05)) + theme_void() +
+    theme(plot.tag = element_text(face = "bold", size = 11), legend.key.size = unit(8, "pt"),
+          legend.text = element_text(size = 7), legend.title = element_text(size = 7, face = "bold"))
+}
 # woody surface by height (TLS, 0.5 m bins), intact vs ghost; measured chamber zone shaded
 hb <- read.csv("data/tls/all_sites_summary.csv") %>% left_join(tsz %>% select(site, area_m2), by = "site") %>%
   mutate(class = factor(site_class[site], names(pal_class)),
@@ -142,14 +160,14 @@ height_panel <- function() {
     theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.y = element_blank())
 }
 
-build <- function(dd, file, note, stacked = FALSE) {
+build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   pa <- rate_panel(dd, "CH4", "CH4_flux_status", c(0, 1, 10, 100, 1000), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
     guides(fill = guide_legend(override.aes = list(size = 2.5), order = 1))
   pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE) +
     guides(fill = "none")
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
   pd2 <- pd + guides(shape = "none")
-  pcc <- if (stacked) area_stack_panel() else area_panel()
+  pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
   row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b")) | (pcc + labs(tag = "c"))) + plot_layout(widths = c(1, 1, 1), guides = "collect")
   row2 <- ((pc2 + labs(tag = "d")) | (pd2 + labs(tag = "e")) | (height_panel() + labs(tag = "f"))) +
     plot_layout(widths = c(1, 1, 1), guides = "collect")
@@ -162,5 +180,6 @@ build <- function(dd, file, note, stacked = FALSE) {
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "")
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_stacked", "", stacked = TRUE)
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_pie", "", pie = TRUE)
 build(d, "output/figures/other/fig2_rates_with_context",
       "a, b: includes context sites (Rookery Bay with intact, Marco Island with ghost; crosses); SE-1 (scrub) not shown.")
