@@ -164,14 +164,14 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/pub_SI_chamber_photos.png>){width=6.5in}
 
-**Fig. S1.** Chamber designs: stem chambers at several heights, prop-root chamber, soil collar and cylinder, floating water chamber, leaf chamber and downed-wood chamber.
+**Fig. S1.** Chamber types: (a) soil cylinder, (b) soil cylinder enclosing pneumatophores, (c) soil collar and dome, (d) floating water chamber, (e) prop root, (f) stem, (g) woody debris and (h) leaf.
 
 
 ![](<output/figures/other/sampling_design.png>){width=6.5in}
 
 ![](<output/figures/other/water_positions_by_campaign.png>){width=6.5in}
 
-**Fig. S2.** Sampling design relative to tide and standing water. (a) Chamber measurements by site and campaign against water level above the soil (FCE LTER loggers); diamonds at −2 cm mark chambers without a recorded water depth; triangles mark dissolved-gas samples. (b) Water-surface CH4 flux by campaign and site, coloured by recorded chamber position (in plot, off plot or open water, unlabelled).
+**Fig. S2.** Sampling design relative to tide and standing water. (a) Chamber measurements by site and campaign against water level above the soil (FCE LTER loggers; the SRS5 October 2022 record has a gap before 19 October); diamonds at −2 cm mark chambers without a recorded water depth; triangles mark dissolved-gas samples. (b) Water-surface CH4 flux by campaign and site, by recorded chamber position (above the forest floor, in a channel or open water, or not recorded); bars, arithmetic means. Within the sites where both positions were sampled, flux did not differ between them (Wilcoxon p = 0.29–1), so channel and open-water placements did not miss or inflate water hotspots.
 
 
 ![](<output/figures/other/pub_component_by_plot_campaign_combined_condensed_boot.png>){width=6.5in}
