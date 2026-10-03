@@ -1,4 +1,10 @@
-"scenario","regen_mg_m2_d","regen_g_m2_yr"
-"measured_frac",90.2,32.9
-"flooded",91.3,33.3
-"exposed_soil",89.6,32.7
+"woody","campaign","flooded_share","soil","water","stem","root","total"
+"none","Oct 2022",0.964,0.147,27.732,0,0,27.879
+"none","Mar 2023",0,20.051,0,0,0,20.051
+"intermediate","Oct 2022",0.964,0.147,27.732,9.56,0.348,37.787
+"intermediate","Mar 2023",0,20.051,0,0.211,0.348,20.611
+"intact","Oct 2022",0.964,0.147,27.732,15.751,0.618,44.249
+"intact","Mar 2023",0,20.051,0,0.348,0.618,21.018
+"intact","annual",NA,10.099,13.866,8.05,0.618,32.633
+"intermediate","annual",NA,10.099,13.866,4.886,0.348,29.199
+"none","annual",NA,10.099,13.866,0,0,23.965

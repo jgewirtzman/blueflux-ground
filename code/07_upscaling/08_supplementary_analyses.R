@@ -102,34 +102,38 @@ write.csv(data.frame(
 # (2) REGENERATING (BL60) UPSCALED BUDGET — intermediate (50%) TLS areas
 # =============================================================================
 cat("\n\n########## (2) REGEN (BL60) UPSCALED BUDGET ##########\n")
-bl <- df %>% filter(plot=="BL60", !is.na(CH4_best.flux))
-bl_rates <- bl %>% group_by(component) %>% do(boot(.$CH4_best.flux)) %>% ungroup()
-cat("\nBL60 component areal CH4 rates (nmol m-2 s-1):\n")
-print(as.data.frame(bl_rates %>% transmute(component, nmol=round(mean,2), lo=round(lo,2), hi=round(hi,2), n)))
-
-get <- function(c) { r <- bl_rates$mean[bl_rates$component==c]; if(length(r)) r else 0 }
-# BL60 inundation: use measured water_depth fraction if available, else 50/50
-bl_wd <- df %>% filter(plot=="BL60") %>% summarise(frac_flood = mean(water_depth>0, na.rm=TRUE))
-frac_w <- ifelse(is.finite(bl_wd$frac_flood), bl_wd$frac_flood, 0.5)
-cat(sprintf("\nBL60 fraction flooded (measured water_depth>0): %.2f\n", frac_w))
-
-regen_budget <- function(frac_water) {
-  soil <- get("soil") * (1-frac_water)
-  water<- get("water")* frac_water
-  stem <- get("stem") * regen_ratio$stem_ratio
-  root <- get("root") * regen_ratio$root_ratio
-  (soil + water + stem + root) * conv    # mg m-2 ground d-1  (soil/water use frac; stem/root use ratio)
+# Built like the intact and ghost class budgets: each campaign (Oct 2022, Mar 2023) separately,
+# with that campaign's component rates and its measured flooded share of the floor (share of
+# depth readings with standing water), then the two campaigns averaged. Prop roots were measured
+# only in Mar 2023; that rate is used for both campaigns. Woody (stem + prop-root) surface is
+# unknown (no TLS): bounded by none, intermediate (mean of ghost and intact class ratios; central)
+# and full intact class ratios. Downed wood omitted (two closures). Mar 2022 excluded, as for
+# the other classes.
+bl <- df %>% filter(plot == "BL60", !is.na(CH4_best.flux), campaign %in% c("Oct 2022", "Mar 2023"))
+rate <- bl %>% group_by(campaign, component) %>% summarise(r = mean(CH4_best.flux), n = n(), .groups = "drop")
+rget <- function(cp, c) { r <- rate$r[rate$campaign == cp & rate$component == c]; if (length(r)) r else NA_real_ }
+root_r <- mean(bl$CH4_best.flux[bl$component == "root"])
+ff <- bl %>% group_by(campaign) %>% summarise(f = mean(water_depth > 0, na.rm = TRUE), .groups = "drop")
+woody <- list(none = c(stem = 0, root = 0),
+              intermediate = c(stem = regen_ratio$stem_ratio, root = regen_ratio$root_ratio),
+              intact = c(stem = ratio_class$stem_ratio[ratio_class$class == "healthy"],
+                         root = ratio_class$root_ratio[ratio_class$class == "healthy"]))
+rows <- list()
+for (w in names(woody)) for (cp in c("Oct 2022", "Mar 2023")) {
+  f <- ff$f[ff$campaign == cp]
+  soil <- ifelse(is.na(rget(cp, "soil")), 0, rget(cp, "soil")) * (1 - f)
+  water <- ifelse(is.na(rget(cp, "water")), 0, rget(cp, "water")) * f
+  stem <- rget(cp, "stem") * woody[[w]][["stem"]]
+  root <- root_r * woody[[w]][["root"]]
+  rows[[length(rows) + 1]] <- data.frame(woody = w, campaign = cp, flooded_share = f,
+    soil = soil * conv * gyr, water = water * conv * gyr, stem = stem * conv * gyr, root = root * conv * gyr)
 }
-regen_mgd    <- regen_budget(frac_w)
-regen_flood  <- regen_budget(1)
-regen_dry    <- regen_budget(0)
-cat(sprintf("\nRegen (BL60) upscaled CH4 budget (intermediate TLS, mg m-2 d-1):\n  measured frac_flood=%.2f: %.1f\n  fully flooded:            %.1f\n  fully exposed soil:       %.1f\n",
-            frac_w, regen_mgd, regen_flood, regen_dry))
-cat(sprintf("  => annual (measured frac): %.1f g CH4 m-2 yr-1\n", regen_mgd*gyr))
-write.csv(data.frame(scenario=c("measured_frac","flooded","exposed_soil"),
-  regen_mg_m2_d=round(c(regen_mgd,regen_flood,regen_dry),1),
-  regen_g_m2_yr=round(c(regen_mgd,regen_flood,regen_dry)*gyr,1)),
-  file.path(out,"supp_regen_budget.csv"), row.names=FALSE)
+rb <- bind_rows(rows) %>% mutate(total = soil + water + stem + root)
+ann <- rb %>% group_by(woody) %>% summarise(across(c(soil, water, stem, root, total), mean), .groups = "drop") %>% mutate(campaign = "annual")
+cat("\nBL60 component rates by campaign (nmol m-2 s-1):\n"); print(as.data.frame(rate))
+cat("\nBL60 flooded share by campaign:\n"); print(as.data.frame(ff))
+cat("\nRegen (BL60) CH4 budget (g CH4 m-2 yr-1) by woody-structure bound:\n"); print(as.data.frame(bind_rows(rb, ann) %>% mutate(across(where(is.numeric), ~ round(.x, 2)))))
+write.csv(bind_rows(rb, ann) %>% mutate(across(where(is.numeric), ~ round(.x, 3))), file.path(out, "supp_regen_budget.csv"), row.names = FALSE)
 
 # =============================================================================
 # (3) CONTEXT-SITE COMPONENT AREAL RATES (MI, RB10, SE1) vs main sites
