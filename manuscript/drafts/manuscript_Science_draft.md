@@ -11,16 +11,16 @@ Jonathan Gewirtzman^1,2,3\*^, Elisabeth Powell^4,5^, Frannie Adams^1^, Sean Char
 ^7^Department of Biology, East Carolina University, Greenville, NC, USA.\
 ^8^Earth System Science Interdisciplinary Center, University of Maryland, College Park, MD, USA.\
 ^9^Atmospheric Chemistry and Dynamics Laboratory, NASA Goddard Space Flight Center, Greenbelt, MD, USA.\
-^10^University of Vermont, Burlington, VT, USA.\
+^10^Rubenstein School of Environment and Natural Resources, University of Vermont, Burlington, VT, USA.\
 ^11^CREAF, Cerdanyola del Vallès, Barcelona, Spain.\
 ^12^Faculty of Science and Engineering, Southern Cross University, Lismore, NSW, Australia.\
 ^13^Yale Center for Natural Carbon Capture, Yale University, New Haven, CT, USA.\
 ^14^Department of Geosciences, Utah State University, Logan, UT, USA.\
 ^15^Goddard Earth Sciences Technology and Research (GESTAR) II, University of Maryland Baltimore County, Baltimore, MD, USA.\
 ^16^Yale College, Yale University, New Haven, CT, USA.\
-^17^University of Rhode Island, Kingston, RI, USA.\
+^17^College of the Environment and Life Sciences, University of Rhode Island, Kingston, RI, USA.\
 ^18^Department of Chemical and Environmental Engineering, Yale University, New Haven, CT, USA.\
-^19^Spark Climate Solutions, USA.\
+^19^Spark Climate Solutions, Covina, CA, USA.\
 ^20^Department of Earth, Environment, and Planning, East Carolina University, Greenville, NC, USA.
 
 \*Corresponding author. Email: jonathan.gewirtzman@yale.edu
