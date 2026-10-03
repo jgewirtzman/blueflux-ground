@@ -186,7 +186,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/pub_SI_pneumatophore_density.png>){width=6.5in}
 
-**Fig. S5.** Soil CH4 (a) and CO2 (b) flux against pneumatophore density per collar, by site (dry season). Lines, least-squares fits ± 95% CI; r, Pearson correlation (CH4 on the inverse-hyperbolic-sine scale); ρ, Spearman correlation. Marco Island collars had no pneumatophores.
+**Fig. S5.** Soil CH4 (a) and CO2 (b) flux against pneumatophore density per collar, by site (dry-season visits; shape, visit). Lines, least-squares fits ± 95% CI; ρ, Spearman rank correlation with p and n. Marco Island collars had no pneumatophores and are not shown.
 
 
 ![](<output/figures/other/pub_stem_height_composite_combined.png>){width=6.5in}
