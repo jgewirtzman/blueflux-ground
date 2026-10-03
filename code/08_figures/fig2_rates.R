@@ -231,9 +231,9 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE)
   ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.8, device = cairo_pdf)
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "", pie = TRUE)
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "", pie = TRUE, d_right = TRUE)
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_dleft", "", pie = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_rows", "")
-build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_dright", "", pie = TRUE, d_right = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_stacked", "", stacked = TRUE)
-build(d, "output/figures/other/fig2_rates_with_context", pie = TRUE, note =
+build(d, "output/figures/other/fig2_rates_with_context", pie = TRUE, d_right = TRUE, note =
       "a, b: includes context sites (Rookery Bay with intact, Marco Island with ghost; crosses); SE-1 (scrub) not shown.")
