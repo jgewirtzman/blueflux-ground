@@ -7,7 +7,7 @@
 #   (b) The intact-to-ghost switch per m2, split into the CO2 change (lost
 #       uptake + respiration) and the CH4 increase, with the CH4 share and the
 #       regional total over the 2017 loss area.
-#   (c) 2017 hurricane dieback polygons at full resolution (induced CH4 total in subtitle), with
+#   (c) Induced CH4 from 2017 hurricane dieback per 0.25 degree cell, with
 #       little recovery after the 2017 hurricanes, and the Irma/Maria tracks.
 # Inputs from 07_upscaling (net_forcing_by_class, mc_net_forcing_by_class,
 # forcing_framings, forcing_switch_per_m2, regional_ghost_forcing{,_grid},
@@ -89,24 +89,23 @@ tracks <- read.csv("output/upscaling/hurricane_tracks_2017.csv")
 lab_pts <- tracks %>% group_by(storm) %>% filter(lon > -97, lon < -60, lat > 9, lat < 30.5) %>%
   slice(if (first(storm) == "Irma") which.min(abs(lat - 27.5)) else which.min(abs(lat - 27))) %>% ungroup() %>%
   mutate(hjust = ifelse(storm == "Irma", 1.1, -0.12))
-# full-resolution dieback polygons (CIFOR short-term loss on GMW v1, ~25 m); outlines are
-# drawn at a fixed width so patches remain visible at regional scale. Induced CH4 is
-# area x the per-area increase, so the polygons carry the spatial pattern directly.
-loss <- st_read("data/gis/ghost_extent/CIFOR_shortTermLoss_2017_GMW_V1_wCountry_Area.shp", quiet = TRUE) %>%
-  st_make_valid() %>% st_transform(4326)
+# 2017 hurricane dieback (Taillie et al. 2020 layer, ~25 m polygons) aggregated to
+# 0.25 degree cells; induced CH4 = dieback area x the per-area increase
+seq_ch4 <- grDevices::colorRampPalette(c("#F3E1EA", pal_gas[["CH4"]], "#4A1533"))(5)
 pc <- ggplot() +
   geom_sf(data = land, fill = "grey93", colour = "grey75", linewidth = 0.12) +
+  geom_tile(data = grid, aes(lon, lat, fill = ch4_Mg), width = grid$res_deg[1], height = grid$res_deg[1], colour = "white", linewidth = 0.05) +
   geom_path(data = tracks, aes(lon, lat, group = storm), colour = "grey35", linewidth = 0.35, linetype = "22") +
-  geom_sf(data = loss, aes(fill = "dieback", colour = "dieback"), linewidth = 0.45) +
   geom_text(data = lab_pts, aes(lon, lat, label = paste(storm, "2017"), hjust = hjust), colour = "grey25", size = 2.3, fontface = "italic") +
-  scale_fill_manual(values = c(dieback = pal_gas[["CH4"]]), labels = "2017 hurricane dieback", name = NULL) +
-  scale_colour_manual(values = c(dieback = pal_gas[["CH4"]]), guide = "none") +
+  scale_fill_gradientn(colours = seq_ch4, trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100), labels = c("0.01", "0.1", "1", "10", "100"),
+                       name = expression(atop("Induced CH"[4]*" (Mg", "yr"^-1*" per 0.25"*degree*" cell)"))) +
   coord_sf(xlim = c(-98, -59), ylim = c(8, 31), expand = FALSE) +
   labs(x = NULL, y = NULL,
        subtitle = sprintf("2017 hurricane dieback: %.0f km\u00b2, inducing %.1f Gg CH\u2084 yr\u207b\u00b9 (%.1f\u2013%.1f)",
                           reg$area_km2, reg$ch4_induced_Gg, reg$ch4_induced_lo_Gg, reg$ch4_induced_hi_Gg)) +
-  theme_fig() + theme(legend.position = "inside", legend.position.inside = c(0.015, 0.03), legend.justification = c(0, 0),
-                      legend.background = element_rect(fill = "white", colour = NA), legend.text = element_text(size = 6.5),
+  guides(fill = guide_colourbar(title.position = "top", direction = "vertical")) +
+  theme_fig() + theme(legend.position = "right", legend.justification = c(0, 0.5),
+                      legend.key.width = unit(6, "pt"), legend.key.height = unit(22, "pt"), legend.title = element_text(size = 6.5),
                       panel.grid.major = element_line(colour = "grey88", linewidth = 0.2), axis.line = element_blank(),
                       plot.subtitle = element_text(size = 6.5, colour = "grey30"))
 
