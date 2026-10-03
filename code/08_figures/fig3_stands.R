@@ -7,9 +7,7 @@
 #   (d) CH4 and (e) net CO2 exchange by campaign and annually (mean of the wet and
 #       dry campaigns): stacked bottom-up components, bottom-up totals (Monte Carlo
 #       95%), airborne (CARAFE; Mar 2023 = mean of Feb and Apr 2023; +/- 1.96 SE)
-#       and tower (US-Skr campaign-month NEE). Annual bottom-up budgets printed
-#       above the annual columns (g CH4 m-2 yr-1; g C m-2 yr-1). CH4 axis cropped
-#       at 70; intervals beyond it are clipped and marked with an arrow and value.
+#       and tower (US-Skr campaign-month NEE); shaded green, tower GPP (intact).
 # Writes output/figures/other/fig3_stands.{png,pdf}.
 # =============================================================================
 suppressMessages({library(dplyr); library(tidyr); library(ggplot2); library(patchwork)})
@@ -99,19 +97,19 @@ closure_panel <- function(stack, df, ylab, ylim = NULL, gpp_df = NULL, ann_lab =
   df <- df %>% mutate(source = factor(source, src_lev), x = as.numeric(campaign) + c(0, 0.36, 0.5)[as.integer(source)])
   # intervals running past the top of a cropped axis: clip and mark with an arrow and the true upper bound
   off <- if (!is.null(ylim)) df %>% filter(hi > ylim[2]) else df[0, ]
+  df <- df %>% mutate(clip = !is.null(ylim) & hi > if (is.null(ylim)) Inf else ylim[2])
   if (!is.null(ylim)) df <- df %>% mutate(hi = pmin(hi, ylim[2]))
   p <- ggplot() + geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.3)
-  if (!is.null(gpp_df)) p <- p + geom_col(data = gpp_df, aes(as.numeric(campaign), -GPP), width = 0.5, fill = "#A9C6B3") +
-    geom_text(data = data.frame(class = factor("intact", cls)), aes(x = 2, y = -7.6, label = "GPP (tower)"),
-              size = 2, colour = "grey30", vjust = 1)
+  if (!is.null(gpp_df)) p <- p + geom_col(data = gpp_df, aes(as.numeric(campaign), -GPP), width = 0.5, fill = "#A9C6B3") 
   p <- p + geom_col(data = stack, aes(as.numeric(campaign), v, fill = comp), width = 0.5, colour = "white", linewidth = 0.15,
                     position = position_stack(reverse = TRUE)) +
-    geom_errorbar(data = df, aes(x = x, ymin = lo, ymax = hi, colour = source), width = 0.07, linewidth = 0.45) +
+    geom_errorbar(data = df %>% filter(!clip), aes(x = x, ymin = lo, ymax = hi, colour = source), width = 0.07, linewidth = 0.45) +
+    # clipped intervals: no top cap (only the lower cap), asterisk at the axis top
+    geom_linerange(data = df %>% filter(clip), aes(x = x, ymin = lo, ymax = hi, colour = source), linewidth = 0.45) +
+    geom_segment(data = df %>% filter(clip), aes(x = x - 0.035, xend = x + 0.035, y = lo, yend = lo, colour = source), linewidth = 0.45) +
     geom_point(data = df, aes(x = x, y = v, shape = source), fill = ifelse(df$source == src_lev[1], "white", "grey30"),
                colour = col_ink, size = 2.1, stroke = 0.4) +
-    geom_segment(data = off, aes(x = x, xend = x, y = ylim[2] - 0.06 * diff(ylim), yend = ylim[2]),
-                 arrow = arrow(length = unit(3, "pt"), type = "closed"), colour = col_ink, linewidth = 0.45) +
-    geom_text(data = off, aes(x = x + 0.08, y = ylim[2], label = round(hi)), hjust = 0, vjust = 1, size = 2.1, colour = "grey30") +
+    geom_text(data = off, aes(x = x + 0.09, y = ylim[2], label = "*"), hjust = 0, vjust = 0.9, size = 4, colour = col_ink) +
     facet_grid(~ class) +
     geom_vline(xintercept = 2.78, colour = "grey80", linewidth = 0.3) +
     scale_x_continuous(breaks = 1:3, labels = lab3, limits = c(0.6, 3.65)) +
@@ -139,10 +137,9 @@ ch_stack3 <- add_annual(ch_stack %>% select(class, campaign, comp, v), c("class"
 co_stack3 <- add_annual(co_stack, c("class", "comp"))
 gpp3 <- add_annual(gpp_df %>% select(class, campaign, GPP), "class")
 est3 <- function(...) bind_rows(lapply(list(...), function(d) add_annual(d, c("class", "source"))))
-pc <- closure_panel(ch_stack3, est3(ch_tot, ca_ch4), expression("Stand CH"[4]*" (nmol m"^-2*" s"^-1*")"), ylim = c(-18, 70),
-                    ann_lab = function(v) sprintf("%.1f", v * 16.04e-9 * 3.156e7))
+pc <- closure_panel(ch_stack3, est3(ch_tot, ca_ch4), expression("Stand CH"[4]*" (nmol m"^-2*" s"^-1*")"), ylim = c(-18, 108))
 pd <- closure_panel(co_stack3, est3(co_tot, ca_co2, tower), expression("Stand CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*", daily)"),
-                    gpp_df = gpp3, ann_lab = function(v) format(round(v * 12e-6 * 3.156e7), big.mark = ","))
+                    gpp_df = gpp3)
 
 # ---- (e) aircraft by deployment (placeholder) ----
 deps <- c("Apr 2022", "Oct 2022", "Feb 2023", "Apr 2023", "Jul 2024")
