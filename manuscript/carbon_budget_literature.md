@@ -113,3 +113,21 @@ Found by a literature-search subagent; citations to be checked against the paper
 - Pangala et al. 2017, Nature 552, doi:10.1038/nature24639. Amazon stems reconciled with top-down basin budgets (not EC).
 - Gauci et al. 2024, Nature 631:796, doi:10.1038/s41586-024-07592-w. TLS-based stem upscaling (uptake), no EC.
 - To check: AGU25 "MidFlux" abstract (ground-to-airborne EC, mid-Atlantic wetlands), https://agu.confex.com/agu/agu25/meetingapp.cgi/Paper/1967751.
+
+## Carbon loss from stands after mortality (review 2026-10-03)
+Verified against abstract/full text unless noted; g C m-2 yr-1 conversions ours.
+- Cahoon et al. 2003 J Ecol 91:1093 (10.1046/j.1365-2745.2003.00841.x): peat collapse 11 mm/yr after Hurricane Mitch mass mortality (Honduras).
+- Lang'at et al. 2014 PLoS ONE 9:e107868 (10.1371/journal.pone.0107868): girdling/cutting; subsidence 32 mm/yr; excess soil efflux 25.3 t CO2/ha/yr = ~690 g C (elevation-based ~970).
+- Lovelock et al. 2011 PLoS ONE 6:e21279: cleared Belize peat efflux ~2,890 (yr 1) to ~820 g C (yr 20), log decline.
+- Sippo et al. 2020 L&O 65:2642 (10.1002/lno.11476): Gulf of Carpentaria dieback; soil CO2 efflux +189%, DIC outwelling ~-50%; DIC/soil CO2 = 81%/16% of losses (living) vs 51%/47% (dead) -> loss shifts lateral to vertical. Absolute rates not retrieved.
+- Sippo et al. 2019 GCA (10.1016/j.gca.2019.03.003): radium-based outwelling after dieback: DOC -0-12%, DIC -50-52%, TAlk -37-51%.
+- Stegehuis et al. 2026 Commun Earth Environ (10.1038/s43247-026-03249-w): Shark River estuary after Irma: DIC export -45%, DOC -27% for up to 2 yr.
+- Zhao et al. 2021 Sci Rep 11:13495: Irma storm litter pulse ~57-197 g C m-2 (one-time).
+- Griffiths & Mitsch 2021 Plants 10:1749: Naples Bay after Irma, 2.7 kg C m-2 lost from top 20 cm (~450-540 g C/yr over the interval).
+- Harada et al. 2020 Biogeosciences 17:5599: ~48% lower surface sediment TOC after dieback.
+- Krauss et al. 2020 Wetlands 40:2397: USVI Irma/Maria, aboveground C lost 1,190-4,350 g C m-2 (to necromass).
+- Kauffman et al. 2017 Front Ecol Environ 15:183; Sasmito et al. 2019 GCB (10.1111/gcb.14774): land-use conversion stock losses (biomass -82%, soil -54%).
+- Robertson & Daniel 1989 L&O 34:640: Rhizophora trunk decay k 0.083-0.108 /yr; Romero et al. 2005 J Ecol 93:618 (Shark River wood decay).
+- Osland et al. 2020 Wetlands 40:1445: ~75 cm elevation loss after 1935 hurricane, forest to mudflat. Bennion et al. 2024 Wetlands: -4.8 to -26 mm/yr after toppling.
+- Reed et al. 2025 GCB (10.1111/gcb.70124): surviving Everglades forest recovered lost C within 4 yr (recovery debt 132-224 g C m-2).
+Synthesis: dead-stand vertical C loss 700-2,900 g C/yr early on peat, declining; ours (494 at 5-6 yr) mid-low. Dissolved lateral export DECREASES after mortality (-45 to -52% DIC) apart from one-time storm pulses; total loss roughly conserved, shifting lateral -> vertical.
