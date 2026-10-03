@@ -26,7 +26,7 @@ Mangroves are also increasingly killed. Intense tropical cyclones defoliate cano
 
 As part of NASA's BlueFlux campaign, we measured methane and CO2 across a hurricane-disturbance gradient in the Florida coastal Everglades, where Hurricane Irma (September 2017) left extensive ghost forest (Fig. 1). We combined chambers on six surfaces (water, soil, prop roots, stems, downed wood and leaves) at intact, regenerating and ghost sites in wet- and dry-season campaigns, terrestrial laser scanning (TLS) of woody surface area, the US-Skr eddy-covariance tower and CARAFE airborne eddy covariance (Fig. 1c), and porewater chemistry with sediment metagenomes.
 
-### Mangroves emit methane from every surface
+### Mangroves emit methane from nearly every surface
 
 Across 752 chamber fluxes, every surface except leaves emitted methane in every forest class (Fig. 2a). Water and soil had the highest rates (17.6 and 17.1 nmol m−2 s−1 across sites), followed by stems (8.0) and prop roots (3.5), and more than 90% of stem, root and water fluxes were positive. Mortality raised per-area emission sharply: relative to intact forest, ghost-forest stems emitted ~40 times more methane, water surfaces ~18 times more, and soils twice as much, with the highest soil and water rates at the regenerating site (Fig. 2a). CO2 efflux from stems, roots, soils and water was positive in all classes, and leaves were the only net CO2 sink (Fig. 2b).
 
@@ -50,9 +50,9 @@ The relationship between salinity and methane reversed (Fig. 4b). Across three p
 
 Intact forest was a strong net sink: net CO2 uptake (−3,755 g CO2 m−2 yr−1) dwarfed methane (+121 g CO2-eq at GWP20), which offset 3% of it (Fig. 5a). Ghost forest was a net source (+2,775 g CO2-eq m−2 yr−1 at GWP20; +2,141 at GWP100). Losing the canopy turned its CO2 balance positive, and methane supplied 35% of its warming at GWP20 (16% at GWP100; 42% with GWP*). Mortality therefore switched the radiative balance by ~6,400 g CO2-eq m−2 yr−1 at GWP20 (~5,800 at GWP100), and Monte Carlo intervals for the two states did not overlap (intact −5,233 to −1,939; ghost +1,922 to +3,978). Accounting for lateral carbon export to tidal waters shrinks the intact sink but leaves a switch of ~5,500 (fig. S_[ED9]_), and across all analytical choices we tested the switch stayed between ~5,600 and ~8,000 (Supplementary Table S10).
 
-### From hurricanes to climate feedbacks
-
 Scaled across the Caribbean, the switch is large. In a Landsat map of 2017 hurricane damage (Taillie et al. 2020), 173 km2 of mangrove showed little recovery, 95% of it after Irma, mainly in northern Cuba and south Florida (Fig. 5c). At the measured per-area switch, this loss adds ~1.1 Tg CO2-eq yr−1 at GWP20 (0.7–1.6), including 1.8 Gg CH4 yr−1 of induced methane (Fig. 5b). Our ghost sites showed no canopy recovery five to six years after landfall, so this forcing recurs each year until stands recover. The estimate is conservative: the map captures only 60 of the 108 km2 of post-Irma Florida dieback (Lagomasino et al. 2021), and it omits peat collapse and ghost-forest lateral losses. _[OPTIONAL PLACEHOLDER — global extension: apply the per-area switch to cyclone-driven mangrove mortality worldwide (global loss products × storm tracks), with bounds.]_
+
+### From hurricanes to climate feedbacks
 
 Two revisions follow for mangrove methane accounting: a non-zero baseline for intact saline forest, and an explicit dependence on disturbance state. Hypersaline ghost forest (50–64 PSU) emitted eight times more methane than intact forest, the opposite of what salinity thresholds predict. Mortality also changes where methane escapes: from sediment and roots to ponded water. Rates are setting-dependent, though: a ghost site in the Ten Thousand Islands emitted an order of magnitude less than the Everglades ghost sites (Supplementary Text S.T8), and the regenerating stand emitted as much as ghost forest, so recovery of the canopy does not promptly restore low methane.
 
