@@ -74,31 +74,30 @@ p9 <- ggplot(sc) +
                       legend.title = element_text(size = 7, face = "bold"))
 save_si(p9, "si_S9_tide_scenarios", 3.0)
 
-# ---- S10: Monte Carlo SE by component ---------------------------------------
-comp_lab <- c(soil = "soil", water = "water", root = "prop root", cwd = "downed wood",
-              stem_measured = "stem \u2264 1.5 m", stem_extrapolated = "stem > 1.5 m")
-comp_col <- c(pal_comp[c("soil", "water", "prop root", "downed wood", "stem")], "#F6EEDA")
-names(comp_col) <- comp_lab
-mc <- read.csv("output/upscaling/mc_component_uncertainty.csv") %>%
-  filter(component != "total", tide_state %in% c("fixed", "high_tide"), mc_se > 0, campaign %in% CAMP) %>%
-  mutate(comp = factor(comp_lab[component], rev(comp_lab)), site = factor(site, names(site_class)),
-         campaign = factor(campaign, CAMP))
-p10 <- ggplot(mc, aes(mc_se, comp)) +
-  geom_segment(aes(x = 1e-4, xend = mc_se, yend = comp), colour = "grey75", linewidth = 0.3) +
-  geom_point(aes(fill = comp), shape = 21, size = 2, colour = "grey25", stroke = 0.3) +
-  ggh4x::facet_grid2(campaign ~ site, labeller = labeller(site = site_lab),
-                     strip = ggh4x::strip_themed(text_x = lapply(pal_class[site_class], function(cc)
-                       element_text(colour = cc, face = "bold", size = 8, hjust = 0.5)),
-                       text_y = list(element_text(face = "bold", size = 8, angle = -90)))) +
+# ---- S11 (file si_S10_mc_uncertainty): component CH4 with Monte Carlo 95% intervals ----
+# Tide states weighted by the flooded share of the floor (as in the budgets); right-hand labels give
+# each component's share of the stand variance (SE^2 / sum SE^2). Components that are always zero omitted.
+comp_lab <- c(water = "water", soil = "soil", root = "prop root", cwd = "downed wood",
+              stem_measured = "stem ≤ 1.5 m", stem_extrapolated = "stem > 1.5 m")
+comp_col <- c(pal_comp[c("water", "soil", "prop root", "downed wood", "stem")], "#F6EEDA"); names(comp_col) <- comp_lab
+mc <- read.csv("output/upscaling/mc_component_uncertainty.csv") %>% filter(component != "total", campaign %in% CAMP) %>%
+  group_by(site, campaign, component) %>%
+  summarise(mean = weighted.mean(mc_mean, tide_weight), lo = weighted.mean(mc_ci_lo, tide_weight),
+            hi = weighted.mean(mc_ci_hi, tide_weight), se = weighted.mean(mc_se, tide_weight), .groups = "drop") %>%
+  group_by(site, campaign) %>% mutate(vshare = 100 * se^2 / sum(se^2)) %>% ungroup() %>%
+  filter(!(mean == 0 & hi == 0)) %>%
+  mutate(comp = factor(comp_lab[component], rev(comp_lab)), site = factor(site, names(site_class)), campaign = factor(campaign, CAMP))
+p10 <- ggplot(mc, aes(y = comp)) +
+  geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3) +
+  geom_errorbar(aes(xmin = lo, xmax = hi), width = 0, linewidth = 0.5, colour = "grey35", orientation = "y") +
+  geom_point(aes(x = mean, fill = comp), shape = 21, size = 2, colour = col_ink, stroke = 0.3) +
+  geom_text(aes(x = Inf, label = ifelse(vshare < 0.5, "<1%", sprintf("%.0f%%", vshare))), hjust = 1.05, size = 2.1, colour = "grey35") +
+  ggh4x::facet_grid2(campaign ~ site, strip = ggh4x::strip_themed(text_x = lapply(pal_class[site_class], function(cc)
+    element_text(colour = cc, face = "bold", size = 8)))) +
   scale_fill_manual(values = comp_col, guide = "none") +
-  scale_x_log10(breaks = 10^(-3:1), labels = c("0.001", "0.01", "0.1", "1", "10"),
-                expand = expansion(mult = c(0, 0.05))) +
-  coord_cartesian(xlim = c(1e-4, 40)) +
-  scale_y_discrete(drop = FALSE) +
-  labs(x = expression("Monte Carlo SE of component CH"[4]*" (mg m"^-2*" d"^-1*", log scale)"), y = NULL) +
-  theme_fig() + theme(panel.grid.major.y = element_blank(), panel.spacing = unit(8, "pt"),
-                      axis.text.y = element_text(size = 7))
-save_si(p10, "si_S10_mc_uncertainty", 3.4)
+  scale_x_continuous(trans = "asinh", breaks = c(0, 1, 10, 100), expand = expansion(mult = c(0.05, 0.28))) +
+  labs(x = expression("Component CH"[4]*" (mg m"^-2*" ground d"^-1*"; Monte Carlo mean and 95% interval)"), y = NULL) + theme_fig()
+save_si(p10, "si_S10_mc_uncertainty", 3.6)
 
 # ---- Tide: intact stand CH4 at high vs low tide, by component -----------------
 # SRS5/SRS6 (the tidal sites), exponential stem rule; bars = high- and low-tide
