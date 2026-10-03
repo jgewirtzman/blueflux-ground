@@ -1,24 +1,27 @@
 # Hurricane-induced mortality switches mangroves from carbon sink to methane source
 
-Jonathan Gewirtzman^1,2\*^, Elisabeth Powell^3,4^, Frannie Adams^1^, Sean Charles^5,6^, Erin Delaria^7,8^, Cheryl Doughty^4,7^, Lin Xiong^3^, Lucy Carruthers^5^, Addison Colwell^8,9^, Atticus Stovall^4,7^, Glenn Wolfe^8^, Judith Rosentreter^1,10^, Derrick Vaughn^1,11,12^, Anthony Campbell^4,9^, Mingyu Zhang^1^, Samuel Tsao^1^, Megan Brueck^13^, Ben Girgenti^1^, Mike Norton^1^, Jessie Peterman^1^, Ayia Lindquist^4,14^, William Chen^15^, Jordan Peccia^15^, Irvan Luhung^15^, Sparkle Malone^1,11^, Benjamin Poulter^4,16^, David Lagomasino^5,17^, Peter Raymond^1,11^
+Jonathan Gewirtzman^1,2,3\*^, Elisabeth Powell^4,5^, Frannie Adams^1^, Sean Charles^6,7^, Erin Delaria^8,9^, Cheryl Doughty^5,8^, Lin Xiong^4^, Lucy Carruthers^6^, Addison Colwell^10^, Atticus Stovall^5,8,11^, Glenn Wolfe^9^, Judith Rosentreter^12^, Derrick Vaughn^1,13,14^, Anthony Campbell^5,15^, Mingyu Zhang^1^, Samuel Tsao^1^, Megan Brueck^16^, Ben Girgenti^1^, Michael Norton^1,17^, Jessie Peterman^1^, Ayia Lindquist^5^, William Chen^18^, Jordan Peccia^18^, Irvan Luhung^18^, Sparkle Malone^1,13^, Benjamin Poulter^5,19^, David Lagomasino^6,20^, Peter Raymond^1,13^
 
 ^1^Yale School of the Environment, Yale University, New Haven, CT, USA.\
 ^2^Department of Earth System Science, Stanford Doerr School of Sustainability, Stanford University, Stanford, CA, USA.\
-^3^Department of Geographical Sciences, University of Maryland, College Park, MD, USA.\
-^4^Biospheric Sciences Laboratory, NASA Goddard Space Flight Center, Greenbelt, MD, USA.\
-^5^Coastal Studies Institute, East Carolina University, Wanchese, NC, USA.\
-^6^Department of Biology, East Carolina University, Greenville, NC, USA.\
-^7^Earth System Science Interdisciplinary Center, University of Maryland, College Park, MD, USA.\
-^8^Atmospheric Chemistry and Dynamics Laboratory, NASA Goddard Space Flight Center, Greenbelt, MD, USA.\
-^9^Goddard Earth Sciences Technology and Research (GESTAR) II, University of Maryland Baltimore County, Baltimore, MD, USA.\
-^10^Faculty of Science and Engineering, Southern Cross University, Lismore, NSW, Australia.\
-^11^Yale Center for Natural Carbon Capture, Yale University, New Haven, CT, USA.\
-^12^Department of Geosciences, Utah State University, Logan, UT, USA.\
-^13^Yale University, New Haven, CT, USA.\
-^14^Science Systems and Applications, Inc., Lanham, MD, USA.\
-^15^Department of Chemical and Environmental Engineering, Yale University, New Haven, CT, USA.\
-^16^Spark Climate Solutions, USA.\
-^17^Department of Earth, Environment, and Planning, East Carolina University, Greenville, NC, USA.
+^3^Department of Ecology and Evolution, University of Chicago, Chicago, IL, USA.\
+^4^Department of Geographical Sciences, University of Maryland, College Park, MD, USA.\
+^5^Biospheric Sciences Laboratory, NASA Goddard Space Flight Center, Greenbelt, MD, USA.\
+^6^Coastal Studies Institute, East Carolina University, Wanchese, NC, USA.\
+^7^Department of Biology, East Carolina University, Greenville, NC, USA.\
+^8^Earth System Science Interdisciplinary Center, University of Maryland, College Park, MD, USA.\
+^9^Atmospheric Chemistry and Dynamics Laboratory, NASA Goddard Space Flight Center, Greenbelt, MD, USA.\
+^10^University of Vermont, Burlington, VT, USA.\
+^11^CREAF, Cerdanyola del Vallès, Barcelona, Spain.\
+^12^Faculty of Science and Engineering, Southern Cross University, Lismore, NSW, Australia.\
+^13^Yale Center for Natural Carbon Capture, Yale University, New Haven, CT, USA.\
+^14^Department of Geosciences, Utah State University, Logan, UT, USA.\
+^15^Goddard Earth Sciences Technology and Research (GESTAR) II, University of Maryland Baltimore County, Baltimore, MD, USA.\
+^16^Yale College, Yale University, New Haven, CT, USA.\
+^17^University of Rhode Island, Kingston, RI, USA.\
+^18^Department of Chemical and Environmental Engineering, Yale University, New Haven, CT, USA.\
+^19^Spark Climate Solutions, USA.\
+^20^Department of Earth, Environment, and Planning, East Carolina University, Greenville, NC, USA.
 
 \*Corresponding author. Email: jonathan.gewirtzman@yale.edu
 
