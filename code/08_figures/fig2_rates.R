@@ -33,7 +33,7 @@ d <- read.csv("output/data_products/combined_gas_flux_dataset.csv") %>%
          site_type = factor(ifelse(plot %in% c("SRS5", "SRS6", "BL60", "CP40", "FLM30"), "core site", "context site"),
                             c("core site", "context site")))
 boot <- function(x, R = 5000) { x <- x[is.finite(x)]; if (length(x) < 3) return(c(mean(x), NA, NA))
-  b <- replicate(R, mean(sample(x, replace = TRUE))); c(mean(x), quantile(b, c(0.025, 0.975))) }
+  set.seed(42); b <- replicate(R, mean(sample(x, replace = TRUE))); c(mean(x), quantile(b, c(0.025, 0.975))) }
 dodge <- c(intact = 0.25, regenerating = 0, ghost = -0.25)
 
 rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {

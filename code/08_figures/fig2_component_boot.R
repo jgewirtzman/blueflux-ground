@@ -16,7 +16,7 @@ boot_mean_ci <- function(x, R = 5000, conf = 0.95) {
   boot_means <- replicate(R, mean(sample(x, n, replace = TRUE)))
   alpha <- (1 - conf) / 2
   data.frame(
-    y = mean(boot_means),
+    y = mean(x),
     ymin = unname(quantile(boot_means, alpha)),
     ymax = unname(quantile(boot_means, 1 - alpha))
   )

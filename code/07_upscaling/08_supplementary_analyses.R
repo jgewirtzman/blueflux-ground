@@ -22,8 +22,9 @@ boot <- function(x, R = 5000) {
   x <- x[!is.na(x)]
   if (!length(x)) return(data.frame(mean = NA, lo = NA, hi = NA, n = 0))
   if (length(x) == 1) return(data.frame(mean = x, lo = NA, hi = NA, n = 1))
+  set.seed(42)                                   # per call: independent of call order
   bm <- replicate(R, mean(sample(x, replace = TRUE)))
-  data.frame(mean = mean(bm), lo = quantile(bm, .025), hi = quantile(bm, .975), n = length(x))
+  data.frame(mean = mean(x), lo = quantile(bm, .025), hi = quantile(bm, .975), n = length(x))
 }
 
 # ---- TLS surface areas (m2) and ground area (non-tree m2) per site ----------

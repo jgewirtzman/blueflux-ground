@@ -54,7 +54,7 @@ boot_mean_ci <- function(x, R = 5000, conf = 0.95) {
   boot_means <- replicate(R, mean(sample(x, n, replace = TRUE)))
   alpha <- (1 - conf) / 2
   list(
-    boot_mean = mean(boot_means),
+    boot_mean = mean(x),   # sample mean; bootstrap gives the interval only
     boot_lo = unname(quantile(boot_means, alpha)),
     boot_hi = unname(quantile(boot_means, 1 - alpha))
   )

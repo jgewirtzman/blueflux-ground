@@ -62,7 +62,7 @@ FIGS = {
  "S9": (["output/figures/other/si_tide_states.png"],
         "Stand CH4 of the intact forest at high and low tide by component (SRS5, SRS6; October 2022 and March 2023; exponential stem rule). Diamonds and bars, stand total and Monte Carlo 95% interval; dashed line, the tide-weighted value used in the budgets (flooded share of the floor in the campaign month; M11); inverse-hyperbolic-sine axis."),
  "S10": (["output/figures/other/si_sensitivity_switch.png"],
-         "Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,409 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further."),
+         "Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,411 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further."),
  "S11": (["output/figures/other/si_S10_mc_uncertainty.png"],
          "Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S4); inverse-hyperbolic-sine axis; components that are always zero omitted."),
  "S12": (["output/figures/other/ed_porewater_rounds.png"],

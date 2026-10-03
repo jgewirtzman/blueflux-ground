@@ -7,7 +7,7 @@
 suppressMessages({library(dplyr);library(tidyr)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/00_lib/cwd_scaling.R")   # CWD_SDLOG
-set.seed(42)
+set.seed(42); source("code/00_lib/seed.R")
 N <- 5000
 GWP100 <- 27.9; GWP20 <- 81.2
 umol_to_g_yr <- 44e-6*3.156e7          # umol CO2 m-2 s-1 -> g CO2 m-2 yr-1
@@ -59,6 +59,7 @@ res<-list()
 for(i in 1:nrow(comp)){
   r<-comp[i,]; cap<-r$campaign; dl<-r$disturbance_level
   ltc<-lt[lt$campaign==cap,]
+  set.seed(seed_for(paste(r$site, cap, dl)))   # per row: order-independent draws
   draws<-replicate(N,{
     # respiration components: normal(mean, rel_se*mean)
     rsum<-0

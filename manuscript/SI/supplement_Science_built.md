@@ -114,7 +114,7 @@ Stem CH4 declines with height, so stand budgets must extrapolate above the highe
 
 ## Text S2. Tide and inundation
 
-At the tidal intact sites, high- and low-tide states were weighted by the flooded share of the floor in each campaign month (M11): 0.62 and 0.74 in October 2022 and 0.37 and 0.55 in March 2023 at SRS5 and SRS6 (table S13); stand CH4 in each tide state is shown in fig. S9. For the March 2023 ghost floor without standing water, four sources for the exposed-soil flux were tested, each with its limitation: FLM30 soil chambers in March 2022 (same site and season, different year; central); Marco Island ghost soils (ghost forest, different setting); the two pooled; and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class), with two exposed shares (no standing water, central; ≤2 cm). Every option raises the ghost source relative to treating the floor as fully flooded, mainly through soil CO2: ghost net forcing is +2,401 g CO2-eq m−2 yr−1 at GWP20 when fully flooded, +2,775 in the central case, and +2,460 to +4,362 across the options; ghost CH4 ranges 9.9–13.7 g m−2 yr−1 (table S10). An airborne check by campaign (table S6) favours the flooded representation in October 2022 and March 2023.
+At the tidal intact sites, high- and low-tide states were weighted by the flooded share of the floor in each campaign month (M11): 0.62 and 0.74 in October 2022 and 0.37 and 0.55 in March 2023 at SRS5 and SRS6 (table S13); stand CH4 in each tide state is shown in fig. S9. For the March 2023 ghost floor without standing water, four sources for the exposed-soil flux were tested, each with its limitation: FLM30 soil chambers in March 2022 (same site and season, different year; central); Marco Island ghost soils (ghost forest, different setting); the two pooled; and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class), with two exposed shares (no standing water, central; ≤2 cm). Every option raises the ghost source relative to treating the floor as fully flooded, mainly through soil CO2: ghost net forcing is +2,401 g CO2-eq m−2 yr−1 at GWP20 when fully flooded, +2,776 in the central case, and +2,460 to +4,362 across the options; ghost CH4 ranges 9.9–13.7 g m−2 yr−1 (table S10). An airborne check by campaign (table S6) favours the flooded representation in October 2022 and March 2023.
 
 ## Text S3. Downed wood
 
@@ -122,7 +122,7 @@ Laser scanning represents standing live and dead trees as trunk and branch segme
 
 ## Text S4. Monte Carlo uncertainty
 
-For the CH4 budget, ghost-class uncertainty is dominated by water-surface flux in the wet season and by exposed-soil flux in the dry season (91–100% of the variance). In intact forest the leading term varies by site and campaign among water, prop roots and soil; stems contribute ≤1% everywhere (fig. S11). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,233 to −1,939 and ghost +1,922 to +3,978 g CO2-eq m−2 yr−1 at GWP20 (−5,294 to −2,035 and +1,491 to +3,263 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
+For the CH4 budget, ghost-class uncertainty is dominated by water-surface flux in the wet season and by exposed-soil flux in the dry season (91–100% of the variance). In intact forest the leading term varies by site and campaign among water, prop roots and soil; stems contribute ≤1% everywhere (fig. S11). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,214 to −1,918 and ghost +1,931 to +3,977 g CO2-eq m−2 yr−1 at GWP20 (−5,291 to −2,012 and +1,505 to +3,266 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
 
 ## Text S5. CO2 closure caveats
 
@@ -211,7 +211,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/si_sensitivity_switch.png>){width=6.5in}
 
-**Fig. S10.** Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,409 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.
+**Fig. S10.** Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,411 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.
 
 
 ![](<output/figures/other/si_S10_mc_uncertainty.png>){width=6.5in}
@@ -306,33 +306,33 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Component | Class | Season | n | CH4 | CO2 |
 |---|---|---|---|---|---|
 | cwd | ghost | dry | 5 | -0.10 (-0.74 to 0.31) | 0.51 (0.39 to 0.64) |
-| cwd | ghost | wet | 5 | 4.78 (0.30 to 12.26) | 15.37 (4.45 to 33.43) |
-| cwd | intact | dry | 10 | 0.27 (0.12 to 0.44) | 2.84 (1.88 to 3.94) |
+| cwd | ghost | wet | 5 | 4.78 (0.30 to 12.26) | 15.37 (4.45 to 33.89) |
+| cwd | intact | dry | 10 | 0.27 (0.12 to 0.44) | 2.84 (1.88 to 3.96) |
 | cwd | intact | wet | 4 | 0.81 (0.67 to 0.94) | 4.96 (2.82 to 6.65) |
 | cwd | regenerating | wet | 2 | 0.20 | 7.60 |
-| leaves | regenerating | dry | 14 | 0.02 (0.00 to 0.04) | -1.25 (-2.28 to -0.37) |
-| leaves | scrub | dry | 5 | 0.03 (0.02 to 0.05) | -2.27 (-3.32 to -1.23) |
+| leaves | regenerating | dry | 14 | 0.02 (0.00 to 0.04) | -1.25 (-2.29 to -0.34) |
+| leaves | scrub | dry | 5 | 0.03 (0.02 to 0.05) | -2.27 (-3.33 to -1.24) |
 | root | ghost | wet | 4 | 0.61 (0.14 to 1.45) | 2.05 (0.34 to 3.69) |
-| root | intact | dry | 22 | 1.05 (0.39 to 2.14) | 2.26 (1.23 to 3.60) |
-| root | intact | wet | 28 | 5.48 (0.61 to 14.61) | 2.17 (1.18 to 3.23) |
-| root | regenerating | dry | 5 | 5.73 (2.78 to 8.29) | 2.42 (1.54 to 3.09) |
-| root | scrub | dry | 6 | 3.23 (1.27 to 5.23) | 0.54 (0.06 to 1.02) |
-| soil | ghost | dry | 31 | 11.67 (4.91 to 21.09) | 1.49 (0.94 to 2.02) |
-| soil | intact | dry | 36 | 1.42 (0.84 to 2.13) | 1.29 (1.03 to 1.62) |
-| soil | intact | wet | 28 | 11.74 (5.67 to 21.37) | 1.97 (1.01 to 3.03) |
-| soil | regenerating | dry | 22 | 57.79 (27.58 to 93.44) | 8.70 (6.77 to 10.75) |
+| root | intact | dry | 22 | 1.05 (0.40 to 2.11) | 2.26 (1.25 to 3.57) |
+| root | intact | wet | 28 | 5.48 (0.66 to 14.59) | 2.17 (1.16 to 3.23) |
+| root | regenerating | dry | 5 | 5.73 (2.78 to 8.29) | 2.42 (1.54 to 3.11) |
+| root | scrub | dry | 6 | 3.23 (1.27 to 5.19) | 0.54 (0.05 to 1.02) |
+| soil | ghost | dry | 31 | 11.67 (4.88 to 21.68) | 1.49 (0.92 to 2.03) |
+| soil | intact | dry | 36 | 1.42 (0.84 to 2.16) | 1.29 (1.04 to 1.62) |
+| soil | intact | wet | 28 | 11.74 (5.58 to 20.96) | 1.97 (1.09 to 3.01) |
+| soil | regenerating | dry | 22 | 57.79 (28.00 to 93.95) | 8.70 (6.76 to 10.85) |
 | soil | regenerating | wet | 1 | 8.15 | 2.12 |
-| stem | ghost | dry | 123 | 7.42 (4.62 to 10.74) | 1.84 (1.42 to 2.37) |
-| stem | ghost | wet | 87 | 17.98 (8.70 to 30.81) | 2.70 (2.21 to 3.27) |
+| stem | ghost | dry | 123 | 7.42 (4.74 to 10.61) | 1.84 (1.43 to 2.37) |
+| stem | ghost | wet | 87 | 17.98 (8.71 to 30.17) | 2.70 (2.22 to 3.27) |
 | stem | intact | dry | 103 | 0.24 (0.16 to 0.34) | 1.85 (1.57 to 2.15) |
-| stem | intact | wet | 69 | 0.36 (0.17 to 0.62) | 1.54 (1.25 to 1.86) |
-| stem | regenerating | dry | 54 | 1.14 (0.40 to 2.14) | 3.74 (3.16 to 4.36) |
-| stem | regenerating | wet | 35 | 34.69 (7.30 to 80.66) | 7.33 (5.37 to 9.71) |
-| stem | scrub | dry | 5 | 0.09 (-0.02 to 0.29) | 0.44 (0.30 to 0.69) |
-| water | ghost | dry | 23 | 6.33 (5.33 to 7.43) | 0.38 (0.29 to 0.47) |
-| water | ghost | wet | 10 | 38.76 (22.10 to 63.80) | 0.54 (0.43 to 0.66) |
-| water | intact | dry | 8 | 0.86 (0.51 to 1.20) | 1.37 (1.15 to 1.58) |
-| water | regenerating | wet | 5 | 56.85 (33.34 to 88.21) | 2.06 (1.70 to 2.48) |
+| stem | intact | wet | 69 | 0.36 (0.17 to 0.63) | 1.54 (1.25 to 1.86) |
+| stem | regenerating | dry | 54 | 1.14 (0.39 to 2.10) | 3.74 (3.15 to 4.35) |
+| stem | regenerating | wet | 35 | 34.69 (6.98 to 81.66) | 7.33 (5.40 to 9.70) |
+| stem | scrub | dry | 5 | 0.09 (-0.02 to 0.29) | 0.44 (0.30 to 0.70) |
+| water | ghost | dry | 23 | 6.33 (5.35 to 7.44) | 0.38 (0.29 to 0.47) |
+| water | ghost | wet | 10 | 38.76 (22.03 to 63.04) | 0.54 (0.43 to 0.66) |
+| water | intact | dry | 8 | 0.86 (0.52 to 1.21) | 1.37 (1.16 to 1.59) |
+| water | regenerating | wet | 5 | 56.85 (33.34 to 88.92) | 2.06 (1.70 to 2.51) |
 | water | scrub | dry | 1 | 1.61 | 1.80 |
 
 **Table S5. Woody CH4 height model** (M20). (A) Height forms compared by AIC. (B) Parametric terms of the selected model (asinh scale; terms ending '.1' are on the scale part). (C) Species added to the selected model (reference *R. mangle*).
@@ -403,14 +403,14 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Site | Campaign | Class | Stem | Root | Soil | Water | Downed wood | Total |
 |---|---|---|---|---|---|---|---|---|
-| CP40 | Oct 2022 | ghost | 0.31 | 0.03 | 0.00 | 70.14 | 0.26 | 70.73 |
-| CP40 | Mar 2023 | ghost | 0.16 | 0.02 | 8.24 | 5.92 | -0.01 | 14.33 |
-| FLM30 | Oct 2022 | ghost | 0.15 | 0.01 | 0.00 | 28.81 | 0.00 | 28.98 |
-| FLM30 | Mar 2023 | ghost | 0.18 | 0.02 | 7.98 | 8.18 | -0.02 | 16.35 |
-| SRS5 | Oct 2022 | intact | 0.03 | 0.22 | 0.65 | 0.41 | 0.10 | 1.42 |
-| SRS5 | Mar 2023 | intact | 0.04 | 0.41 | 0.29 | 0.29 | 0.04 | 1.07 |
-| SRS6 | Oct 2022 | intact | 0.05 | 3.81 | 5.78 | 0.60 | 0.08 | 10.32 |
-| SRS6 | Mar 2023 | intact | 0.05 | 0.18 | 2.22 | 1.02 | 0.06 | 3.53 |
+| CP40 | Oct 2022 | ghost | 0.31 | 0.03 | 0.00 | 70.17 | 0.26 | 70.77 |
+| CP40 | Mar 2023 | ghost | 0.16 | 0.03 | 8.24 | 5.91 | -0.01 | 14.32 |
+| FLM30 | Oct 2022 | ghost | 0.15 | 0.01 | 0.00 | 28.77 | 0.00 | 28.93 |
+| FLM30 | Mar 2023 | ghost | 0.18 | 0.02 | 7.98 | 8.17 | -0.02 | 16.34 |
+| SRS5 | Oct 2022 | intact | 0.03 | 0.22 | 0.65 | 0.41 | 0.10 | 1.41 |
+| SRS5 | Mar 2023 | intact | 0.04 | 0.40 | 0.28 | 0.29 | 0.04 | 1.06 |
+| SRS6 | Oct 2022 | intact | 0.05 | 3.81 | 5.79 | 0.60 | 0.08 | 10.33 |
+| SRS6 | Mar 2023 | intact | 0.05 | 0.18 | 2.22 | 1.02 | 0.06 | 3.52 |
 
 (B)
 
@@ -419,8 +419,8 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | CP40 | Mar 2023 | 0.17 | 0.06 | 0.48 | 0.24 | 0.04 | 0.00 | 0.99 | 0.00 | 0.99 |
 | CP40 | Oct 2022 | 0.66 | 0.06 | 0.00 | 0.67 | 0.59 | 0.00 | 1.98 | 0.00 | 1.98 |
 | FLM30 | Mar 2023 | 0.53 | 0.04 | 0.46 | 0.37 | 0.06 | 0.00 | 1.47 | 0.00 | 1.47 |
-| FLM30 | Oct 2022 | 0.38 | 0.04 | 0.00 | 0.35 | 0.00 | 0.00 | 0.77 | 0.00 | 0.77 |
-| SRS5 | Mar 2023 | 1.46 | 0.63 | 0.73 | 0.46 | 0.28 | 1.74 | 5.30 | 8.51 | -3.21 |
+| FLM30 | Oct 2022 | 0.38 | 0.04 | 0.00 | 0.36 | 0.00 | 0.00 | 0.77 | 0.00 | 0.77 |
+| SRS5 | Mar 2023 | 1.46 | 0.62 | 0.73 | 0.46 | 0.28 | 1.74 | 5.29 | 8.51 | -3.21 |
 | SRS5 | Oct 2022 | 0.90 | 0.36 | 0.47 | 0.27 | 0.51 | 2.00 | 4.52 | 7.12 | -2.60 |
 | SRS6 | Mar 2023 | 1.60 | 0.17 | 0.67 | 0.86 | 0.47 | 1.74 | 5.51 | 8.51 | -3.00 |
 | SRS6 | Oct 2022 | 1.17 | 0.62 | 0.60 | 0.38 | 0.34 | 2.00 | 5.11 | 7.12 | -2.01 |
@@ -429,45 +429,45 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Site | Campaign | Component | CH4 rate (95% CI) | n | Source |
 |---|---|---|---|---|---|
-| CP40 | Oct 2022 | root | 0.60 (0.14 to 1.45) | 4 | gap: FLM30 root |
+| CP40 | Oct 2022 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root |
 | CP40 | Oct 2022 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
-| CP40 | Oct 2022 | water | 50.71 (26.10 to 85.52) | 6 | site |
-| CP40 | Oct 2022 | cwd | 4.77 (0.30 to 12.26) | 5 | site |
-| FLM30 | Oct 2022 | root | 0.60 (0.14 to 1.45) | 4 | site |
+| CP40 | Oct 2022 | water | 50.73 (25.74 to 86.19) | 6 | site |
+| CP40 | Oct 2022 | cwd | 4.78 (0.30 to 12.26) | 5 | site |
+| FLM30 | Oct 2022 | root | 0.61 (0.14 to 1.45) | 4 | site |
 | FLM30 | Oct 2022 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
-| FLM30 | Oct 2022 | water | 20.82 (13.39 to 32.73) | 4 | site |
-| FLM30 | Oct 2022 | cwd | 4.77 (0.30 to 12.26) | 5 | gap: CP40 cwd |
-| SRS5 | Oct 2022 | root | 0.70 (0.32 to 1.15) | 19 | site |
-| SRS5 | Oct 2022 | soil | 1.23 (0.87 to 1.53) | 8 | site |
+| FLM30 | Oct 2022 | water | 20.79 (13.39 to 32.73) | 4 | site |
+| FLM30 | Oct 2022 | cwd | 4.78 (0.30 to 12.26) | 5 | gap: CP40 cwd |
+| SRS5 | Oct 2022 | root | 0.70 (0.31 to 1.17) | 19 | site |
+| SRS5 | Oct 2022 | soil | 1.23 (0.88 to 1.53) | 8 | site |
 | SRS5 | Oct 2022 | water | 0.48 (0.24 to 3.08) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
 | SRS5 | Oct 2022 | cwd | 0.70 | 1 | site |
-| SRS6 | Oct 2022 | root | 15.58 (0.87 to 43.48) | 9 | site |
-| SRS6 | Oct 2022 | soil | 15.90 (7.97 to 28.34) | 20 | site |
+| SRS6 | Oct 2022 | root | 15.56 (0.87 to 43.55) | 9 | site |
+| SRS6 | Oct 2022 | soil | 15.94 (7.93 to 28.71) | 20 | site |
 | SRS6 | Oct 2022 | water | 0.59 (0.30 to 3.79) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
-| SRS6 | Oct 2022 | cwd | 0.85 (0.64 to 0.97) | 3 | site |
-| CP40 | Mar 2023 | root | 0.60 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
+| SRS6 | Oct 2022 | cwd | 0.84 (0.64 to 0.97) | 3 | site |
+| CP40 | Mar 2023 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
 | CP40 | Mar 2023 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
-| CP40 | Mar 2023 | water | 5.31 (4.11 to 6.58) | 11 | site |
-| CP40 | Mar 2023 | cwd | -0.11 (-0.74 to 0.29) | 5 | site |
-| FLM30 | Mar 2023 | root | 0.60 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
+| CP40 | Mar 2023 | water | 5.30 (4.13 to 6.59) | 11 | site |
+| CP40 | Mar 2023 | cwd | -0.10 (-0.74 to 0.31) | 5 | site |
+| FLM30 | Mar 2023 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
 | FLM30 | Mar 2023 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
-| FLM30 | Mar 2023 | water | 7.28 (5.90 to 8.84) | 12 | site |
-| FLM30 | Mar 2023 | cwd | -0.11 (-0.74 to 0.29) | 5 | gap: CP40 cwd |
-| SRS5 | Mar 2023 | root | 1.25 (0.40 to 2.72) | 15 | site |
-| SRS5 | Mar 2023 | soil | 0.33 (0.12 to 0.59) | 16 | site |
+| FLM30 | Mar 2023 | water | 7.27 (5.91 to 8.87) | 12 | site |
+| FLM30 | Mar 2023 | cwd | -0.10 (-0.74 to 0.31) | 5 | gap: CP40 cwd |
+| SRS5 | Mar 2023 | root | 1.23 (0.40 to 2.70) | 15 | site |
+| SRS5 | Mar 2023 | soil | 0.33 (0.11 to 0.59) | 16 | site |
 | SRS5 | Mar 2023 | water | 0.57 (0.24 to 0.96) | 5 | site |
 | SRS5 | Mar 2023 | cwd | 0.19 (0.09 to 0.29) | 5 | site |
-| SRS6 | Mar 2023 | root | 0.71 (0.09 to 1.57) | 6 | site |
-| SRS6 | Mar 2023 | soil | 3.56 (2.25 to 5.41) | 10 | site |
+| SRS6 | Mar 2023 | root | 0.70 (0.09 to 1.63) | 6 | site |
+| SRS6 | Mar 2023 | soil | 3.55 (2.23 to 5.41) | 10 | site |
 | SRS6 | Mar 2023 | water | 1.35 (1.13 to 1.47) | 3 | site |
-| SRS6 | Mar 2023 | cwd | 0.34 (0.07 to 0.65) | 5 | site |
+| SRS6 | Mar 2023 | cwd | 0.34 (0.07 to 0.62) | 5 | site |
 
 **Table S8. Annual budgets and net forcing by class** (g m−2 yr−1; forcing in g CO2-eq m−2 yr−1; Monte Carlo 95% intervals).
 
 | Class | CH4 | Net CO2 | Net GWP20 | 95% interval | Net GWP100 | 95% interval | Net GWP* | CH4 share (GWP20) |
 |---|---|---|---|---|---|---|---|---|
-| intact | 1.49 | -3 755 | -3 634 | -5 233 to -1 939 | -3 713 | -5 294 to -2 035 | -3 743 | 3.1% |
-| ghost | 11.90 | 1 809 | 2 775 | 1 922 to 3 978 | 2 141 | 1 491 to 3 263 | 3 136 | 34.8% |
+| intact | 1.49 | -3 756 | -3 635 | -5 214 to -1 918 | -3 715 | -5 291 to -2 012 | -3 744 | 3.1% |
+| ghost | 11.90 | 1 810 | 2 776 | 1 931 to 3 977 | 2 142 | 1 505 to 3 266 | 3 137 | 34.8% |
 
 **Table S9. Literature-derived values.**
 
@@ -503,37 +503,37 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Choice | Setting | Intact CH4 (g m⁻² yr⁻¹) | Intact NEE (g C) | Intact forcing, GWP20 [GWP100] | Ghost forcing, GWP20 [GWP100] | Switch, GWP20 [GWP100] |
 |---|---|---|---|---|---|---|
-| **Central** | — | 1.49 | −1,025 | −3,634 [−3,713] | 2,775 [2,141] | 6,409 [5,854] |
+| **Central** | — | 1.49 | −1,025 | −3,635 [−3,715] | 2,776 [2,142] | 6,411 [5,856] |
 | Q10 (day → 24 h, chamber CO2) | none (Q10 = 1) | 1.49 | −1,002 | −3,550 [−3,629] | 3,000 [2,173] | 6,550 [5,803] |
 | Q10 (day → 24 h, chamber CO2) | literature (Q10 = 2) | 1.49 | −1,097 | −3,899 [−3,978] | 2,863 [2,036] | 6,762 [6,015] |
-| Q10 (day → 24 h, chamber CO2) | our stem chambers (Q10 = 4.33) | 1.49 | −1,167 | −4,154 [−4,234] | 2,758 [1,932] | 6,913 [6,165] |
+| Q10 (day → 24 h, chamber CO2) | our stem chambers (Q10 = 4.33) | 1.49 | −1,167 | −4,154 [−4,234] | 2,758 [1,932] | 6,912 [6,165] |
 | Downed CWD volume | none | 1.49 | −1,176 | −4,186 [−4,266] | 2,535 [1,901] | 6,721 [6,167] |
 | Downed CWD volume | Krauss low (13 m³ ha⁻¹) | 1.49 | −1,147 | −4,079 [−4,159] | 2,581 [1,947] | 6,661 [6,106] |
 | Downed CWD volume | Krauss eyewall (132 m³ ha⁻¹) | 1.49 | −879 | −3,097 [−3,177] | 3,008 [2,374] | 6,105 [5,551] |
-| Downed CWD volume | Krauss high (181 m³ ha⁻¹) | 1.49 | −768 | −2,693 [−2,772] | 3,184 [2,549] | 5,876 [5,322] |
-| Flooding representation (intact) | equal 50/50 split (SRS5 0.5/0.5; SRS6 0.5/0.5) | 1.98 | −934 | −3,261 [−3,367] | 2,775 [2,141] | 6,036 [5,508] |
-| Flooding representation (intact) | all-or-nothing switch, campaign months (SRS5 1/0.69; SRS6 0.98/0.72) | 0.92 | −1,198 | −4,314 [−4,363] | 2,775 [2,141] | 7,089 [6,504] |
-| Flooding representation (intact) | all-or-nothing switch, 2010–2023 (SRS5 0.63/0.63; SRS6 0.52/0.52) | 1.93 | −972 | −3,403 [−3,506] | 2,775 [2,141] | 6,178 [5,647] |
-| Flooding representation (intact) | area-weighted, floor mean −1.96 SE (SRS5 0.54/0.31; SRS6 0.67/0.48) | 1.66 | −982 | −3,463 [−3,551] | 2,775 [2,141] | 6,238 [5,692] |
-| Flooding representation (intact) | area-weighted, floor mean +1.96 SE (SRS5 0.68/0.44; SRS6 0.8/0.61) | 1.34 | −1,065 | −3,793 [−3,864] | 2,775 [2,141] | 6,568 [6,005] |
-| Flooding representation (intact) | area-weighted, 2010–2023 (SRS5 0.38/0.38; SRS6 0.43/0.43) | 2.15 | −881 | −3,054 [−3,169] | 2,775 [2,141] | 5,829 [5,310] |
-| Tidal phase, intact water CH4 | x 0.6 | 1.41 | −1,025 | −3,641 [−3,715] | 2,775 [2,141] | 6,415 [5,856] |
-| Tidal phase, intact water CH4 | x 2.0 | 1.70 | −1,025 | −3,616 [−3,707] | 2,775 [2,141] | 6,391 [5,848] |
-| CH4 day → 24 h | x 1.30 (all CH4) | 1.94 | −1,025 | −3,597 [−3,700] | 3,068 [2,242] | 6,665 [5,942] |
-| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23 | 1.49 | −1,025 | −3,634 [−3,713] | 2,460 [1,899] | 6,094 [5,612] |
-| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI) | 1.49 | −1,025 | −3,634 [−3,713] | 2,562 [1,977] | 6,195 [5,690] |
-| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023 | 1.49 | −1,025 | −3,634 [−3,713] | 3,356 [2,699] | 6,990 [6,412] |
-| Ghost floor without standing water (Mar 2023) | Floor fully inundated | 1.49 | −1,025 | −3,634 [−3,713] | 2,401 [1,830] | 6,035 [5,543] |
-| Ghost floor without standing water (Mar 2023) | FLM30 soil, Mar 2022 (same site); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 3,138 [2,457] | 6,772 [6,170] |
-| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,476 [1,946] | 6,110 [5,659] |
-| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,689 [2,111] | 6,323 [5,824] |
-| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 4,362 [3,633] | 7,996 [7,346] |
-| Leaf respiration | Rd25 1.28, LAI 2.3 | 1.49 | −1,203 | −4,287 [−4,366] | 2,775 [2,141] | 7,062 [6,507] |
-| Leaf respiration | Rd25 1.62, LAI 5.55 | 1.49 | −811 | −2,851 [−2,930] | 2,775 [2,141] | 5,626 [5,071] |
-| Carbon-balance framing | NECB, exported alkalinity retained | 1.96 | −783 | −2,709 [−2,814] | 2,775 [2,141] | 5,484 [4,954] |
-| Carbon-balance framing | NECB, all export returned to the air | 1.96 | −679 | −2,328 [−2,432] | 2,775 [2,141] | 5,103 [4,573] |
-| Carbon-balance framing | storage only (burial + wood) | 1.49 | −254 | −810 [−889] | 2,775 [2,141] | 3,585 [3,030] |
-| Monte Carlo 95 % interval | all propagated terms | – | – | −5233 to −1939 [−5294 to −2035] | 1922 to 3978 [1491 to 3263] | – |
+| Downed CWD volume | Krauss high (181 m³ ha⁻¹) | 1.49 | −768 | −2,693 [−2,772] | 3,183 [2,549] | 5,876 [5,322] |
+| Flooding representation (intact) | equal 50/50 split (SRS5 0.5/0.5; SRS6 0.5/0.5) | 1.98 | −934 | −3,261 [−3,367] | 2,776 [2,142] | 6,037 [5,509] |
+| Flooding representation (intact) | all-or-nothing switch, campaign months (SRS5 1/0.69; SRS6 0.98/0.72) | 0.92 | −1,198 | −4,314 [−4,363] | 2,776 [2,142] | 7,090 [6,505] |
+| Flooding representation (intact) | all-or-nothing switch, 2010–2023 (SRS5 0.63/0.63; SRS6 0.52/0.52) | 1.93 | −972 | −3,403 [−3,506] | 2,776 [2,142] | 6,179 [5,648] |
+| Flooding representation (intact) | area-weighted, floor mean −1.96 SE (SRS5 0.54/0.31; SRS6 0.67/0.48) | 1.66 | −982 | −3,463 [−3,551] | 2,776 [2,142] | 6,239 [5,693] |
+| Flooding representation (intact) | area-weighted, floor mean +1.96 SE (SRS5 0.68/0.44; SRS6 0.8/0.61) | 1.34 | −1,065 | −3,793 [−3,864] | 2,776 [2,142] | 6,569 [6,006] |
+| Flooding representation (intact) | area-weighted, 2010–2023 (SRS5 0.38/0.38; SRS6 0.43/0.43) | 2.15 | −881 | −3,054 [−3,169] | 2,776 [2,142] | 5,830 [5,311] |
+| Tidal phase, intact water CH4 | x 0.6 | 1.41 | −1,025 | −3,642 [−3,717] | 2,776 [2,142] | 6,418 [5,859] |
+| Tidal phase, intact water CH4 | x 2.0 | 1.70 | −1,025 | −3,618 [−3,709] | 2,776 [2,142] | 6,394 [5,850] |
+| CH4 day → 24 h | x 1.30 (all CH4) | 1.94 | −1,025 | −3,598 [−3,702] | 3,069 [2,243] | 6,668 [5,945] |
+| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23 | 1.49 | −1,025 | −3,635 [−3,715] | 2,460 [1,899] | 6,095 [5,613] |
+| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI) | 1.49 | −1,025 | −3,635 [−3,715] | 2,562 [1,977] | 6,197 [5,691] |
+| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023 | 1.49 | −1,025 | −3,635 [−3,715] | 3,356 [2,699] | 6,991 [6,414] |
+| Ghost floor without standing water (Mar 2023) | Floor fully inundated | 1.49 | −1,025 | −3,635 [−3,715] | 2,401 [1,830] | 6,036 [5,544] |
+| Ghost floor without standing water (Mar 2023) | FLM30 soil, Mar 2022 (same site); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,635 [−3,715] | 3,138 [2,457] | 6,773 [6,171] |
+| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,635 [−3,715] | 2,476 [1,946] | 6,111 [5,661] |
+| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,635 [−3,715] | 2,689 [2,111] | 6,325 [5,825] |
+| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,635 [−3,715] | 4,362 [3,633] | 7,997 [7,347] |
+| Leaf respiration | Rd25 1.28, LAI 2.3 | 1.49 | −1,204 | −4,288 [−4,368] | 2,776 [2,142] | 7,064 [6,509] |
+| Leaf respiration | Rd25 1.62, LAI 5.55 | 1.49 | −812 | −2,852 [−2,932] | 2,776 [2,142] | 5,628 [5,074] |
+| Carbon-balance framing | NECB, exported alkalinity retained | 1.96 | −783 | −2,711 [−2,815] | 2,776 [2,142] | 5,487 [4,957] |
+| Carbon-balance framing | NECB, all export returned to the air | 1.96 | −679 | −2,329 [−2,434] | 2,776 [2,142] | 5,105 [4,576] |
+| Carbon-balance framing | storage only (burial + wood) | 1.49 | −254 | −810 [−889] | 2,776 [2,142] | 3,586 [3,031] |
+| Monte Carlo 95 % interval | all propagated terms | – | – | −5214 to −1918 [−5291 to −2012] | 1931 to 3977 [1505 to 3266] | – |
 
 **Table S11. Porewater inorganic nitrogen: this study against FCE LTER monitoring at SRS5 and SRS6** (µmol L−1).
 
@@ -558,33 +558,33 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 |---|---|---|---|
 | BL60 | cwd | 0.20 (0.17 to 0.23) | 2 |
 | BL60 | leaves | 0.02 (0.00 to 0.04) | 14 |
-| BL60 | root | 5.74 (2.50 to 8.33) | 5 |
-| BL60 | soil | 55.89 (26.42 to 92.16) | 23 |
-| BL60 | stem | 14.40 (3.25 to 33.37) | 90 |
-| BL60 | water | 57.14 (33.34 to 88.92) | 5 |
-| CP40 | cwd | 2.32 (-0.08 to 6.28) | 10 |
-| CP40 | stem | 14.19 (7.37 to 23.23) | 78 |
-| CP40 | water | 21.65 (9.06 to 38.73) | 17 |
+| BL60 | root | 5.73 (2.78 to 8.29) | 5 |
+| BL60 | soil | 55.63 (27.01 to 90.45) | 23 |
+| BL60 | stem | 14.18 (3.36 to 32.02) | 90 |
+| BL60 | water | 56.85 (33.34 to 88.92) | 5 |
+| CP40 | cwd | 2.34 (-0.06 to 6.25) | 10 |
+| CP40 | stem | 14.13 (7.55 to 22.68) | 78 |
+| CP40 | water | 21.34 (8.94 to 38.90) | 17 |
 | FLM30 | root | 0.61 (0.14 to 1.45) | 4 |
-| FLM30 | soil | 30.77 (12.93 to 55.20) | 10 |
-| FLM30 | stem | 11.14 (5.64 to 18.70) | 123 |
-| FLM30 | water | 10.66 (7.37 to 15.18) | 16 |
+| FLM30 | soil | 30.78 (12.93 to 56.13) | 10 |
+| FLM30 | stem | 11.14 (5.94 to 18.72) | 123 |
+| FLM30 | water | 10.65 (7.36 to 15.17) | 16 |
 | MI | soil | 2.57 (2.10 to 3.04) | 21 |
-| MI | stem | 0.49 (0.19 to 0.91) | 9 |
-| RB10 | soil | 1.05 (0.47 to 1.66) | 10 |
+| MI | stem | 0.49 (0.19 to 0.93) | 9 |
+| RB10 | soil | 1.05 (0.50 to 1.68) | 10 |
 | SE1 | leaves | 0.03 (0.02 to 0.05) | 5 |
-| SE1 | root | 3.22 (1.33 to 5.19) | 6 |
+| SE1 | root | 3.23 (1.27 to 5.19) | 6 |
 | SE1 | stem | 0.09 (-0.02 to 0.29) | 5 |
 | SE1 | water | 1.61 | 1 |
 | SRS5 | cwd | 0.28 (0.13 to 0.46) | 6 |
-| SRS5 | root | 0.93 (0.43 to 1.67) | 34 |
-| SRS5 | soil | 0.63 (0.37 to 0.90) | 24 |
+| SRS5 | root | 0.93 (0.44 to 1.70) | 34 |
+| SRS5 | soil | 0.63 (0.38 to 0.88) | 24 |
 | SRS5 | stem | 0.11 (0.09 to 0.13) | 84 |
 | SRS5 | water | 0.57 (0.24 to 0.96) | 5 |
-| SRS6 | cwd | 0.53 (0.28 to 0.77) | 8 |
-| SRS6 | root | 9.08 (0.70 to 24.86) | 16 |
-| SRS6 | soil | 11.83 (6.10 to 20.88) | 30 |
-| SRS6 | stem | 0.44 (0.27 to 0.67) | 89 |
+| SRS6 | cwd | 0.53 (0.27 to 0.78) | 8 |
+| SRS6 | root | 9.05 (0.67 to 25.00) | 16 |
+| SRS6 | soil | 11.81 (6.17 to 20.33) | 30 |
+| SRS6 | stem | 0.45 (0.27 to 0.66) | 89 |
 | SRS6 | water | 1.35 (1.13 to 1.47) | 3 |
 
 **Table S13. Flooded share of the intact forest floor** (M11): campaign-month mean of the hourly flooded share (±1.96 SE of the floor mean), the all-or-nothing switch and the long-term value, with the fitted floor-height distribution (cm relative to the logger datum).
@@ -604,9 +604,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Territory | Area (km2) | Switch GWP20 (Tg CO2-eq yr−1) | GWP100 | GWP* | Induced CH4 (Gg yr−1) |
 |---|---|---|---|---|---|
-| Cuba | 104.03 | 0.667 (0.402 to 0.958) | 0.609 | 0.716 | 1.083 (0.334 to 1.838) |
-| United States | 60.09 | 0.385 (0.232 to 0.554) | 0.352 | 0.413 | 0.625 (0.193 to 1.061) |
-| Puerto Rico | 5.42 | 0.035 (0.021 to 0.050) | 0.032 | 0.037 | 0.056 (0.017 to 0.096) |
+| Cuba | 104.03 | 0.667 (0.400 to 0.956) | 0.609 | 0.716 | 1.082 (0.335 to 1.829) |
+| United States | 60.09 | 0.385 (0.231 to 0.552) | 0.352 | 0.413 | 0.625 (0.193 to 1.057) |
+| Puerto Rico | 5.42 | 0.035 (0.021 to 0.050) | 0.032 | 0.037 | 0.056 (0.017 to 0.095) |
 | Venezuela | 2.51 | 0.016 (0.010 to 0.023) | 0.015 | 0.017 | 0.026 (0.008 to 0.044) |
 | Antigua and Barbuda | 0.33 | 0.002 (0.001 to 0.003) | 0.002 | 0.002 | 0.003 (0.001 to 0.006) |
 | Turks and Caicos Islands | 0.31 | 0.002 (0.001 to 0.003) | 0.002 | 0.002 | 0.003 (0.001 to 0.006) |
@@ -625,16 +625,16 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Anguilla | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
 | Grenada | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
 | Honduras | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
-| Total | 173.43 | 1.111 (0.670 to 1.598) | 1.015 | 1.193 | 1.805 (0.556 to 3.063) |
+| Total | 173.43 | 1.112 (0.667 to 1.594) | 1.016 | 1.193 | 1.805 (0.558 to 3.049) |
 
 (B)
 
 | Storm | Area (km2) | Switch GWP20 (Tg) | GWP100 (Tg) | Induced CH4 (Gg) |
 |---|---|---|---|---|
-| Irma | 165.1 | 1.06 (0.64 to 1.52) | 0.97 | 1.72 (0.53 to 2.92) |
+| Irma | 165.1 | 1.06 (0.64 to 1.52) | 0.97 | 1.72 (0.53 to 2.90) |
 | Maria | 5.6 | 0.04 (0.02 to 0.05) | 0.03 | 0.06 (0.02 to 0.10) |
 | other | 2.7 | 0.02 (0.01 to 0.02) | 0.02 | 0.03 (0.01 to 0.05) |
-| Irma, Florida dieback per Lagomasino et al. 2021 | 212.6 | 1.36 (0.82 to 1.96) | 1.24 | 2.21 (0.68 to 3.76) |
+| Irma, Florida dieback per Lagomasino et al. 2021 | 212.6 | 1.36 (0.82 to 1.95) | 1.25 | 2.21 (0.68 to 3.74) |
 
 **Table S15. Literature values for canopy leaf respiration and leaf area** (M13; full provenance in the repository).
 

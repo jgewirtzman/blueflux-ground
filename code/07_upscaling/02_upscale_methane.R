@@ -36,6 +36,7 @@ library(patchwork)
 library(scales)
 
 set.seed(42)
+source("code/00_lib/seed.R")
 
 # --- Paths -------------------------------------------------------------------
 project_dir <- here::here()
@@ -177,8 +178,9 @@ boot_mean <- function(x, R = 5000) {
   x <- x[!is.na(x)]
   if (length(x) == 0) return(data.frame(n = 0L, mean = NA_real_, ci_lo = NA_real_, ci_hi = NA_real_))
   if (length(x) == 1) return(data.frame(n = 1L, mean = x, ci_lo = NA_real_, ci_hi = NA_real_))
+  set.seed(42)                                   # per call: independent of call order
   bm <- replicate(R, mean(sample(x, replace = TRUE)))
-  data.frame(n = length(x), mean = mean(bm),
+  data.frame(n = length(x), mean = mean(x),   # central = sample mean; bootstrap gives the interval only
              ci_lo = quantile(bm, 0.025), ci_hi = quantile(bm, 0.975))
 }
 
@@ -478,6 +480,7 @@ for (camp in campaigns) {
       rnorm(n, rate, se)
     }
 
+    set.seed(seed_for(paste(site_name, camp)))     # per site x campaign: order-independent draws
     root_flux_draws  <- draw_flux(root_rate, root_ci_lo, root_ci_hi, N_MC)
     soil_flux_draws  <- draw_flux(soil_rate, soil_ci_lo, soil_ci_hi, N_MC)
     water_flux_draws <- draw_flux(water_rate, water_ci_lo, water_ci_hi, N_MC)

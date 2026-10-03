@@ -51,7 +51,7 @@ r <- d %>% filter(plot %in% plots8, is.na(CO2_best.flux) | CO2_best.flux >= -10)
          season = ifelse(format(as.Date(date), "%m") == "10", "wet", "dry"))
 set.seed(42)
 boot <- function(x) { x <- x[is.finite(x)]; if (length(x) < 3) return(c(mean(x), NA, NA))
-  b <- replicate(5000, mean(sample(x, replace = TRUE))); c(mean(x), quantile(b, c(0.025, 0.975))) }
+  set.seed(42); b <- replicate(5000, mean(sample(x, replace = TRUE))); c(mean(x), quantile(b, c(0.025, 0.975))) }
 rates <- r %>% group_by(component, class, season) %>%
   summarise(n_CH4 = sum(is.finite(CH4_best.flux)), CH4 = list(boot(CH4_best.flux)),
             n_CO2 = sum(is.finite(CO2_best.flux)), CO2 = list(boot(CO2_best.flux)), .groups = "drop") %>%
