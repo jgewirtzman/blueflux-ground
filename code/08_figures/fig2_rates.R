@@ -49,7 +49,6 @@ rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {
     geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3) +
     geom_point(data = x %>% filter(!small), aes(asinh(v), y, colour = class, shape = site_type), size = 0.75, alpha = 0.35, stroke = 0.35) +
     geom_point(data = x %>% filter(small), aes(asinh(v), y, fill = class), shape = 21, colour = "white", size = 1.6, stroke = 0.3) +
-    geom_text(data = nlab, aes(x = Inf, y = y, label = n), hjust = 1.2, size = 1.9, colour = "grey45") +
     geom_errorbar(data = s, aes(xmin = asinh(lo), xmax = asinh(hi), y = y, colour = class), width = 0, linewidth = 0.6, orientation = "y") +
     geom_point(data = s, aes(asinh(m), y, fill = class), shape = 21, colour = "white", size = 2.1, stroke = 0.5) +
     scale_y_continuous(breaks = seq_along(levels(dd$comp)), labels = if (show_y) levels(dd$comp) else NULL,
@@ -105,8 +104,6 @@ area_panel <- function() {
   ggplot(area) +
     geom_rect(data = bands, aes(ymin = y - 0.5, ymax = y + 0.5), xmin = -Inf, xmax = Inf, fill = "grey95") +
     geom_segment(aes(x = 0, xend = sa, y = y, yend = y, colour = class, alpha = lit), linewidth = 2.2) +
-    geom_text(data = data.frame(y = as.numeric(factor("stem", levels(d$comp)))), aes(x = 0.05, y = y),
-              label = "regenerating: not scanned", size = 1.8, colour = "grey50", hjust = 0, fontface = "italic") +
     scale_alpha_manual(values = c(`FALSE` = 1, `TRUE` = 0.4), guide = "none") +
     scale_colour_manual(values = pal_class, guide = "none") +
     scale_y_continuous(breaks = seq_along(levels(d$comp)), labels = NULL, expand = c(0, 0), limits = c(0.5, length(levels(d$comp)) + 0.5)) +
@@ -123,7 +120,7 @@ build <- function(dd, file, note) {
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
   pd2 <- pd + guides(shape = "none")
   row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b")) | (area_panel() + labs(tag = "c"))) +
-    plot_layout(widths = c(1.15, 0.9, 0.75), guides = "collect")
+    plot_layout(widths = c(1, 1, 1), guides = "collect")
   row2 <- ((pc2 + labs(tag = "d")) | (pd2 + labs(tag = "e"))) + plot_layout(guides = "collect")
   fig <- (row1 / row2) + plot_layout(heights = c(1, 0.9)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
