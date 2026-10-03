@@ -1,0 +1,2 @@
+Q10,Q10_lo,Q10_hi,n,years,method
+1.15437495938308,1.12965571194724,1.17963511604226,46641,2004-2023,"night NEE ~ TA + year-month fixed effect; SW_IN < 10, USTAR > 0.2"

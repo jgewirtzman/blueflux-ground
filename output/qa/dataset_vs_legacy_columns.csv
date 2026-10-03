@@ -1,0 +1,29 @@
+column,n_compared,n_differ,examples
+plot,827,0,:  vs 
+date,827,0,:  vs 
+measurement_type,827,0,:  vs 
+component,827,0,:  vs 
+analyzer_source,827,4,Mar_23_166_CP40_stem: LGR2 vs LGR3 | Mar_23_167_CP40_stem: LGR2 vs LGR3 | Mar_23_168_CP40_stem: LGR2 vs LGR3 | 45000_CP40_Water_131: LGR2 vs LGR3
+species,827,0,:  vs 
+status,827,0,:  vs 
+height,827,0,:  vs 
+height_corrected,827,0,:  vs 
+diameter,827,0,:  vs 
+lenticels,827,0,:  vs 
+above,827,0,:  vs 
+chamber_class,827,18,Mar_22_T1_1_RB10_stem: R2 vs NA | Mar_22_T1_2_RB10_stem: R2 vs NA | Mar_22_T1_3_RB10_root: small root chamber vs NA | Mar_22_T1_4_RB10_root: small root chamber vs NA
+surface_type,827,0,:  vs 
+collar_id,827,0,:  vs 
+collar_location,827,0,:  vs 
+chamber_id,827,30,44638_MI_Soil_1: Soil 6 in vs Soil 8 in | 44638_MI_Soil_2: Soil 6 in vs Soil 8 in | 44638_MI_Soil_3: Soil 6 in vs Soil 8 in | 44638_MI_Soil_4: Soil 6 in vs Soil 8 in
+pneumatophore_count,827,0,:  vs 
+soil_temp,827,0,:  vs 
+stem_temp,827,0,:  vs 
+water_temp,827,0,:  vs 
+water_depth,827,0,:  vs 
+season,827,0,:  vs 
+month_year,827,0,:  vs 
+disturbance_level,827,0,:  vs 
+pneumatophore_density,827,5,44644_BL60_Soil_32: 164.473684210526 vs 92.5069380203515 | 44644_BL60_Soil_36: 274.122807017544 vs 154.178230033919 | 44644_BL60_Soil_38: 54.8245614035088 vs 30.8356460067838 | 44644_BL60_Soil_39: 164.473684210526 vs 92.5069380203515
+surface_area_cm2,827,0,:  vs 
+total_system_volume_cm3,827,0,:  vs 

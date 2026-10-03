@@ -1,42 +1,159 @@
-column_name,description,units,data_type,notes
-flux_id,Unique measurement identifier,"",character,Format: YYMMDD_SITE_Surface_Number
-date,Date of measurement,"",date,Format varies (M/D/YY)
-plot,Site identifier code,"",character,"FLM30, CP40, BL60, SE1, MI, RB10, SRS5, SRS6"
-surface,Surface type for soil/water measurements,"",character,"Soil, Water, or NA (for tree stems)"
-chamber_id,Chamber or collar identifier,"",character,
-start_time,Measurement start time,"HH:MM:SS",time,Local time
-end_time,Measurement end time,"HH:MM:SS",time,Local time
-year,Year of measurement,"",integer,2022 or 2023
-month,Month of measurement,"",integer,1-12
-time_period,Seasonal time period,"",character,
-air_temp,Air temperature at time of measurement,degrees C,numeric,Interpolated from weather station where missing
-soil_temp_c,Soil temperature,degrees C,numeric,
-water_temp_c,Water temperature,degrees C,numeric,At soil/water sites only
-water_depth_cm,Water depth,cm,numeric,At soil/water sites only
-pressure_start,Atmospheric pressure at start,kPa,numeric,
-rh_start,Relative humidity at start,%,numeric,
-Diameter_cm,Tree stem diameter at collar height,cm,numeric,Tree measurements only
-Height_cm,Collar height on tree stem,cm,numeric,Tree measurements only
-chamber_volume_cm3,Chamber internal volume,cm3,numeric,
-surface_area_cm2,Chamber surface area (stem cross-section or ground area),cm2,numeric,
-total_system_volume_cm3,Total system volume (chamber + tubing + analyzer cell),cm3,numeric,
-CH4_best.flux,Best-estimate CH4 flux,nmol m-2 s-1,numeric,Selected from LM or HM model based on quality criteria
-CH4_best.model,Model selected for CH4 best flux,"",character,LM (linear) or HM (Hutchinson-Mosier)
-CH4_quality.check,Quality flag for CH4 flux,"",character,
-CH4_LM.flux,CH4 flux from linear model,nmol m-2 s-1,numeric,
-CH4_LM.r2,R-squared of CH4 linear model,"",numeric,
-CH4_LM.p.val,P-value of CH4 linear model,"",numeric,
-CH4_HM.flux,CH4 flux from Hutchinson-Mosier model,nmol m-2 s-1,numeric,
-CH4_HM.r2,R-squared of CH4 HM model,"",numeric,
-CO2_best.flux,Best-estimate CO2 flux,nmol m-2 s-1,numeric,Selected from LM or HM model based on quality criteria
-CO2_best.model,Model selected for CO2 best flux,"",character,LM (linear) or HM (Hutchinson-Mosier)
-CO2_quality.check,Quality flag for CO2 flux,"",character,
-CO2_LM.flux,CO2 flux from linear model,nmol m-2 s-1,numeric,
-CO2_LM.r2,R-squared of CO2 linear model,"",numeric,
-CO2_LM.p.val,P-value of CO2 linear model,"",numeric,
-CO2_HM.flux,CO2 flux from Hutchinson-Mosier model,nmol m-2 s-1,numeric,
-CO2_HM.r2,R-squared of CO2 HM model,"",numeric,
-analyzer_id,Instrument identifier,"",character,"LGR1, LGR2, LGR3, or Picarro"
-measurement_type,Type of measurement,"",character,"tree or soil/water"
-measurement_category,Measurement category,"",character,"tree, soil, or water"
-notes,Field or processing notes,"",character,
+column,description,type
+flux_id,Measurement ID (closure); placements added by ebullition processing use their placement ID,character
+plot,Site / plot code,character
+date,Measurement date (after date_corrections.csv),Date
+start_time,"Closure start, field-log clock (HH:MM:SS)",hms
+end_time,"Closure end, field-log clock (after end-time repair)",hms
+measurement_type,"tree (stem, root, CWD, leaves chambers) or surface (soil, water)",character
+component,"stem, root, cwd, leaves, soil, water (negative stem heights recoded to root)",character
+analyzer_source,"Analyzer unit (LGR1-3, Picarro) after analyzer_corrections.csv",character
+chamber_id,Surface chamber (soil_water_dims.csv name) after chamber_overrides.csv; NA for tree chambers,character
+geometry_rule,How chamber volume and area were derived,character
+chamber_volume_cm3,Chamber (+ collar / float) volume,numeric
+surface_area_cm2,Enclosed surface area,numeric
+total_system_volume_cm3,Chamber + tubing + analyzer cell + Drierite,numeric
+total_system_volume_L,"Same, litres",numeric
+tubing_volume_cm3,Tubing volume,numeric
+analyzer_cell_volume_cm3,"Analyzer cell volume (LGR GLA131 28, Picarro 35)",numeric
+air_temp,Chamber air temperature used in the flux (US-Skr tower TA_1_1_1; C),numeric
+air_temp_source,Source of air_temp,character
+air_temp_handheld,Handheld / sheet-based air temperature (comparison only; C),numeric
+pressure_kPa,Chamber pressure used in the flux,numeric
+pressure_source,"Tower PA, or 101.325 kPa where none",character
+end_time_repair,Field-log end time repair note (wrong hour corrected / dropped),logical
+date_corrected,Date changed by date_corrections.csv,logical
+analyzer_corrected,Analyzer changed by analyzer_corrections.csv,logical
+excluded,TRUE if excluded from analysis (see exclusion_reason),logical
+index,Row index on the field sheet,numeric
+species,Tree species code,logical
+status,alive / dead (downed wood is dead),logical
+height,Chamber height above the sediment (cm),logical
+diameter,Stem / root diameter (cm),logical
+lenticels,Lenticels present (field sheet),logical
+chamber_class,"Tree chamber class (A-D, HA, HB, LB) or chamber from scanned sheets",logical
+stem_temp,Stem temperature (C),logical
+soil_temp,Soil temperature (C),numeric
+water_depth,Water depth (cm),logical
+notes,Field-sheet notes,character
+surface_type,soil / water (surface chambers),character
+collar_id,Collar ID / note,numeric
+collar_location,Collar location note,character
+water_temp,Water temperature (C),logical
+pressure_start,Field-sheet pressure (mixed units; not used),logical
+rh_start,Field-sheet relative humidity (not used),logical
+pneumatophore_count,Pneumatophores inside the collar,logical
+collar_offset_cm,"Collar height (soil chambers, table default; Mar 2022 6-inch override 2 cm in geometry_rule)",numeric
+collar_volume_cm3,Collar volume from soil_water_dims.csv,numeric
+window_source,"Stage-02 fit window: trimmed (curated), saved manual window, scripted (field log + offset), optionally clipped at a lift; placement (unlogged)",character
+window_start,Fit window start (analyzer clock),POSIXct
+window_end,Fit window end (analyzer clock),POSIXct
+clock_offset_s,Analyzer clock minus field-log clock (s),numeric
+clock_offset_source,How the offset was obtained,character
+CH4_best.flux,"CH4 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for water, the stage-04 placement value (CH4 total; CO2 diffusive window); fit diagnostics describe the stage-02 window",numeric
+CH4_model,CH4 Model selected by best.flux (LM / HM; HM only with >= 30 points),character
+CH4_quality.check,CH4 goFlux quality flags,character
+CH4_LM.flux,CH4 Linear-model flux,numeric
+CH4_LM.SE,CH4 Linear-model flux SE,numeric
+CH4_LM.r2,CH4 Linear-model R2,numeric
+CH4_LM.p.val,CH4 Linear-model p value,numeric
+CH4_HM.flux,CH4 Hutchinson-Mosier flux,numeric
+CH4_HM.SE,CH4 HM flux SE,numeric
+CH4_HM.r2,CH4 HM R2,numeric
+CH4_MDF,CH4 goFlux datasheet-precision MDF,numeric
+CH4_prec,CH4 Instrument precision given to goFlux,numeric
+CH4_nb.obs,CH4 Points in the fit window,numeric
+CH4_flux.term,CH4 goFlux flux term,numeric
+CH4_LM.diagnose,CH4 goFlux LM diagnostics,character
+CH4_HM.diagnose,CH4 goFlux HM diagnostics,character
+CH4_LM.score,CH4 goFlux LM score,numeric
+CH4_HM.score,CH4 goFlux HM score,numeric
+CH4_g.fact,CH4 g factor (HM / LM),numeric
+CH4_k.ratio.lim,CH4 goFlux kappa limit,numeric
+CH4_MDF.lim,CH4 goFlux MDF limit,numeric
+CH4_warn.nb.obs,CH4 goFlux observation-count warning,numeric
+CH4_sigma_emp,"CH4 Empirical precision: MAD of first differences / sqrt(2), per analyzer x campaign",numeric
+CH4_MDF_emp,"CH4 Minimum detectable flux, 1.96 sigma_emp / t x flux.term (t = closure seconds)",numeric
+CH4_MDF_emp_method,CH4 MDF method string,character
+CH4_below_MDF_emp,CH4 |best.flux| <= MDF_emp,logical
+CH4_det_class_emp,CH4 emission / uptake / below detection,character
+CH4_hm_min_obs_rule,CH4 HM replaced by LM (fewer than 30 points),logical
+CH4_qc_c0,CH4 QC: starting concentration > 1.5 x group median,logical
+CH4_qc_co2_tracer,"CH4 QC: no CO2 rise on live tissue (NA for water, leaves, CWD)",logical
+CH4_qc_convex,CH4 QC: concave-down trace (saturation / leak),logical
+CH4_qc_min_window,CH4 QC: window shorter than 60 s,logical
+CH4_qc_noisy,CH4 QC: closure noise > 1.5 x campaign sigma,logical
+CH4_qc_any,CH4 Any QC screen fired,logical
+CO2_best.flux,"CO2 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for water, the stage-04 placement value (CH4 total; CO2 diffusive window); fit diagnostics describe the stage-02 window",numeric
+CO2_model,CO2 Model selected by best.flux (LM / HM; HM only with >= 30 points),character
+CO2_quality.check,CO2 goFlux quality flags,character
+CO2_LM.flux,CO2 Linear-model flux,numeric
+CO2_LM.SE,CO2 Linear-model flux SE,numeric
+CO2_LM.r2,CO2 Linear-model R2,numeric
+CO2_LM.p.val,CO2 Linear-model p value,numeric
+CO2_HM.flux,CO2 Hutchinson-Mosier flux,numeric
+CO2_HM.SE,CO2 HM flux SE,numeric
+CO2_HM.r2,CO2 HM R2,numeric
+CO2_MDF,CO2 goFlux datasheet-precision MDF,numeric
+CO2_prec,CO2 Instrument precision given to goFlux,numeric
+CO2_nb.obs,CO2 Points in the fit window,numeric
+CO2_flux.term,CO2 goFlux flux term,numeric
+CO2_LM.diagnose,CO2 goFlux LM diagnostics,character
+CO2_HM.diagnose,CO2 goFlux HM diagnostics,character
+CO2_LM.score,CO2 goFlux LM score,numeric
+CO2_HM.score,CO2 goFlux HM score,numeric
+CO2_g.fact,CO2 g factor (HM / LM),numeric
+CO2_k.ratio.lim,CO2 goFlux kappa limit,numeric
+CO2_MDF.lim,CO2 goFlux MDF limit,numeric
+CO2_warn.nb.obs,CO2 goFlux observation-count warning,numeric
+CO2_sigma_emp,"CO2 Empirical precision: MAD of first differences / sqrt(2), per analyzer x campaign",numeric
+CO2_MDF_emp,"CO2 Minimum detectable flux, 1.96 sigma_emp / t x flux.term (t = closure seconds)",numeric
+CO2_MDF_emp_method,CO2 MDF method string,character
+CO2_below_MDF_emp,CO2 |best.flux| <= MDF_emp,logical
+CO2_det_class_emp,CO2 emission / uptake / below detection,character
+CO2_hm_min_obs_rule,CO2 HM replaced by LM (fewer than 30 points),logical
+CO2_qc_c0,CO2 QC: starting concentration > 1.5 x group median,logical
+CO2_qc_co2_tracer,"CO2 QC: no CO2 rise on live tissue (NA for water, leaves, CWD)",logical
+CO2_qc_convex,CO2 QC: concave-down trace (saturation / leak),logical
+CO2_qc_min_window,CO2 QC: window shorter than 60 s,logical
+CO2_qc_noisy,CO2 QC: closure noise > 1.5 x campaign sigma,logical
+CO2_qc_any,CO2 Any QC screen fired,logical
+data_source,"rebuild fit (stage 03), or unlogged placement (stage 04) from data/flux_metadata/unlogged_placements.csv",character
+year,Year,numeric
+month,Month,numeric
+month_year,YYYY-MM,character
+season,"dry (Mar, Dec) / wet (Oct)",character
+disturbance_level,"healthy (SRS5, SRS6, RB10), regenerating (BL60), ghost (CP40, FLM30, MI), scrub (SE1)",character
+pneumatophore_density,Pneumatophores per m2,logical
+height_corrected,"Analysis height (cm) for stems and prop roots: height minus standing-water depth (height above the water surface where water stood, otherwise above the sediment); negative = below the water line. Used by the stem height model",logical
+placement_start,Floating-chamber placement start (chamber on the water; analyzer clock),logical
+placement_end,"Placement end (chamber lifted, record gap or end of record; analyzer clock)",logical
+placement_duration_s,Placement length (s),logical
+placement_end_by,"What ends the placement: lift, record gap, end of record, curated",logical
+diffusive_rule,"Diffusive window rule: first 600 s of a placement > 12 min, else the stage-02 window",logical
+diffusive_window_start,Diffusive window start (analyzer clock),logical
+diffusive_window_end,Diffusive window end (analyzer clock),logical
+ebullition_flag,"Stage-04 caveat: Picarro 6-observation (~30 s) bubble window, or detection skipped (< 30 observations)",logical
+CH4_stage03_best.flux,"Water only: stage-03 CH4 fit of the stage-02 window, before the placement partition",logical
+CO2_stage03_best.flux,Water only: stage-03 CO2 fit of the stage-02 window,logical
+CO2_source,"Water only: CO2_best.flux from the stage-04 diffusive window, or the stage-03 fit where stage 04 gave none",logical
+CH4_diffusive_flux,Diffusive CH4 flux (nmol m-2 s-1): de-ebulliated goAquaFlux fit on the diffusive window,logical
+CH4_ebull_flux,Ebullitive CH4 flux over the whole floating-chamber placement (nmol m-2 s-1),numeric
+CH4_n_ebull_events,Bubble events detected over the placement,numeric
+CH4_ebullitive_fraction,Ebullitive share of total water CH4 flux,numeric
+ebullition_reprocessed,TRUE for water rows whose CH4_best.flux is the stage-04 placement total (diffusive + ebullitive),logical
+ebullition_source,Origin of the ebullition partitioning,logical
+CH4_flux_status,CH4 valid / no_data,character
+CH4_below_MDF,"CH4 Below detection (= below_MDF_emp, lab convention)",logical
+CH4_flagged,CH4 QC-flagged (= qc_any),logical
+CH4_SNR,CH4 |best.flux| / SE of the selected model,numeric
+CO2_flux_status,CO2 valid / no_data,character
+CO2_below_MDF,"CO2 Below detection (= below_MDF_emp, lab convention)",logical
+CO2_flagged,CO2 QC-flagged (= qc_any),logical
+CO2_SNR,CO2 |best.flux| / SE of the selected model,numeric
+flux_status,valid if either gas has a flux,character
+exclusion_reason,Why the closure is excluded,logical
+legacy_data_source,Legacy flux source (original / rescued),character
+legacy_CH4_best.flux,Legacy pipeline CH4 flux (comparison),numeric
+legacy_CO2_best.flux,Legacy pipeline CO2 flux (comparison),numeric
+use_in_analysis,Analysis rule: not excluded and has a flux (QC flags and below-MDF retained),logical
+analysis_note,"Why the closure is or is not in the analysis set, with its flags",character

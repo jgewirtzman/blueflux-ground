@@ -1,0 +1,14 @@
+"var","PC1","PC2","axis","ch4"
+"ORP",-0.348,-0.177,"PC1",FALSE
+"pH",0.158,-0.15,"PC1",FALSE
+"ppmDO",-0.301,-0.085,"PC1",FALSE
+"PSU",0.386,-0.041,"PC1",FALSE
+"Sulfide",0.03,0.472,"PC2",FALSE
+"Total Iron",-0.09,-0.377,"PC2",FALSE
+"SO4_ppm",0.362,0.054,"PC1",FALSE
+"Alkalinity_uM",0.121,-0.428,"PC2",FALSE
+"DOC_mg_L",0.078,-0.462,"PC2",FALSE
+"CH4_mean_uM",0.388,0.029,"PC1",TRUE
+"d13C_CH4_mean",0.28,-0.387,"PC2",FALSE
+"NO3_N_mgL",0.284,0.115,"PC1",FALSE
+"NH4_N_mgL",0.38,0.096,"PC1",FALSE

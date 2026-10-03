@@ -1,0 +1,7 @@
+placement_id,analyzer,site,date,start,end,n_jumps,matched_flux_id,trace_type,note
+LGR2_2022-10-23_CP40_P02,LGR2,CP40,2022-10-23,2022-10-23 11:09:05,2022-10-23 11:13:54,11,NA,additional,manually verified ebullition (detect_ebullition.R CONFIRMED_EBULLITION)
+LGR2_2022-10-23_CP40_P06,LGR2,CP40,2022-10-23,2022-10-23 11:50:31,2022-10-23 11:55:48,5,44857_CP40_Water_78,processed,manually verified ebullition (detect_ebullition.R CONFIRMED_EBULLITION)
+LGR2_2022-10-23_CP40_P10,LGR2,CP40,2022-10-23,2022-10-23 12:58:11,2022-10-23 13:05:42,10,NA,additional,manually verified ebullition (detect_ebullition.R CONFIRMED_EBULLITION)
+Picarro_2022-10-18_FLM30_P08,Picarro,FLM30,2022-10-18,2022-10-18 11:57:20,2022-10-18 11:59:22,2,NA,additional,manually verified ebullition (detect_ebullition.R CONFIRMED_EBULLITION)
+Picarro_2022-10-25_BL60_P02,Picarro,BL60,2022-10-25,2022-10-25 11:01:32,2022-10-25 11:03:35,2,NA,additional,manually verified ebullition (detect_ebullition.R CONFIRMED_EBULLITION)
+Picarro_2022-10-25_BL60_P03,Picarro,BL60,2022-10-25,2022-10-25 11:10:31,2022-10-25 11:18:42,4,44859_BL60_Water_82,processed,manually verified ebullition (detect_ebullition.R CONFIRMED_EBULLITION)

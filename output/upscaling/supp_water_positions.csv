@@ -1,93 +1,48 @@
 "plot","class","campaign","position","location","water_depth_cm","CH4"
-"BL60","regen","Oct 2022","unlabeled","",14,67.24
-"BL60","regen","Oct 2022","unlabeled","",15,60.6
-"BL60","regen","Oct 2022","unlabeled","",14,38.13
-"BL60","regen","Oct 2022","unlabeled","",14,23.03
-"BL60","regen","Oct 2022","unlabeled","",NA,94.11
-"CP40","ghost","Oct 2022","in-plot","near tree 808",23,28.44
-"CP40","ghost","Oct 2022","in-plot","near tree 801",23,18.01
-"CP40","ghost","Oct 2022","in-plot","near tree 801",23,38.51
-"CP40","ghost","Oct 2022","in-plot","slightly outisde plot to NE",NA,36.31
-"CP40","ghost","Oct 2022","off-plot / open water","slightly outside plot to east",23,18.47
-"CP40","ghost","Oct 2022","unlabeled","",NA,75.09
-"CP40","ghost","Oct 2022","unlabeled","",NA,124.31
-"CP40","ghost","Oct 2022","unlabeled","",NA,21.8
-"CP40","ghost","Oct 2022","unlabeled","",NA,128.76
-"CP40","ghost","Oct 2022","unlabeled","",NA,114.44
-"CP40","ghost","Oct 2022","unlabeled","",NA,31.52
-"CP40","ghost","Oct 2022","unlabeled","",NA,24.16
-"CP40","ghost","Oct 2022","unlabeled","",NA,34.88
-"FLM30","ghost","Oct 2022","unlabeled","",10,12.89
-"FLM30","ghost","Oct 2022","unlabeled","",10,13.1
-"FLM30","ghost","Oct 2022","unlabeled","",10,15.5
-"FLM30","ghost","Oct 2022","unlabeled","",NA,35.22
-"FLM30","ghost","Oct 2022","unlabeled","",NA,9.9
-"FLM30","ghost","Oct 2022","unlabeled","",NA,28.43
-"SRS5","healthy","Oct 2022","in-plot","plot center",6,0.13
-"SRS5","healthy","Oct 2022","off-plot / open water","plot edge (river)",9,1.08
-"SRS5","healthy","Oct 2022","off-plot / open water","plot river interface",12,0.11
-"BL60","regen","Mar 2023","unlabeled","",NA,0.81
-"BL60","regen","Mar 2023","unlabeled","",NA,17.67
-"BL60","regen","Mar 2023","unlabeled","",NA,4.63
-"BL60","regen","Mar 2023","unlabeled","",NA,3.9
-"CP40","ghost","Mar 2023","unlabeled","",NA,2.62
-"CP40","ghost","Mar 2023","unlabeled","",NA,3.55
-"CP40","ghost","Mar 2023","unlabeled","",NA,120.61
-"CP40","ghost","Mar 2023","unlabeled","",NA,12.44
-"CP40","ghost","Mar 2023","unlabeled","",NA,4.18
-"CP40","ghost","Mar 2023","unlabeled","",NA,2.91
-"CP40","ghost","Mar 2023","unlabeled","",NA,3.69
-"CP40","ghost","Mar 2023","unlabeled","",NA,4.94
-"CP40","ghost","Mar 2023","unlabeled","",NA,2.24
-"CP40","ghost","Mar 2023","unlabeled","",NA,6.74
-"CP40","ghost","Mar 2023","unlabeled","",NA,6.3
-"CP40","ghost","Mar 2023","unlabeled","",NA,4.81
-"CP40","ghost","Mar 2023","unlabeled","",NA,7.74
-"FLM30","ghost","Mar 2023","unlabeled","",20,3.77
-"FLM30","ghost","Mar 2023","unlabeled","",NA,1.86
-"FLM30","ghost","Mar 2023","unlabeled","",NA,7.24
-"FLM30","ghost","Mar 2023","unlabeled","",2,5.29
-"FLM30","ghost","Mar 2023","unlabeled","",17,8.86
-"FLM30","ghost","Mar 2023","unlabeled","",25,7.82
-"FLM30","ghost","Mar 2023","unlabeled","",21,8.64
-"FLM30","ghost","Mar 2023","unlabeled","",12,7.55
-"FLM30","ghost","Mar 2023","unlabeled","",20,5.65
-"FLM30","ghost","Mar 2023","unlabeled","",27,5.13
-"FLM30","ghost","Mar 2023","unlabeled","",22,5.31
-"FLM30","ghost","Mar 2023","unlabeled","",27,8.36
-"FLM30","ghost","Mar 2023","unlabeled","",NA,4.1
-"FLM30","ghost","Mar 2023","unlabeled","",NA,2.29
-"FLM30","ghost","Mar 2023","unlabeled","",NA,2.44
-"FLM30","ghost","Mar 2023","unlabeled","",NA,2.36
-"FLM30","ghost","Mar 2023","unlabeled","",NA,3.04
-"FLM30","ghost","Mar 2023","unlabeled","",NA,1.62
-"FLM30","ghost","Mar 2023","unlabeled","",NA,2.45
-"FLM30","ghost","Mar 2023","unlabeled","",NA,1.5
-"FLM30","ghost","Mar 2023","unlabeled","",NA,11.17
-"FLM30","ghost","Mar 2023","unlabeled","",NA,15.93
-"FLM30","ghost","Mar 2023","unlabeled","",NA,8.37
-"FLM30","ghost","Mar 2023","unlabeled","",NA,4.11
-"FLM30","ghost","Mar 2023","unlabeled","",NA,4.93
-"FLM30","ghost","Mar 2023","unlabeled","",NA,3.74
-"FLM30","ghost","Mar 2023","unlabeled","",NA,4.36
-"FLM30","ghost","Mar 2023","unlabeled","",NA,4.91
-"SE1","scrub","Mar 2023","off-plot / open water","open water",15,2.58
-"SE1","scrub","Mar 2023","unlabeled","",NA,0.83
-"SE1","scrub","Mar 2023","unlabeled","",NA,0.61
-"SE1","scrub","Mar 2023","unlabeled","",NA,0.46
-"SE1","scrub","Mar 2023","unlabeled","",NA,0.49
-"SRS5","healthy","Mar 2023","in-plot","inland, mid-plot",6,0.36
-"SRS5","healthy","Mar 2023","off-plot / open water","shark river off peir",NA,1.22
-"SRS5","healthy","Mar 2023","off-plot / open water","shark river off peir",NA,0.96
-"SRS5","healthy","Mar 2023","off-plot / open water","inland side of pier , near RHMA roots",10,0.27
-"SRS5","healthy","Mar 2023","off-plot / open water","inland pier",12,0.28
-"SRS5","healthy","Mar 2023","unlabeled","",NA,0.14
-"SRS5","healthy","Mar 2023","unlabeled","",NA,0.42
-"SRS5","healthy","Mar 2023","unlabeled","",NA,0.23
-"SRS5","healthy","Mar 2023","unlabeled","",NA,0.24
-"SRS6","healthy","Mar 2023","in-plot","boardwalk center",30,1.52
-"SRS6","healthy","Mar 2023","in-plot","by tree 607 down boardwalk to tower",10,1.17
-"SRS6","healthy","Mar 2023","off-plot / open water","by pier (15LO?)",20,1.42
-"SRS6","healthy","Mar 2023","unlabeled","",NA,1.36
-"SRS6","healthy","Mar 2023","unlabeled","",NA,0.52
-"SRS6","healthy","Mar 2023","unlabeled","",NA,0.91
+"BL60","regenerating","Oct 2022","above forest floor","",14,59.92
+"BL60","regenerating","Oct 2022","above forest floor","",15,38.87
+"BL60","regenerating","Oct 2022","above forest floor","",14,43.17
+"BL60","regenerating","Oct 2022","above forest floor","",14,22.9
+"BL60","regenerating","Oct 2022","above forest floor","",NA,119.42
+"CP40","ghost","Oct 2022","above forest floor","near tree 808",NA,59.29
+"CP40","ghost","Oct 2022","above forest floor","near tree 808",23,134.47
+"CP40","ghost","Oct 2022","above forest floor","near tree 801",23,29.2
+"CP40","ghost","Oct 2022","above forest floor","near tree 801",23,25.2
+"CP40","ghost","Oct 2022","above forest floor","slightly outside plot to east",23,18.59
+"CP40","ghost","Oct 2022","above forest floor","slightly outisde plot to NE",NA,37.66
+"FLM30","ghost","Oct 2022","above forest floor","",10,13.57
+"FLM30","ghost","Oct 2022","above forest floor","",10,13.21
+"FLM30","ghost","Oct 2022","above forest floor","",10,17.27
+"FLM30","ghost","Oct 2022","above forest floor","",NA,39.12
+"CP40","ghost","Mar 2023","above forest floor","",NA,4.88
+"CP40","ghost","Mar 2023","above forest floor","",NA,2.53
+"CP40","ghost","Mar 2023","above forest floor","",NA,3.57
+"CP40","ghost","Mar 2023","above forest floor","",NA,9.59
+"CP40","ghost","Mar 2023","above forest floor","",NA,7.13
+"CP40","ghost","Mar 2023","above forest floor","",NA,2.96
+"CP40","ghost","Mar 2023","above forest floor","",NA,3.68
+"CP40","ghost","Mar 2023","above forest floor","",NA,5.3
+"CP40","ghost","Mar 2023","above forest floor","",NA,4.84
+"CP40","ghost","Mar 2023","above forest floor","",NA,7.61
+"CP40","ghost","Mar 2023","above forest floor","",NA,6.23
+"FLM30","ghost","Mar 2023","above forest floor","",20,3.86
+"FLM30","ghost","Mar 2023","above forest floor","",NA,9.79
+"FLM30","ghost","Mar 2023","above forest floor","",NA,13.68
+"FLM30","ghost","Mar 2023","above forest floor","",NA,6.97
+"FLM30","ghost","Mar 2023","above forest floor","",2,5.12
+"FLM30","ghost","Mar 2023","above forest floor","",17,8.32
+"FLM30","ghost","Mar 2023","above forest floor","",21,8.76
+"FLM30","ghost","Mar 2023","above forest floor","",12,7.57
+"FLM30","ghost","Mar 2023","above forest floor","",20,5.23
+"FLM30","ghost","Mar 2023","above forest floor","",27,4.87
+"FLM30","ghost","Mar 2023","above forest floor","",22,5.25
+"FLM30","ghost","Mar 2023","above forest floor","",27,7.8
+"SE1","scrub","Mar 2023","channel / open water","open water",15,1.61
+"SRS5","intact","Mar 2023","above forest floor","inland, mid-plot",6,0.22
+"SRS5","intact","Mar 2023","channel / open water","shark river off peir",NA,0.84
+"SRS5","intact","Mar 2023","channel / open water","shark river off peir",NA,1.24
+"SRS5","intact","Mar 2023","channel / open water","inland side of pier , near RHMA roots",10,0.3
+"SRS5","intact","Mar 2023","channel / open water","inland pier",12,0.24
+"SRS6","intact","Mar 2023","above forest floor","boardwalk center",30,1.47
+"SRS6","intact","Mar 2023","above forest floor","by tree 607 down boardwalk to tower",10,1.13
+"SRS6","intact","Mar 2023","channel / open water","by pier (15LO?)",20,1.46

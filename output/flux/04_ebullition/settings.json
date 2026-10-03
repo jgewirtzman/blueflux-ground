@@ -1,0 +1,24 @@
+{
+  "goFlux": {
+    "version": "0.4.0",
+    "path": "/Users/jongewirtzman/My Drive/Research/Blueflux/blueflux-ground/.claude/worktrees/flux-rebuild/.Rlib/goflux-aqua-2ed7224/goFlux"
+  },
+  "tarball": "vendor/goFlux_0.4.0_aqua-deebulliated_2ed7224.tar.gz",
+  "goAquaFlux_args": {
+    "LGR": {
+      "diffusion.window": "deebulliated",
+      "bubble.window.size": 15
+    },
+    "Picarro": {
+      "diffusion.window": "deebulliated",
+      "bubble.window.size": 6,
+      "diffusion.minimum_window": 6
+    }
+  },
+  "prec": {
+    "LGR": [0.35, 0.9],
+    "Picarro": [0.025, 0.1]
+  },
+  "min_ch4_ppb": 1500,
+  "min_co2_ppm": 300
+}

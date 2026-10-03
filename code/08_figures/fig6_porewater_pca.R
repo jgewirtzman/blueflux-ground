@@ -1,0 +1,10 @@
+#!/usr/bin/env Rscript
+set.seed(20221016)   # jitter / label placement reproducible between runs
+# =============================================================================
+# Figure 6: Porewater geochemistry composite
+# Output: pub_pca_porewater_full_composite
+# Wraps publication_figures_soilprofile.R which builds depth profiles, PCA,
+# bubble plots, and scatter — all assembled into Fig 6.
+# =============================================================================
+if (requireNamespace("here", quietly = TRUE)) setwd(here::here())   # run from the project root
+source("code/08_figures/publication_figures_soilprofile.R")
