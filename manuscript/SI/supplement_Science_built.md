@@ -181,7 +181,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/pub_SI_ebullition_partition.png>){width=6.5in}
 
-**Fig. S4.** Ebullition. (a) Diffusive and detected ebullitive water-surface CH4 by site and season, with an upper bound on undetected ebullition (pale; excess of a whole-placement fit over diffusive + detected ebullitive flux, LGR placements); labels give the ebullitive share (detected–upper bound); bars, means ± SE of the total (shown where n > 3); points, individual measurements; inverse-hyperbolic-sine axis. (b) Example placements: the largest ebullitive placements in two site × campaigns and the largest clean bubble-free placements at two other sites, showing detected bubble steps (shaded), the de-ebulliated series and the diffusive linear fit (M7).
+**Fig. S4.** Ebullition. (a) Diffusive and detected ebullitive water-surface CH4 by site and season, with an upper bound on undetected ebullition (pale; excess of a whole-placement fit over diffusive + detected ebullitive flux, LGR placements); labels give n and the ebullitive share (detected–upper bound); bars, means ± SE of the total (shown where n > 3); points, individual measurements; each panel has its own linear y axis. (b) Example placements: the largest ebullitive placement (October 2022, when no placement lasted ≥10 min), the largest ebullitive placement of ≥10 min from another site × campaign, and the largest clean bubble-free placements of ≥10 min in dead and intact forest, showing detected bubble steps (shaded), the de-ebulliated series and the diffusive linear fit (M7).
 
 
 ![](<output/figures/other/pub_SI_pneumatophore_density.png>){width=6.5in}
