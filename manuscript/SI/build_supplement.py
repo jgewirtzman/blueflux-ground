@@ -64,7 +64,7 @@ FIGS = {
  "S10": (["output/figures/other/si_sensitivity_switch.png"],
          "Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,409 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further."),
  "S11": (["output/figures/other/si_S10_mc_uncertainty.png"],
-         "Monte Carlo standard error of each CH4 component (joint flux-rate and surface-area uncertainty) by site and campaign, at high tide for tidal sites; components with zero uncertainty omitted (text S4); log axis."),
+         "Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S4); inverse-hyperbolic-sine axis; components that are always zero omitted."),
  "S12": (["output/figures/other/ed_porewater_rounds.png"],
          "Porewater dissolved CH4 (A) and salinity (B) by site, sampling round (October 2022, March 2023, October 2025) and depth, including FLM30."),
  "S13": (["output/figures/other/si_S12_carbonate.png"],

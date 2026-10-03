@@ -122,7 +122,7 @@ Laser scanning represents standing live and dead trees as trunk and branch segme
 
 ## Text S4. Monte Carlo uncertainty
 
-For the CH4 budget, intact-class uncertainty is dominated by the exposed-soil fraction and the scanned root area, and ghost-class uncertainty by water-surface flux variability (component standard errors in fig. S11). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,233 to −1,939 and ghost +1,922 to +3,978 g CO2-eq m−2 yr−1 at GWP20 (−5,294 to −2,035 and +1,491 to +3,263 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
+For the CH4 budget, ghost-class uncertainty is dominated by water-surface flux in the wet season and by exposed-soil flux in the dry season (91–100% of the variance). In intact forest the leading term varies by site and campaign among water, prop roots and soil; stems contribute ≤1% everywhere (fig. S11). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,233 to −1,939 and ghost +1,922 to +3,978 g CO2-eq m−2 yr−1 at GWP20 (−5,294 to −2,035 and +1,491 to +3,263 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
 
 ## Text S5. CO2 closure caveats
 
