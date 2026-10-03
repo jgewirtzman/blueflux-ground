@@ -119,4 +119,8 @@ volta2020 | Volta, C. et al. Seasonal variations in dissolved carbon inventory a
 romigh2006 | Romigh, M. M., Davis, S. E., Rivera-Monroy, V. H. & Twilley, R. R. Flux of organic carbon in a riverine mangrove wetland in the Florida Coastal Everglades. Hydrobiologia 569, 505–516 (2006). https://doi.org/10.1007/s10750-006-0152-x
 romerouribe2022 | Romero-Uribe, H. M., López-Portillo, J., Reverchon, F. & Hernández, M. E. Effect of degradation of a black mangrove forest on seasonal greenhouse gas emissions. Environ. Sci. Pollut. Res. 29, 11951–11965 (2022). https://doi.org/10.1007/s11356-021-16597-1
 lovelock2011 | Lovelock, C. E., Ruess, R. W. & Feller, I. C. CO2 efflux from cleared mangrove peat. PLoS ONE 6, e21279 (2011). https://doi.org/10.1371/journal.pone.0021279
-
+pacheco2024 | Pacheco, C. F. et al. Soil greenhouse gas emissions from dead and natural mangrove forests in Southeastern Brazil. Mar. Pollut. Bull. 203, 116487 (2024). https://doi.org/10.1016/j.marpolbul.2024.116487
+cabezas2018 | Cabezas, A. et al. Methane emissions from mangrove soils in hydrologically disturbed and reference mangrove tidal creeks in southwest Florida. Ecol. Eng. 114, 57–65 (2018). https://doi.org/10.1016/j.ecoleng.2017.08.041
+martin2020 | Martin, R. M. et al. Greenhouse gas fluxes of mangrove soils and adjacent coastal waters in an urban, subtropical estuary. Wetlands 40, 1469–1480 (2020). https://doi.org/10.1007/s13157-020-01300-w
+sotomayor1994 | Sotomayor, D., Corredor, J. E. & Morell, J. M. Methane flux from mangrove sediments along the southwestern coast of Puerto Rico. Estuaries 17, 140–147 (1994). https://doi.org/10.2307/1352563
+salasrabaza2023 | Salas-Rabaza, J. A. et al. Impacts of leaks and gas accumulation on closed chamber methods for measuring methane and carbon dioxide fluxes from tree stems. Sci. Total Environ. 904, 166358 (2023). https://doi.org/10.1016/j.scitotenv.2023.166358
