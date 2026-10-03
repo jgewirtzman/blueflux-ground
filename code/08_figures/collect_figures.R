@@ -28,7 +28,6 @@ display_items <- c(
   "SI/FigS10_tower_GPP.png"           = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
   "SI/FigS11_porewater_depth.png"     = "other/pub_SI_depth_profiles_lines.png",        # site_characterization_figures.R
   "SI/FigS12_TA_DIC.png"              = "other/pub_SI_ta_vs_dic.png",                   # fig6_porewater_pca.R
-  "SI/FigS13_TA_SO4_deficit.png"      = "other/pub_SI_TA_vs_SO4_deficit.png",           # fig6_porewater_pca.R
   "SI/FigS14_salinity_CH4_bysite.png" = "other/pub_SI_salinity_vs_ch4_bysite.png"       # site_characterization_figures.R
 )
 
