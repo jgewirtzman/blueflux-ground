@@ -16,7 +16,7 @@
 # location-scale, mgcv::gaulss), since scatter is far larger in ghost forest.
 # Height forms compared by AIC; the selected model gives fitted profiles by
 # class (stem, alive, flooded, wet season) with 95% CIs.
-# Writes output/analysis/woody_height_model_{comparison,fixed,profiles}.csv and
+# Writes output/analysis/woody_height_model_{comparison,fixed,profiles,curves}.csv and
 # output/figures/other/woody_height_model.{png,pdf}.
 # =============================================================================
 suppressMessages({library(dplyr); library(mgcv); library(ggplot2)})
@@ -89,6 +89,7 @@ print(prof %>% mutate(across(where(is.double), ~ signif(.x, 3))), row.names = FA
 write.csv(cmp, "output/analysis/woody_height_model_comparison.csv", row.names = FALSE)
 write.csv(fixed, "output/analysis/woody_height_model_fixed.csv", row.names = FALSE)
 write.csv(prof, "output/analysis/woody_height_model_profiles.csv", row.names = FALSE)
+write.csv(nd %>% select(class, h, fit, se, flux, lo, hi), "output/analysis/woody_height_model_curves.csv", row.names = FALSE)
 
 cols <- c(intact = "#1b7837", regenerating = "#e08214", ghost = "#542788")
 br <- c(-1, 0, 1, 3, 10, 30, 100, 300)

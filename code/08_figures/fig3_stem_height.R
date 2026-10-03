@@ -856,18 +856,18 @@ ch4_box <- stem_height %>%
         plot.margin = margin(0, 5, 5, 5)) +
   no_legend
 
-ch4_emm <- emm_d_df %>%
-  ggplot(aes(x = emmean, y = height_cat, color = label, shape = label)) +
-  geom_vline(xintercept = 0, linetype = "dashed", color = "grey60") +
-  geom_errorbar(aes(xmin = lower.CL, xmax = upper.CL),
-                width = 0.3, linewidth = 0.5, orientation = "y",
-                position = pd10) +
-  geom_point(size = 2.5, stroke = 0.8, position = pd10) +
-  scale_color_manual(values = spst_colors, name = NULL) +
-  scale_shape_manual(values = spst_shapes, name = NULL) +
-  scale_x_continuous(breaks = emm_breaks, labels = emm_labels,
+# panel (c): fitted woody-surface (stem + prop root) profiles by class, from
+# 06_analysis/03_woody_height_model.R (live stem, flooded position, wet season)
+cur <- read.csv("output/analysis/woody_height_model_curves.csv") %>%
+  mutate(disturbance_level = factor(recode(class, intact = "healthy"), levels = c("healthy", "regenerating", "ghost")))
+ch4_emm <- cur %>%
+  ggplot(aes(y = h, colour = disturbance_level, fill = disturbance_level)) +
+  geom_ribbon(aes(xmin = fit - 1.96 * se, xmax = fit + 1.96 * se), alpha = 0.2, colour = NA, orientation = "y") +
+  geom_path(aes(x = fit), linewidth = 0.9) +
+  scale_x_continuous(breaks = asinh(c(0, 1, 3, 10, 30)), labels = c(0, 1, 3, 10, 30),
                      name = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))) +
-  labs(y = "Height above water (or soil surface)") +
+  scale_colour_manual(values = disturbance_colors) + scale_fill_manual(values = disturbance_colors) +
+  labs(y = "Height above water (or soil surface), cm") +
   theme_pub(base_size = 9) +
   theme(plot.margin = margin(0, 5, 5, 5)) +
   no_legend
@@ -940,8 +940,10 @@ ch4_ridges_leg <- ch4_ridges +
         legend.title = element_text(size = 8, face = "bold"),
         legend.text = element_text(size = 7))
 
-# Add species legend back to CH4 emmeans (bottom of left column)
-ch4_emm_leg <- ch4_emm +
+# Panel (c) uses the disturbance legend at the top; the species legend goes
+# under the CO2 species panel (f)
+ch4_emm_leg <- ch4_emm
+co2_emm <- co2_emm +
   theme(legend.position = "bottom",
         legend.title = element_blank(),
         legend.text = element_text(size = 7, face = "italic")) +
