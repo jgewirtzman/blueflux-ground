@@ -17,6 +17,7 @@ intermediate file, and say why in the row.
 | `ebullition_confirmed_traces.csv` | 6 | Floating-chamber placements with manually verified bubbles. |
 | `chamber_ids_from_scans.csv` | 21 | Chamber IDs for Mar 2022 trees left blank on the compiled sheet, read from the scanned datasheets (R2/"RZ", RA, small root chamber, pneumatophore chamber; 3 RB10 rows unreadable). Transcribed by Claude, 2026-10-01; to be checked. |
 | `clock_notes_from_scans.csv` | 5 | Instrument-vs-real clock readings written on the Mar 2022 sheets (Picarro display ~2 h behind real time; LGR3 3 min ahead). Transcribed by Claude, 2026-10-01; to be checked. |
+| `height_corrections.csv` | 3 | Chamber heights entered as position numbers (1/2/3) instead of the usual three heights (BL60, 2022-10-25). |
 | `analyzer_corrections.csv` | 4 | Closures the sheet lists on LGR3 that were recorded by LGR2 (CP40, 2023-03-15 after the LGR3 record ends at 15:50:26). |
 | `window_rejections.csv` | 17 | Saved manual (`window = saved`) or legacy trimmed (`window = trimmed`) windows shown to be wrong: on another closure's trace, across a data gap or a lift. The closure falls back to the next window source. Five legacy trimmed windows (made to replace a negative flux) had been moved onto a neighbouring closure. |
 | `window_clips.csv` | 3 | Windows cut at a chamber lift or placement step, found in the raw CO2 trace by stage 02 (`end_before_lift`, `start_after_lift`, `start_after_step`). |
