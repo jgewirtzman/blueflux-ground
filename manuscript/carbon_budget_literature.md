@@ -94,3 +94,22 @@ Neither Ho 2017 nor Barr 2010 *measured* the full budget. **Measured primary val
 ---
 See [[carbon-budget-lit-values]] (memory) for the numeric values wired into the budget,
 and [[full-carbon-budget-necb]] for the assembly + closure.
+
+## Ground-up vs airborne / tower eddy-covariance reconciliation (searched 2026-10-02, for a "first" claim)
+
+Found by a literature-search subagent; citations to be checked against the papers before use.
+
+- Harriss et al. 1992, JGR 97(D15), doi:10.1029/91JD02109; Ritter et al. 1992, JGR, doi:10.1029/92JD01812. ABLE-3A, Alaska tundra CH4: chambers, tower and NASA Electra aircraft EC; tower agreed with chambers, aircraft consistent with tower. Precedent for chamber vs airborne EC.
+- Roulet et al. 1994, JGR 99(D1), doi:10.1029/93JD00261. NOWES/ABLE-3B, Hudson Bay lowland: area-weighted chamber CH4 by wetland type vs airborne eddy correlation (aircraft 10 +/- 9 vs chambers 20 +/- 16 mg CH4 m-2 d-1). Closest precedent: surface chambers only, no stems, no disturbance gradient, CH4 only.
+- Gioli et al. 2004, Agric. For. Meteorol. 127:1-16. Aircraft vs towers at 7 European sites.
+- Sayres et al. 2017, ACP 17:8619, doi:10.5194/acp-17-8619-2017. Airborne CH4 by ecotope, Alaska; agreed with a tower. No chambers.
+- Hannun et al. 2020, ERL 15:035008, doi:10.1088/1748-9326/ab7391. CARAFE, Mid-Atlantic. No chambers.
+- Kohnert et al. 2017, Sci. Rep., doi:10.1038/s41598-017-05783-2; 2018, GCB 24:3976, doi:10.1111/gcb.14289. Mackenzie Delta airborne CH4. No component budget.
+- Poulter et al. 2023, ERL 18:075009, doi:10.1088/1748-9326/acdae6. BlueFlux overview: chambers, towers, aircraft, TLS side by side; no direct chamber-vs-airborne comparison.
+- Delaria et al. 2024, JGR Biogeosciences 129:e2024JG008165, doi:10.1029/2024JG008165. CARAFE land-cover disaggregation; no chamber comparison (abstract).
+- Doughty et al. 2026, PNAS 123(8), doi:10.1073/pnas.2513685123 (reported by the subagent; verify). CARAFE + towers ML upscaling; no chambers.
+- Maatta et al. 2026, Biogeosciences 23:4379, doi:10.5194/bg-23-4379-2026 (EGUsphere-2025-5023). Chamber vs tower CH4 at 10 sites; EC higher than chambers.
+- McNicol et al. 2023, AGU Advances, doi:10.1029/2023AV000956. Tower upscaling; no chambers.
+- Pangala et al. 2017, Nature 552, doi:10.1038/nature24639. Amazon stems reconciled with top-down basin budgets (not EC).
+- Gauci et al. 2024, Nature 631:796, doi:10.1038/s41586-024-07592-w. TLS-based stem upscaling (uptake), no EC.
+- To check: AGU25 "MidFlux" abstract (ground-to-airborne EC, mid-Atlantic wetlands), https://agu.confex.com/agu/agu25/meetingapp.cgi/Paper/1967751.
