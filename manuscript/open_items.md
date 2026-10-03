@@ -4,7 +4,7 @@ Working notes that used to sit inside the Science draft and supplement. The draf
 now carry only content placeholders (missing data or text).
 
 ## Authors and affiliations
-Affiliations confirmed by J. Gewirtzman (2026-10-03). Departments for Colwell (UVM Rubenstein School) and Norton (URI College of the Environment and Life Sciences) are from their public profiles; each to confirm.
+All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 
 ## Checks
 - E. Delaria: airborne uncertainty definition; July 2024 deployment.
