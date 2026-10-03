@@ -1,7 +1,7 @@
 "class","term","category","role","value","ci_lo","ci_hi","source","citation","pending"
 "Healthy","GPP (uptake)","vertical","uptake_flux",-2959.65526617725,NA,NA,"measured","tower + chambers",FALSE
 "Healthy","Reco (CO2)","vertical","source_flux",1934.91584003868,NA,NA,"measured","chambers x TLS",FALSE
-"Healthy","CH4 emission","vertical","source_flux",1.11429485165097,NA,NA,"measured","chambers x TLS",FALSE
+"Healthy","CH4 emission","vertical","source_flux",1.11595185989423,NA,NA,"measured","chambers x TLS",FALSE
 "Healthy","Lateral DIC","lateral","source_flux",145,61,229,"literature","Zhao et al. 2021 synthesis (Ho 2017, Reithmaier 2020, Volta 2020); scenarios: low Lagrangian ~81, high Reithmaier 2020 Eulerian 622",FALSE
 "Healthy","Lateral DOC","lateral","source_flux",56,NA,NA,"literature","Romigh et al. 2006 (SRS-6 flume, 2003); scenarios: low Lagrangian ~9, high Reithmaier 2020 Eulerian 171",FALSE
 "Healthy","Lateral POC","lateral","source_flux",145,84,205,"literature","Zhao et al. 2021 litter POC 2001-2018: mean of SRS-5 (84) and SRS-6 (205)",FALSE
@@ -10,7 +10,7 @@
 "Healthy","dBiomass C","storage","storage_accum",131,65,197,"literature","Castaneda-Moya et al. 2013 wood NPP, repeat census (SRS-6=197, SRS-4=161, SRS-5=65 gC/m2/yr @ CF0.45); Chen & Twilley 1999 high end ~480-540. Aboveground wood increment; coarse-root adds ~30-50%",FALSE
 "Ghost","GPP (uptake)","vertical","uptake_flux",0,NA,NA,"measured","tower + chambers",FALSE
 "Ghost","Reco (CO2)","vertical","source_flux",487.741464171558,NA,NA,"measured","chambers x TLS",FALSE
-"Ghost","CH4 emission","vertical","source_flux",8.90560347069526,NA,NA,"measured","chambers x TLS",FALSE
+"Ghost","CH4 emission","vertical","source_flux",8.90853597651158,NA,NA,"measured","chambers x TLS",FALSE
 "Ghost","Lateral DIC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE
 "Ghost","Lateral DOC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE
 "Ghost","Lateral POC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE

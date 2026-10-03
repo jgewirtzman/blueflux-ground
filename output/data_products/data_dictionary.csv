@@ -119,13 +119,15 @@ CO2_qc_min_window,CO2 QC: window shorter than 60 s,logical
 CO2_qc_noisy,CO2 QC: closure noise > 1.5 x campaign sigma,logical
 CO2_qc_any,CO2 Any QC screen fired,logical
 data_source,"rebuild fit (stage 03), or unlogged placement (stage 04) from data/flux_metadata/unlogged_placements.csv",character
-height_corrected,"Analysis height (cm): height above the water surface where standing water was present (sediment-referenced heights minus water depth; water-referenced heights as recorded), otherwise (no standing water) above the soil surface; negatives set to 0. Legacy rule; used by the stem height model",logical
 year,Year,numeric
 month,Month,numeric
 month_year,YYYY-MM,character
 season,"dry (Mar, Dec) / wet (Oct)",character
 disturbance_level,"healthy (SRS5, SRS6, RB10), regenerating (BL60), ghost (CP40, FLM30, MI), scrub (SE1)",character
 pneumatophore_density,Pneumatophores per m2,logical
+height_datum,"Reference for the recorded height: sediment_surface, water_surface, or root_crown (R. mangle in the 2022 campaigns, chambered from where the prop roots leave the trunk)",logical
+height_sediment,Chamber height above the sediment (cm): as recorded from the sediment; recorded + water depth from the water surface; estimated root-crown height + recorded from the root crown (00_lib/rhizophora_crown.R),logical
+height_corrected,"Analysis height (cm) for stems and prop roots: height_sediment minus standing-water depth (height above the water surface where water stood, otherwise above the sediment); negative = below the water line. Other components: recorded height. Used by the stem height model",logical
 placement_start,Floating-chamber placement start (chamber on the water; analyzer clock),logical
 placement_end,"Placement end (chamber lifted, record gap or end of record; analyzer clock)",logical
 placement_duration_s,Placement length (s),logical
