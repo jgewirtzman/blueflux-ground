@@ -302,7 +302,7 @@ for (nm in c("FCH4", "SCH4", "USTAR")) set(ch4raw, which(ch4raw[[nm]] <= -9990),
 ch4raw[, `:=`(day = as.Date(substr(as.character(TIMESTAMP_START), 1, 8), "%Y%m%d"),
               F = FCH4 + fifelse(is.finite(SCH4), SCH4, 0))]
 ch4raw <- ch4raw[is.finite(F) & is.finite(USTAR) & USTAR > 0.2]
-boot_ci <- function(x, n = 2000) { x <- x[is.finite(x)]; if (length(x) < 3) return(c(mean = NA, lo = NA, hi = NA, n_days = length(x))); b <- replicate(n, mean(sample(x, replace = TRUE)))
+boot_ci <- function(x, n = 2000) { x <- x[is.finite(x)]; if (length(x) < 3) return(c(mean = NA, lo = NA, hi = NA, n_days = length(x))); set.seed(42); b <- replicate(n, mean(sample(x, replace = TRUE)))
   c(mean = mean(x), lo = unname(quantile(b, 0.025)), hi = unname(quantile(b, 0.975)), n_days = length(x)) }
 camp_rows <- list()
 for (k in seq_len(nrow(target_months))) {

@@ -26,6 +26,7 @@ cat("Manuscript Results — generated", format(Sys.time(), "%Y-%m-%d %H:%M"), "\
 boot_mean_ci <- function(x, R = 5000, conf = 0.95) {
   x <- x[!is.na(x) & is.finite(x)]
   if (length(x) < 3) return(data.frame(y = mean(x), ymin = NA, ymax = NA))
+  set.seed(42)                                   # per call: independent of call order
   b <- boot::boot(x, function(d, i) mean(d[i]), R = R)
   ci <- boot::boot.ci(b, conf = conf, type = "perc")
   data.frame(y = mean(x), ymin = ci$percent[4], ymax = ci$percent[5])
