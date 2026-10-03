@@ -1,5 +1,7 @@
 # Reference library for manuscript drafts
 
+Dataset citations (ORNL DAAC, EDI/FCE LTER, AmeriFlux, GMW) are not cited in the main text; they are listed in the supplement's data-sources table (data S2).
+
 One entry per line: `key | citation`. Drafts cite with `{key}` (several: `{key1;key2}`);
 manuscript/build_docx.py numbers them in order of first appearance and writes the list.
 Entries marked [details to complete] still need volume, pages or DOI checked.
