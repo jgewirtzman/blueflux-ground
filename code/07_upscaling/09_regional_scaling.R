@@ -103,9 +103,25 @@ grid <- data.frame(lon = floor(xy[, 1] / 0.5) * 0.5 + 0.25, lat = floor(xy[, 2] 
   mutate(ch4_Mg = area_km2 * 1e6 * dch4[["mid"]] / 1e6, forcing_gwp20_Gg = area_km2 * 1e6 * sw[["gwp20"]] / 1e9)
 write.csv(grid, "output/upscaling/regional_ghost_forcing_grid.csv", row.names = FALSE)
 seq_pal <- c("#E4E2EC", "#B9B5CC", "#8E8AA8", "#6E6A86", "#3F3B52")
+# 2017 tracks of Irma and Maria (NHC HURDAT2; data/gis/hurricane_tracks/README.md)
+hd <- "data/gis/hurricane_tracks/hurdat2-1851-2025-092326.txt"
+if (!file.exists(hd)) download.file("https://www.nhc.noaa.gov/data/hurdat/hurdat2-1851-2025-092326.txt", hd, quiet = TRUE)
+hl <- readLines(hd)
+track <- function(id, name) {
+  i <- grep(paste0("^", id, ","), hl); n <- as.integer(trimws(strsplit(hl[i], ",")[[1]][3]))
+  r <- do.call(rbind, strsplit(hl[(i + 1):(i + n)], ","))
+  ll <- function(v) { v <- trimws(v); x <- as.numeric(substr(v, 1, nchar(v) - 1)); ifelse(grepl("[SW]$", v), -x, x) }
+  data.frame(storm = name, date = trimws(r[, 1]), lat = ll(r[, 5]), lon = ll(r[, 6]), wind_kt = as.numeric(r[, 7]))
+}
+tracks <- rbind(track("AL112017", "Irma"), track("AL152017", "Maria"))
+lab_pts <- tracks %>% group_by(storm) %>% filter(lon > -97, lon < -60, lat > 9, lat < 30.5) %>%
+  slice(if (first(storm) == "Irma") which.min(abs(lat - 27.5)) else which.min(abs(lat - 27))) %>% ungroup() %>%
+  mutate(hjust = ifelse(storm == "Irma", 1.1, 0), vjust = 0.5) %>% mutate(hjust = ifelse(storm == "Irma", 1.1, -0.12))
 pe <- ggplot() +
   geom_sf(data = land, fill = "grey93", colour = "grey75", linewidth = 0.12) +
   geom_tile(data = grid, aes(lon, lat, fill = ch4_Mg), width = 0.5, height = 0.5, colour = "white", linewidth = 0.1) +
+  geom_path(data = tracks, aes(lon, lat, group = storm), colour = "grey35", linewidth = 0.35, linetype = "22") +
+  geom_text(data = lab_pts, aes(lon, lat, label = paste(storm, "2017"), hjust = hjust, vjust = vjust), colour = "grey25", size = 2.3, fontface = "italic") +
   scale_fill_gradientn(colours = seq_pal, trans = "log10", breaks = c(0.1, 1, 10, 100), labels = c("0.1", "1", "10", "100"),
                        name = expression("Induced CH"[4]*" emission (Mg CH"[4]*" yr"^-1*" per 0.5"*degree*" cell)")) +
   coord_sf(xlim = c(-98, -59), ylim = c(8, 31), expand = FALSE) +
@@ -130,8 +146,8 @@ pf <- ggplot(dec, aes(Tg, metric, fill = gas)) +
   scale_fill_manual(values = c(`CO2 (lost uptake + respiration)` = "#A7A9AC", `CH4 (induced emission)` = pal_class[["ghost"]]), name = NULL) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.18))) + scale_y_discrete(limits = rev) +
   labs(x = expression("Added forcing (Tg CO"[2]*"-eq yr"^-1*")"), y = NULL,
-       subtitle = sprintf("%.0f km\u00b2 of mangrove lost after 2017\ninduced CH4: %.1f Gg CH4 yr\u207b\u00b9 (%.1f\u2013%.1f)",
-                          tot$area_km2, tot$ch4_induced_Gg, tot$ch4_induced_lo_Gg, tot$ch4_induced_hi_Gg)) +
+       subtitle = sprintf("%.0f km\u00b2 of mangrove lost in 2017 (%.0f%% after Irma)\ninduced CH4: %.1f Gg CH4 yr\u207b\u00b9 (%.1f\u2013%.1f)",
+                          tot$area_km2, 100 * irma$area_km2 / tot$area_km2, tot$ch4_induced_Gg, tot$ch4_induced_lo_Gg, tot$ch4_induced_hi_Gg)) +
   theme_fig() + theme(legend.position = "bottom", legend.direction = "vertical", plot.subtitle = element_text(size = 6.5, colour = "grey30"),
                       panel.grid.major.y = element_blank())
 fig <- (pe + labs(tag = "d")) + (pf + labs(tag = "e")) + plot_layout(widths = c(1.9, 1))
