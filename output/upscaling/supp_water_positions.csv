@@ -1,42 +1,42 @@
 "plot","class","campaign","position","location","water_depth_cm","CH4"
-"BL60","regenerating","Oct 2022","not recorded","",14,59.92
-"BL60","regenerating","Oct 2022","not recorded","",15,38.87
-"BL60","regenerating","Oct 2022","not recorded","",14,43.17
-"BL60","regenerating","Oct 2022","not recorded","",14,22.9
-"BL60","regenerating","Oct 2022","not recorded","",NA,119.42
+"BL60","regenerating","Oct 2022","above forest floor","",14,59.92
+"BL60","regenerating","Oct 2022","above forest floor","",15,38.87
+"BL60","regenerating","Oct 2022","above forest floor","",14,43.17
+"BL60","regenerating","Oct 2022","above forest floor","",14,22.9
+"BL60","regenerating","Oct 2022","above forest floor","",NA,119.42
 "CP40","ghost","Oct 2022","above forest floor","near tree 808",NA,59.29
 "CP40","ghost","Oct 2022","above forest floor","near tree 808",23,134.47
 "CP40","ghost","Oct 2022","above forest floor","near tree 801",23,29.2
 "CP40","ghost","Oct 2022","above forest floor","near tree 801",23,25.2
 "CP40","ghost","Oct 2022","channel / open water","slightly outside plot to east",23,18.59
 "CP40","ghost","Oct 2022","channel / open water","slightly outisde plot to NE",NA,37.66
-"FLM30","ghost","Oct 2022","not recorded","",10,13.57
-"FLM30","ghost","Oct 2022","not recorded","",10,13.21
-"FLM30","ghost","Oct 2022","not recorded","",10,17.27
-"FLM30","ghost","Oct 2022","not recorded","",NA,39.12
-"CP40","ghost","Mar 2023","not recorded","",NA,4.88
-"CP40","ghost","Mar 2023","not recorded","",NA,2.53
-"CP40","ghost","Mar 2023","not recorded","",NA,3.57
-"CP40","ghost","Mar 2023","not recorded","",NA,9.59
-"CP40","ghost","Mar 2023","not recorded","",NA,7.13
-"CP40","ghost","Mar 2023","not recorded","",NA,2.96
-"CP40","ghost","Mar 2023","not recorded","",NA,3.68
-"CP40","ghost","Mar 2023","not recorded","",NA,5.3
-"CP40","ghost","Mar 2023","not recorded","",NA,4.84
-"CP40","ghost","Mar 2023","not recorded","",NA,7.61
-"CP40","ghost","Mar 2023","not recorded","",NA,6.23
-"FLM30","ghost","Mar 2023","not recorded","",20,3.86
-"FLM30","ghost","Mar 2023","not recorded","",NA,9.79
-"FLM30","ghost","Mar 2023","not recorded","",NA,13.68
-"FLM30","ghost","Mar 2023","not recorded","",NA,6.97
-"FLM30","ghost","Mar 2023","not recorded","",2,5.12
-"FLM30","ghost","Mar 2023","not recorded","",17,8.32
-"FLM30","ghost","Mar 2023","not recorded","",21,8.76
-"FLM30","ghost","Mar 2023","not recorded","",12,7.57
-"FLM30","ghost","Mar 2023","not recorded","",20,5.23
-"FLM30","ghost","Mar 2023","not recorded","",27,4.87
-"FLM30","ghost","Mar 2023","not recorded","",22,5.25
-"FLM30","ghost","Mar 2023","not recorded","",27,7.8
+"FLM30","ghost","Oct 2022","above forest floor","",10,13.57
+"FLM30","ghost","Oct 2022","above forest floor","",10,13.21
+"FLM30","ghost","Oct 2022","above forest floor","",10,17.27
+"FLM30","ghost","Oct 2022","above forest floor","",NA,39.12
+"CP40","ghost","Mar 2023","above forest floor","",NA,4.88
+"CP40","ghost","Mar 2023","above forest floor","",NA,2.53
+"CP40","ghost","Mar 2023","above forest floor","",NA,3.57
+"CP40","ghost","Mar 2023","above forest floor","",NA,9.59
+"CP40","ghost","Mar 2023","above forest floor","",NA,7.13
+"CP40","ghost","Mar 2023","above forest floor","",NA,2.96
+"CP40","ghost","Mar 2023","above forest floor","",NA,3.68
+"CP40","ghost","Mar 2023","above forest floor","",NA,5.3
+"CP40","ghost","Mar 2023","above forest floor","",NA,4.84
+"CP40","ghost","Mar 2023","above forest floor","",NA,7.61
+"CP40","ghost","Mar 2023","above forest floor","",NA,6.23
+"FLM30","ghost","Mar 2023","above forest floor","",20,3.86
+"FLM30","ghost","Mar 2023","above forest floor","",NA,9.79
+"FLM30","ghost","Mar 2023","above forest floor","",NA,13.68
+"FLM30","ghost","Mar 2023","above forest floor","",NA,6.97
+"FLM30","ghost","Mar 2023","above forest floor","",2,5.12
+"FLM30","ghost","Mar 2023","above forest floor","",17,8.32
+"FLM30","ghost","Mar 2023","above forest floor","",21,8.76
+"FLM30","ghost","Mar 2023","above forest floor","",12,7.57
+"FLM30","ghost","Mar 2023","above forest floor","",20,5.23
+"FLM30","ghost","Mar 2023","above forest floor","",27,4.87
+"FLM30","ghost","Mar 2023","above forest floor","",22,5.25
+"FLM30","ghost","Mar 2023","above forest floor","",27,7.8
 "SE1","scrub","Mar 2023","channel / open water","open water",15,1.61
 "SRS5","intact","Mar 2023","above forest floor","inland, mid-plot",6,0.22
 "SRS5","intact","Mar 2023","channel / open water","shark river off peir",NA,0.84
