@@ -44,7 +44,7 @@ mc <- read.csv("output/upscaling/mc_component_uncertainty.csv") %>% filter(compo
 ch_share <- ch %>% pivot_longer(c(water_mg, soil_mg, root_mg, stem_mg, cwd_mg), names_to = "component", values_to = "mg") %>%
   group_by(class, campaign) %>% mutate(pct = 100 * mg / sum(mg)) %>% ungroup() %>%
   mutate(comp = factor(recode(sub("_mg", "", component), root = "prop root", cwd = "downed wood"), comp_order))
-ch_tot <- ch %>% transmute(class, campaign, v = total_mg * f, source = "bottom-up (chambers x area)") %>%
+ch_tot <- ch %>% transmute(class, campaign, v = total_mg * f, source = "bottom-up") %>%
   left_join(mc %>% select(class, campaign, lo, hi), by = c("class", "campaign"))
 
 # ---- bottom-up CO2 ----
@@ -60,7 +60,7 @@ nee <- read.csv("output/upscaling/plot_level_CO2_totals.csv") %>% filter(campaig
 mcc <- read.csv("output/upscaling/mc_CO2_forcing.csv") %>%
   transmute(class = to_class(class), campaign = factor(campaign, CAMP), lo = nee_lo, hi = nee_hi)
 co_tot <- nee %>% select(class, campaign, v) %>% left_join(mcc, by = c("class", "campaign")) %>%
-  mutate(source = "bottom-up (chambers x area)")
+  mutate(source = "bottom-up")
 
 # ---- independent estimates (95%) ----
 cara <- function(file, gas, val, se) {
@@ -77,7 +77,7 @@ tower <- read.csv("output/gpp/US-Skr_campaign_fluxes.csv") %>% filter(gas == "NE
   mutate(campaign = case_when(year == 2022 & month == 10 ~ "Oct 2022", year == 2023 & month == 3 ~ "Mar 2023")) %>%
   filter(!is.na(campaign)) %>% transmute(class = factor("intact", cls), campaign = factor(campaign, CAMP), v = mean, lo, hi, source = "tower (US-Skr)")
 
-src_lev <- c("bottom-up (chambers x area)", "aircraft (CARAFE)", "tower (US-Skr)")
+src_lev <- c("bottom-up", "aircraft (CARAFE)", "tower (US-Skr)")
 src_shape <- c(23, 24, 22); names(src_shape) <- src_lev
 src_fill <- c("white", "grey30", "grey30"); names(src_fill) <- src_lev
 dodge <- c(-0.2, 0, 0.2); names(dodge) <- src_lev
@@ -149,7 +149,7 @@ ann <- bind_rows(
   nf %>% transmute(class = to_class(disturbance_level), var = "CH4\n(g CH4 m-2 yr-1)", v = ch4_g_yr) %>%
     left_join(mca %>% transmute(class = to_class(disturbance_level), lo, hi), by = "class"),
   nf %>% transmute(class = to_class(disturbance_level), var = "net CO2 exchange\n(g C m-2 yr-1)", v = co2_g_yr * 12 / 44) %>%
-    left_join(mcy %>% transmute(class = to_class(class), lo, hi), by = "class")) %>% mutate(source = "bottom-up (chambers x area)")
+    left_join(mcy %>% transmute(class = to_class(class), lo, hi), by = "class")) %>% mutate(source = "bottom-up")
 twr <- data.frame(class = factor("intact", cls), var = "net CO2 exchange\n(g C m-2 yr-1)", v = -1170, lo = -1297, hi = -1043, source = "tower (US-Skr)")
 pf <- ggplot(bind_rows(ann, twr) %>% mutate(source = factor(source, src_lev)), aes(class, v)) +
   geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.3) +
