@@ -64,7 +64,7 @@ pa <- ggplot() +
   annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 438000, y = 2815000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
-  annotate("text", x = 560000, y = 2752000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 566000, y = 2768000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
   scale_fill_manual(values = c(pal_class, `mangrove (2016)` = "#A8CDB9", `2017 hurricane dieback` = "#B9B5CB"),
                     breaks = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"),
                     labels = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"), name = NULL,

@@ -78,11 +78,11 @@ prof_panel <- function(gas, curves, breaks, xlab) {
     guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1)))
 }
 pc <- prof_panel("CH4", "output/analysis/woody_height_model_curves.csv", c(0, 1, 10, 100, 1000),
-                 expression("Woody-surface CH"[4]*" (nmol m"^-2*" s"^-1*")"))
+                 expression("Woody CH"[4]*" (nmol m"^-2*" s"^-1*")"))
 pd <- prof_panel("CO2", "output/analysis/woody_height_model_CO2_curves.csv", c(-10, -1, 0, 1, 10),
-                 expression("Woody-surface CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")")) + labs(y = NULL)
+                 expression("Woody CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")")) + labs(y = NULL)
 
-# ---- surface per ground area, same rows -------------------------------------------
+# ---- surface per ground area, by component (last panel) -------------------------------------------
 site_class <- c(SRS5 = "intact", SRS6 = "intact", CP40 = "ghost", FLM30 = "ghost")
 tw <- read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario == "exponential") %>%
   distinct(site, campaign, tide_state, tide_weight)
@@ -105,7 +105,7 @@ area_panel <- function() {
     geom_segment(aes(x = 0, xend = sa, y = y, yend = y, colour = class, alpha = lit), linewidth = 2.2) +
     scale_alpha_manual(values = c(`FALSE` = 1, `TRUE` = 0.4), guide = "none") +
     scale_colour_manual(values = pal_class, guide = "none") +
-    scale_y_continuous(breaks = seq_along(levels(d$comp)), labels = NULL, expand = c(0, 0), limits = c(0.5, length(levels(d$comp)) + 0.5)) +
+    scale_y_continuous(breaks = seq_along(levels(d$comp)), labels = levels(d$comp), expand = c(0, 0), limits = c(0.5, length(levels(d$comp)) + 0.5)) +
     scale_x_continuous(expand = expansion(mult = c(0, 0.05))) +
     labs(x = expression("Surface per ground area (m"^2*" m"^-2*")"), y = NULL) +
     theme_fig() + theme(panel.grid.major.y = element_blank(), axis.ticks.y = element_blank())
@@ -118,9 +118,9 @@ build <- function(dd, file, note) {
     guides(fill = "none")
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
   pd2 <- pd + guides(shape = "none")
-  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b")) | (area_panel() + labs(tag = "c"))) +
+  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(widths = c(1, 1), guides = "collect")
+  row2 <- ((pc2 + labs(tag = "c")) | (pd2 + labs(tag = "d")) | (area_panel() + labs(tag = "e"))) +
     plot_layout(widths = c(1, 1, 1), guides = "collect")
-  row2 <- ((pc2 + labs(tag = "d")) | (pd2 + labs(tag = "e"))) + plot_layout(guides = "collect")
   fig <- (row1 / row2) + plot_layout(heights = c(1, 0.9)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
   fig <- fig & theme(legend.position = "right", legend.title = element_text(size = 7, face = "bold"))
