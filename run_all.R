@@ -77,7 +77,8 @@ steps <- c(
   "code/08_figures/figS2_pneumatophore.R",          # Fig S5
   "code/08_figures/figS3_chamber_photos.R",         # Fig S1
   "code/08_figures/plot_extrap_clean.R",            # Fig S7
-  "code/08_figures/si_upscaling_figs.R",             # Figs S9-S11 (from upscaling CSVs)
+  "code/08_figures/si_flood_fraction.R",             # Fig S10
+  "code/08_figures/si_upscaling_figs.R",             # Figs S9, S11, S12 (from upscaling CSVs)
   "code/08_figures/si_porewater_carbonate.R",        # Fig S13
   "code/08_figures/plot_SA_height_fixedY.R",        # Fig S8
   "code/08_figures/plot_us_skr_gpp.R",              # tower GPP diagnostics

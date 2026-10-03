@@ -23,11 +23,12 @@ source("code/08_figures/palette.R")
 invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
 
 TIDAL <- c("SRS5", "SRS6")
-CAMPS <- c("2022-03" = "Mar 2022", "2022-10" = "Oct 2022", "2023-03" = "Mar 2023")
+CAMPS <- c("2022-10" = "Oct 2022", "2023-03" = "Mar 2023")   # campaigns used in the budgets
 pal_month <- c("Mar 2022" = "#D55E00", "Oct 2022" = "#0072B2", "Mar 2023" = "#CC79A7")   # as plot_us_skr_gpp.R
 col_floor <- pal_class[["intact"]]; col_wl <- pal_comp[["water"]]
 
 ff <- read.csv("output/upscaling/flood_fraction.csv") %>%
+  filter(campaign %in% unname(CAMPS)) %>%
   mutate(campaign = factor(campaign, unname(CAMPS)), floor_el = -floor_mu_cm)   # floor elevation above logger zero
 
 # --- inputs exactly as 01b_flood_fraction.R ----------------------------------
@@ -87,20 +88,18 @@ dens_wl <- wlc %>% group_by(site, campaign) %>%
 ntot <- fx %>% count(site, name = "ntot")
 hist_wet <- fx %>% filter(wet) %>% mutate(bin = floor(floor_el / bw) * bw + bw / 2) %>% count(site, bin) %>%
   left_join(ntot, by = "site") %>% mutate(d = n / ntot / bw)
-dmax <- max(c(dens_floor$d, dens_wl$d, hist_wet$d))
+dmax <- max(c(dens_floor$d, dens_wl$d))
 dry <- fx %>% filter(!wet)
 
 pb <- ggplot() +
   geom_ribbon(data = dens_floor, aes(y = y, xmin = 0, xmax = d), fill = col_floor, alpha = 0.15, orientation = "y") +
-  geom_tile(data = hist_wet, aes(x = d / 2, y = bin, width = d, height = bw * 0.92), fill = col_floor, alpha = 0.55) +
   geom_path(data = dens_floor, aes(d, y), colour = col_floor, linewidth = 0.5) +
   geom_path(data = dens_wl, aes(d, y, colour = campaign), linewidth = 0.45) +
-  geom_point(data = dry, aes(x = -0.006, y = floor_el), shape = 2, size = 0.8, stroke = 0.3, colour = col_floor,
-             position = position_jitter(width = 0.004, height = 0, seed = 1)) +
+  geom_rug(data = fx %>% filter(wet), aes(y = floor_el), sides = "l", colour = col_floor, alpha = 0.6, length = unit(4, "pt")) +
   facet_grid(site ~ .) +
   scale_colour_manual(values = pal_month, name = "water level") +
   scale_x_continuous(expand = expansion(mult = c(0.02, 0.05)), breaks = seq(0, 0.1, 0.04)) +
-  coord_cartesian(ylim = ylim, xlim = c(-0.01, dmax)) +
+  coord_cartesian(ylim = ylim, xlim = c(0, dmax)) +
   labs(x = "Density (per cm)", y = "Floor height or water level (cm)") +
   theme_fig() + theme(legend.position = "bottom", legend.margin = margin(0, 0, 0, 0),
                        legend.background = element_rect(fill = "white", colour = NA), legend.title = element_text(size = 7)) +
@@ -124,12 +123,12 @@ pc <- ggplot(cc) +
   facet_grid(. ~ site) +
   scale_shape_manual(values = c("area-weighted (central)" = 16, "all-or-nothing switch" = 4), name = NULL) +
   scale_linetype_manual(values = c("long-term, 2010 onward (area-weighted)" = "22"), name = NULL) +
-  scale_x_continuous(breaks = 1:3, labels = levels(ff$campaign), expand = expansion(add = 0.45)) +
+  scale_x_continuous(breaks = 1:2, labels = levels(ff$campaign), expand = expansion(add = 0.45)) +
   scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.25)) +
   labs(x = NULL, y = "Flooded share of floor") +
   theme_fig() + theme(legend.position = "bottom", legend.margin = margin(0, 0, 0, 0), panel.grid.major.x = element_blank())
 
 top <- (pa | pb) + plot_layout(widths = c(3, 1.15))
 fig <- (top / pc) + plot_layout(heights = c(2.3, 1)) + plot_annotation(tag_levels = "a")
-ggsave("output/figures/other/si_flood_fraction.png", fig, width = 7.2, height = 5.4, dpi = 300, bg = "white")
-ggsave("output/figures/other/si_flood_fraction.pdf", fig, width = 7.2, height = 5.4, device = cairo_pdf)
+ggsave("output/figures/other/si_flood_fraction.png", fig, width = 7.2, height = 5.0, dpi = 300, bg = "white")
+ggsave("output/figures/other/si_flood_fraction.pdf", fig, width = 7.2, height = 5.0, device = cairo_pdf)
