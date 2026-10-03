@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-10-02 16:50 
+Manuscript Results — generated 2026-10-02 17:30 
 
 
 ================================================================
@@ -6,7 +6,7 @@ DATA LOADING
 ================================================================
 
   Loaded: 752 observations after filtering
-  Flux statistics table: 76 rows
+  Flux statistics table: 79 rows
 
 ================================================================
 STUDY OVERVIEW
@@ -229,18 +229,18 @@ Species x site:
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
                   Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species           8.3874  2.7958     3 246.21  3.5308   0.01551 *  
-height_corrected 19.0073 19.0073     1 247.98 24.0042 1.737e-06 ***
-season_agg        2.5127  2.5127     1 247.33  3.1733   0.07608 .  
+species           7.2137  2.4046     3 241.42  3.0722  0.028456 *  
+height_corrected 21.9381 21.9381     1 248.94 28.0294 2.625e-07 ***
+season_agg        8.0367  8.0367     1 247.12 10.2683  0.001531 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for species:
  species emmean    SE   df lower.CL upper.CL
- AVGE     0.438 0.260 3.51   -0.325     1.20
- COER     0.282 0.294 5.51   -0.453     1.02
- LARA     0.914 0.261 3.67    0.162     1.67
- RHMA     0.428 0.228 2.14   -0.495     1.35
+ AVGE     0.282 0.238 4.23   -0.366    0.930
+ COER     0.265 0.272 6.78   -0.382    0.911
+ LARA     0.814 0.237 4.36    0.175    1.452
+ RHMA     0.528 0.200 2.22   -0.257    1.314
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -248,52 +248,52 @@ Confidence level used: 0.95
 
 Pairwise contrasts:
  contrast      estimate        SE     df t.ratio p.value
- AVGE - COER  0.1552487 0.2650943 239.52   0.586  0.9363
- AVGE - LARA -0.4762323 0.2100929 248.99  -2.267  0.1087
- AVGE - RHMA  0.0094843 0.1618235 249.00   0.059  0.9999
- COER - LARA -0.6314810 0.2412342 248.99  -2.618  0.0461
- COER - RHMA -0.1457644 0.2147869 246.02  -0.679  0.9051
- LARA - RHMA  0.4857166 0.1663224 247.74   2.920  0.0198
+ AVGE - COER  0.0171023 0.2675141 224.39   0.064  0.9999
+ AVGE - LARA -0.5318804 0.2099455 248.37  -2.533  0.0573
+ AVGE - RHMA -0.2464057 0.1734957 247.12  -1.420  0.4879
+ COER - LARA -0.5489827 0.2410655 248.32  -2.277  0.1061
+ COER - RHMA -0.2635081 0.2151664 244.92  -1.225  0.6118
+ LARA - RHMA  0.2854746 0.1712933 247.43   1.667  0.3436
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
 P value adjustment: tukey method for comparing a family of 4 estimates 
 
-  Height coefficient: -0.00655 +/- 0.00134 (95% CI: -0.00917–-0.00393)
+  Height coefficient: -0.00688 +/- 0.00130 (95% CI: -0.00943–-0.00434)
 
 --- CH4 Model 2: species * height_cat + season + (1|plot) [0-150 cm] ---
 
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
                    Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species             8.052  2.6838     3 231.77  3.7661 0.0114312 *  
-height_cat         38.535 19.2673     2 231.04 27.0368 2.815e-11 ***
-season_agg          8.531  8.5307     1 231.13 11.9707 0.0006434 ***
-species:height_cat 24.526  4.0877     6 231.02  5.7360 1.395e-05 ***
+species             6.816  2.2721     3 216.77  3.0201 0.0307008 *  
+height_cat         38.702 19.3509     2 217.16 25.7210 9.437e-11 ***
+season_agg         10.520 10.5203     1 217.03 13.9834 0.0002360 ***
+species:height_cat 19.808  3.3014     6 217.19  4.3882 0.0003304 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans by species | height_cat:
 height_cat = 0-50 cm:
  species emmean    SE    df lower.CL upper.CL
- AVGE     0.801 0.337  5.20  -0.0546    1.657
- COER     1.334 0.393  9.36   0.4509    2.218
- LARA     2.105 0.349  6.00   1.2521    2.958
- RHMA     0.542 0.290  2.90  -0.4007    1.484
+ AVGE     0.781 0.330  5.87  -0.0306    1.592
+ COER     1.377 0.391 11.11   0.5183    2.237
+ LARA     2.114 0.342  6.86   1.3016    2.926
+ RHMA     0.672 0.305  4.29  -0.1518    1.496
 
 height_cat = 50-100 cm:
  species emmean    SE    df lower.CL upper.CL
- AVGE     0.377 0.338  5.24  -0.4794    1.233
- COER    -0.221 0.374  7.73  -1.0892    0.647
- LARA     0.483 0.349  6.02  -0.3704    1.336
- RHMA     0.435 0.283  2.61  -0.5461    1.416
+ AVGE     0.358 0.331  5.93  -0.4542    1.170
+ COER    -0.173 0.371  9.06  -1.0120    0.665
+ LARA     0.485 0.342  6.88  -0.3278    1.297
+ RHMA     0.436 0.271  2.71  -0.4790    1.352
 
 height_cat = 100-150 cm:
  species emmean    SE    df lower.CL upper.CL
- AVGE     0.342 0.365  7.17  -0.5173    1.202
- COER    -0.430 0.440 14.62  -1.3711    0.510
- LARA     0.104 0.363  7.01  -0.7530    0.961
- RHMA     0.328 0.287  2.78  -0.6290    1.284
+ AVGE     0.318 0.360  8.33  -0.5070    1.143
+ COER    -0.390 0.441 17.73  -1.3178    0.537
+ LARA     0.114 0.357  8.12  -0.7072    0.935
+ RHMA     0.392 0.273  2.82  -0.5107    1.296
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -308,26 +308,26 @@ n per sp_status x height_cat:
   AVGE_dead       62        60         47
   COER             8        10          6
   LARA            13        13         11
-  RHMA_alive      34        45         40
-  RHMA_dead        9        11          7
+  RHMA_alive      19        45         42
+  RHMA_dead        6        10          9
 
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
             Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-sp_status   19.925   3.985     5 337.60  3.1616  0.008367 ** 
-height_cat 199.996  99.998     2 426.05 79.3334 < 2.2e-16 ***
-season_agg   7.667   7.667     1 427.87  6.0825  0.014044 *  
+sp_status   17.475   3.495     5 332.03  2.7464 0.0189922 *  
+height_cat 211.948 105.974     2 411.39 83.2763 < 2.2e-16 ***
+season_agg  14.738  14.738     1 412.43 11.5815 0.0007313 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for sp_status:
  sp_status  emmean    SE    df lower.CL upper.CL
- AVGE_alive  0.656 0.268  6.75   0.0183     1.29
- AVGE_dead   1.251 0.272  6.00   0.5851     1.92
- COER        0.552 0.359 17.97  -0.2026     1.31
- LARA        1.194 0.305 10.37   0.5181     1.87
- RHMA_alive  0.802 0.260  5.57   0.1531     1.45
- RHMA_dead   0.561 0.316 12.73  -0.1236     1.25
+ AVGE_alive  0.638 0.282  6.35  -0.0435     1.32
+ AVGE_dead   1.164 0.288  5.86   0.4549     1.87
+ COER        0.727 0.373 16.23  -0.0618     1.52
+ LARA        1.265 0.319  9.53   0.5499     1.98
+ RHMA_alive  1.087 0.280  5.73   0.3934     1.78
+ RHMA_dead   0.768 0.335 12.24   0.0397     1.50
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -338,21 +338,21 @@ Alive vs Dead contrasts:
 
 All pairwise contrasts:
  contrast                  estimate        SE     df t.ratio p.value
- AVGE_alive - AVGE_dead  -0.5944826 0.2139544 303.93  -2.779  0.0637
- AVGE_alive - COER        0.1044312 0.3326832 374.44   0.314  0.9996
- AVGE_alive - LARA       -0.5383071 0.2596653 403.92  -2.073  0.3035
- AVGE_alive - RHMA_alive -0.1456630 0.1993429 382.72  -0.731  0.9781
- AVGE_alive - RHMA_dead   0.0949190 0.2705753 429.53   0.351  0.9993
- AVGE_dead - COER         0.6989138 0.3650846 211.93   1.914  0.3962
- AVGE_dead - LARA         0.0561755 0.3035261 193.70   0.185  1.0000
- AVGE_dead - RHMA_alive   0.4488196 0.2537923 131.17   1.768  0.4896
- AVGE_dead - RHMA_dead    0.6894016 0.2986243 278.91   2.309  0.1940
- COER - LARA             -0.6427382 0.3102348 429.99  -2.072  0.3041
- COER - RHMA_alive       -0.2500942 0.2818188 426.11  -0.887  0.9494
- COER - RHMA_dead        -0.0095122 0.3430333 427.45  -0.028  1.0000
- LARA - RHMA_alive        0.3926441 0.2144256 427.63   1.831  0.4468
- LARA - RHMA_dead         0.6332261 0.2891391 428.89   2.190  0.2445
- RHMA_alive - RHMA_dead   0.2405820 0.2424607 427.95   0.992  0.9203
+ AVGE_alive - AVGE_dead  -0.5256809 0.2170177 305.32  -2.422  0.1518
+ AVGE_alive - COER       -0.0894855 0.3375056 366.50  -0.265  0.9998
+ AVGE_alive - LARA       -0.6271411 0.2623012 392.48  -2.391  0.1619
+ AVGE_alive - RHMA_alive -0.4493508 0.2094531 368.05  -2.145  0.2665
+ AVGE_alive - RHMA_dead  -0.1299468 0.2805366 414.74  -0.463  0.9973
+ AVGE_dead - COER         0.4361954 0.3731459 217.90   1.169  0.8511
+ AVGE_dead - LARA        -0.1014602 0.3096891 201.47  -0.328  0.9995
+ AVGE_dead - RHMA_alive   0.0763300 0.2676701 144.16   0.285  0.9997
+ AVGE_dead - RHMA_dead    0.3957341 0.3093063 290.40   1.279  0.7961
+ COER - LARA             -0.5376555 0.3125877 414.96  -1.720  0.5193
+ COER - RHMA_alive       -0.3598653 0.2837703 413.62  -1.268  0.8022
+ COER - RHMA_dead        -0.0404613 0.3499996 413.63  -0.116  1.0000
+ LARA - RHMA_alive        0.1777902 0.2190903 411.93   0.811  0.9654
+ LARA - RHMA_dead         0.4971942 0.2972372 413.65   1.673  0.5507
+ RHMA_alive - RHMA_dead   0.3194040 0.2552804 413.29   1.251  0.8111
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -363,18 +363,18 @@ P value adjustment: tukey method for comparing a family of 6 estimates
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
                   Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species          17.7768  5.9256     3 247.66 16.3433 1.009e-09 ***
-height_corrected  0.0028  0.0028     1 247.21  0.0078    0.9295    
-season_agg        0.2968  0.2968     1 247.06  0.8185    0.3665    
+species          17.1314  5.7105     3 247.66 15.7758 2.028e-09 ***
+height_corrected  0.1266  0.1266     1 247.60  0.3496    0.5549    
+season_agg        0.3531  0.3531     1 247.01  0.9754    0.3243    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for species (CO2):
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.64 0.362 2.26    0.242     3.04
- COER      1.17 0.374 2.55   -0.150     2.48
- LARA      2.01 0.363 2.28    0.620     3.41
- RHMA      1.31 0.352 2.03   -0.191     2.80
+ AVGE      1.66 0.368 2.27    0.245     3.08
+ COER      1.17 0.379 2.53   -0.174     2.51
+ LARA      2.02 0.368 2.27    0.608     3.44
+ RHMA      1.30 0.358 2.03   -0.221     2.82
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -382,52 +382,52 @@ Confidence level used: 0.95
 
 Pairwise contrasts (CO2):
  contrast      estimate        SE     df t.ratio p.value
- AVGE - COER  0.4759027 0.1776355 248.68   2.679  0.0391
- AVGE - LARA -0.3714918 0.1416913 247.72  -2.622  0.0456
- AVGE - RHMA  0.3351965 0.1091703 247.65   3.070  0.0126
- COER - LARA -0.8473945 0.1626865 247.73  -5.209  <.0001
- COER - RHMA -0.1407062 0.1443473 248.32  -0.975  0.7639
- LARA - RHMA  0.7066883 0.1124701 247.15   6.283  <.0001
+ AVGE - COER  0.4932140 0.1793205 248.75   2.750  0.0322
+ AVGE - LARA -0.3627623 0.1420648 247.78  -2.553  0.0545
+ AVGE - RHMA  0.3626410 0.1172426 247.95   3.093  0.0118
+ COER - LARA -0.8559762 0.1631127 247.79  -5.248  <.0001
+ COER - RHMA -0.1305729 0.1452001 248.13  -0.899  0.8052
+ LARA - RHMA  0.7254033 0.1164412 247.06   6.230  <.0001
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
 P value adjustment: tukey method for comparing a family of 4 estimates 
 
-  Height coefficient (CO2): -0.00008 +/- 0.00091 (95% CI: -0.00185–0.00169)
+  Height coefficient (CO2): 0.00052 +/- 0.00089 (95% CI: -0.00122–0.00227)
 
 --- CO2 Model 2: species * height_cat + season + (1|plot) [0-150 cm] ---
 
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
-                    Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species            16.8009  5.6003     3 231.63 15.3650 3.769e-09 ***
-height_cat          0.1090  0.0545     2 231.01  0.1495    0.8612    
-season_agg          0.4319  0.4319     1 231.04  1.1849    0.2775    
-species:height_cat  1.5421  0.2570     6 231.01  0.7051    0.6458    
+                    Sum Sq Mean Sq NumDF  DenDF F value   Pr(>F)    
+species            16.3146  5.4382     3 217.68 14.8746 7.63e-09 ***
+height_cat          0.0567  0.0283     2 217.04  0.0775   0.9254    
+season_agg          0.4562  0.4562     1 217.01  1.2478   0.2652    
+species:height_cat  1.6097  0.2683     6 217.05  0.7338   0.6229    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans by species | height_cat (CO2):
 height_cat = 0-50 cm:
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.63 0.388 2.75   0.3328     2.94
- COER      1.01 0.414 3.55  -0.1986     2.22
- LARA      2.08 0.394 2.90   0.8073     3.36
- RHMA      1.31 0.369 2.23  -0.1257     2.75
+ AVGE      1.65 0.385 2.76  0.35805     2.93
+ COER      1.01 0.412 3.60 -0.18770     2.20
+ LARA      2.09 0.390 2.92  0.82347     3.35
+ RHMA      1.34 0.375 2.48 -0.00639     2.69
 
 height_cat = 50-100 cm:
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.43 0.389 2.76   0.1308     2.73
- COER      1.32 0.405 3.25   0.0817     2.55
- LARA      1.96 0.394 2.91   0.6822     3.23
- RHMA      1.32 0.365 2.16  -0.1481     2.78
+ AVGE      1.45 0.386 2.77  0.16048     2.73
+ COER      1.31 0.403 3.30  0.09397     2.53
+ LARA      1.96 0.390 2.92  0.70287     3.23
+ RHMA      1.31 0.362 2.16 -0.14513     2.76
 
 height_cat = 100-150 cm:
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.83 0.401 3.13   0.5857     3.08
- COER      1.12 0.438 4.43  -0.0520     2.29
- LARA      1.98 0.400 3.10   0.7329     3.23
- RHMA      1.33 0.367 2.21  -0.1172     2.78
+ AVGE      1.84 0.398 3.16  0.60482     3.07
+ COER      1.11 0.436 4.50 -0.04334     2.27
+ LARA      1.98 0.397 3.12  0.74658     3.22
+ RHMA      1.28 0.363 2.19 -0.16195     2.72
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -442,26 +442,26 @@ n per sp_status x height_cat (CO2):
   AVGE_dead       62        60         47
   COER             8        10          6
   LARA            13        13         11
-  RHMA_alive      34        45         40
-  RHMA_dead        9        11          7
+  RHMA_alive      19        45         42
+  RHMA_dead        6        10          9
 
 Type III ANOVA (CO2):
 Type III Analysis of Variance Table with Satterthwaite's method
-            Sum Sq Mean Sq NumDF  DenDF F value   Pr(>F)    
-sp_status  16.9650  3.3930     5 424.71  7.6740 6.38e-07 ***
-height_cat  0.2590  0.1295     2 426.10  0.2929 0.746272    
-season_agg  5.9912  5.9912     1 426.82 13.5505 0.000262 ***
+            Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
+sp_status  15.7626  3.1525     5 405.98  7.0920 2.253e-06 ***
+height_cat  0.8157  0.4078     2 411.37  0.9175 0.4003307    
+season_agg  6.4418  6.4418     1 411.83 14.4917 0.0001622 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for sp_status (CO2):
  sp_status  emmean    SE   df lower.CL upper.CL
- AVGE_alive   1.40 0.237 4.97    0.787     2.01
- AVGE_dead    1.55 0.239 4.97    0.937     2.17
- COER         1.05 0.276 8.86    0.425     1.68
- LARA         1.85 0.252 6.29    1.239     2.46
- RHMA_alive   1.20 0.234 4.67    0.583     1.81
- RHMA_dead    1.08 0.257 6.85    0.470     1.69
+ AVGE_alive   1.40 0.231 5.01    0.807     2.00
+ AVGE_dead    1.54 0.234 5.05    0.937     2.14
+ COER         1.07 0.273 9.24    0.452     1.68
+ LARA         1.86 0.248 6.43    1.266     2.46
+ RHMA_alive   1.21 0.231 4.86    0.612     1.81
+ RHMA_dead    1.11 0.255 7.32    0.511     1.70
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -469,21 +469,21 @@ Confidence level used: 0.95
 
 All pairwise contrasts (CO2 alive/dead):
  contrast                  estimate        SE     df t.ratio p.value
- AVGE_alive - AVGE_dead  -0.1556545 0.1275368 410.52  -1.220  0.8267
- AVGE_alive - COER        0.3450235 0.1976010 425.55   1.746  0.5021
- AVGE_alive - LARA       -0.4529828 0.1542709 428.68  -2.936  0.0406
- AVGE_alive - RHMA_alive  0.1992784 0.1185657 425.87   1.681  0.5453
- AVGE_alive - RHMA_dead   0.3160840 0.1604307 429.31   1.970  0.3612
- AVGE_dead - COER         0.5006779 0.2183201 379.08   2.293  0.1993
- AVGE_dead - LARA        -0.2973284 0.1817642 369.20  -1.636  0.5753
- AVGE_dead - RHMA_alive   0.3549328 0.1524614 327.64   2.328  0.1858
- AVGE_dead - RHMA_dead    0.4717385 0.1782661 402.91   2.646  0.0888
- COER - LARA             -0.7980063 0.1837431 428.38  -4.343  0.0003
- COER - RHMA_alive       -0.1457451 0.1669261 429.78  -0.873  0.9527
- COER - RHMA_dead        -0.0289394 0.2032815 429.69  -0.142  1.0000
- LARA - RHMA_alive        0.6522612 0.1269981 426.68   5.136  <.0001
- LARA - RHMA_dead         0.7690669 0.1713010 427.45   4.490  0.0001
- RHMA_alive - RHMA_dead   0.1168057 0.1436343 426.93   0.813  0.9650
+ AVGE_alive - AVGE_dead  -0.1361678 0.1289373 390.52  -1.056  0.8983
+ AVGE_alive - COER        0.3350935 0.1999607 408.33   1.676  0.5486
+ AVGE_alive - LARA       -0.4604501 0.1554318 412.76  -2.962  0.0378
+ AVGE_alive - RHMA_alive  0.1908354 0.1242436 407.77   1.536  0.6412
+ AVGE_alive - RHMA_dead   0.2935950 0.1659494 414.47   1.769  0.4869
+ AVGE_dead - COER         0.4712613 0.2222866 353.22   2.120  0.2793
+ AVGE_dead - LARA        -0.3242823 0.1846825 342.96  -1.756  0.4958
+ AVGE_dead - RHMA_alive   0.3270032 0.1600003 301.45   2.044  0.3202
+ AVGE_dead - RHMA_dead    0.4297628 0.1839447 384.64   2.336  0.1821
+ COER - LARA             -0.7955436 0.1847526 413.63  -4.306  0.0003
+ COER - RHMA_alive       -0.1442581 0.1677241 414.71  -0.860  0.9556
+ COER - RHMA_dead        -0.0414985 0.2069647 414.78  -0.201  1.0000
+ LARA - RHMA_alive        0.6512855 0.1294864 411.44   5.030  <.0001
+ LARA - RHMA_dead         0.7540451 0.1757208 412.51   4.291  0.0003
+ RHMA_alive - RHMA_dead   0.1027596 0.1509168 412.29   0.681  0.9840
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 

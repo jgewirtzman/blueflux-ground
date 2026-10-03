@@ -104,12 +104,8 @@ d <- aux %>%
 d <- d %>% mutate(
   status = case_when(tolower(status) == "alive" ~ "alive", tolower(status) == "dead" ~ "dead",
                      toupper(status) == "CWD" ~ "CWD", TRUE ~ status),
-  # negative heights are submerged roots
+  # negative heights are prop roots measured down from the root crown
   component = if_else(!is.na(height) & height < 0, "root", component),
-  height_corrected = pmax(height, 0),
-  height_corrected = if_else(!is.na(above) & above == "sediment" & !is.na(water_depth) & water_depth > 0 &
-                               !is.na(height_corrected) & component %in% c("stem", "root"),
-                             height_corrected - water_depth, height_corrected),
   chamber_class = coalesce(chamber_class, if_else(measurement_type == "tree", chamber_id, NA_character_)),
   chamber_id = if_else(measurement_type == "tree", NA_character_, chamber_id),
   year = year(date), month = month(date), month_year = format(date, "%Y-%m"),
@@ -118,6 +114,33 @@ d <- d %>% mutate(
                                 plot %in% c("CP40", "FLM30", "MI") ~ "ghost", plot == "SE1" ~ "scrub"),
   pneumatophore_density = if_else(!is.na(pneumatophore_count) & surface_area_cm2 > 0,
                                   pneumatophore_count / (surface_area_cm2 / 1e4), NA_real_))
+
+# ---- 4a. Chamber heights on one datum: height above the sediment ------------------------------
+# R. mangle in the 2022 campaigns was chambered from the root crown (stems at
+# nominal 0/50/100 cm, prop roots at -25/-50 cm); 00_lib/rhizophora_crown.R
+# estimates the crown height per site. Otherwise heights are as labelled:
+# from the sediment, or from the water surface (+ water depth).
+# height_sediment: height above the sediment; height_corrected: height above
+# the water surface where water stood (as before), else above the sediment.
+source("code/00_lib/rhizophora_crown.R")
+crown <- crown_heights(d)
+cat("R. mangle root-crown height (cm, ", attr(crown, "mode"), "): ",
+    paste(names(crown), round(crown), sep = " ", collapse = "; "), "\n", sep = "")
+d <- d %>% mutate(
+  from_crown = attr(crown, "mode") != "none" & species %in% "RHMA" & month_year %in% c("2022-03", "2022-10") &
+    component %in% c("stem", "root") & !is.na(height) & height %in% c(-50, -25, 0, 25, 50, 100, 150, 170) &
+    plot %in% names(crown),
+  depth0 = if_else(!is.na(water_depth) & water_depth > 0, water_depth, 0),
+  height_datum = case_when(is.na(height) ~ NA_character_, from_crown ~ "root_crown",
+                           above %in% "water" ~ "water_surface", TRUE ~ "sediment_surface"),
+  height_sediment = case_when(
+    is.na(height) ~ NA_real_,
+    from_crown ~ pmax(0, unname(crown[plot]) + height),
+    above %in% "water" ~ height + depth0,
+    TRUE ~ pmax(height, 0)),
+  height_corrected = if_else(component %in% c("stem", "root") & !is.na(height_sediment),
+                             height_sediment - depth0, pmax(height, 0))) %>%
+  select(-from_crown, -depth0)
 
 # ---- 4b. Floating-chamber placements (stage 04) ---------------------------------------------
 # One flux per placement (Jon, 2026-10-01). Water rows take the stage-04 values:
