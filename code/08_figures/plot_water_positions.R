@@ -14,17 +14,17 @@ df$camp <- with(df, ifelse(year==2022&month==10,"Oct 2022",
 off_pat <- "river|open|off peir|off pier|outside|outisde|pier|interface|edge"   # "outisde": field-note spelling
 w <- df %>% filter(component=="water", !is.na(CH4_best.flux), !is.na(camp)) %>%
   mutate(position = case_when(
-           is.na(collar_location) ~ "not recorded",
+           is.na(collar_location) ~ "above forest floor",   # unlabelled = standard placement over the flooded floor (no channels at ghost/regenerating sites)
            grepl(off_pat, collar_location, ignore.case=TRUE) ~ "channel / open water",
            TRUE ~ "above forest floor"),
          class = recode(plot, CP40="ghost",FLM30="ghost",MI="ghost",
                         BL60="regenerating",SE1="scrub",SRS5="intact",SRS6="intact",RB10="intact"),
          site = factor(plot, levels=c("CP40","FLM30","BL60","SE1","SRS5","SRS6")),
          camp = factor(camp, levels=c("Mar 2022","Oct 2022","Mar 2023")),
-         position = factor(position, c("above forest floor", "channel / open water", "not recorded")))
+         position = factor(position, c("above forest floor", "channel / open water")))
 
 source("code/08_figures/palette.R")   # house palette + theme_fig()
-pos_cols <- c("above forest floor" = "#2C7BB6", "channel / open water" = "#C2513A", "not recorded" = "grey65")
+pos_cols <- c("above forest floor" = "#2C7BB6", "channel / open water" = "#C2513A")
 site_cls <- c(CP40 = "ghost", FLM30 = "ghost", BL60 = "regenerating", SE1 = "scrub", SRS5 = "intact", SRS6 = "intact")
 w <- w %>% mutate(site_lab = factor(paste0(site, "\n", site_cls[as.character(site)]),
                                     paste0(levels(site), "\n", site_cls[levels(site)])))
