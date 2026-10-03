@@ -15,6 +15,44 @@ src = os.path.join(root, src) if not os.path.isabs(src) else src
 out = os.path.splitext(src)[0] + ".docx"
 text = open(src, encoding="utf-8").read()
 
+# ---- citations: {key} or {key1;key2} -> (1), (2, 3), (4-6), numbered by first appearance
+refs = {}
+for line in open(os.path.join(root, "manuscript/references.md"), encoding="utf-8"):
+    if " | " in line and not line.startswith("#"):
+        k, v = line.split(" | ", 1)
+        refs[k.strip()] = v.strip()
+order = []
+def _num(m):
+    nums = []
+    for k in m.group(1).split(";"):
+        k = k.strip()
+        if k not in refs:
+            raise SystemExit(f"unknown reference key: {k}")
+        if k not in order:
+            order.append(k)
+        nums.append(order.index(k) + 1)
+    nums = sorted(set(nums)); out = []; i = 0
+    while i < len(nums):
+        j = i
+        while j + 1 < len(nums) and nums[j + 1] == nums[j] + 1:
+            j += 1
+        out.append(str(nums[i]) if j == i else (f"{nums[i]}, {nums[j]}" if j == i + 1 else f"{nums[i]}\u2013{nums[j]}"))
+        i = j + 1
+    return "(" + ", ".join(out) + ")"
+text = re.sub(r"\{([a-z0-9_;]+)\}", _num, text)
+reflist = "\n".join(f"{i + 1}. {refs[k]}" for i, k in enumerate(order))
+text = re.sub(r"(## References and Notes\n\n)_\[[^\]]*\]_", lambda m: m.group(1) + reflist, text)
+
+# ---- word counts (main text excludes headings and bracketed placeholders)
+def _wc(seg):
+    seg = re.sub(r"_\[[^\]]*\]_", "", seg)
+    seg = re.sub(r"^#.*$", "", seg, flags=re.M)
+    return len(seg.split())
+if "## Main text" in text:
+    mt = text[text.index("## Main text"):text.index("## Figure legends")]
+    ab = text[text.index("## Abstract"):text.index("## Main text")]
+    print(f"abstract {_wc(ab)} words; main text {_wc(mt)} words; {len(order)} references")
+
 # legends: "**Fig. N. Title.** body" paragraphs in the Figure legends section
 leg_start = text.index("## Figure legends")
 leg_end = text.index("\n---", leg_start)
