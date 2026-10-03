@@ -68,7 +68,7 @@ Ecosystem respiration was built from the same components and areas, with chamber
 
 ## M14. Eddy-covariance tower
 
-Half-hourly CO2 and CH4 fluxes at SRS6 came from the AmeriFlux US-Skr BASE product (data S2) _[CHECK with tower PIs: instruments, measurement height, processing and u* threshold]_. Net exchange was the PI-provided NEE, or FC + SC where NEE was missing. GPP was partitioned per season-year (March–May 2022, September–November 2022, March–May 2023): night-time respiration (shortwave ≤10 W m−2) was fitted as log(NEE) = a + b·T and extrapolated to daytime; daytime GPP = respiration − NEE was fitted with a rectangular-hyperbola light response; NEE was gap-filled with the models; and GPP = respiration − gap-filled NEE in daytime (unclipped) and zero at night. Uncertainty came from 200 bootstrap resamples. Campaign-month means were GPP 7.1 (October 2022) and 8.5 (March 2023) µmol m−2 s−1, and NEE −2.4 and −4.4 (table S8; fig. S15). The within-month Q10 of night-time respiration was estimated from 2004–2023 records (n = 46,641 half-hours; shortwave <10 W m−2, 0 < NEE < 30, u* >0.2 m s−1) as exp(10b) from log(NEE) ~ T with a year × month fixed effect: 1.15 (1.13–1.18).
+Half-hourly CO2 and CH4 fluxes at SRS6 came from the AmeriFlux US-Skr BASE product (data S2) _[CHECK with tower PIs: instruments, measurement height, processing and u* threshold]_. Net exchange was the PI-provided NEE, or FC + SC where NEE was missing. GPP was partitioned per season-year (March–May 2022, September–November 2022, March–May 2023): night-time respiration (shortwave ≤10 W m−2) was fitted as log(NEE) = a + b·T and extrapolated to daytime; daytime GPP = respiration − NEE was fitted with a rectangular-hyperbola light response; NEE was gap-filled with the models; and GPP = respiration − gap-filled NEE in daytime (unclipped) and zero at night. Uncertainty came from 200 bootstrap resamples. Campaign-month means were GPP 7.1 (October 2022) and 8.5 (March 2023) µmol m−2 s−1, and NEE −2.4 and −4.4 (table S8; fig. S16). The within-month Q10 of night-time respiration was estimated from 2004–2023 records (n = 46,641 half-hours; shortwave <10 W m−2, 0 < NEE < 30, u* >0.2 m s−1) as exp(10b) from log(NEE) ~ T with a year × month fixed effect: 1.15 (1.13–1.18).
 
 ## M15. Airborne eddy covariance
 
@@ -114,7 +114,7 @@ Stem CH4 declines with height, so stand budgets must extrapolate above the highe
 
 ## Text S2. Tide and inundation
 
-At the tidal intact sites, high- and low-tide states were weighted by the flooded share of the floor in each campaign month (M11): 0.62 and 0.74 in October 2022 and 0.37 and 0.55 in March 2023 at SRS5 and SRS6 (table S13). For the March 2023 ghost floor without standing water, four sources for the exposed-soil flux were tested, each with its limitation: FLM30 soil chambers in March 2022 (same site and season, different year; central); Marco Island ghost soils (ghost forest, different setting); the two pooled; and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class), with two exposed shares (no standing water, central; ≤2 cm). Every option raises the ghost source relative to treating the floor as fully flooded, mainly through soil CO2: ghost net forcing is +2,401 g CO2-eq m−2 yr−1 at GWP20 when fully flooded, +2,775 in the central case, and +2,460 to +4,362 across the options; ghost CH4 ranges 9.9–13.7 g m−2 yr−1 (table S10). An airborne check by campaign (table S6) favours the flooded representation in October 2022 and March 2023.
+At the tidal intact sites, high- and low-tide states were weighted by the flooded share of the floor in each campaign month (M11): 0.62 and 0.74 in October 2022 and 0.37 and 0.55 in March 2023 at SRS5 and SRS6 (table S13); stand CH4 in each tide state is shown in fig. S9. For the March 2023 ghost floor without standing water, four sources for the exposed-soil flux were tested, each with its limitation: FLM30 soil chambers in March 2022 (same site and season, different year; central); Marco Island ghost soils (ghost forest, different setting); the two pooled; and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class), with two exposed shares (no standing water, central; ≤2 cm). Every option raises the ghost source relative to treating the floor as fully flooded, mainly through soil CO2: ghost net forcing is +2,401 g CO2-eq m−2 yr−1 at GWP20 when fully flooded, +2,775 in the central case, and +2,460 to +4,362 across the options; ghost CH4 ranges 9.9–13.7 g m−2 yr−1 (table S10). An airborne check by campaign (table S6) favours the flooded representation in October 2022 and March 2023.
 
 ## Text S3. Downed wood
 
@@ -122,7 +122,7 @@ Laser scanning represents standing live and dead trees as trunk and branch segme
 
 ## Text S4. Monte Carlo uncertainty
 
-For the CH4 budget, intact-class uncertainty is dominated by the exposed-soil fraction and the scanned root area, and ghost-class uncertainty by water-surface flux variability (component standard errors in fig. S10). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,233 to −1,939 and ghost +1,922 to +3,978 g CO2-eq m−2 yr−1 at GWP20 (−5,294 to −2,035 and +1,491 to +3,263 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
+For the CH4 budget, intact-class uncertainty is dominated by the exposed-soil fraction and the scanned root area, and ghost-class uncertainty by water-surface flux variability (component standard errors in fig. S11). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,233 to −1,939 and ghost +1,922 to +3,978 g CO2-eq m−2 yr−1 at GWP20 (−5,294 to −2,035 and +1,491 to +3,263 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
 
 ## Text S5. CO2 closure caveats
 
@@ -134,7 +134,7 @@ Component rates were measured at BL60, but no scanned surface area or airborne e
 
 ## Text S7. Porewater alkalinity and sulfate
 
-Porewater alkalinity (October 2025, 0–90 cm) was 11–33 mM (site medians), five to fifteen times seawater: 11–12 mM at the intact sites, 16 mM at CP40 and 33 mM at BL60. Alkalinity at this level indicates that sulfate reduction was active at every site. At CP40, sulfate remained near 32 mM, the highest of any site, alongside the highest dissolved CH4: methane accumulated alongside sulfate reduction rather than after sulfate was exhausted, consistent with methanogenesis from substrates sulfate reducers do not compete for. Alkalinity–DIC slopes are not interpreted, because DIC was calculated from probe pH and alkalinity rather than measured, and each site has four depths (fig. S12).
+Porewater alkalinity (October 2025, 0–90 cm) was 11–33 mM (site medians), five to fifteen times seawater: 11–12 mM at the intact sites, 16 mM at CP40 and 33 mM at BL60. Alkalinity at this level indicates that sulfate reduction was active at every site. At CP40, sulfate remained near 32 mM, the highest of any site, alongside the highest dissolved CH4: methane accumulated alongside sulfate reduction rather than after sulfate was exhausted, consistent with methanogenesis from substrates sulfate reducers do not compete for. Alkalinity–DIC slopes are not interpreted, because DIC was calculated from probe pH and alkalinity rather than measured, and each site has four depths (fig. S13).
 
 ## Text S8. Context sites
 
@@ -148,11 +148,11 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 
 ## Text S9. Sensitivity to analytical choices
 
-The central case combines the choices best supported by our data and the literature: flooding weighted by floor area over the campaign months, the within-month tower Q10, the Krauss downed-wood volume, LAI 2.8, and no tidal-phase or diel correction to CH4. Monte Carlo intervals propagate measurement and parameter uncertainty within that case; structural alternatives are compared one at a time in table S10. Three results hold under every choice: at GWP20 the ghost class is a net source (+2,400 to +4,360 g CO2-eq m−2 yr−1; +1,830 to +3,630 at GWP100), the intact class is a net sink on vertical exchange (−2,690 to −4,310), and intact CH4 emission is clearly non-zero (0.9–2.1 g CH4 m−2 yr−1). The switch spans ~5,600–8,000 g CO2-eq m−2 yr−1 at GWP20 (~5,100–7,300 at GWP100), and ~5,100–5,500 under the plausible carbon-balance framings. The largest levers on the intact budget are canopy leaf respiration (LAI), the downed-wood volume and the flooding representation, which also decides the leading intact CH4 pathway: soils (55%) and roots (28%) in the central case; roots (44%) under the all-or-nothing switch.
+Fig. S10 shows the effect of each choice on the intact-to-ghost switch. The central case combines the choices best supported by our data and the literature: flooding weighted by floor area over the campaign months, the within-month tower Q10, the Krauss downed-wood volume, LAI 2.8, and no tidal-phase or diel correction to CH4. Monte Carlo intervals propagate measurement and parameter uncertainty within that case; structural alternatives are compared one at a time in table S10. Three results hold under every choice: at GWP20 the ghost class is a net source (+2,400 to +4,360 g CO2-eq m−2 yr−1; +1,830 to +3,630 at GWP100), the intact class is a net sink on vertical exchange (−2,690 to −4,310), and intact CH4 emission is clearly non-zero (0.9–2.1 g CH4 m−2 yr−1). The switch spans ~5,600–8,000 g CO2-eq m−2 yr−1 at GWP20 (~5,100–7,300 at GWP100), and ~5,100–5,500 under the plausible carbon-balance framings. The largest levers on the intact budget are canopy leaf respiration (LAI), the downed-wood volume and the flooding representation, which also decides the leading intact CH4 pathway: soils (55%) and roots (28%) in the central case; roots (44%) under the all-or-nothing switch.
 
 ## Text S10. Net forcing under carbon-balance framings
 
-On vertical exchange the intact class is a sink of −3,630 g CO2-eq m−2 yr−1 at GWP20 (−3,710 at GWP100), and its CH4 offsets 3% (GWP20) to 1% (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m−2 yr−1) the intact forest retains ~680 g C m−2 yr−1. With exported alkalinity retained in the ocean and the rest returned to the air, the intact sink is −2,710 g CO2-eq m−2 yr−1 at GWP20 (−2,960 to −1,710 across lateral scenarios), CH4 offsets 5% of it, and the switch is ~5,500 (~5,000 at GWP100). If all exported carbon returns to the air, the intact sink is −2,330 (−2,730 to −150) and the switch ~5,100. On storage alone (burial 123 plus wood increment 131 g C m−2 yr−1; Castañeda-Moya et al. 2013) the intact class is −810 and the switch ~3,600, a lower bound because carbon respired downstream or retained as ocean DOC counts as returned. As an independent check, lateral export should roughly equal net exchange minus wood increment minus burial (≈770 g C m−2 yr−1), which falls between the central and high scenarios (fig. S14). The intact sink stays negative in every coherent scenario and approaches neutrality only with the highest export and complete atmospheric return.
+On vertical exchange the intact class is a sink of −3,630 g CO2-eq m−2 yr−1 at GWP20 (−3,710 at GWP100), and its CH4 offsets 3% (GWP20) to 1% (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m−2 yr−1) the intact forest retains ~680 g C m−2 yr−1. With exported alkalinity retained in the ocean and the rest returned to the air, the intact sink is −2,710 g CO2-eq m−2 yr−1 at GWP20 (−2,960 to −1,710 across lateral scenarios), CH4 offsets 5% of it, and the switch is ~5,500 (~5,000 at GWP100). If all exported carbon returns to the air, the intact sink is −2,330 (−2,730 to −150) and the switch ~5,100. On storage alone (burial 123 plus wood increment 131 g C m−2 yr−1; Castañeda-Moya et al. 2013) the intact class is −810 and the switch ~3,600, a lower bound because carbon respired downstream or retained as ocean DOC counts as returned. As an independent check, lateral export should roughly equal net exchange minus wood increment minus burial (≈770 g C m−2 yr−1), which falls between the central and high scenarios (fig. S15). The intact sink stays negative in every coherent scenario and approaches neutrality only with the highest export and complete atmospheric return.
 
 ## Text S11. Ghost-forest carbon losses not measured
 
@@ -204,49 +204,54 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 **Fig. S8.** Laser-scanned woody surface per unit ground area (m2 m−2 per 0.5 m height bin) by segment class (prop root, stem, branch) for the four scanned plots; labels give total woody surface per unit ground area and the share above the 1.5 m chamber height limit (dashed line).
 
 
-![](<output/figures/other/si_S9_tide_scenarios.png>){width=6.5in}
+![](<output/figures/other/si_tide_states.png>){width=6.5in}
 
-**Fig. S9.** Total plot CH4 by site and campaign at high and low tide (tidal sites) or non-tidal (ghost sites), under exponential or zero stem extrapolation above 1.5 m (text S2; table S10); log axis.
+**Fig. S9.** Stand CH4 of the intact forest at high and low tide by component (SRS5, SRS6; October 2022 and March 2023; exponential stem rule). Diamonds and bars, stand total and Monte Carlo 95% interval; dashed line, the tide-weighted value used in the budgets (flooded share of the floor in the campaign month; M11); inverse-hyperbolic-sine axis.
+
+
+![](<output/figures/other/si_sensitivity_switch.png>){width=6.5in}
+
+**Fig. S10.** Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,409 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.
 
 
 ![](<output/figures/other/si_S10_mc_uncertainty.png>){width=6.5in}
 
-**Fig. S10.** Monte Carlo standard error of each CH4 component (joint flux-rate and surface-area uncertainty) by site and campaign, at high tide for tidal sites; components with zero uncertainty omitted (text S4); log axis.
+**Fig. S11.** Monte Carlo standard error of each CH4 component (joint flux-rate and surface-area uncertainty) by site and campaign, at high tide for tidal sites; components with zero uncertainty omitted (text S4); log axis.
 
 
 ![](<output/figures/other/ed_porewater_rounds.png>){width=6.5in}
 
-**Fig. S11.** Porewater dissolved CH4 (A) and salinity (B) by site, sampling round (October 2022, March 2023, October 2025) and depth, including FLM30.
+**Fig. S12.** Porewater dissolved CH4 (A) and salinity (B) by site, sampling round (October 2022, March 2023, October 2025) and depth, including FLM30.
 
 
 ![](<output/figures/other/si_S12_carbonate.png>){width=6.5in}
 
-**Fig. S12.** Porewater carbonate chemistry (October 2025; 0–90 cm, surface water excluded). (a) Total alkalinity against DIC calculated from pH and alkalinity, with the 1:1 line (dashed) and least-squares fits by site. (b) Total alkalinity against salinity, with class regressions (95% CI), Pearson r and n by class, and a conservative-mixing reference (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM; text S7). Fill, forest class; shape, site.
+**Fig. S13.** Porewater carbonate chemistry (October 2025; 0–90 cm, surface water excluded). (a) Total alkalinity against DIC calculated from pH and alkalinity, with the 1:1 line (dashed) and least-squares fits by site. (b) Total alkalinity against salinity, with class regressions (95% CI), Pearson r and n by class, and a conservative-mixing reference (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM; text S7). Fill, forest class; shape, site.
 
 
 ![](<output/figures/other/pub_SI_salinity_vs_ch4_bysite.png>){width=6.5in}
 
-**Fig. S13.** Porewater salinity against dissolved CH4 by site (site × round × depth means, including surface water) for the three sampling rounds (October 2022, March 2023, October 2025). Fill, forest class; shape, round; CH4 on a log(1 + x) axis.
+**Fig. S14.** Porewater salinity against dissolved CH4 by site (site × round × depth means, including surface water) for the three sampling rounds (October 2022, March 2023, October 2025). Fill, forest class; shape, round; CH4 on a log(1 + x) axis.
 
 
 ![](<output/figures/other/fig_carbon_budget.png>){width=6.5in}
 
-**Fig. S14.** Carbon and methane budgets. (A) Carbon budget schematic (as Fig. 5A) for intact and ghost forest (g C m−2 yr−1; arrow width proportional to the square root of the flux, one scale for both). Solid arrows are measured here: GPP (tower) and CO2 and CH4 from each surface (chambers × scanned area), shown as mean ± 1 SE across the four plot × campaign estimates. Translucent, dashed arrows are literature values with their published ranges: litterfall, root production, wood mortality, wood increment, burial and lateral export (DIC, DOC, POC, dissolved CH4), for intact forest only. The closure residual (net exchange minus lateral export, burial and wood increment; M18, text S10) is 423 g C m−2 yr−1, with a range of −182 to 595 when the half-ranges of its terms are combined in quadrature. The imbalance is therefore within the uncertainty of lateral export. (B) Methane budget by pathway (g CH4 m−2 yr−1; diamonds, bottom-up total with Monte Carlo 95% interval), lateral dissolved CH4 export (intact), and the airborne mean of four 2022–2023 deployments (triangles, ±1.96 SE; daytime).
+**Fig. S15.** Carbon and methane budgets. (A) Carbon budget schematic (as Fig. 5A) for intact and ghost forest (g C m−2 yr−1; arrow width proportional to the square root of the flux, one scale for both). Solid arrows are measured here: GPP (tower) and CO2 and CH4 from each surface (chambers × scanned area), shown as mean ± 1 SE across the four plot × campaign estimates. Translucent, dashed arrows are literature values with their published ranges: litterfall, root production, wood mortality, wood increment, burial and lateral export (DIC, DOC, POC, dissolved CH4), for intact forest only. The closure residual (net exchange minus lateral export, burial and wood increment; M18, text S10) is 423 g C m−2 yr−1, with a range of −182 to 595 when the half-ranges of its terms are combined in quadrature. The imbalance is therefore within the uncertainty of lateral export. (B) Methane budget by pathway (g CH4 m−2 yr−1; diamonds, bottom-up total with Monte Carlo 95% interval), lateral dissolved CH4 export (intact), and the airborne mean of four 2022–2023 deployments (triangles, ±1.96 SE; daytime).
 
 
 ![](<output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png>){width=6.5in}
 
-**Fig. S15.** US-Skr tower: mean diurnal cycle of partitioned GPP during the campaign months (M14). Lines, monthly mean half-hourly GPP; ribbons, mean bootstrap 95% interval (partitioning-parameter uncertainty); local standard time.
+**Fig. S16.** US-Skr tower: mean diurnal cycle of partitioned GPP during the campaign months (M14). Lines, monthly mean half-hourly GPP; ribbons, mean bootstrap 95% interval (partitioning-parameter uncertainty); local standard time.
 
 
 ![](<output/figures/other/site_closure_comparison.png>){width=6.5in}
 
-**Fig. S16.** Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited.
+**Fig. S17.** Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited.
 
 
 
 
-**Fig. S17.** _[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_
+**Fig. S18.** _[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_
 
 
 ---
