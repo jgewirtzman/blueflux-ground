@@ -10,8 +10,9 @@
 #       (Oct 2022, Mar 2023, Oct 2025; site x round x depth means incl. surface
 #       water; site_characterization_figures.R), class regressions of
 #       log(1 + CH4) on salinity with Pearson r.
-#   (c) October 2025 depth profiles (0-90 cm), 12 measured analytes in two rows:
-#       salinity, electron acceptors and redox; carbon and nitrogen. (DIC, a
+#   (c) October 2025 depth profiles (0-90 cm), 12 measured analytes in two rows
+#       grouped by the PCA axis each loads on most (CO2, not in the PCA,
+#       correlates with PC2/PC3 and sits with the carbon row). (DIC, a
 #       derived quantity, and pH, which varies little, are left to the PCA/SI.)
 #   (d-f) MOCKUP of the sediment metagenome results (hypothetical values,
 #       clearly marked; replaced when the Peccia-lab data arrive).
@@ -46,28 +47,36 @@ dd <- pw %>% select(Site, depth, class, all_of(keep)) %>% drop_na()
 pr <- prcomp(dd %>% select(all_of(keep)), center = TRUE, scale. = TRUE)
 ve <- round(100 * summary(pr)$importance[2, 1:2], 1)
 sc <- data.frame(dd %>% select(Site, depth, class), pr$x[, 1:2])
-nice <- c(CH4_mean_uM = "CH4", PSU = "salinity", SO4_ppm = "SO4", NH4_N_mgL = "NH4", ORP = "ORP", ppmDO = "DO",
-          Sulfide = "sulfide", pH = "pH", `Total Iron` = "Fe", DOC_mg_L = "DOC", Alkalinity_uM = "TA", DIC_uM = "DIC",
-          d13C_CH4_mean = "d13C-CH4", NO3_N_mgL = "NO3", PO4_P_ppm = "PO4", Cl_ppm = "Cl", NO2_N_ppm = "NO2", NO3_N_ppm = "NO3 (IC)")
+# Loadings: each variable is assigned to the axis it loads on most strongly; the
+# profile rows in (c) follow the same split. pH and NO3 (weak loadings; NO3 mostly
+# below detection) stay in the PCA but are not drawn.
+nice <- c(PSU = "Sal", SO4_ppm = 'SO[4]^"2-"', CH4_mean_uM = "CH[4]", NH4_N_mgL = 'NH[4]^"+"', ORP = "ORP",
+          ppmDO = "O[2]", DOC_mg_L = "DOC", Alkalinity_uM = "TA", d13C_CH4_mean = "delta^13*C[CH4]",
+          Sulfide = "sulfide", `Total Iron` = "Fe")
 ld <- data.frame(var = rownames(pr$rotation), pr$rotation[, 1:2]) %>%
-  mutate(lab = ifelse(var %in% names(nice), nice[var], var), ch4 = var == "CH4_mean_uM")
-k <- 0.9 * max(abs(sc$PC1), abs(sc$PC2)) / max(sqrt(ld$PC1^2 + ld$PC2^2))
+  mutate(axis = ifelse(abs(PC1) >= abs(PC2), "PC1", "PC2"), ch4 = var == "CH4_mean_uM")
+write.csv(ld %>% mutate(across(c(PC1, PC2), ~ round(.x, 3))), "output/analysis/porewater_pca_loadings.csv", row.names = FALSE)
+ldp <- ld %>% filter(var %in% names(nice)) %>%
+  mutate(lab = nice[var], grp = ifelse(ch4, "CH4", axis))
+k <- 0.9 * max(abs(sc$PC1), abs(sc$PC2)) / max(sqrt(ldp$PC1^2 + ldp$PC2^2))
 cen <- sc %>% group_by(class) %>%
-  summarise(PC1 = mean(PC1), PC2 = mean(PC2) + ifelse(first(class) == "regenerating", -2.1, 1.5))
+  summarise(PC1 = mean(PC1), PC2 = mean(PC2) + ifelse(first(class) == "regenerating", -2.1, 1.6))
+col_axis <- c(PC1 = "grey20", PC2 = "grey55", CH4 = "firebrick")
 pa <- ggplot(sc, aes(PC1, PC2)) +
-  geom_hline(yintercept = 0, colour = "grey88") + geom_vline(xintercept = 0, colour = "grey88") +
+  geom_hline(yintercept = 0, colour = "grey90") + geom_vline(xintercept = 0, colour = "grey90") +
   stat_ellipse(aes(colour = class, fill = class), geom = "polygon", alpha = 0.10, level = 0.68, linewidth = 0.4) +
-  geom_segment(data = ld, aes(x = 0, y = 0, xend = PC1 * k, yend = PC2 * k, colour = ch4), linewidth = 0.3,
-               arrow = arrow(length = unit(2.5, "pt"))) +
-  ggrepel::geom_text_repel(data = ld, aes(PC1 * k, PC2 * k, label = lab, colour = ch4,
-                           fontface = ifelse(ch4, "bold", "plain")), size = 2.0, min.segment.length = Inf,
-                           box.padding = 0.15, point.padding = 0, seed = 1) +
   geom_point(aes(shape = Site, fill = class), colour = "white", size = 2.1, stroke = 0.35) +
+  geom_segment(data = ldp, aes(x = 0, y = 0, xend = PC1 * k, yend = PC2 * k, colour = grp), linewidth = 0.35,
+               arrow = arrow(length = unit(2.2, "pt"), type = "closed")) +
+  ggrepel::geom_text_repel(data = ldp, aes(PC1 * k, PC2 * k, label = lab, colour = grp), parse = TRUE,
+                           size = 2.2, min.segment.length = Inf, box.padding = 0.12, point.padding = 0,
+                           bg.color = "white", bg.r = 0.12, seed = 3) +
   geom_text(data = cen, aes(label = class, colour = class), size = 2.5, fontface = "bold") +
-  scale_colour_manual(values = c(pal_class, `TRUE` = "firebrick", `FALSE` = "grey40"), guide = "none") +
+  scale_colour_manual(values = c(pal_class, col_axis), guide = "none") +
   scale_fill_manual(values = pal_class, guide = "none") +
   scale_shape_manual(values = site_shape, guide = "none") +
-  labs(x = sprintf("PC1 (%.1f%%)", ve[1]), y = sprintf("PC2 (%.1f%%)", ve[2])) + theme_fig() + small
+  labs(x = sprintf("PC1 (%.1f%%): salinity and redox", ve[1]), y = sprintf("PC2 (%.1f%%): carbon and sulfur", ve[2])) +
+  theme_fig() + small + theme(panel.grid = element_blank())
 
 # ---- (b) salinity vs CH4 ----
 sm <- read.csv("output/data_products/porewater_salinity_ch4_merged.csv") %>%
@@ -113,8 +122,8 @@ prof_row <- function(vars, title, ylab = TRUE) {
     theme(strip.text = element_text(hjust = 0.5), panel.spacing.x = unit(8, "pt"),
           plot.title = element_text(hjust = 0, margin = margin(0, 0, 1, 0)))
 }
-pc1 <- prof_row(c("PSU", "SO4", "Sulfide", "Fe", "DO", "ORP"), "Salinity, electron acceptors and redox")
-pc2 <- prof_row(c("CH4", "d13C", "CO2", "TA", "DOC", "NH4"), "Carbon and nitrogen")
+pc1 <- prof_row(c("PSU", "SO4", "CH4", "NH4", "DO", "ORP"), "PC1 variables: salinity and redox")
+pc2 <- prof_row(c("DOC", "TA", "CO2", "d13C", "Sulfide", "Fe"), "PC2 variables: carbon and sulfur")
 
 # ---- (d-f) metagenome MOCKUP (hypothetical values) ----
 # Expected pattern under the working hypothesis: sulfate reducers abundant at all
