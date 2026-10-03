@@ -68,7 +68,7 @@ Porewater was sampled in three rounds. During the October 2022 and March 2023 fl
 
 ### S.M12 Net radiative forcing and landscape scaling
 
-Component CH4 fluxes were converted to CO2 equivalents using 20- and 100-year global warming potentials (GWP20 = 81.2, the headline; GWP100 = 27.9; IPCC AR6) and GWP* for the intact-to-ghost change (S.M18), and combined with net CO2 exchange to give net forcing (g CO2-eq m−2 yr−1) for each class. The intact CO2 NEE was anchored to the SRS-6 tower; ghost and regenerating CO2 exchange were evaluated against CARAFE disaggregated fluxes. The disturbance-induced switch is the intact-to-ghost differential. A regional estimate multiplies the per-area differential by the area of Caribbean mangrove converted to ghost forest by recent hurricanes (Fig. 5b,c). [PLACEHOLDER — Caribbean ghost-forest extent value/source and, for the Everglades-specific figure, the Irma dieback area from Lagomasino et al. (2021), to be finalized.]
+Component CH4 fluxes were converted to CO2 equivalents using 20- and 100-year global warming potentials (GWP20 = 81.2, the headline; GWP100 = 27.9; IPCC AR6) and GWP* for the intact-to-ghost change (S.M18), and combined with net CO2 exchange to give net forcing (g CO2-eq m−2 yr−1) for each class. The intact CO2 NEE was anchored to the SRS-6 tower; ghost and regenerating CO2 exchange were evaluated against CARAFE disaggregated fluxes. The disturbance-induced switch is the intact-to-ghost differential. A regional estimate multiplies the per-area differential by the area of 2017 hurricane dieback (Fig. 5b,c). Dieback extent came from the regional analysis of Taillie et al. (2020): Landsat NDVI change across the Caribbean and Gulf of Mexico within the Global Mangrove Watch v1 (2010) mangrove baseline. In that analysis, damage was a post-season decline in NDVI (ΔNDVI < −0.2), and persistent damage was no NDVI recovery over the seven months after the 2017 hurricane season. The polygons of 2017 damage with little recovery (‘short-term loss’), attributed to country, were provided by D. Lagomasino. Areas were computed in an Albers equal-area projection (173 km²). Patches without a country attribute were assigned to the nearest territory, and patches were attributed to Hurricane Irma or Maria by territory. Because the product captures only part of the post-Irma die-off in Florida (60 km², against 107.6 km² mapped by Lagomasino et al. 2021), a Florida-adjusted bound is also reported. _[CHECK with D. Lagomasino: how the supplied ‘short-term loss’ layer (173 km²; `median` attribute 1–6) relates to the 790 km² of persistent damage reported by Taillie et al. (2020), and the preferred citation.]_
 
 ### S.M13 Statistical analysis
 
@@ -298,7 +298,7 @@ Chamber flux dataset (combined_gas_flux_dataset.csv) and analysis workflow at [r
 ### Outstanding to complete SI
 1. TLS methods (S.M6) — Powell/Stovall.
 2. Tower (S.M8) and CARAFE (S.M9) instrument/processing detail — tower PIs / Delaria.
-3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 5b,c.
+3. Confirm with D. Lagomasino the definition of the supplied 2017 short-term-loss layer relative to Taillie et al. (2020) (S.M12).
 4. Build Supplementary Fig. S5 (per-site closure) and source the airborne disaggregation panel for Extended Data Fig. 10.
 5. Compile Supplementary References with DOIs.
 6. If sequencing data land: microbial results (main-text Results placeholder) and metagenome discussion, plus any added figure/table.
