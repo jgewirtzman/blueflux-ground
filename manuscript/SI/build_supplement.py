@@ -8,7 +8,9 @@ Writes manuscript/SI/supplement_Science_built.md and supplement_Science.docx.
 
 usage: python3 manuscript/SI/build_supplement.py
 """
-import csv, os, re, subprocess
+import csv, os, re, subprocess, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+from refstyle import science
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 P = lambda *a: os.path.join(root, *a)
@@ -163,7 +165,7 @@ def from_ncc_si(label):
     s = open(P("manuscript/SI/manuscript_NCC_SI.md"), encoding="utf-8").read()
     i = s.index(f"**Table {label}.")
     j = s.index("\n\n", s.index("\n|", i) + 2)
-    return s[i:j]
+    return re.sub(r"\s*(?:Source|Sources?):\s*`?output/[^\s`]+`?\.?", "", s[i:j])   # drop pipeline file paths
 
 def t_S9():
     return from_ncc_si("S9").replace("(S.M10)", "(M13)").replace("(S.T3)", "(text S3)").replace("(S.M17)", "(M18)") \
@@ -233,7 +235,7 @@ SI_REFS = ["pacheco2024", "cabezas2018", "martin2020", "sotomayor1994", "salasra
            "yamamoto1976", "yong2024", "zhao2021", "zhu2024"]
 def first_author(v):
     return re.sub(r"[^A-Za-z]", "", v.split(",")[0]).lower()
-ref_lines = sorted((refs.get(k, f"[{k} — to add]") for k in SI_REFS), key=first_author)
+ref_lines = [science(r) for r in sorted((refs.get(k, f"[{k} — to add]") for k in SI_REFS), key=first_author)]
 missing = [k for k in SI_REFS if k not in refs]
 
 md = src
