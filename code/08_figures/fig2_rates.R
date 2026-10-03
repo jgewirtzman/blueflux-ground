@@ -146,7 +146,7 @@ area_pie_panel <- function() {
 # woody surface by height (TLS, 0.5 m bins), intact vs ghost; measured chamber zone shaded
 hb <- read.csv("data/tls/all_sites_summary.csv") %>% left_join(tsz %>% select(site, area_m2), by = "site") %>%
   mutate(class = factor(site_class[site], names(pal_class)),
-         part = ifelse(segment_class == "root", "prop root", "stem and branch"),
+         part = factor(c(root = "prop root", trunk = "stem", branch = "branch")[segment_class], c("prop root", "stem", "branch")),
          h = height_bin_num) %>%
   group_by(class, site, part, h) %>% summarise(sa = sum(Total_surface_area_m2) / first(area_m2), .groups = "drop") %>%
   group_by(class, part, h) %>% summarise(sa = mean(sa), .groups = "drop")
@@ -160,7 +160,7 @@ height_panel <- function() {
     geom_segment(data = con, aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE,
                  colour = "grey55", linewidth = 0.4, linetype = "22") +
     facet_grid(~ class) +
-    scale_fill_manual(values = c(`prop root` = pal_comp[["prop root"]], `stem and branch` = pal_comp[["stem"]]), name = "woody surface") +
+    scale_fill_manual(values = c(`prop root` = pal_comp[["prop root"]], stem = pal_comp[["stem"]], branch = "#B59A6A"), name = "woody surface") +
     scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0)) +
     scale_x_continuous(breaks = c(0, 0.1)) +
     coord_cartesian(xlim = c(0, f_xmax), ylim = c(0, 18.5), expand = FALSE, clip = "off") +
@@ -184,28 +184,30 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
   pcc <- pcc + lt
   if (pie) {
-    pcc <- pcc + guides(fill = guide_legend(ncol = 2, byrow = TRUE)) +
-      theme(legend.position = "bottom", legend.direction = "horizontal", legend.title = element_blank()) +
-      coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.4, 1.05), clip = "off")
+    pcc <- pcc + guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
+      coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.35, 1.05), clip = "off")
   } else pcc <- pcc + theme(legend.position = "right")
+  leg_comp <- if (pie) cowplot::get_plot_component(pcc + theme(legend.position = "bottom", legend.direction = "horizontal",
+                                                                  legend.title = element_blank()), "guide-box-bottom", return_all = TRUE) else grid::nullGrob()
+  if (pie) pcc <- pcc + theme(legend.position = "none")
   design <- "
     ABC
-    GGC
+    GGH
     FDE
     TSS
   "
-  # plots are matched to design letters in alphabetical order: A B C D E F G S T
+  # plots are matched to design letters in alphabetical order: A B C D E F G H S T
   fig <- (pa + nl + labs(tag = "a")) + (pb + nl + labs(tag = "b")) + (pcc + labs(tag = "c")) +
     (pc2 + nl + labs(tag = "e", y = NULL) + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "right") +
        theme(axis.text.y.right = element_blank(), axis.ticks.y.right = element_blank())) +
     (pd + nl + labs(tag = "f") + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "left", name = NULL) +
        theme(axis.text.y = element_text())) +
     (pf + nl + labs(tag = "d")) +
-    wrap_elements(full = leg_class) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) +
-    plot_layout(design = design, widths = c(1, 1, 1), heights = c(1, 0.05, 1, 0.05)) +
+    wrap_elements(full = leg_class) + wrap_elements(full = leg_comp) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) +
+    plot_layout(design = design, widths = c(1, 1, 1), heights = unit(c(1, 0.32, 1, 0.22), c("null", "in", "null", "in"))) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
-  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.9, dpi = 300, bg = "white")
-  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 5.9, device = cairo_pdf)
+  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 6.8, dpi = 300, bg = "white")
+  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.8, device = cairo_pdf)
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "", pie = TRUE)
