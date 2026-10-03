@@ -330,6 +330,7 @@ scatter_stats <- merged_complete %>%
                     r, p_label, n)
   )
 
+write.csv(merged_complete, "output/data_products/porewater_salinity_ch4_merged.csv", row.names = FALSE)
 write.csv(scatter_stats %>% select(disturbance, n, r, p_val) %>%
             left_join(merged_complete %>% count(disturbance, season) %>%
                         tidyr::pivot_wider(names_from = season, values_from = n, values_fill = 0), by = "disturbance"),
