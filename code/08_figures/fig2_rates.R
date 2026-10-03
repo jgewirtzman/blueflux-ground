@@ -153,10 +153,12 @@ hb <- read.csv("data/tls/all_sites_summary.csv") %>% left_join(tsz %>% select(si
          h = height_bin_num) %>%
   group_by(class, site, part, h) %>% summarise(sa = sum(Total_surface_area_m2) / first(area_m2), .groups = "drop") %>%
   group_by(class, part, h) %>% summarise(sa = mean(sa), .groups = "drop")
-height_panel <- function() {
-  # grey band = chamber height range shown enlarged in d, e; connector lines lead to them
-  con <- data.frame(class = factor("ghost", levels(hb$class)), x = f_xmax, y = c(0, zoom_top),
-                    xend = f_xmax + zoom_dx, yend = c(0, 18.5))
+height_panel <- function(right = FALSE) {
+  # grey band = chamber height range shown enlarged in the woody-flux panels; connector lines lead to them
+  con <- if (right) data.frame(class = factor("intact", levels(hb$class)), x = 0, y = c(0, zoom_top),
+                               xend = -zoom_dx * 1.9, yend = c(0, 18.5)) else
+    data.frame(class = factor("ghost", levels(hb$class)), x = f_xmax, y = c(0, zoom_top),
+               xend = f_xmax + zoom_dx, yend = c(0, 18.5))
   ggplot(hb, aes(sa, h + 0.25, fill = part)) +
     annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = zoom_top, fill = "grey90") +
     geom_col(orientation = "y", width = 0.45, position = position_stack(reverse = TRUE), colour = NA) +
@@ -171,7 +173,7 @@ height_panel <- function() {
     theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.y = element_blank())
 }
 
-build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
+build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE) {
   lt <- theme(legend.title = element_text(size = 7, face = "bold"), legend.text = element_text(size = 7),
               legend.key.size = unit(8, "pt"))
   horiz <- function(p) cowplot::get_plot_component(p + lt + theme(legend.position = "bottom", legend.direction = "horizontal",
@@ -181,7 +183,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
     guides(fill = guide_legend(override.aes = list(size = 2.5), nrow = 1))
   pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE)
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), nrow = 1))
-  pf <- height_panel()
+  pf <- height_panel(d_right)
   leg_class <- horiz(pa); leg_surf <- horiz(pc2); leg_wood <- horiz(pf)
   nl <- theme(legend.position = "none")
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
@@ -195,19 +197,33 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   if (pie) pcc <- pcc + coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-2.25, 1.05), clip = "off") +
     theme(legend.position = "inside", legend.position.inside = c(0.5, -0.16), legend.justification = c(0.5, 0),
           legend.direction = "horizontal", legend.title = element_blank())
-  design <- "
+  if (!d_right) {
+    design <- "
     ABC
     GGH
     FDE
     TSS
   "
-  # plots are matched to design letters in alphabetical order: A B C D E F G H S T
+    # plots are matched to design letters in alphabetical order: A B C D E F G H S T
+    p_ch4 <- pc2 + nl + labs(tag = "e", y = NULL) + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "right") +
+      theme(axis.text.y.right = element_blank(), axis.ticks.y.right = element_blank())
+    p_co2 <- pd + nl + labs(tag = "f") + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "left", name = NULL) +
+      theme(axis.text.y = element_text())
+    p_tls <- pf + nl + labs(tag = "d")
+  } else {
+    design <- "
+    ABC
+    GGH
+    DEF
+    SST
+  "
+    p_ch4 <- pc2 + nl + labs(tag = "d")
+    p_co2 <- pd + nl + labs(tag = "e")
+    p_tls <- pf + nl + labs(tag = "f") + scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0), position = "right") +
+      theme(plot.margin = margin(5.5, 5.5, 5.5, 22))
+  }
   fig <- (pa + nl + labs(tag = "a")) + (pb + nl + labs(tag = "b")) + (pcc + labs(tag = "c")) +
-    (pc2 + nl + labs(tag = "e", y = NULL) + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "right") +
-       theme(axis.text.y.right = element_blank(), axis.ticks.y.right = element_blank())) +
-    (pd + nl + labs(tag = "f") + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "left", name = NULL) +
-       theme(axis.text.y = element_text())) +
-    (pf + nl + labs(tag = "d")) +
+    p_ch4 + p_co2 + p_tls +
     wrap_elements(full = leg_class) + wrap_elements(full = leg_comp) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) +
     plot_layout(design = design, widths = c(1, 1, 1), heights = unit(c(1, 0.32, 1, 0.22), c("null", "in", "null", "in"))) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
@@ -217,6 +233,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "", pie = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_rows", "")
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_dright", "", pie = TRUE, d_right = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_stacked", "", stacked = TRUE)
 build(d, "output/figures/other/fig2_rates_with_context", pie = TRUE, note =
       "a, b: includes context sites (Rookery Bay with intact, Marco Island with ghost; crosses); SE-1 (scrub) not shown.")
