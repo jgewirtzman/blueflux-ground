@@ -40,6 +40,7 @@ steps <- c(
   # 06 analysis: statistics and manuscript numbers
   "code/06_analysis/01_summary_table.R",
   "code/06_analysis/02_manuscript_results.R",
+  "code/06_analysis/03_woody_height_model.R",
   # 07 upscaling: tower GPP, plot budgets, forcing, carbon budget
   "code/07_upscaling/01_tower_gpp.R",
   "code/07_upscaling/01b_flood_fraction.R",
