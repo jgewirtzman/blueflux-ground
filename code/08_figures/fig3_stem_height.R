@@ -863,22 +863,26 @@ box_panel <- function(d, xvar, xr, brk, xlab) {
 # raincloud: density ridge (on the asinh scale) for each height x class, raw points beneath it, and the
 # arithmetic mean (diamond) for groups with n > 3; classes stacked within each height band
 rain_panel <- function(d, xvar, xr, brk, xlab, bw) {
+  # per height band: the three class densities overlap on one baseline, with each class's
+  # measurements in its own row beneath (intact, regenerating, ghost from top)
+  B <- 3.2                                                     # height-band spacing
   d <- d %>% filter(!is.na(.data[[xvar]])) %>%
     mutate(cls = to_cls(disturbance_level), v = .data[[xvar]],
            hi = as.numeric(factor(height_category, ht_lev)),
-           row = (hi - 1) * 4.6 + c(intact = 2.6, regenerating = 1.3, ghost = 0)[as.character(cls)]) %>%
-    group_by(row) %>% mutate(n = n()) %>% ungroup()
+           base = (hi - 1) * B + 1.15,                              # ridge baseline
+           prow = (hi - 1) * B + c(intact = 0.85, regenerating = 0.55, ghost = 0.25)[as.character(cls)]) %>%
+    group_by(hi, cls) %>% mutate(n = n()) %>% ungroup()
   dens <- d %>% filter(n >= 3)
-  mn <- d %>% filter(n > 3) %>% group_by(row, cls) %>% summarise(v = mean(v), .groups = "drop")
-  ggplot(d, aes(v, row)) +
+  mn <- d %>% filter(n > 3) %>% group_by(hi, cls, prow) %>% summarise(v = mean(v), .groups = "drop")
+  ggplot(d, aes(v)) +
     geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
-    ggridges::geom_density_ridges(data = dens, aes(group = row, fill = cls), scale = 0.62, alpha = 0.6, bandwidth = bw, rel_min_height = 0.01,
-                                  colour = "grey30", linewidth = 0.25) +
-    geom_point(aes(y = row - 0.24, colour = cls), position = position_jitter(height = 0.1, width = 0, seed = 1),
-               alpha = 0.5, size = 0.6, stroke = 0) +
-    geom_point(data = mn, aes(y = row + 0.12), shape = 23, size = 1.5, fill = "white", colour = col_ink, stroke = 0.4) +
+    ggridges::geom_density_ridges(data = dens, aes(y = base, group = interaction(hi, cls), fill = cls), scale = 0.6,
+                                  alpha = 0.45, bandwidth = bw, rel_min_height = 0.01, colour = "grey30", linewidth = 0.25) +
+    geom_point(aes(y = prow, colour = cls), position = position_jitter(height = 0.06, width = 0, seed = 1),
+               alpha = 0.55, size = 0.6, stroke = 0) +
+    geom_point(data = mn, aes(y = prow, fill = cls), shape = 23, size = 1.6, colour = col_ink, stroke = 0.4) +
     scale_x_continuous(trans = "asinh", limits = xr, breaks = brk, labels = asinh_labels) +
-    scale_y_continuous(breaks = (seq_along(ht_lev) - 1) * 4.6 + 1.5, labels = ht_lev, expand = expansion(add = c(0.4, 0.2))) +
+    scale_y_continuous(breaks = (seq_along(ht_lev) - 1) * B + 1.15, labels = ht_lev, expand = expansion(add = c(0.15, 0.4))) +
     fill_cls + col_cls + labs(x = xlab, y = ylab_ht) + theme_fig() +
     theme(legend.position = "none", panel.grid.major.y = element_blank())
 }
