@@ -1,7 +1,7 @@
 # =============================================================================
 # Fig. 1 | System and design.
 #   (a) South Florida: sites by forest class (core sites large and bold, supporting
-#       sites small), mangrove with little recovery after the 2017 hurricanes (CIFOR
+#       sites small), mangrove extent (GMW v3 2016), mangrove with little recovery after the 2017 hurricanes (CIFOR
 #       short-term loss on GMW v1), the US-Skr tower, Shark River and Taylor
 #       Sloughs and the Everglades National Park boundary; Florida inset.
 #   (b) Intact (SRS5), regenerating (BL60) and ghost (CP40) forest.
@@ -23,6 +23,7 @@ ts   <- st_read(paste0(shp, "taylor_slough_utm_clipped.shp"), quiet = TRUE) %>% 
 enp  <- st_read(paste0(shp, "enp_boundary_line.shp"), quiet = TRUE) %>% st_transform(utm)
 xl <- c(415000, 600000); yl <- c(2743000, 2905000)
 box <- st_as_sfc(st_bbox(c(xmin = xl[1], xmax = xl[2], ymin = yl[1], ymax = yl[2]), crs = st_crs(utm)))
+mang <- st_read("data/gis/mangrove_extent/gmw_v3_2016_sfl.gpkg", quiet = TRUE) %>% st_transform(utm)   # GMW v3 2016 (01d_mangrove_extent.R)
 loss <- st_read("data/gis/ghost_extent/CIFOR_shortTermLoss_2017_GMW_V1_wCountry_Area.shp", quiet = TRUE) %>%
   st_make_valid() %>% st_transform(utm) %>% st_crop(box) %>% suppressWarnings()
 
@@ -50,7 +51,8 @@ pa <- ggplot() +
   geom_sf(data = srs, fill = "grey85", colour = NA) +
   geom_sf(data = ts, fill = "grey88", colour = NA) +
   geom_sf(data = enp, colour = "grey45", linewidth = 0.35, linetype = "22") +
-  geom_sf(data = loss, aes(fill = "2017 hurricane dieback"), colour = pal_class[["ghost"]], linewidth = 0.25) +
+  geom_sf(data = mang, aes(fill = "mangrove (2016)"), colour = NA) +
+  geom_sf(data = loss, aes(fill = "2017 hurricane dieback"), colour = "#A9A5BD", linewidth = 0.2) +
   geom_segment(data = lab %>% filter(moved), aes(X, Y, xend = px, yend = py), colour = "grey35", linewidth = 0.3) +
   geom_point(data = lab %>% filter(moved), aes(X, Y), size = 0.7, colour = col_ink) +
   geom_point(data = txy, aes(X, Y), shape = 24, size = 2.4, fill = "white", colour = col_ink, stroke = 0.5) +
@@ -63,10 +65,10 @@ pa <- ggplot() +
   annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 438000, y = 2815000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
   annotate("text", x = 560000, y = 2752000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
-  scale_fill_manual(values = c(pal_class, `2017 hurricane dieback` = pal_class[["ghost"]]),
-                    breaks = c("intact", "regenerating", "ghost", "2017 hurricane dieback"),
-                    labels = c("intact", "regenerating", "ghost", "2017 hurricane dieback"), name = NULL,
-                    guide = guide_legend(override.aes = list(shape = c(21, 21, 21, NA), colour = c("white", "white", "white", pal_class[["ghost"]])))) +
+  scale_fill_manual(values = c(pal_class, `mangrove (2016)` = "#A8CDB9", `2017 hurricane dieback` = "#B9B5CB"),
+                    breaks = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"),
+                    labels = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"), name = NULL,
+                    guide = guide_legend(override.aes = list(shape = c(21, 21, 21, NA, NA), colour = c("white", "white", "white", NA, "#A9A5BD")))) +
   scale_colour_manual(values = pal_map, guide = "none") +
   annotation_scale(location = "br", width_hint = 0.22, text_cex = 0.7, height = unit(0.12, "cm"), line_width = 0.4,
                    bar_cols = c("grey30", "white")) +

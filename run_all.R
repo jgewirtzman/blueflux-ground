@@ -46,6 +46,7 @@ steps <- c(
   "code/07_upscaling/01_tower_gpp.R",
   "code/07_upscaling/01b_flood_fraction.R",
   "code/07_upscaling/01c_tls_datum.R",
+  "code/07_upscaling/01d_mangrove_extent.R",      # GMW 2016 extent for the Fig 1 map
   "code/07_upscaling/02_upscale_methane.R",
   "code/07_upscaling/03_upscale_co2.R",
   "code/07_upscaling/04_net_forcing.R",
