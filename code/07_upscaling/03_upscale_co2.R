@@ -182,6 +182,9 @@ for (camp in campaigns) for (site_name in tls_sites) for (comp in c("root","soil
     } else if (comp == "water" && site_name == "SRS6" && camp == "Oct 2022") {
       fl <- get_site_flux(nonstem_boot, "SRS5", "Oct 2022", "water")
       if (!is.null(fl)) fl$source <- "gap: SRS5 water Oct 2022"
+    } else if (comp == "cwd" && site_name == "FLM30") {
+      fl <- get_site_flux(nonstem_boot, "CP40", camp, "cwd")      # FLM30 downed wood not chambered
+      if (!is.null(fl)) fl$source <- "gap: CP40 cwd"
     } else if (comp == "soil" && site_name %in% c("CP40", "FLM30")) {
       fl <- ghost_floor$soil_flux("CO2")   # 00_lib/ghost_floor.R
     }

@@ -9,8 +9,8 @@
 "Healthy","Soil C burial","storage","storage_accum",123,69,157,"literature","Zhao et al. 2021 / Breithaupt et al. (SRS-4/5/6 69-157; whole-estuary ~123)",FALSE
 "Healthy","dBiomass C","storage","storage_accum",131,65,197,"literature","Castaneda-Moya et al. 2013 wood NPP, repeat census (SRS-6=197, SRS-4=161, SRS-5=65 gC/m2/yr @ CF0.45); Chen & Twilley 1999 high end ~480-540. Aboveground wood increment; coarse-root adds ~30-50%",FALSE
 "Ghost","GPP (uptake)","vertical","uptake_flux",0,NA,NA,"measured","tower + chambers",FALSE
-"Ghost","Reco (CO2)","vertical","source_flux",487.741464171558,NA,NA,"measured","chambers x TLS",FALSE
-"Ghost","CH4 emission","vertical","source_flux",8.90853597651158,NA,NA,"measured","chambers x TLS",FALSE
+"Ghost","Reco (CO2)","vertical","source_flux",493.674550668653,NA,NA,"measured","chambers x TLS",FALSE
+"Ghost","CH4 emission","vertical","source_flux",8.90728207952432,NA,NA,"measured","chambers x TLS",FALSE
 "Ghost","Lateral DIC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE
 "Ghost","Lateral DOC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE
 "Ghost","Lateral POC","lateral","source_flux",NA,NA,NA,"literature","no ghost-specific value",TRUE

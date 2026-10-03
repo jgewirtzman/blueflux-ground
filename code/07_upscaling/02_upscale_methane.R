@@ -258,6 +258,10 @@ for (camp in campaigns) {
           # SRS6 Oct 2022 water: use SRS5 Oct 2022 water
           fl <- get_site_flux("SRS5", "Oct 2022", "water")
           if (!is.null(fl)) fl$source <- "gap: SRS5 water Oct 2022"
+        } else if (comp == "cwd" && site_name == "FLM30") {
+          # FLM30 downed wood: not chambered; use CP40 downed wood, same campaign
+          fl <- get_site_flux("CP40", camp, "cwd")
+          if (!is.null(fl)) fl$source <- "gap: CP40 cwd"
         } else if (comp == "soil" && site_name %in% c("CP40", "FLM30")) {
           # ghost floor without standing water: no ghost soil chambers in the
           # analysed campaigns (00_lib/ghost_floor.R)

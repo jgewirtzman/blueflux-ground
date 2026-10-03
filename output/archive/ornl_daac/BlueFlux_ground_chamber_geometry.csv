@@ -1,5 +1,5 @@
 chamber_type,chamber_kind,enclosed_area_cm2,diameter_cm,chamber_height_cm,collar_offset_cm,n_measurements,system_volume_L_min,system_volume_L_max
-A,"tree (elliptical, sealed to bark with clay)",40.45,-9999,-9999,-9999,141,1.1605366666666663,1.1605366666666663
+A,"tree (elliptical, sealed to bark with clay)",40.45,-9999,-9999,-9999,140,1.1605366666666663,1.1605366666666663
 B,"tree (elliptical, sealed to bark with clay)",107.68,-9999,-9999,-9999,200,0.7949955555555555,1.3669955555555557
 C,"tree (elliptical, sealed to bark with clay)",213.35,-9999,-9999,-9999,191,1.4406016666666668,2.012601666666667
 D,"tree (elliptical, sealed to bark with clay)",462.19,-9999,-9999,-9999,31,3.1386439999999998,3.1386439999999998
