@@ -21,7 +21,7 @@ fl_in <- st_read(paste0(shp, "statebnd_poly.shp"), quiet = TRUE) %>% st_transfor
 srs  <- st_read(paste0(shp, "srs_utm_clipped.shp"), quiet = TRUE) %>% st_transform(utm)
 ts   <- st_read(paste0(shp, "taylor_slough_utm_clipped.shp"), quiet = TRUE) %>% st_transform(utm)
 enp  <- st_read(paste0(shp, "enp_boundary_line.shp"), quiet = TRUE) %>% st_transform(utm)
-xl <- c(420000, 580000); yl <- c(2760000, 2880000)   # study-area zoom
+xl <- c(420000, 580000); yl <- c(2741000, 2880000)   # study area incl. full ENP boundary
 box <- st_as_sfc(st_bbox(c(xmin = xl[1], xmax = xl[2], ymin = yl[1], ymax = yl[2]), crs = st_crs(utm)))
 mang <- st_read("data/gis/mangrove_extent/gmw_v3_2016_sfl.gpkg", quiet = TRUE) %>% st_transform(utm)   # GMW v3 2016 (01d_mangrove_extent.R)
 loss <- st_read("data/gis/ghost_extent/CIFOR_shortTermLoss_2017_GMW_V1_wCountry_Area.shp", quiet = TRUE) %>%
@@ -63,7 +63,7 @@ pa <- ggplot() +
              size = 2.9, label.size = 0, label.padding = unit(0.08, "lines"), fill = alpha("white", 0.8)) +
   annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
-  annotate("text", x = 445000, y = 2822000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 448000, y = 2800000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
   annotate("text", x = 548000, y = 2783000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
   scale_fill_manual(values = c(pal_class, `mangrove (2016)` = "#A8CDB9", `2017 hurricane dieback` = "#B9B5CB"),
                     breaks = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"),
@@ -72,8 +72,8 @@ pa <- ggplot() +
   scale_colour_manual(values = pal_map, guide = "none") +
   annotation_scale(location = "br", width_hint = 0.22, text_cex = 0.7, height = unit(0.12, "cm"), line_width = 0.4,
                    bar_cols = c("grey30", "white")) +
-  annotation_north_arrow(location = "tr", height = unit(0.55, "cm"), width = unit(0.4, "cm"),
-                         pad_x = unit(1.1, "cm"), pad_y = unit(2.6, "cm"), style = north_arrow_orienteering(text_size = 6, line_width = 0.5)) +
+  annotation_north_arrow(location = "tl", height = unit(0.55, "cm"), width = unit(0.4, "cm"),
+                         pad_x = unit(0.45, "cm"), pad_y = unit(2.5, "cm"), style = north_arrow_orienteering(text_size = 6, line_width = 0.5)) +
   coord_sf(xlim = xl, ylim = yl, expand = FALSE, crs = utm, datum = 4326) +
   labs(x = NULL, y = NULL) + theme_fig() +
   theme(legend.position = "inside", legend.position.inside = c(0.015, 0.02), legend.justification = c(0, 0),

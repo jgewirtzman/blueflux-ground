@@ -174,7 +174,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   nl <- theme(legend.position = "none")
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
   pcc <- pcc + lt + theme(legend.position = "right")
-  pf <- height_panel() + lt + theme(legend.position = "right")
+  pf <- height_panel() + lt + theme(legend.position = "bottom", legend.direction = "horizontal", legend.title.position = "left")
   ab <- (((pa + nl + labs(tag = "a")) | (pb + nl + labs(tag = "b"))) / wrap_elements(full = leg_class)) + plot_layout(heights = c(1, 0.07))
   de <- (((pc2 + nl + labs(tag = "d")) | (pd + nl + labs(tag = "e"))) / wrap_elements(full = leg_surf)) + plot_layout(heights = c(1, 0.07))
   row1 <- (ab | (pcc + labs(tag = "c"))) + plot_layout(widths = c(2, 1.15))
@@ -185,8 +185,8 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.0, device = cairo_pdf)
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "")
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "", pie = TRUE)
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_rows", "")
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_stacked", "", stacked = TRUE)
-build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_pie", "", pie = TRUE)
-build(d, "output/figures/other/fig2_rates_with_context",
+build(d, "output/figures/other/fig2_rates_with_context", pie = TRUE, note =
       "a, b: includes context sites (Rookery Bay with intact, Marco Island with ghost; crosses); SE-1 (scrub) not shown.")
