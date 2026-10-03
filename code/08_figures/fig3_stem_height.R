@@ -865,7 +865,7 @@ box_panel <- function(d, xvar, xr, brk, xlab) {
 rain_panel <- function(d, xvar, xr, brk, xlab, bw) {
   # per height band: the three class densities overlap on one baseline, with each class's
   # measurements in its own row beneath (intact, regenerating, ghost from top)
-  B <- 3.2                                                     # height-band spacing
+  B <- 4                                                       # height-band spacing (ridge top stays below the next band's points)
   d <- d %>% filter(!is.na(.data[[xvar]])) %>%
     mutate(cls = to_cls(disturbance_level), v = .data[[xvar]],
            hi = as.numeric(factor(height_category, ht_lev)),
@@ -876,8 +876,8 @@ rain_panel <- function(d, xvar, xr, brk, xlab, bw) {
   mn <- d %>% filter(n > 3) %>% group_by(hi, cls, prow) %>% summarise(v = mean(v), .groups = "drop")
   ggplot(d, aes(v)) +
     geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
-    ggridges::geom_density_ridges(data = dens, aes(y = base, group = interaction(hi, cls), fill = cls), scale = 0.6,
-                                  alpha = 0.45, bandwidth = bw, rel_min_height = 0.01, colour = "grey30", linewidth = 0.25) +
+    ggridges::geom_density_ridges(data = dens, aes(y = base, group = interaction(hi, cls), fill = cls), scale = 0.7,
+                                  alpha = 0.55, bandwidth = bw, colour = "grey25", linewidth = 0.25) +
     geom_point(aes(y = prow, colour = cls), position = position_jitter(height = 0.06, width = 0, seed = 1),
                alpha = 0.55, size = 0.6, stroke = 0) +
     geom_point(data = mn, aes(y = prow, fill = cls), shape = 23, size = 1.6, colour = col_ink, stroke = 0.4) +
@@ -892,8 +892,8 @@ co2_lab <- expression(CO[2]~flux~(mu*mol~m^{-2}~s^{-1}))
 
 ch4_ridges <- ridge_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, 1.0)
 co2_ridges <- ridge_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, 0.8) + no_y
-ch4_box <- rain_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, ch4_lab, bw = 0.7)
-co2_box <- rain_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, co2_lab, bw = 0.45) + no_y
+ch4_box <- rain_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, ch4_lab, bw = 1.0)
+co2_box <- rain_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, co2_lab, bw = 0.8) + no_y
 
 # (c) fitted woody-surface (stem + prop root) profiles by class, from
 # 06_analysis/03_woody_height_model.R (live stem, flooded position, wet season)
@@ -962,9 +962,11 @@ sp_panel <- function(g, xlab, brk) {
 sp_ch4 <- sp_panel("CH4", ch4_lab, c(0, 1, 2, 5, 10, 20))
 sp_co2 <- sp_panel("CO2", co2_lab, c(0, 1, 2, 5, 10)) + theme(axis.text.y = element_blank())
 
-fig10_combined <- (ch4_box + co2_box + sp_ch4 + sp_co2) +
-  plot_layout(ncol = 2, byrow = TRUE, heights = c(1.3, 0.75), widths = c(1, 1), guides = "collect") +
-  plot_annotation(tag_levels = list(c("a", "b", "c", "d"))) & theme(legend.position = "bottom")
+# forest-class legend sits under the raincloud row (a, b), which is the only part that uses it
+top_row <- ((ch4_box + labs(tag = "a")) | (co2_box + labs(tag = "b"))) +
+  plot_layout(guides = "collect") & theme(legend.position = "bottom")
+fig10_combined <- top_row / ((sp_ch4 + labs(tag = "c")) | (sp_co2 + labs(tag = "d"))) +
+  plot_layout(heights = c(1.3, 0.75)) & theme(plot.tag = element_text(face = "bold"))
 
 ggsave("output/figures/other/pub_stem_height_composite_combined.png", fig10_combined,
        width = 7.2, height = 6.2, dpi = 300, bg = "white")

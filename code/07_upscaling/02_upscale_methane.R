@@ -1040,6 +1040,8 @@ write.csv(woody_by_height, file.path(output_dir, "woody_ch4_by_height.csv"), row
 write.csv(cwd_sens_df, file.path(output_dir, "cwd_sensitivity.csv"), row.names = FALSE)
 write.csv(flood_sens_df, file.path(output_dir, "flooding_sensitivity.csv"), row.names = FALSE)
 write.csv(extrap_sens_df, file.path(output_dir, "height_extrap_sensitivity.csv"), row.names = FALSE)
+write.csv(exp_models %>% select(plot, campaign, n_obs, intercept, slope, r_squared),
+          file.path(output_dir, "stem_height_fits.csv"), row.names = FALSE)   # per site x campaign exponential stem fits (Fig S7a)
 
 # =============================================================================
 # FIGURES
