@@ -191,7 +191,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/pub_stem_height_composite_combined.png>){width=6.5in}
 
-**Fig. S6.** Stem detail at SRS5, SRS6, BL60, CP40 and FLM30. (a, b) Stem CH4 and CO2 by height class and forest class: density of the measurements (inverse-hyperbolic-sine scale) with the individual measurements beneath and arithmetic means (diamonds) for groups with n > 3. (c, d) CH4 and CO2 estimated marginal means (95% CI), averaged over height, by species and live/dead status from linear mixed-effects models with height class and season as fixed effects and site as a random intercept (M20); n, closures per group. Dead stems come mostly from the ghost sites, so status is partly confounded with forest class.
+**Fig. S6.** Stem detail at SRS5, SRS6, BL60, CP40 and FLM30. (a, b) Stem CH4 and CO2 by height class and forest class: overlapping class densities (inverse-hyperbolic-sine scale) for each height band, with each class's measurements in its own row beneath and arithmetic means (diamonds) for groups with n > 3. (c, d) CH4 and CO2 estimated marginal means (95% CI), averaged over height, by species and live/dead status from linear mixed-effects models with height class and season as fixed effects and site as a random intercept (M20); n, closures per group. Dead stems come mostly from the ghost sites, so status is partly confounded with forest class.
 
 
 ![](<output/figures/other/stem_extrap_clean.png>){width=6.5in}
