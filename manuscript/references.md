@@ -4,7 +4,7 @@ Dataset citations (ORNL DAAC, EDI/FCE LTER, AmeriFlux, GMW) are not cited in the
 
 One entry per line: `key | citation`. Drafts cite with `{key}` (several: `{key1;key2}`);
 manuscript/build_docx.py numbers them in order of first appearance and writes the list.
-Entries marked [details to complete] still need volume, pages or DOI checked.
+Entries verified against Crossref/DataCite and publisher pages (2026-10-03).
 
 bunting2022 | Bunting, P. et al. Global Mangrove Extent Change 1996–2020: Global Mangrove Watch Version 3.0. Remote Sens. 14, 3657 (2022). https://doi.org/10.3390/rs14153657
 rovai2018 | Rovai, A. S. et al. Global controls on carbon storage in mangrove soils. Nat. Clim. Change 8, 534–538 (2018). https://doi.org/10.1038/s41558-018-0162-5
@@ -12,16 +12,16 @@ kauffman2020 | Kauffman, J. B. et al. Total ecosystem carbon stocks of mangroves
 breithaupt2022 | Breithaupt, J. L. & Steinmuller, H. E. Refining the global estimate of mangrove carbon burial rates using sedimentary and geomorphic settings. Geophys. Res. Lett. 49, e2022GL100177 (2022). https://doi.org/10.1029/2022gl100177
 macreadie2021 | Macreadie, P. I. et al. Blue carbon as a natural climate solution. Nat. Rev. Earth Environ. 2, 826–839 (2021). https://doi.org/10.1038/s43017-021-00224-1
 macreadie2019 | Macreadie, P. I. et al. The future of Blue Carbon science. Nat. Commun. 10, 3998 (2019). https://doi.org/10.1038/s41467-019-11693-w
-forster2021 | Forster, P. et al. The Earth's energy budget, climate feedbacks, and climate sensitivity. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the IPCC, Ch. 7, 923–1054 (Cambridge Univ. Press, 2021).
+forster2021 | Forster, P. et al. The Earth's energy budget, climate feedbacks, and climate sensitivity. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change (eds Masson-Delmotte, V. et al.) 923–1054 (Cambridge Univ. Press, 2021). https://doi.org/10.1017/9781009157896.009
 rosentreter2018 | Rosentreter, J. A., Maher, D. T., Erler, D. V., Murray, R. H. & Eyre, B. D. Methane emissions partially offset "blue carbon" burial in mangroves. Sci. Adv. 4, eaao4985 (2018). https://doi.org/10.1126/sciadv.aao4985
 qin2025 | Qin, G. et al. Mangrove sediment carbon burial offset by methane emissions from mangrove tree stems. Nat. Geosci. 18, 1224–1231 (2025). https://doi.org/10.1038/s41561-025-01848-4
-burdige2012 | Burdige, D. J. Estuarine and coastal sediments – coupled biogeochemical cycling. In Treatise on Estuarine and Coastal Science, 279–316 (2012).
-martens1974 | Martens, C. S. & Berner, R. A. Methane production in the interstitial waters of sulfate-depleted marine sediments. Science 185, 1167–1169 (1974).
+burdige2012 | Burdige, D. J. Estuarine and coastal sediments – coupled biogeochemical cycling. In Treatise on Estuarine and Coastal Science Vol. 5 (eds Laane, R. & Middelburg, J. J.) 279–316 (Academic Press, 2011). https://doi.org/10.1016/B978-0-12-374711-2.00511-8
+martens1974 | Martens, C. S. & Berner, R. A. Methane production in the interstitial waters of sulfate-depleted marine sediments. Science 185, 1167–1169 (1974). https://doi.org/10.1126/science.185.4157.1167
 weston2006 | Weston, N. B., Dixon, R. E. & Joye, S. B. Ramifications of increased salinity in tidal freshwater sediments: geochemistry and microbial pathways of organic matter mineralization. J. Geophys. Res. Biogeosci. 111, G01009 (2006). https://doi.org/10.1029/2005jg000071
 cotovicz2024 | Cotovicz, L. C. et al. Methane oxidation minimizes emissions and offsets to carbon burial in mangroves. Nat. Clim. Change 14, 275–281 (2024). https://doi.org/10.1038/s41558-024-01927-1
-bartlett1987 | Bartlett, K. B., Bartlett, D. S., Harriss, R. C. & Sebacher, D. I. Methane emissions along a salt marsh salinity gradient. Biogeochemistry 4, 183–202 (1987).
-ipcc2014 | IPCC. 2013 Supplement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories: Wetlands (IPCC, Switzerland, 2014).
-vm0033 | Verra. VM0033 Methodology for Tidal Wetland and Seagrass Restoration, v2.1 (Verified Carbon Standard, 2023).
+bartlett1987 | Bartlett, K. B., Bartlett, D. S., Harriss, R. C. & Sebacher, D. I. Methane emissions along a salt marsh salinity gradient. Biogeochemistry 4, 183–202 (1987). https://doi.org/10.1007/BF02187365
+ipcc2014 | IPCC. 2013 Supplement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories: Wetlands (eds Hiraishi, T. et al.) (IPCC, Switzerland, 2014).
+vm0033 | Verra. VM0033 Methodology for Tidal Wetland and Seagrass Restoration, v2.1 (Verra, 2023).
 jeffrey2019 | Jeffrey, L. C. et al. Are methane emissions from mangrove stems a cryptic carbon loss pathway? Insights from a catastrophic forest mortality. New Phytol. 224, 146–154 (2019). https://doi.org/10.1111/nph.15995
 rosentreter2021 | Rosentreter, J. A. et al. Half of global methane emissions come from highly variable aquatic ecosystem sources. Nat. Geosci. 14, 225–230 (2021). https://doi.org/10.1038/s41561-021-00715-2
 call2015 | Call, M. et al. Spatial and temporal variability of carbon dioxide and methane fluxes over semi-diurnal and spring–neap–spring timescales in a mangrove creek. Geochim. Cosmochim. Acta 150, 211–225 (2015). https://doi.org/10.1016/j.gca.2014.11.023
@@ -32,7 +32,7 @@ sippo2018 | Sippo, J. Z., Lovelock, C. E., Santos, I. R., Sanders, C. J. & Maher
 sippo2020 | Sippo, J. Z. et al. Coastal carbon cycle changes following mangrove loss. Limnol. Oceanogr. 65, 2642–2656 (2020). https://doi.org/10.1002/lno.11476
 yu2023 | Yu, H., Organ, H., Xu, D. & Coffin, R. Tidal control and mangrove dieback impact on methane emissions from a subtropical mangrove estuary. Limnol. Oceanogr. 68, 753–766 (2023). https://doi.org/10.1002/lno.12307
 taillie2020 | Taillie, P. J. et al. Widespread mangrove damage resulting from the 2017 Atlantic mega hurricane season. Environ. Res. Lett. 15, 064010 (2020). https://doi.org/10.1088/1748-9326/ab82cf
-ar6ch11 | Seneviratne, S. I. et al. Weather and climate extreme events in a changing climate. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the IPCC, 1513–1766 (Cambridge Univ. Press, 2021). https://doi.org/10.1017/9781009157896.013
+ar6ch11 | Seneviratne, S. I. et al. Weather and climate extreme events in a changing climate. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change (eds Masson-Delmotte, V. et al.) 1513–1766 (Cambridge Univ. Press, 2021). https://doi.org/10.1017/9781009157896.013
 poulter2023 | Poulter, B. et al. Multi-scale observations of mangrove blue carbon ecosystem fluxes: the NASA Carbon Monitoring System BlueFlux field campaign. Environ. Res. Lett. 18, 075009 (2023). https://doi.org/10.1088/1748-9326/acdae6
 calders2020 | Calders, K. et al. 3D imaging insights into forests and coral reefs. Trends Ecol. Evol. 35, 6–9 (2020). https://doi.org/10.1016/j.tree.2019.10.004
 maeda2025 | Maeda, E. E. et al. Expanding forest research with terrestrial LiDAR technology. Nat. Commun. 16, 8853 (2025). https://doi.org/10.1038/s41467-025-63946-6
@@ -103,7 +103,7 @@ wanninkhof2014 | Wanninkhof, R. Relationship between wind speed and gas exchange
 barr2009 | Barr, J. G., Fuentes, J. D., Engel, V. & Zieman, J. C. Physiological responses of red mangroves to the climate in the Florida Everglades. J. Geophys. Res. Biogeosci. 114, G02008 (2009). https://doi.org/10.1029/2008JG000843
 sturchio2022 | Sturchio, M. A. et al. Temperature acclimation of leaf respiration differs between marsh and mangrove vegetation in a coastal wetland ecotone. Glob. Change Biol. 28, 612–629 (2022). https://doi.org/10.1111/gcb.15938
 atkin2014 | Atkin, O. K., Meir, P. & Turnbull, M. H. Improving representation of leaf respiration in large-scale predictive climate–vegetation models. New Phytol. 202, 743–748 (2014). https://doi.org/10.1111/nph.12686
-huntingford2017 | Huntingford, C. et al. Implications of improved representations of plant respiration in a changing climate. Nat. Commun. 8, 1602 (2017). https://doi.org/10.1038/s41467-017-01774-z [CHECK article number]
+huntingford2017 | Huntingford, C. et al. Implications of improved representations of plant respiration in a changing climate. Nat. Commun. 8, 1602 (2017). https://doi.org/10.1038/s41467-017-01774-z
 reed2025 | Reed, D. et al. Resilience to hurricanes is high in mangrove blue carbon forests. Glob. Change Biol. 31, e70124 (2025). https://doi.org/10.1111/gcb.70124
 wood2023 | Wood, S. A. et al. Mitigating near-term climate change. Environ. Res. Lett. 18, 101002 (2023). https://doi.org/10.1088/1748-9326/acfdbd
 allen2018 | Allen, M. R. et al. A solution to the misrepresentations of CO2-equivalent emissions of short-lived climate pollutants under ambitious mitigation. npj Clim. Atmos. Sci. 1, 16 (2018). https://doi.org/10.1038/s41612-018-0026-8

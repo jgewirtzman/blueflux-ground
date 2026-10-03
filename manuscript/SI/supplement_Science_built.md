@@ -681,18 +681,18 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Dataset | Use |
 |---|---|
 | citation | use in this study`. |
-| Barr, J. G. & Fuentes, J. D. et al. AmeriFlux BASE US-Skr Shark River Slough (Tower SRS-6) Everglades, version 2-5. AmeriFlux AMP (dataset). [CHECK: DOI and creator list] | Tower NEE, GPP partitioning, air temperature and pressure for chamber fluxes, Q10 |
-| Castañeda-Moya, E. et al. Water level at the FCE LTER mangrove sites SRS5 and SRS6. Environmental Data Initiative, knb-lter-fce.1168.15 (dataset). [CHECK: title and DOI] | Hourly water level for the flooded share of the intact floor and the stem exposure model |
+| Fuentes, J., Malone, S. & Troxler, T. AmeriFlux BASE US-Skr Shark River Slough (Tower SRS-6) Everglades, Ver. 2-5. AmeriFlux AMP (dataset) (2024). https://doi.org/10.17190/AMF/1246105 | Tower NEE, GPP partitioning, air temperature and pressure for chamber fluxes, Q10 |
+| Castañeda-Moya, E., Kominoski, J., Rivera-Monroy, V., Rizzie, C. & Reisa, C. Water levels and porewater temperature data from the Shark River and Taylor River Slough mangrove sites, Everglades National Park (FCE LTER), South Florida, USA: May 2001 – ongoing. Environmental Data Initiative, knb-lter-fce.1168.15 (2025). https://doi.org/10.6073/pasta/9fd1d290fbe0753e76be1f748c4e9dab | Hourly water level for the flooded share of the intact floor and the stem exposure model |
 | Castañeda-Moya, E. et al. Monitoring of nutrient and sulfide concentrations in porewaters of mangrove forests from the Shark River Slough and Taylor Slough, Everglades National Park (FCE LTER), Florida, USA, December 2000–ongoing. Environmental Data Initiative, knb-lter-fce.1171.16 (2025). https://doi.org/10.6073/pasta/cd38181a01297bc25a086d71635a1a26 | Long-term porewater NH4 and NO3 at SRS5 and SRS6 (table S11) |
-| Castañeda-Moya, E. et al. Litterfall production of mangrove forests along Shark River Slough and Taylor Slough, Everglades National Park (FCE LTER). Environmental Data Initiative, knb-lter-fce.1195.12 (dataset). [CHECK: title and DOI] | Woody litterfall context for downed wood (text S3) |
+| Castañeda-Moya, E. et al. Mangrove litterfall from the Shark River Slough and Taylor Slough, Everglades National Park (FCE), South Florida, USA, January 2001 – ongoing. Environmental Data Initiative, knb-lter-fce.1195.14 (2026). https://doi.org/10.6073/pasta/1cf9dbd75f5d75c4514673eee55b79ec | Woody litterfall context for downed wood (text S3) |
 | Xiong, L., Lagomasino, D. & Poulter, B. BlueFlux: Terrestrial lidar scans of mangrove forests, Everglades, FL, USA, 2022–2023. ORNL DAAC (2024). https://doi.org/10.3334/ORNLDAAC/2311 | Point clouds for surface area by component and height |
-| Delaria, E. R. et al. [CARAFE airborne flux data for BlueFlux]. ORNL DAAC (dataset). [CHECK: DAAC dataset ID] | Airborne CH4 and CO2 fluxes by deployment |
+| Delaria, E. R., Wolfe, G. M., Hannun, R. A., Blanock, K., Poulter, B. & Thornhill, K. L. BlueFlux airborne trace gases, fluxes, and mixing ratios, southern Florida, 2022–2023 (Version 1). ORNL DAAC (2024). https://doi.org/10.3334/ORNLDAAC/2327 | Airborne CH4 and CO2 fluxes by deployment |
 | Doughty, C. L. et al. BlueFlux: Modeled daily CO2 and CH4 wetland fluxes, southern Florida, 2000–2024. ORNL DAAC (2025). https://doi.org/10.3334/ORNLDAAC/2404 | Regional context |
 | Bunting, P. et al. Global Mangrove Watch v3.0 (1996–2020). Zenodo (2022). https://doi.org/10.5281/zenodo.6894273 | 2016 mangrove extent (Fig. 1A) |
-| Taillie, P. J. et al. 2017 hurricane-season mangrove damage with little recovery (short-term loss), country-attributed polygons; provided by D. Lagomasino (2026). [CHECK: public archive] | 2017 hurricane dieback area (Figs. 1A, 5C; table S14) |
+| Taillie, P. J. et al. 2017 hurricane-season mangrove damage with little recovery (short-term loss), country-attributed polygons; provided by D. Lagomasino (2026). [CHECK: whether these match the public archive, Taillie 2020, PANGAEA, https://doi.org/10.1594/PANGAEA.911864] | 2017 hurricane dieback area (Figs. 1A, 5C; table S14) |
 | National Hurricane Center. Atlantic hurricane database (HURDAT2), 1851–2025. https://www.nhc.noaa.gov/data/hurdat/ | Tracks of Irma and Maria (Fig. 5C) |
 | Natural Earth. Admin 0 countries, 1:50m. https://www.naturalearthdata.com | Country attribution and base maps |
-| [BlueFlux aquatic transect dissolved CO2 and CH4, Shark River, October 2022; CHECK citation] | Dissolved gas at SRS6 for the October 2022 water-surface flux (M8) |
+| Vaughn, D. & Raymond, P. BlueFlux: Dissolved carbon and greenhouse gases (Version 1). ORNL DAAC (2024). https://doi.org/10.3334/ORNLDAAC/2333 | Dissolved gas at SRS6 for the October 2022 water-surface flux (M8) |
 
 ---
 
@@ -707,7 +707,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 - D. R. Cahoon et al., Mass tree mortality leads to mangrove peat collapse at Bay Islands, Honduras after Hurricane Mitch. *J. Ecol.* **91**, 1093–1105 (2003).
 - E. Castañeda-Moya, R. R. Twilley, V. H. Rivera-Monroy, Allocation of biomass and net primary productivity of mangrove forests along environmental gradients in the Florida Coastal Everglades, USA. *For. Ecol. Manage.* **307**, 226–241 (2013).
 - E. R. Delaria et al., Assessment of landscape-scale fluxes of carbon dioxide and methane in subtropical coastal wetlands of South Florida. *J. Geophys. Res. Biogeosci.* **129**, e2024JG008165 (2024).
-- P. Forster et al., The Earth's energy budget, climate feedbacks, and climate sensitivity. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the IPCC, Ch. 7, 923–1054 (Cambridge Univ. Press, 2021).
+- P. Forster et al., The Earth's energy budget, climate feedbacks, and climate sensitivity. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change (eds Masson-Delmotte, V. et al.) 923–1054 (Cambridge Univ. Press, 2021).
 - L. N. Griffiths, W. J. Mitsch, Estimating the effects of a hurricane on carbon storage in mangrove wetlands in Southwest Florida. *Plants* **10**, 1749 (2021).
 - R. A. Hannun et al., Spatial heterogeneity in CO2, CH4, and energy fluxes: insights from airborne eddy covariance measurements over the Mid-Atlantic region. *Environ. Res. Lett.* **15**, 035008 (2020).
 - M. A. Heskel et al., Convergence in the temperature response of leaf respiration across biomes and plant functional types. *Proc. Natl Acad. Sci. USA* **113**, 3832–3837 (2016).
