@@ -21,7 +21,7 @@ fl_in <- st_read(paste0(shp, "statebnd_poly.shp"), quiet = TRUE) %>% st_transfor
 srs  <- st_read(paste0(shp, "srs_utm_clipped.shp"), quiet = TRUE) %>% st_transform(utm)
 ts   <- st_read(paste0(shp, "taylor_slough_utm_clipped.shp"), quiet = TRUE) %>% st_transform(utm)
 enp  <- st_read(paste0(shp, "enp_boundary_line.shp"), quiet = TRUE) %>% st_transform(utm)
-xl <- c(415000, 600000); yl <- c(2743000, 2905000)
+xl <- c(420000, 580000); yl <- c(2760000, 2880000)   # study-area zoom
 box <- st_as_sfc(st_bbox(c(xmin = xl[1], xmax = xl[2], ymin = yl[1], ymax = yl[2]), crs = st_crs(utm)))
 mang <- st_read("data/gis/mangrove_extent/gmw_v3_2016_sfl.gpkg", quiet = TRUE) %>% st_transform(utm)   # GMW v3 2016 (01d_mangrove_extent.R)
 loss <- st_read("data/gis/ghost_extent/CIFOR_shortTermLoss_2017_GMW_V1_wCountry_Area.shp", quiet = TRUE) %>%
@@ -63,8 +63,8 @@ pa <- ggplot() +
              size = 2.9, label.size = 0, label.padding = unit(0.08, "lines"), fill = alpha("white", 0.8)) +
   annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
-  annotate("text", x = 438000, y = 2815000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
-  annotate("text", x = 566000, y = 2768000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 445000, y = 2822000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 548000, y = 2783000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
   scale_fill_manual(values = c(pal_class, `mangrove (2016)` = "#A8CDB9", `2017 hurricane dieback` = "#B9B5CB"),
                     breaks = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"),
                     labels = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"), name = NULL,
@@ -72,8 +72,8 @@ pa <- ggplot() +
   scale_colour_manual(values = pal_map, guide = "none") +
   annotation_scale(location = "br", width_hint = 0.22, text_cex = 0.7, height = unit(0.12, "cm"), line_width = 0.4,
                    bar_cols = c("grey30", "white")) +
-  annotation_north_arrow(location = "tl", height = unit(0.55, "cm"), width = unit(0.4, "cm"),
-                         pad_x = unit(0.25, "cm"), pad_y = unit(0.25, "cm"), style = north_arrow_orienteering(text_size = 6, line_width = 0.5)) +
+  annotation_north_arrow(location = "tr", height = unit(0.55, "cm"), width = unit(0.4, "cm"),
+                         pad_x = unit(1.1, "cm"), pad_y = unit(2.6, "cm"), style = north_arrow_orienteering(text_size = 6, line_width = 0.5)) +
   coord_sf(xlim = xl, ylim = yl, expand = FALSE, crs = utm, datum = 4326) +
   labs(x = NULL, y = NULL) + theme_fig() +
   theme(legend.position = "inside", legend.position.inside = c(0.015, 0.02), legend.justification = c(0, 0),
@@ -83,7 +83,7 @@ pa <- ggplot() +
 inset <- ggplot() + geom_sf(data = fl_in, fill = "grey90", colour = "grey55", linewidth = 0.15) +
   geom_sf(data = box, fill = NA, colour = col_ink, linewidth = 0.4) + theme_void() +
   theme(panel.background = element_rect(fill = "white", colour = "grey40", linewidth = 0.3))
-pa <- (pa + labs(tag = "a")) + inset_element(inset, left = 0.73, bottom = 0.68, right = 0.995, top = 0.995, align_to = "panel")
+pa <- (pa + labs(tag = "a")) + inset_element(inset, left = 0.785, bottom = 0.70, right = 0.99, top = 0.99, align_to = "panel")
 
 # ---- (b) photos ----
 photo <- function(file, class, site, asp) {
@@ -107,7 +107,7 @@ pc <- ggplot() + annotation_custom(rasterGrob(sch, width = unit(1, "npc"), heigh
   theme_void() + theme(aspect.ratio = dim(sch)[1] / dim(sch)[2])
 
 top <- pa + (wrap_elements(full = pb) + labs(tag = "b") + theme(plot.tag.position = c(0, 1.02), plot.margin = margin(14, 0, 0, 4), plot.tag = element_text(face = "bold", size = 11))) +
-  plot_layout(widths = c(1.75, 1))
+  plot_layout(widths = c(2.15, 1))
 fig <- top / (pc + labs(tag = "c") + theme(plot.tag = element_text(face = "bold", size = 11))) + plot_layout(heights = c(1, 0.62)) 
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 ggsave("output/figures/other/fig1_system.png", fig, width = 7.2, height = 6.5, dpi = 300, bg = "white")
