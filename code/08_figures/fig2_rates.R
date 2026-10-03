@@ -42,14 +42,13 @@ rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {
     mutate(y = as.numeric(comp) + dodge[as.character(class)])
   x <- x %>% left_join(s %>% select(comp, class, n), by = c("comp", "class")) %>%
     mutate(y = as.numeric(comp) + dodge[as.character(class)] + runif(n(), -0.06, 0.06), small = n < 4)
-  s <- s %>% filter(n >= 4); nlab <- x %>% distinct(comp, class, n) %>% mutate(y = as.numeric(comp) + dodge[as.character(class)])
+  ci <- s %>% filter(n >= 4)   # bootstrap intervals only for n > 3; means shown for all groups
   bands <- data.frame(y = seq_along(levels(dd$comp))) %>% filter(y %% 2 == 1)
   ggplot() +
     geom_rect(data = bands, aes(ymin = y - 0.5, ymax = y + 0.5), xmin = -Inf, xmax = Inf, fill = "grey95") +
     geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3) +
-    geom_point(data = x %>% filter(!small), aes(asinh(v), y, colour = class, shape = site_type), size = 0.75, alpha = 0.35, stroke = 0.35) +
-    geom_point(data = x %>% filter(small), aes(asinh(v), y, fill = class), shape = 21, colour = "white", size = 1.6, stroke = 0.3) +
-    geom_errorbar(data = s, aes(xmin = asinh(lo), xmax = asinh(hi), y = y, colour = class), width = 0, linewidth = 0.6, orientation = "y") +
+    geom_point(data = x, aes(asinh(v), y, colour = class, shape = site_type), size = 0.75, alpha = 0.35, stroke = 0.35) +
+    geom_errorbar(data = ci, aes(xmin = asinh(lo), xmax = asinh(hi), y = y, colour = class), width = 0, linewidth = 0.6, orientation = "y") +
     geom_point(data = s, aes(asinh(m), y, fill = class), shape = 21, colour = "white", size = 2.1, stroke = 0.5) +
     scale_y_continuous(breaks = seq_along(levels(dd$comp)), labels = if (show_y) levels(dd$comp) else NULL,
                        expand = c(0, 0), limits = c(0.5, length(levels(dd$comp)) + 0.5)) +
