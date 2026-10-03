@@ -32,12 +32,17 @@ step_z <- tr %>% filter(placement_id %in% lgr$placement_id) %>% group_by(placeme
             r2 = { w <- in_diffusive_window & !is.na(CH4_ppb); if (sum(w) > 10) summary(lm(CH4_ppb[w] ~ Etime[w]))$r.squared else NA_real_ },
             .groups = "drop")
 lgr <- lgr %>% left_join(step_z, by = "placement_id") %>% mutate(site_camp = paste(plot, substr(date, 1, 7)))
-# two ebullitive examples from different site x campaign; two clean bubble-free examples from other sites
-ebull_ids <- lgr %>% filter(n_bubbles > 0) %>% arrange(desc(CH4_ebullitive)) %>% distinct(site_camp, .keep_all = TRUE) %>%
-  slice(1:2) %>% pull(placement_id)
-used_plots <- lgr$plot[lgr$placement_id %in% ebull_ids]
-diff_ids <- lgr %>% filter(n_bubbles == 0, duration_s >= 180, duration_s <= 600, z <= 8, r2 >= 0.98, !plot %in% used_plots) %>% arrange(desc(CH4_total)) %>%
-  distinct(plot, .keep_all = TRUE) %>% slice(1:2) %>% pull(placement_id)
+# examples favour long placements (>= 10 min): the largest ebullitive placement overall (Oct 2022 had no
+# placements >= 10 min), the largest ebullitive placement >= 10 min from another site x campaign, and the
+# largest clean bubble-free placements >= 10 min in dead and in intact forest
+LONG <- 600
+e1 <- lgr %>% filter(n_bubbles > 0) %>% arrange(desc(CH4_ebullitive)) %>% slice(1)
+e2 <- lgr %>% filter(n_bubbles > 0, duration_s >= LONG, site_camp != e1$site_camp) %>% arrange(desc(CH4_ebullitive)) %>% slice(1)
+ebull_ids <- c(e1$placement_id, e2$placement_id)
+used_plots <- c(e1$plot, e2$plot)
+clean <- lgr %>% filter(n_bubbles == 0, duration_s >= LONG, z <= 8, r2 >= 0.98, plot != used_plots[2]) %>% arrange(desc(CH4_total))
+diff_ids <- c(clean %>% filter(plot %in% c("CP40", "FLM30", "BL60")) %>% slice(1) %>% pull(placement_id),   # one dead-forest
+              clean %>% filter(plot %in% c("SRS5", "SRS6")) %>% slice(1) %>% pull(placement_id))             # one intact
 selected_ids <- c(ebull_ids, diff_ids)
 cat("Selected placements:", paste(selected_ids, collapse = ", "), "\n")
 
@@ -115,31 +120,34 @@ shr <- wide %>% mutate(det = 100 * Ebullitive / (Diffusive + Ebullitive), up = 1
                        lab = ifelse(round(up) > round(det), sprintf("%.0f\u2013%.0f%%", det, up), sprintf("%.0f%%", det)),
                        ytop = Diffusive + Ebullitive + Missed)
 # stacked segments built on the raw scale so the asinh axis does not distort them
-fig_bars <- ggplot(seg, aes(x = site)) +
-  geom_crossbar(aes(y = lo, ymin = lo, ymax = hi, fill = flux_component), width = 0.62, colour = "white", linewidth = 0.25,
+# one panel per site x season, each with its own linear y axis so the ebullitive share of each bar is legible
+xl <- shr %>% left_join(si_totals %>% select(site, season_lab, n), by = c("site", "season_lab")) %>%
+  mutate(xlab = sprintf("%s\n%s\nn = %d\nebullitive\n%s", site, site_cls[as.character(site)], n, lab))
+xmap <- setNames(xl$xlab, paste(xl$season_lab, xl$site))
+key <- function(d) d %>% mutate(k = paste(season_lab, site))
+fig_bars <- ggplot(key(seg), aes(x = k)) +
+  geom_crossbar(aes(y = lo, ymin = lo, ymax = hi, fill = flux_component), width = 0.6, colour = "white", linewidth = 0.25,
                 middle.linewidth = 0) +
-  geom_point(data = pts_tot, aes(site, CH4_best.flux), inherit.aes = FALSE, shape = 21, fill = "white", colour = "grey35",
+  geom_point(data = key(pts_tot), aes(k, CH4_best.flux), inherit.aes = FALSE, shape = 21, fill = "white", colour = "grey35",
              size = 0.9, stroke = 0.3, alpha = 0.8, position = position_jitter(width = 0.12, height = 0, seed = 1)) +
   # SE of the total shown only where n > 3
-  geom_errorbar(data = si_totals %>% filter(n > 3), aes(x = site, ymin = mean_total - se_total, ymax = mean_total + se_total),
+  geom_errorbar(data = key(si_totals) %>% filter(n > 3), aes(x = k, ymin = mean_total - se_total, ymax = mean_total + se_total),
                 width = 0.15, linewidth = 0.4, colour = col_ink, inherit.aes = FALSE) +
-  geom_text(data = si_totals, aes(x = site, y = -Inf, label = paste0("n = ", n)), vjust = -0.5, size = 2.2,
-            colour = "grey35", inherit.aes = FALSE) +
-  geom_text(data = shr, aes(x = site, y = -Inf, label = paste0("ebullitive ", lab)), vjust = -2.0, size = 2.2,
-            colour = col_ebul, inherit.aes = FALSE) +
-  facet_grid(~ season_lab, scales = "free_x", space = "free_x") +
-  scale_x_discrete(labels = x_labs) +
+  ggh4x::facet_nested(~ season_lab + k, scales = "free", independent = "y",
+                      strip = ggh4x::strip_nested(text_x = ggh4x::elem_list_text(size = c(7, 0)), by_layer_x = TRUE)) +
+  scale_x_discrete(labels = xmap) +
   scale_fill_manual(values = c("Diffusive" = col_diff, "Ebullitive" = col_ebul, "possible undetected" = "#E9B3A6"),
                     labels = c(Diffusive = "diffusive", Ebullitive = "ebullitive (detected)", `possible undetected` = "possible undetected ebullition (upper bound)"), name = NULL) +
-  scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100), expand = expansion(mult = c(0.16, 0.04))) +
-  labs(x = NULL, y = expression(CH[4]~flux~(nmol~m^{-2}~s^{-1})), tag = "a") +
+  scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.06))) +
+  labs(x = NULL, y = expression(CH[4]~flux~(nmol~m^{-2}~s^{-1})*"; y axes differ by panel"), tag = "a") +
   theme_fig(base_size = 8) +
-  theme(legend.position = "inside", legend.position.inside = c(0.99, 0.98), legend.justification = c(1, 1),
-        legend.text = element_text(size = 7), panel.grid.major.x = element_blank(), axis.ticks.x = element_blank(),
-        strip.text = element_text(hjust = 0.5), axis.text.x = element_text(lineheight = 0.9))
+  theme(legend.position = "bottom", legend.text = element_text(size = 7), legend.key.size = unit(7, "pt"),
+        panel.grid.major.x = element_blank(), axis.ticks.x = element_blank(), panel.spacing.x = unit(4, "pt"),
+        axis.text.x = element_text(lineheight = 0.9, size = 6.3), axis.text.y = element_text(size = 6.3),
+        strip.text = element_text(hjust = 0.5), strip.text.y = element_blank())
 
-fig_s1 <- fig_bars / fig_traces + plot_layout(heights = c(1, 1.7))
-ggsave("output/figures/other/pub_SI_ebullition_partition.png", fig_s1, width = 7.2, height = 6.6, dpi = 300, bg = "white")
-ggsave("output/figures/other/pub_SI_ebullition_partition.pdf", fig_s1, width = 7.2, height = 6.6, device = cairo_pdf)
+fig_s1 <- fig_bars / fig_traces + plot_layout(heights = c(1.15, 1.7))
+ggsave("output/figures/other/pub_SI_ebullition_partition.png", fig_s1, width = 7.2, height = 7, dpi = 300, bg = "white")
+ggsave("output/figures/other/pub_SI_ebullition_partition.pdf", fig_s1, width = 7.2, height = 7, device = cairo_pdf)
 cat("Saved: pub_SI_ebullition_partition.pdf/.png\n")
 source("code/08_figures/figure_cleanup.R")
