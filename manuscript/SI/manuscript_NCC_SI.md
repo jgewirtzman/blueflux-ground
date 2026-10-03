@@ -68,7 +68,7 @@ Porewater was sampled in three rounds. During the October 2022 and March 2023 fl
 
 ### S.M12 Net radiative forcing and landscape scaling
 
-Component CH4 fluxes were converted to CO2 equivalents using 20- and 100-year global warming potentials (GWP20 = 81.2, the headline; GWP100 = 27.9; IPCC AR6) and GWP* for the intact-to-ghost change (S.M18), and combined with net CO2 exchange to give net forcing (g CO2-eq m−2 yr−1) for each class. The intact CO2 NEE was anchored to the SRS-6 tower; ghost and regenerating CO2 exchange were evaluated against CARAFE disaggregated fluxes. The disturbance-induced switch is the intact-to-ghost differential. A regional estimate multiplies the per-area differential by the area of Caribbean mangrove converted to ghost forest by recent hurricanes (Fig. 5b). [PLACEHOLDER — Caribbean ghost-forest extent value/source and, for the Everglades-specific figure, the Irma dieback area from Lagomasino et al. (2021), to be finalized.]
+Component CH4 fluxes were converted to CO2 equivalents using 20- and 100-year global warming potentials (GWP20 = 81.2, the headline; GWP100 = 27.9; IPCC AR6) and GWP* for the intact-to-ghost change (S.M18), and combined with net CO2 exchange to give net forcing (g CO2-eq m−2 yr−1) for each class. The intact CO2 NEE was anchored to the SRS-6 tower; ghost and regenerating CO2 exchange were evaluated against CARAFE disaggregated fluxes. The disturbance-induced switch is the intact-to-ghost differential. A regional estimate multiplies the per-area differential by the area of Caribbean mangrove converted to ghost forest by recent hurricanes (Fig. 5b,c). [PLACEHOLDER — Caribbean ghost-forest extent value/source and, for the Everglades-specific figure, the Irma dieback area from Lagomasino et al. (2021), to be finalized.]
 
 ### S.M13 Statistical analysis
 
@@ -298,7 +298,7 @@ Chamber flux dataset (combined_gas_flux_dataset.csv) and analysis workflow at [r
 ### Outstanding to complete SI
 1. TLS methods (S.M6) — Powell/Stovall.
 2. Tower (S.M8) and CARAFE (S.M9) instrument/processing detail — tower PIs / Delaria.
-3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 5b.
+3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 5b,c.
 4. Build Supplementary Fig. S5 (per-site closure) and source the airborne disaggregation panel for Extended Data Fig. 10.
 5. Compile Supplementary References with DOIs.
 6. If sequencing data land: microbial results (main-text Results placeholder) and metagenome discussion, plus any added figure/table.

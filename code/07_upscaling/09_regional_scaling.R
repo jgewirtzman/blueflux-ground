@@ -42,7 +42,8 @@ necb_int20 <- fr$net20[fr$class == "Healthy" & fr$framing == "necb_alk_retained"
 necb_int100 <- fr$net100[fr$class == "Healthy" & fr$framing == "necb_alk_retained"]
 sw <- c(gwp20 = g$net20 - h$net20, gwp100 = g$net100 - h$net100, gwpstar = g$net_gwpstar - (h$co2_g_yr + h$ch4_co2we_gwpstar),
         gwp20_necb = g$net20 - necb_int20, gwp100_necb = g$net100 - necb_int100,
-        gwp20_lo = mg$net20_lo - mh$net20_hi, gwp20_hi = mg$net20_hi - mh$net20_lo)
+        gwp20_lo = mg$net20_lo - mh$net20_hi, gwp20_hi = mg$net20_hi - mh$net20_lo,
+        gwp100_lo = mg$net100_lo - mh$net100_hi, gwp100_hi = mg$net100_hi - mh$net100_lo)
 # induced CH4 (ghost - intact), g CH4 m-2 yr-1, with a conservative Monte Carlo
 # range (ghost 2.5% - intact 97.5% to ghost 97.5% - intact 2.5%; class means of
 # the site x campaign MC intervals, tide-weighted)
@@ -56,6 +57,7 @@ dch4 <- c(mid = g$ch4_g_yr - h$ch4_g_yr,
           hi = mcc$hi[mcc$disturbance_level == "ghost"] - mcc$lo[mcc$disturbance_level == "healthy"])
 dch4_star <- g$ch4_co2we_gwpstar - h$ch4_co2we_gwpstar          # g CO2-we m-2 yr-1
 dco2 <- g$co2_g_yr - h$co2_g_yr
+write.csv(data.frame(term = names(sw), g_co2eq_m2_yr = unname(sw)), "output/upscaling/forcing_switch_per_m2.csv", row.names = FALSE)
 cat(sprintf("Induced CH4 %.2f (%.2f-%.2f) g CH4 m-2 yr-1; CO2 change %.0f g CO2 m-2 yr-1\n", dch4[["mid"]], dch4[["lo"]], dch4[["hi"]], dco2))
 
 by_cty <- st_drop_geometry(x) %>% group_by(country = COUNTRY) %>% summarise(area_km2 = sum(area_m2) / 1e6, .groups = "drop") %>%
@@ -114,6 +116,7 @@ track <- function(id, name) {
   data.frame(storm = name, date = trimws(r[, 1]), lat = ll(r[, 5]), lon = ll(r[, 6]), wind_kt = as.numeric(r[, 7]))
 }
 tracks <- rbind(track("AL112017", "Irma"), track("AL152017", "Maria"))
+write.csv(tracks, "output/upscaling/hurricane_tracks_2017.csv", row.names = FALSE)
 lab_pts <- tracks %>% group_by(storm) %>% filter(lon > -97, lon < -60, lat > 9, lat < 30.5) %>%
   slice(if (first(storm) == "Irma") which.min(abs(lat - 27.5)) else which.min(abs(lat - 27))) %>% ungroup() %>%
   mutate(hjust = ifelse(storm == "Irma", 1.1, 0), vjust = 0.5) %>% mutate(hjust = ifelse(storm == "Irma", 1.1, -0.12))

@@ -61,6 +61,7 @@ steps <- c(
   "code/08_figures/fig3_stands.R",                  # Fig 3
   "code/08_figures/fig4_geochem.R",                 # Fig 4
   "code/08_figures/ed_porewater_rounds.R",          # ED8 porewater by round
+  "code/08_figures/fig5_climate.R",                 # Fig 5
   "code/08_figures/plot_budget_figs.R",             # Fig 4
   "code/08_figures/fig6_porewater_pca.R",           # Fig 5, Figs S12-S13
   "code/08_figures/plot_closure.R",                 # Fig 6

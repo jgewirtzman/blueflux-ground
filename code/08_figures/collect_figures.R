@@ -13,7 +13,7 @@ display_items <- c(
   "main/Fig2_rates.png"                = "other/fig2_rates.png",                         # fig2_rates.R (Fig 2a-c)
   "main/Fig3_stands.png"               = "other/fig3_stands.png",                        # fig3_stands.R
   "main/Fig4_geochemistry.png"         = "other/fig4_geochem.png",                       # fig4_geochem.R
-  "main/Fig5_closure_forcing.png"      = "presentation/FigClosureForcing.png",           # plot_closure.R [to rebuild]
+  "main/Fig5_climate.png"             = "other/fig5_climate.png",                       # fig5_climate.R
   "SI/ED8_porewater_rounds.png"       = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
   "SI/ED2_tree_detail_old_Fig3.png"    = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R (old Fig 3; ED2 source)
   "SI/FigS1_ebullition.png"           = "other/pub_SI_ebullition_partition.png",        # figS1_ebullition.R
