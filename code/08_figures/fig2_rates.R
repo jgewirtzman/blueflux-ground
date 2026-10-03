@@ -187,7 +187,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
   pcc <- pcc + lt
   if (pie) {
-    pcc <- pcc + guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
+    pcc <- pcc + guides(fill = guide_legend(ncol = 2, byrow = FALSE)) +
       coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.35, 1.05), clip = "off")
   } else pcc <- pcc + theme(legend.position = "right")
   leg_comp <- if (pie) cowplot::get_plot_component(pcc + theme(legend.position = "bottom", legend.direction = "horizontal",
@@ -207,7 +207,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
        theme(axis.text.y = element_text())) +
     (pf + nl + labs(tag = "d")) +
     wrap_elements(full = leg_class) + wrap_elements(full = leg_comp) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) +
-    plot_layout(design = design, widths = c(1, 1, 1), heights = unit(c(1, 0.32, 1, 0.22), c("null", "in", "null", "in"))) +
+    plot_layout(design = design, widths = c(1, 1, 1), heights = unit(c(1, 0.45, 1, 0.22), c("null", "in", "null", "in"))) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
   ggsave(paste0(file, ".png"), fig, width = 7.2, height = 6.8, dpi = 300, bg = "white")
   ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.8, device = cairo_pdf)
