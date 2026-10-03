@@ -28,11 +28,10 @@ display_items <- c(
   "SI/FigS11_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
   "SI/FigS12_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
   "SI/FigS13_carbonate.png"             = "other/si_S12_carbonate.png",                   # si_porewater_carbonate.R
-  "SI/FigS14_carbon_budget.png"         = "other/fig_carbon_budget.png",                  # fig_carbon_budget.R
-  "SI/FigS15_tower_GPP.png"             = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
-  "SI/FigS16_site_closure.png"          = "other/site_closure_comparison.png"             # plot_site_closure.R
+  "SI/FigS14_tower_GPP.png"             = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
+  "SI/FigS15_site_closure.png"          = "other/site_closure_comparison.png"             # plot_site_closure.R
 )
-# S17 (metagenome detail) is a placeholder until the sequencing results arrive.
+# S16 (metagenome detail) is a placeholder until the sequencing results arrive.
 # Clear stale curated SI copies so the folder mirrors the current numbering.
 unlink(Sys.glob(file.path(fig, "SI", "*.png")))
 

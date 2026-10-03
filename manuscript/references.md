@@ -124,3 +124,4 @@ cabezas2018 | Cabezas, A. et al. Methane emissions from mangrove soils in hydrol
 martin2020 | Martin, R. M. et al. Greenhouse gas fluxes of mangrove soils and adjacent coastal waters in an urban, subtropical estuary. Wetlands 40, 1469–1480 (2020). https://doi.org/10.1007/s13157-020-01300-w
 sotomayor1994 | Sotomayor, D., Corredor, J. E. & Morell, J. M. Methane flux from mangrove sediments along the southwestern coast of Puerto Rico. Estuaries 17, 140–147 (1994). https://doi.org/10.2307/1352563
 salasrabaza2023 | Salas-Rabaza, J. A. et al. Impacts of leaks and gas accumulation on closed chamber methods for measuring methane and carbon dioxide fluxes from tree stems. Sci. Total Environ. 904, 166358 (2023). https://doi.org/10.1016/j.scitotenv.2023.166358
+yau2024 | Yau, Y. Y. Y. et al. Efficient oxidation attenuates porewater-derived methane fluxes in mangrove waters. Limnol. Oceanogr. 69, 1997–2014 (2024). https://doi.org/10.1002/lno.12639

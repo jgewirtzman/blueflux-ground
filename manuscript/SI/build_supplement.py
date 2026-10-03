@@ -69,13 +69,11 @@ FIGS = {
          "Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only); (c) salinity against dissolved CH4 by site (including surface water; shape, round; log(1 + x) axis). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023."),
  "S13": (["output/figures/other/si_S12_carbonate.png"],
          "Porewater alkalinity against conservative mixing (October 2025; 0–90 cm, surface water excluded; text S7). (a) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (b) Measured against mixing-predicted alkalinity; dashed, 1:1. (c) Measured ÷ mixing-predicted alkalinity by site. Fill, forest class; shape, site. FLM30 was not sampled for alkalinity."),
- "S14": (["output/figures/other/fig_carbon_budget.png"],
-         "Carbon and methane budgets. (A) Carbon budget schematic (as Fig. 5A) for intact and ghost forest (g C m−2 yr−1; arrow width proportional to the square root of the flux, one scale for both). Solid arrows are measured here: GPP (tower) and CO2 and CH4 from each surface (chambers × scanned area), shown as mean ± 1 SE across the four plot × campaign estimates. Translucent, dashed arrows are literature values with their published ranges: litterfall, root production, wood mortality, wood increment, burial and lateral export (DIC, DOC, POC, dissolved CH4), for intact forest only. The closure residual (net exchange minus lateral export, burial and wood increment; M18, text S10) is 423 g C m−2 yr−1, with a range of −182 to 595 when the half-ranges of its terms are combined in quadrature. The imbalance is therefore within the uncertainty of lateral export. (B) Methane budget by pathway (g CH4 m−2 yr−1; diamonds, bottom-up total with Monte Carlo 95% interval), lateral dissolved CH4 export (intact), and the airborne mean of four 2022–2023 deployments (triangles, ±1.96 SE; daytime)."),
- "S15": (["output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png"],
+ "S14": (["output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png"],
          "US-Skr tower: mean diurnal cycle of partitioned GPP during the campaign months (M14). Lines, monthly mean half-hourly GPP; ribbons, mean bootstrap 95% interval (partitioning-parameter uncertainty); local standard time."),
- "S16": (["output/figures/other/site_closure_comparison.png"],
+ "S15": (["output/figures/other/site_closure_comparison.png"],
          "Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited."),
- "S17": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
+ "S16": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
 }
 def fig_block(k):
     files, cap = FIGS[k]
@@ -227,7 +225,7 @@ refs = {}
 for line in open(P("manuscript/references.md"), encoding="utf-8"):
     if " | " in line and not line.startswith("#"):
         k, v = line.split(" | ", 1); refs[k.strip()] = v.strip()
-SI_REFS = ["pacheco2024", "cabezas2018", "martin2020", "sotomayor1994", "salasrabaza2023", "allen2018", "atkin2014", "barr2009", "bouillon2007", "bunting2022", "cahoon2003", "castanedamoya2013",
+SI_REFS = ["yau2024", "pacheco2024", "cabezas2018", "martin2020", "sotomayor1994", "salasrabaza2023", "allen2018", "atkin2014", "barr2009", "bouillon2007", "bunting2022", "cahoon2003", "castanedamoya2013",
            "carafe_instrument", "delaria2024", "forster2021", "griffiths2021", "hannun2020", "heskel2016", "ho2017", "huntingford2017", "jeffrey2019", "lovelock2011", "martinez2021", "radabaugh2020", "romerouribe2022", "yu2023",
            "hutchinson1981", "hutjes2010", "kljun2015", "krauss2005", "lagomasino2021", "lin2024", "osland2020",
            "pedersen2010", "poulter2023", "powell_tls", "reed2025", "reithmaier2020", "gofluxref", "sippo2020", "smith2021",
