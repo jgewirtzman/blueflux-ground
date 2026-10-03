@@ -58,7 +58,7 @@ FIGS = {
  "S7": (["output/figures/other/stem_extrap_clean.png"],
         "Stem height extrapolation (text S1). (a) Measured stem CH4 (points; height above water or soil) and the stem profile under each of six extrapolation rules (lines; TLS height above ground), by site and campaign; the default rule is exponential decay to zero; shaded, above the 1.5 m chamber limit; square-root height axis; inverse-hyperbolic-sine flux axes that differ by site. (b) Stem CH4 per unit ground area (absolute tree flux) and (c) total plot CH4 under each rule, with non-stem components held constant and high tide at tidal sites; x axes differ by site."),
  "S8": (["output/figures/other/SA_by_segment_height_fixedY.png"],
-        "Laser-scanned woody surface area (m2 per 0.5 m height bin per plot) by segment class (trunk, branch, prop root) for the four scanned plots; dashed line, 1.5 m chamber height limit."),
+        "Laser-scanned woody surface per unit ground area (m2 m−2 per 0.5 m height bin) by segment class (prop root, stem, branch) for the four scanned plots; dashed line, 1.5 m chamber height limit."),
  "S9": (["output/figures/other/si_S9_tide_scenarios.png"],
         "Total plot CH4 by site and campaign at high and low tide (tidal sites) or non-tidal (ghost sites), under exponential or zero stem extrapolation above 1.5 m (text S2; table S10); log axis."),
  "S10": (["output/figures/other/si_S10_mc_uncertainty.png"],

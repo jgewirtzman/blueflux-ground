@@ -1,5 +1,5 @@
-# Fig. S8 | TLS woody surface area per 0.5 m height bin by plot and segment
-# class (prop root, trunk, branch), on shared axes. Dashed line = 1.5 m chamber
+# Fig. S8 | TLS woody surface area per unit ground area, per 0.5 m height bin, by plot and
+# segment class (prop root, stem, branch), on shared axes. Dashed line = 1.5 m chamber
 # height limit. Plots ordered and labelled by forest class.
 suppressMessages({library(dplyr);library(ggplot2)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
@@ -10,11 +10,14 @@ site_class<-c(SRS5="intact",SRS6="intact",CP40="ghost",FLM30="ghost")
 sa<-read.csv(file.path(TLS,"all_sites_summary.csv")) %>%
   mutate(height_m=height_bin_num,
          segment_label=factor(segment_class,levels=c("root","trunk","branch"),
-                              labels=c("prop root","trunk","branch")),
+                              labels=c("prop root","stem","branch")),
          site=factor(site,levels=names(site_class)))
-seg_colors<-c(`prop root`=pal_comp[["prop root"]],trunk=pal_comp[["stem"]],branch="#B59A6A")   # branch as Fig. 2
+# per unit ground area (plot areas differ by up to 24%), as in Fig. 2
+pa<-read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% distinct(site,plot_area_m2)
+sa<-sa %>% mutate(site=as.character(site)) %>% left_join(pa,by="site") %>% mutate(sa_g=Total_surface_area_m2/plot_area_m2, site=factor(site,levels=names(site_class)))
+seg_colors<-c(`prop root`=pal_comp[["prop root"]],stem=pal_comp[["stem"]],branch="#B59A6A")   # branch as Fig. 2
 strip_lab<-setNames(paste0(names(site_class)," (",site_class,")"),names(site_class))
-p<-ggplot(sa,aes(Total_surface_area_m2,height_m+0.25,fill=segment_label))+
+p<-ggplot(sa,aes(sa_g,height_m+0.25,fill=segment_label))+
   geom_col(orientation="y",position=position_stack(reverse=TRUE),width=0.45,colour=NA)+
   geom_hline(yintercept=1.5,linetype="dashed",colour="grey35",linewidth=.35)+
   ggh4x::facet_wrap2(~site,nrow=1,labeller=as_labeller(strip_lab),
@@ -23,7 +26,7 @@ p<-ggplot(sa,aes(Total_surface_area_m2,height_m+0.25,fill=segment_label))+
   scale_fill_manual(values=seg_colors,name="woody surface")+
   scale_x_continuous(expand=expansion(mult=c(0,0.04)))+
   scale_y_continuous(breaks=seq(0,20,2),expand=c(0,0))+
-  labs(x=expression("Surface area (m"^2*" per 0.5 m bin)"),y="Height above ground (m)")+
+  labs(x=expression("Woody surface (m"^2*" m"^-2*" ground per 0.5 m)"),y="Height above ground (m)")+
   theme_fig()+theme(panel.grid.major.y=element_blank(),panel.spacing.x=unit(10,"pt"),
                     legend.title=element_text(size=7,face="bold"),legend.text=element_text(size=7),
                     legend.margin=margin(0,0,0,0),legend.box.spacing=unit(4,"pt"))
