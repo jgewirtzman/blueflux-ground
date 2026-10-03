@@ -34,12 +34,15 @@ sites <- read.csv("data/sites/site_metadata.csv") %>%
 sxy <- cbind(st_drop_geometry(sites), st_coordinates(sites))
 tower <- st_as_sf(data.frame(lon = -81.0776, lat = 25.3629), coords = c("lon", "lat"), crs = 4326) %>% st_transform(utm)
 txy <- data.frame(st_coordinates(tower), lab = "US-Skr tower")
-# label offsets (m) so the clustered core sites stay legible
+# clustered sites: symbols displaced (m) with leader lines to the true position
+# (small dot); labels sit beside each symbol
 off <- data.frame(site_id = c("SRS5", "SRS6", "BL60", "CP40", "FLM30", "MI", "RB10", "SE1"),
-                  dx = c(9000, -9000, -10000, 5000, 10000, 9000, 9000, -9000),
-                  dy = c(6000, -6500, 3000, -8000, 4500, 4000, -4000, 5000))
-lab <- sxy %>% left_join(off, by = "site_id") %>% mutate(lx = X + dx, ly = Y + dy,
-                                                          hj = ifelse(dx > 0, 0, 1))
+                  sx = c(7000, -8000, -8000, 2500, 8000, 0, 0, 0),
+                  sy = c(5500, -6000, 4500, -8000, 5500, 0, 0, 0),
+                  side = c(1, -1, -1, 1, 1, 1, 1, -1))
+lab <- sxy %>% left_join(off, by = "site_id") %>%
+  mutate(px = X + sx, py = Y + sy, moved = sx != 0 | sy != 0,
+         lx = px + side * 3000, ly = py, hj = ifelse(side > 0, 0, 1))
 pal_map <- pal_class
 
 pa <- ggplot() +
@@ -48,32 +51,33 @@ pa <- ggplot() +
   geom_sf(data = ts, fill = "grey88", colour = NA) +
   geom_sf(data = enp, colour = "grey45", linewidth = 0.35, linetype = "22") +
   geom_sf(data = loss, aes(fill = "2017 hurricane dieback"), colour = pal_class[["ghost"]], linewidth = 0.25) +
-  geom_segment(data = lab, aes(X, Y, xend = lx, yend = ly), colour = "grey55", linewidth = 0.2) +
-  geom_point(data = txy, aes(X, Y), shape = 24, size = 2.0, fill = "white", colour = col_ink, stroke = 0.5) +
-  geom_text(data = txy, aes(X - 4000, Y + 3500, label = lab), size = 2.0, hjust = 1, colour = "grey25") +
-  geom_point(data = lab %>% filter(!core), aes(X, Y, fill = class), shape = 21, size = 1.7, colour = "white", stroke = 0.3) +
-  geom_point(data = lab %>% filter(core), aes(X, Y, fill = class), shape = 21, size = 2.4, colour = "white", stroke = 0.35) +
+  geom_segment(data = lab %>% filter(moved), aes(X, Y, xend = px, yend = py), colour = "grey35", linewidth = 0.3) +
+  geom_point(data = lab %>% filter(moved), aes(X, Y), size = 0.7, colour = col_ink) +
+  geom_point(data = txy, aes(X, Y), shape = 24, size = 2.4, fill = "white", colour = col_ink, stroke = 0.5) +
+  geom_text(data = txy, aes(X - 3500, Y + 4500, label = lab), size = 2.7, hjust = 1, colour = "grey25") +
+  geom_point(data = lab %>% filter(!core), aes(px, py, fill = class), shape = 21, size = 2.2, colour = "white", stroke = 0.3) +
+  geom_point(data = lab %>% filter(core), aes(px, py, fill = class), shape = 21, size = 3.1, colour = "white", stroke = 0.4) +
   geom_label(data = lab, aes(lx, ly, label = site_id, hjust = hj, colour = class, fontface = ifelse(core, "bold", "plain")),
-             size = 2.2, label.size = 0, label.padding = unit(0.08, "lines"), fill = alpha("white", 0.8)) +
-  annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.2, colour = "grey45", fontface = "italic", lineheight = 0.9) +
-  annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.2, colour = "grey45", fontface = "italic", lineheight = 0.9) +
-  annotate("text", x = 438000, y = 2815000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.3, colour = "grey55", fontface = "italic") +
-  annotate("text", x = 560000, y = 2752000, label = "Florida Bay", size = 2.3, colour = "grey55", fontface = "italic") +
+             size = 2.9, label.size = 0, label.padding = unit(0.08, "lines"), fill = alpha("white", 0.8)) +
+  annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
+  annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
+  annotate("text", x = 438000, y = 2815000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 560000, y = 2752000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
   scale_fill_manual(values = c(pal_class, `2017 hurricane dieback` = pal_class[["ghost"]]),
                     breaks = c("intact", "regenerating", "ghost", "2017 hurricane dieback"),
                     labels = c("intact", "regenerating", "ghost", "2017 hurricane dieback"), name = NULL,
                     guide = guide_legend(override.aes = list(shape = c(21, 21, 21, NA), colour = c("white", "white", "white", pal_class[["ghost"]])))) +
   scale_colour_manual(values = pal_map, guide = "none") +
-  annotation_scale(location = "br", width_hint = 0.22, text_cex = 0.55, height = unit(0.12, "cm"), line_width = 0.4,
+  annotation_scale(location = "br", width_hint = 0.22, text_cex = 0.7, height = unit(0.12, "cm"), line_width = 0.4,
                    bar_cols = c("grey30", "white")) +
   annotation_north_arrow(location = "tl", height = unit(0.55, "cm"), width = unit(0.4, "cm"),
-                         pad_x = unit(0.25, "cm"), pad_y = unit(0.25, "cm"), style = north_arrow_orienteering(text_size = 5, line_width = 0.5)) +
+                         pad_x = unit(0.25, "cm"), pad_y = unit(0.25, "cm"), style = north_arrow_orienteering(text_size = 6, line_width = 0.5)) +
   coord_sf(xlim = xl, ylim = yl, expand = FALSE, crs = utm, datum = 4326) +
   labs(x = NULL, y = NULL) + theme_fig() +
   theme(legend.position = "inside", legend.position.inside = c(0.015, 0.02), legend.justification = c(0, 0),
-        legend.background = element_rect(fill = alpha("white", 0.85), colour = NA), legend.text = element_text(size = 6.5),
-        legend.key.size = unit(8, "pt"), axis.line = element_blank(), panel.border = element_rect(fill = NA, colour = "grey40", linewidth = 0.3),
-        axis.text = element_text(size = 6))
+        legend.background = element_rect(fill = alpha("white", 0.85), colour = NA), legend.text = element_text(size = 8),
+        legend.key.size = unit(10, "pt"), axis.line = element_blank(), panel.border = element_rect(fill = NA, colour = "grey40", linewidth = 0.3),
+        axis.text = element_text(size = 7))
 inset <- ggplot() + geom_sf(data = fl_in, fill = "grey90", colour = "grey55", linewidth = 0.15) +
   geom_sf(data = box, fill = NA, colour = col_ink, linewidth = 0.4) + theme_void() +
   theme(panel.background = element_rect(fill = "white", colour = "grey40", linewidth = 0.3))
@@ -85,9 +89,9 @@ photo <- function(file, class, site, asp) {
   if (w / h > asp) { nw <- round(h * asp); m <- (w - nw) %/% 2; img <- img[, (m + 1):(m + nw), ] }
   else { nh <- round(w / asp); m <- (h - nh) %/% 2; img <- img[(m + 1):(m + nh), , ] }
   ggplot() + annotation_custom(rasterGrob(img, width = unit(1, "npc"), height = unit(1, "npc"), interpolate = TRUE)) +
-    annotate("label", x = 0.03, y = 0.95, label = class, hjust = 0, vjust = 1, size = 2.5, fontface = "bold",
+    annotate("label", x = 0.03, y = 0.95, label = class, hjust = 0, vjust = 1, size = 3.2, fontface = "bold",
              colour = "white", fill = pal_class[[class]], label.size = 0, label.padding = unit(0.18, "lines")) +
-    annotate("text", x = 0.97, y = 0.05, label = site, hjust = 1, vjust = 0, size = 2.1, colour = "white", fontface = "bold") +
+    annotate("text", x = 0.97, y = 0.05, label = site, hjust = 1, vjust = 0, size = 2.7, colour = "white", fontface = "bold") +
     scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) + scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
     theme_void() + theme(plot.margin = margin(1, 0, 1, 0))
 }
@@ -96,7 +100,7 @@ pb <- photo("SRS5.jpg", "intact", "SRS5", asp) / photo("BL60-2.jpg", "regenerati
 
 # ---- (c) schematic placeholder ----
 pc <- ggplot() + annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = "grey96", colour = "grey70", linetype = 2) +
-  annotate("text", x = 0.5, y = 0.5, size = 2.6, colour = "firebrick", lineheight = 1,
+  annotate("text", x = 0.5, y = 0.5, size = 3.2, colour = "firebrick", lineheight = 1,
            label = "PLACEHOLDER: measurement-scales schematic (artist)\ncomponent chambers -> laser-scanned surfaces -> stand budget -> eddy-covariance tower -> aircraft -> region") +
   scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0)) + theme_void()
 

@@ -99,7 +99,7 @@ pc <- ggplot() +
   geom_path(data = tracks, aes(lon, lat, group = storm), colour = "grey35", linewidth = 0.35, linetype = "22") +
   geom_sf(data = loss, aes(fill = "dieback", colour = "dieback"), linewidth = 0.45) +
   geom_text(data = lab_pts, aes(lon, lat, label = paste(storm, "2017"), hjust = hjust), colour = "grey25", size = 2.3, fontface = "italic") +
-  scale_fill_manual(values = c(dieback = pal_gas[["CH4"]]), labels = "2017 hurricane dieback\n(outlines widened to be visible)", name = NULL) +
+  scale_fill_manual(values = c(dieback = pal_gas[["CH4"]]), labels = "2017 hurricane dieback", name = NULL) +
   scale_colour_manual(values = c(dieback = pal_gas[["CH4"]]), guide = "none") +
   coord_sf(xlim = c(-98, -59), ylim = c(8, 31), expand = FALSE) +
   labs(x = NULL, y = NULL,
