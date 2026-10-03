@@ -56,7 +56,8 @@ steps <- c(
   "code/07_upscaling/09_regional_scaling.R",
   # 08 figures: display items, then copy into output/figures/main and SI
   "code/08_figures/fig2_component_boot.R",          # Fig 2, Fig S4
-  "code/08_figures/fig3_stem_height.R",             # Fig 3
+  "code/08_figures/fig3_stem_height.R",             # old Fig 3 (Extended Data 2 source)
+  "code/08_figures/fig2_rates.R",                   # Fig 2
   "code/08_figures/plot_budget_figs.R",             # Fig 4
   "code/08_figures/fig6_porewater_pca.R",           # Fig 5, Figs S12-S13
   "code/08_figures/plot_closure.R",                 # Fig 6

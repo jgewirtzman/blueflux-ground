@@ -10,11 +10,11 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 fig <- "output/figures"
 display_items <- c(
   # curated file                      = generated source                              (script)
-  "main/Fig2_component_fluxes.png"    = "other/pub_component_by_class_boot.png",        # fig2_component_boot.R
-  "main/Fig3_trees.png"               = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R
-  "main/Fig4_budgets.png"             = "other/pub_budget_composite.png",               # plot_budget_figs.R
-  "main/Fig5_geochemistry.png"        = "other/pub_pca_porewater_full_composite.png",   # fig6_porewater_pca.R
-  "main/Fig6_closure_forcing.png"     = "presentation/FigClosureForcing.png",           # plot_closure.R
+  "main/Fig2_rates.png"                = "other/fig2_rates.png",                         # fig2_rates.R (Fig 2a-c)
+  "main/Fig3_budgets.png"              = "other/pub_budget_composite.png",               # plot_budget_figs.R  [to rebuild in new style]
+  "main/Fig4_geochemistry.png"         = "other/pub_pca_porewater_full_composite.png",   # fig6_porewater_pca.R [to rebuild]
+  "main/Fig5_closure_forcing.png"      = "presentation/FigClosureForcing.png",           # plot_closure.R [to rebuild]
+  "SI/ED2_tree_detail_old_Fig3.png"    = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R (old Fig 3; ED2 source)
   "SI/FigS1_ebullition.png"           = "other/pub_SI_ebullition_partition.png",        # figS1_ebullition.R
   "SI/FigS2_pneumatophore.png"        = "other/pub_SI_pneumatophore_density.png",       # figS2_pneumatophore.R
   "SI/FigS3_chambers.png"             = "other/pub_SI_chamber_photos.png",              # figS3_chamber_photos.R
