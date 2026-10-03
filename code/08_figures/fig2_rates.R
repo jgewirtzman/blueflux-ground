@@ -60,21 +60,23 @@ rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {
 w <- d %>% filter(site_type == "core site", component %in% c("stem", "root"), month_year %in% c("2022-10", "2023-03"), !is.na(height_corrected)) %>%
   mutate(surface = factor(ifelse(component == "root", "prop root", "stem"), c("stem", "prop root")),
          h = pmax(height_corrected, 0) / 100)
+zoom_fill <- "grey96"; zoom_top <- 1.9; f_xmax <- 0.17; zoom_dx <- 0.042
 prof_panel <- function(gas, curves, breaks, xlab) {
   cur <- read.csv(curves) %>% mutate(class = factor(class, names(pal_class)))
   ww <- w %>% mutate(v = .data[[paste0(gas, "_best.flux")]]) %>% filter(!is.na(v))
   ggplot() +
-    annotate("rect", xmin = -Inf, xmax = Inf, ymin = -0.03, ymax = 0.05, fill = col_waterline) +
+    annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = 0.05, fill = col_waterline) +
     geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3) +
     geom_point(data = ww, aes(asinh(v), h, colour = class, shape = surface), size = 0.9, alpha = 0.35, stroke = 0.4) +
     geom_ribbon(data = cur, aes(y = h / 100, xmin = fit - 1.96 * se, xmax = fit + 1.96 * se, fill = class),
                 alpha = 0.18, orientation = "y") +
     geom_path(data = cur, aes(fit, h / 100, colour = class), linewidth = 1) +
     scale_x_continuous(breaks = asinh(breaks), labels = breaks) +
-    scale_y_continuous(limits = c(-0.03, 1.9), expand = c(0, 0)) +
+    scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0)) +
     scale_colour_manual(values = pal_class, guide = "none") + scale_fill_manual(values = pal_class, guide = "none") +
     scale_shape_manual(values = c(stem = 16, `prop root` = 2), name = "surface") +
     labs(x = xlab, y = "Height above water (m)") + theme_fig() +
+    theme(panel.background = element_rect(fill = zoom_fill, colour = "grey55", linewidth = 0.4)) +
     guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1)))
 }
 pc <- prof_panel("CH4", "output/analysis/woody_height_model_curves.csv", c(0, 1, 10, 100, 1000),
@@ -149,14 +151,20 @@ hb <- read.csv("data/tls/all_sites_summary.csv") %>% left_join(tsz %>% select(si
   group_by(class, site, part, h) %>% summarise(sa = sum(Total_surface_area_m2) / first(area_m2), .groups = "drop") %>%
   group_by(class, part, h) %>% summarise(sa = mean(sa), .groups = "drop")
 height_panel <- function() {
+  # grey band = chamber height range shown enlarged in d, e; connector lines lead to them
+  con <- data.frame(class = factor("ghost", levels(hb$class)), x = f_xmax, y = c(0, zoom_top),
+                    xend = f_xmax + zoom_dx, yend = c(0, 18.5))
   ggplot(hb, aes(sa, h + 0.25, fill = part)) +
-    annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = 1.8, fill = "grey93") +
+    annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = zoom_top, fill = "grey90") +
     geom_col(orientation = "y", width = 0.45, position = position_stack(reverse = TRUE), colour = NA) +
+    geom_segment(data = con, aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE,
+                 colour = "grey55", linewidth = 0.4, linetype = "22") +
     facet_grid(~ class) +
     scale_fill_manual(values = c(`prop root` = pal_comp[["prop root"]], `stem and branch` = pal_comp[["stem"]]), name = "woody surface") +
     scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0)) +
-    scale_x_continuous(expand = expansion(mult = c(0, 0.05)), breaks = c(0, 0.1)) +
-    labs(x = expression("Surface per ground area (m"^2*" m"^-2*" per 0.5 m)"), y = "Height (m)") +
+    scale_x_continuous(breaks = c(0, 0.1)) +
+    coord_cartesian(xlim = c(0, f_xmax), ylim = c(0, 18.5), expand = FALSE, clip = "off") +
+    labs(x = expression("Woody surface (m"^2*" m"^-2*" per 0.5 m)"), y = "Height (m)") +
     theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.y = element_blank())
 }
 
@@ -170,19 +178,34 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
     guides(fill = guide_legend(override.aes = list(size = 2.5), nrow = 1))
   pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE)
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), nrow = 1))
-  leg_class <- horiz(pa); leg_surf <- horiz(pc2)
+  pf <- height_panel()
+  leg_class <- horiz(pa); leg_surf <- horiz(pc2); leg_wood <- horiz(pf)
   nl <- theme(legend.position = "none")
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
-  pcc <- pcc + lt + theme(legend.position = "right")
-  pf <- height_panel() + lt + theme(legend.position = "bottom", legend.direction = "horizontal", legend.title.position = "left")
-  ab <- (((pa + nl + labs(tag = "a")) | (pb + nl + labs(tag = "b"))) / wrap_elements(full = leg_class)) + plot_layout(heights = c(1, 0.07))
-  de <- (((pc2 + nl + labs(tag = "d")) | (pd + nl + labs(tag = "e"))) / wrap_elements(full = leg_surf)) + plot_layout(heights = c(1, 0.07))
-  row1 <- (ab | (pcc + labs(tag = "c"))) + plot_layout(widths = c(2, 1.15))
-  row2 <- (de | (pf + labs(tag = "f"))) + plot_layout(widths = c(2, 1.15))
-  fig <- (row1 / row2) + plot_layout(heights = c(1, 0.95)) +
+  pcc <- pcc + lt
+  if (pie) {
+    pcc <- pcc + guides(fill = guide_legend(ncol = 2, byrow = TRUE)) +
+      theme(legend.position = "bottom", legend.direction = "horizontal", legend.title = element_blank()) +
+      coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.4, 1.05), clip = "off")
+  } else pcc <- pcc + theme(legend.position = "right")
+  design <- "
+    ABC
+    GGC
+    FDE
+    TSS
+  "
+  # plots are matched to design letters in alphabetical order: A B C D E F G S T
+  fig <- (pa + nl + labs(tag = "a")) + (pb + nl + labs(tag = "b")) + (pcc + labs(tag = "c")) +
+    (pc2 + nl + labs(tag = "e", y = NULL) + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "right") +
+       theme(axis.text.y.right = element_blank(), axis.ticks.y.right = element_blank())) +
+    (pd + nl + labs(tag = "f") + scale_y_continuous(limits = c(0, zoom_top), expand = c(0, 0), position = "left", name = NULL) +
+       theme(axis.text.y = element_text())) +
+    (pf + nl + labs(tag = "d")) +
+    wrap_elements(full = leg_class) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) +
+    plot_layout(design = design, widths = c(1, 1, 1), heights = c(1, 0.05, 1, 0.05)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
-  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 6.0, dpi = 300, bg = "white")
-  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.0, device = cairo_pdf)
+  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.9, dpi = 300, bg = "white")
+  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 5.9, device = cairo_pdf)
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "", pie = TRUE)

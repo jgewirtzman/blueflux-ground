@@ -83,7 +83,7 @@ pa <- ggplot() +
 inset <- ggplot() + geom_sf(data = fl_in, fill = "grey90", colour = "grey55", linewidth = 0.15) +
   geom_sf(data = box, fill = NA, colour = col_ink, linewidth = 0.4) + theme_void() +
   theme(panel.background = element_rect(fill = "white", colour = "grey40", linewidth = 0.3))
-pa <- (pa + labs(tag = "a")) + inset_element(inset, left = 0.785, bottom = 0.70, right = 0.99, top = 0.99, align_to = "panel")
+pa <- (pa + labs(tag = "a")) + inset_element(inset, left = 0.81, bottom = 0.75, right = 1.02, top = 1.06, align_to = "panel", clip = FALSE)
 
 # ---- (b) photos ----
 photo <- function(file, class, site, asp) {
@@ -106,7 +106,7 @@ pc <- ggplot() + annotation_custom(rasterGrob(sch, width = unit(1, "npc"), heigh
   scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) + scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
   theme_void() + theme(aspect.ratio = dim(sch)[1] / dim(sch)[2])
 
-top <- pa + (wrap_elements(full = pb) + labs(tag = "b") + theme(plot.tag.position = c(0, 1.02), plot.margin = margin(14, 0, 0, 4), plot.tag = element_text(face = "bold", size = 11))) +
+top <- pa + (wrap_elements(full = pb) + labs(tag = "b") + theme(plot.tag.position = c(0, 1.02), plot.margin = margin(14, 0, 0, 14), plot.tag = element_text(face = "bold", size = 11))) +
   plot_layout(widths = c(2.15, 1))
 fig <- top / (pc + labs(tag = "c") + theme(plot.tag = element_text(face = "bold", size = 11))) + plot_layout(heights = c(1, 0.62)) 
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
