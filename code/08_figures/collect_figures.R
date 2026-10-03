@@ -23,16 +23,17 @@ display_items <- c(
   "SI/FigS6_stem_detail.png"            = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R
   "SI/FigS7_height_extrapolation.png"   = "other/stem_extrap_clean.png",                  # plot_extrap_clean.R
   "SI/FigS8_SA_by_height.png"           = "other/SA_by_segment_height_fixedY.png",        # plot_SA_height_fixedY.R
-  "SI/FigS9_tide_scenarios.png"         = "other/si_S9_tide_scenarios.png",               # si_upscaling_figs.R
-  "SI/FigS10_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
-  "SI/FigS11_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
-  "SI/FigS12_carbonate.png"             = "other/si_S12_carbonate.png",                   # si_porewater_carbonate.R
-  "SI/FigS13_salinity_CH4_bysite.png"   = "other/pub_SI_salinity_vs_ch4_bysite.png",      # site_characterization_figures.R
-  "SI/FigS14_carbon_budget.png"         = "other/fig_carbon_budget.png",                  # fig_carbon_budget.R
-  "SI/FigS15_tower_GPP.png"             = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
-  "SI/FigS16_site_closure.png"          = "other/site_closure_comparison.png"             # plot_site_closure.R
+  "SI/FigS9_tide_states.png"            = "other/si_tide_states.png",                     # si_upscaling_figs.R
+  "SI/FigS10_sensitivity_switch.png"    = "other/si_sensitivity_switch.png",              # si_upscaling_figs.R
+  "SI/FigS11_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
+  "SI/FigS12_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
+  "SI/FigS13_carbonate.png"             = "other/si_S12_carbonate.png",                   # si_porewater_carbonate.R
+  "SI/FigS14_salinity_CH4_bysite.png"   = "other/pub_SI_salinity_vs_ch4_bysite.png",      # site_characterization_figures.R
+  "SI/FigS15_carbon_budget.png"         = "other/fig_carbon_budget.png",                  # fig_carbon_budget.R
+  "SI/FigS16_tower_GPP.png"             = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
+  "SI/FigS17_site_closure.png"          = "other/site_closure_comparison.png"             # plot_site_closure.R
 )
-# S17 (metagenome detail) is a placeholder until the sequencing results arrive.
+# S18 (metagenome detail) is a placeholder until the sequencing results arrive.
 # Clear stale curated SI copies so the folder mirrors the current numbering.
 unlink(Sys.glob(file.path(fig, "SI", "*.png")))
 

@@ -1,17 +1,16 @@
 # =============================================================================
 # House-style SI upscaling figures, rebuilt from CSVs written by
 # code/07_upscaling/02_upscale_methane.R (no values recomputed):
-#   Fig. S7b  height_extrap_sensitivity.csv  -> si_S7b_extrap_sensitivity.png
-#             total plot CH4 under six stem height-extrapolation rules
-#             (non-stem held constant; high tide at tidal sites), as p13b.
-#   Fig. S9   plot_level_CH4_totals.csv      -> si_S9_tide_scenarios.png
-#             total CH4 by site x campaign x tide state x stem rule, as p3.
-#   Fig. S10  mc_component_uncertainty.csv   -> si_S10_mc_uncertainty.png
+#   (legacy) si_S7b_extrap_sensitivity.png, si_S9_tide_scenarios.png (superseded; not collected)
+#   Fig. S9   plot_level_CH4_totals.csv + mc_component_uncertainty.csv -> si_tide_states.png
+#   Fig. S10  qa/sensitivity_summary.csv     -> si_sensitivity_switch.png
+#   Fig. S11  mc_component_uncertainty.csv   -> si_S10_mc_uncertainty.png
 #             Monte Carlo SE per component (fixed / high-tide rows, SE > 0), as pub4.
 # =============================================================================
 suppressMessages({library(dplyr); library(tidyr); library(ggplot2)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/08_figures/palette.R")
+invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
 out <- "output/figures/other"
 CAMP <- c("Oct 2022", "Mar 2023")
 site_class <- c(SRS5 = "intact", SRS6 = "intact", CP40 = "ghost", FLM30 = "ghost")
@@ -100,3 +99,78 @@ p10 <- ggplot(mc, aes(mc_se, comp)) +
   theme_fig() + theme(panel.grid.major.y = element_blank(), panel.spacing = unit(8, "pt"),
                       axis.text.y = element_text(size = 7))
 save_si(p10, "si_S10_mc_uncertainty", 3.4)
+
+# ---- Tide: intact stand CH4 at high vs low tide, by component -----------------
+# SRS5/SRS6 (the tidal sites), exponential stem rule; bars = high- and low-tide
+# states, diamond = the tide-weighted value used in the budgets (flooded share of
+# the floor in the campaign month; M11).
+td <- read.csv("output/upscaling/plot_level_CH4_totals.csv") %>%
+  filter(scenario == "exponential", tide_state %in% c("high_tide", "low_tide")) %>%
+  mutate(campaign = factor(campaign, CAMP), site = factor(site, c("SRS5", "SRS6")),
+         tide = factor(ifelse(tide_state == "high_tide", "high tide", "low tide"), c("high tide", "low tide")))
+tw <- td %>% group_by(site, campaign) %>% summarise(w = sum(total_mg * tide_weight) / sum(tide_weight), .groups = "drop")
+tl <- td %>% select(site, campaign, tide, water = water_mg, soil = soil_mg, `prop root` = root_mg, stem = stem_mg,
+                    `downed wood` = cwd_mg) %>%
+  pivot_longer(c(water, soil, `prop root`, stem, `downed wood`), names_to = "comp", values_to = "mg") %>%
+  mutate(comp = factor(comp, c("water", "soil", "prop root", "stem", "downed wood")))
+# Monte Carlo 95% intervals of the stand total for each tide state (mc_component_uncertainty.csv)
+mci <- read.csv("output/upscaling/mc_component_uncertainty.csv") %>%
+  filter(site %in% c("SRS5", "SRS6"), component == "total", tide_state %in% c("high_tide", "low_tide")) %>%
+  mutate(campaign = factor(campaign, CAMP), site = factor(site, c("SRS5", "SRS6")),
+         tide = factor(ifelse(tide_state == "high_tide", "high tide", "low tide"), c("high tide", "low tide"))) %>%
+  left_join(td %>% select(site, campaign, tide, total_mg), by = c("site", "campaign", "tide"))
+# stacked segments built on the raw scale so the asinh axis does not distort the stacking
+seg_t <- tl %>% group_by(site, campaign, tide) %>% arrange(comp, .by_group = TRUE) %>%
+  mutate(hi = cumsum(mg), lo = hi - mg) %>% ungroup() %>% filter(mg > 0)
+xi <- function(f) as.numeric(f)
+p_tide <- ggplot(seg_t) +
+  geom_rect(aes(xmin = xi(tide) - 0.3, xmax = xi(tide) + 0.3, ymin = lo, ymax = hi, fill = comp), colour = "white", linewidth = 0.25) +
+  geom_errorbar(data = mci, aes(x = xi(tide), ymin = mc_ci_lo, ymax = mc_ci_hi), width = 0.1, linewidth = 0.4, colour = col_ink) +
+  geom_point(data = mci, aes(x = xi(tide), y = total_mg), shape = 23, size = 1.6, fill = "white", colour = col_ink, stroke = 0.4) +
+  geom_hline(data = tw, aes(yintercept = w), linetype = "22", colour = col_ink, linewidth = 0.35) +
+  geom_label(data = tw, aes(x = 1.5, y = w, label = "tide-weighted"), inherit.aes = FALSE, size = 2.1,
+             colour = "grey25", fill = "white", label.size = 0, label.padding = unit(1.2, "pt")) +
+  geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.3) +
+  facet_grid(campaign ~ site) +
+  scale_fill_manual(values = pal_comp, name = NULL) +
+  scale_x_continuous(breaks = 1:2, labels = c("high tide", "low tide"), expand = expansion(add = 0.45)) +
+  scale_y_continuous(trans = "asinh", breaks = c(-1, 0, 1, 2, 5, 10, 20, 50)) +
+  labs(x = NULL, y = expression("Stand CH"[4]*" (mg m"^-2*" ground d"^-1*")")) +
+  theme_fig() + theme(legend.position = "right", panel.grid.major.x = element_blank(),
+                      strip.text.x = element_text(colour = pal_class[["intact"]], face = "bold", size = 8, hjust = 0.5))
+save_si(p_tide, "si_tide_states", 4.0)
+
+# ---- Sensitivity of the intact-to-ghost switch to analytical choices (table S10) ----
+sens_lab <- c(`none (1.00)` = "none (1.00)", `literature (2.00)` = "literature (2.00)", `stem_chambers (4.33)` = "stem chambers (4.33)",
+  `negligible (0.01 m3/ha)` = "negligible (0.01 m³ ha⁻¹)", `krauss_lo (13 m3/ha)` = "Krauss low (13 m³ ha⁻¹)",
+  `krauss_eyewall (132 m3/ha)` = "Krauss eyewall (132 m³ ha⁻¹)", `krauss_hi (181 m3/ha)` = "Krauss high (181 m³ ha⁻¹)",
+  equal_split = "high and low tide weighted equally", switch_campaign = "all-or-nothing, campaign months",
+  switch_longterm = "all-or-nothing, long-term record", area_campaign_lo = "area-weighted, campaign months (low)",
+  area_campaign_hi = "area-weighted, campaign months (high)", area_longterm = "area-weighted, long-term record",
+  necb_alk_retained = "lateral export, alkalinity retained", necb_all_export = "lateral export, all returned to air",
+  storage = "storage only (burial + wood)")
+choice_lab <- c(`Q10 (day -> 24 h, chamber CO2)` = "Q10, day to 24 h (chamber CO₂)", `Downed CWD volume` = "Downed wood volume",
+  `Flooding representation (intact)` = "Flooding of the intact floor", `Tidal phase, intact water CH4` = "Tidal phase, intact water CH₄",
+  `CH4 day -> 24 h` = "CH₄, day to 24 h", `Ghost floor without standing water (Mar 2023)` = "Ghost floor without standing water (Mar 2023)",
+  `Leaf respiration` = "Leaf respiration", `Carbon-balance framing` = "Carbon-balance framing")
+ss <- read.csv("output/qa/sensitivity_summary.csv")
+cen <- ss$switch_net20[ss$choice == "central"]
+sd <- ss %>% filter(!choice %in% c("central", "Monte Carlo 95 % interval")) %>%
+  mutate(setting = gsub("\\s+", " ", setting), key = sub(" \\(SRS5.*$", "", setting),
+         lab = ifelse(key %in% names(sens_lab), sens_lab[key], gsub("<= ", "≤", setting)),
+         choice = choice_lab[choice])
+ord <- sd %>% group_by(choice) %>% summarise(r = max(switch_net20) - min(switch_net20), .groups = "drop") %>% arrange(desc(r)) %>% pull(choice)
+ord <- c(setdiff(ord, choice_lab[["Carbon-balance framing"]]), choice_lab[["Carbon-balance framing"]])
+sd <- sd %>% mutate(choice = factor(choice, ord)) %>% arrange(choice, switch_net20) %>%
+  mutate(row = factor(paste(choice, lab, sep = "||"), unique(paste(choice, lab, sep = "||"))))
+p_sens <- ggplot(sd, aes(y = row)) +
+  geom_vline(xintercept = cen, colour = col_ink, linewidth = 0.4) +
+  geom_segment(aes(x = cen, xend = switch_net20, yend = row), colour = "grey70", linewidth = 0.6) +
+  geom_point(aes(x = switch_net20, fill = switch_net20 > cen), shape = 21, size = 2, colour = "white", stroke = 0.3) +
+  facet_grid(choice ~ ., scales = "free_y", space = "free_y", switch = "y", labeller = label_wrap_gen(24)) +
+  scale_y_discrete(labels = function(x) sub("^.*\\|\\|", "", x)) +
+  scale_fill_manual(values = c(`TRUE` = "#A23B72", `FALSE` = "#2C7BB6"), guide = "none") +
+  labs(x = expression("Intact-to-ghost switch (g CO"[2]*"-eq m"^-2*" yr"^-1*", GWP20)"), y = NULL) +
+  theme_fig() + theme(strip.placement = "outside", strip.text.y.left = element_text(angle = 0, hjust = 1, face = "bold", size = 7),
+                      axis.text.y = element_text(size = 6.5), panel.grid.major.y = element_blank(), panel.spacing.y = unit(3, "pt"))
+save_si(p_sens, "si_sensitivity_switch", 6.2)
