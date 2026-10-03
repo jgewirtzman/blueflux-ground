@@ -196,9 +196,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/stem_extrap_clean.png>){width=6.5in}
 
-![](<output/figures/other/si_S7b_extrap_sensitivity.png>){width=6.5in}
-
-**Fig. S7.** Stem height extrapolation (text S1). (a) Measured stem CH4 by height with exponential-decay fits by forest class to positive fluxes up to 1.5 m (solid), extrapolated above it and clamped at zero (dashed; shaded zone); inverse-hyperbolic-sine axis. (b) Total plot CH4 (mg m−2 d−1) under six extrapolation rules by site and campaign, with non-stem components held constant and high tide at tidal sites; x axes differ by site.
+**Fig. S7.** Stem height extrapolation (text S1). (a) Measured stem CH4 (points; height above water or soil) and the stem profile under each of six extrapolation rules (lines; TLS height above ground), by site and campaign; the default rule is exponential decay to zero; shaded, above the 1.5 m chamber limit; square-root height axis; inverse-hyperbolic-sine flux axes that differ by site. (b) Stem CH4 per unit ground area (absolute tree flux) and (c) total plot CH4 under each rule, with non-stem components held constant and high tide at tidal sites; x axes differ by site.
 
 
 ![](<output/figures/other/SA_by_segment_height_fixedY.png>){width=6.5in}
