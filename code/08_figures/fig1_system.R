@@ -48,11 +48,11 @@ pal_map <- pal_class
 
 pa <- ggplot() +
   geom_sf(data = fl, fill = "grey95", colour = "grey60", linewidth = 0.2) +
-  geom_sf(data = srs, fill = "grey85", colour = NA) +
-  geom_sf(data = ts, fill = "grey88", colour = NA) +
   geom_sf(data = enp, colour = "grey45", linewidth = 0.35, linetype = "22") +
   geom_sf(data = mang, aes(fill = "mangrove (2016)"), colour = NA) +
   geom_sf(data = loss, aes(fill = "2017 hurricane dieback"), colour = "#A9A5BD", linewidth = 0.2) +
+  geom_sf(data = srs, fill = alpha("grey45", 0.18), colour = "grey55", linewidth = 0.2) +
+  geom_sf(data = ts, fill = alpha("grey45", 0.18), colour = "grey55", linewidth = 0.2) +
   geom_segment(data = lab %>% filter(moved), aes(X, Y, xend = px, yend = py), colour = "grey35", linewidth = 0.3) +
   geom_point(data = lab %>% filter(moved), aes(X, Y), size = 0.7, colour = col_ink) +
   geom_point(data = txy, aes(X, Y), shape = 24, size = 2.4, fill = "white", colour = col_ink, stroke = 0.5) +
