@@ -83,7 +83,7 @@ steps <- c(
   "code/08_figures/plot_us_skr_gpp.R",              # tower GPP diagnostics
   "code/08_figures/si_campaign_context.R",          # Fig S14
   "code/08_figures/site_characterization_figures.R",# Fig S12c data
-  "code/08_figures/plot_site_closure.R",            # Fig S15
+  "code/08_figures/plot_site_closure.R",            # exploratory site closure (not in SI)
   "code/08_figures/plot_water_positions.R",         # Fig S2b
   "code/08_figures/figS_sampling_design.R",         # Fig S2a
   "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)

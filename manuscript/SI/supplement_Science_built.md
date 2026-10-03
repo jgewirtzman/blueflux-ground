@@ -130,7 +130,7 @@ Bottom-up respiration may legitimately exceed tower-partitioned respiration, and
 
 ## Text S6. Regenerating stand
 
-Component rates were measured at BL60, but no scanned surface area or airborne end-member exists for regenerating forest, so it is reported at the component scale and excluded from the closed budgets. BL60 had the highest component CH4 rates of any class (soil 56, 95% CI 27–91; water 57, 33–89; stem 14, 3–34; root 5.7, 2.7–8.1 nmol m−2 s−1). Built like the other classes, campaign by campaign with each campaign's measured flooded share (0.96 of depth readings with standing water in October 2022, 0 in March 2023) and then averaged, BL60 emits ~29 g CH4 m−2 yr−1 with stem and prop-root areas midway between the ghost and intact classes, and 24–33 for no woody surface to the full intact woody surface (fig. S15B); the floor (soil and water) alone supplies ~24. This is above both ghost (~12) and intact (~1.5) forest under every structural assumption. The estimate assumes structure and is not part of the closed budgets or forcing, but indicates that early regeneration need not be a low-emission state.
+Component rates were measured at BL60, but no scanned surface area or airborne end-member exists for regenerating forest, so it is reported at the component scale and excluded from the closed budgets. BL60 had the highest component CH4 rates of any class (soil 56, 95% CI 27–91; water 57, 33–89; stem 14, 3–34; root 5.7, 2.7–8.1 nmol m−2 s−1). Built like the other classes, campaign by campaign with each campaign's measured flooded share (0.96 of depth readings with standing water in October 2022, 0 in March 2023) and then averaged, BL60 emits ~29 g CH4 m−2 yr−1 with stem and prop-root areas midway between the ghost and intact classes, and 24–33 for no woody surface to the full intact woody surface; the floor (soil and water) alone supplies ~24. This is above both ghost (~12) and intact (~1.5) forest under every structural assumption. The estimate assumes structure and is not part of the closed budgets or forcing, but indicates that early regeneration need not be a low-emission state.
 
 ## Text S7. Porewater alkalinity and sulfate
 
@@ -234,14 +234,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 **Fig. S14.** Campaign context (M2). Monthly z-scores of SRS6 water level (FCE LTER, 2001–2024), air temperature and midday net CO2 uptake (US-Skr tower, 2004–2011 and 2018–2023) and tower CH4 flux (2018–2023; FCH4 + storage, quality flag ≤ 1, u* > 0.2), each standardised over all of its year-months. Lines, median for each calendar month; bands, interquartile range across years (16–22 years per month for water level, 2–6 for tower CH4); points, the campaign months (October 2022, March 2023) with ±1 SD of daily means within the month; shading, campaign months. The tower CH4 record carries a negative dry-season offset that the z-score removes; only its seasonal pattern is shown.
 
 
-![](<output/figures/other/site_closure_comparison.png>){width=6.5in}
-
-**Fig. S15.** Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited.
 
 
-
-
-**Fig. S16.** _[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_
+**Fig. S15.** _[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_
 
 
 ---
@@ -276,7 +271,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Total excluded | 77 |  |
 | Analysed | 762 |  |
 
-**Table S3. Analysed fluxes by site, campaign and component.**
+**Table S3. Analysed fluxes by site, campaign and component.** The intact water-surface term in October 2022 (SRS5, SRS6), where no floating chamber was deployed, was estimated from dissolved CH4 and CO2 (M8).
 
 | Site | Campaign | stem | root | soil | water | cwd | leaves | Total |
 |---|---|---|---|---|---|---|---|---|
