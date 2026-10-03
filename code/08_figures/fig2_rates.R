@@ -3,7 +3,7 @@
 #   (a) CH4 and (b) CO2 per m2 of surface by component (rows) and forest class
 #       (side by side, class colours, one shared axis): individual measurements
 #       and bootstrapped means with 95% CIs (5,000 resamples); groups with
-#       fewer than 5 closures show points only (no mean); n at the right. Soil collars
+#       fewer than 4 closures show points only (no mean); n at the right. Soil collars
 #       include pneumatophores in the footprint. Core sites (intact SRS5, SRS6;
 #       regenerating BL60; ghost CP40, FLM30), all campaigns, as in the stand
 #       budgets; context sites (RB10, MI, SE1) are in Extended Data 3.
@@ -36,8 +36,8 @@ rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {
   s <- x %>% group_by(comp, class) %>% summarise(n = n(), m = boot(v)[1], lo = boot(v)[2], hi = boot(v)[3], .groups = "drop") %>%
     mutate(y = as.numeric(comp) + dodge[as.character(class)])
   x <- x %>% left_join(s %>% select(comp, class, n), by = c("comp", "class")) %>%
-    mutate(y = as.numeric(comp) + dodge[as.character(class)] + runif(n(), -0.06, 0.06), small = n < 5)
-  s <- s %>% filter(n >= 5); nlab <- x %>% distinct(comp, class, n) %>% mutate(y = as.numeric(comp) + dodge[as.character(class)])
+    mutate(y = as.numeric(comp) + dodge[as.character(class)] + runif(n(), -0.06, 0.06), small = n < 4)
+  s <- s %>% filter(n >= 4); nlab <- x %>% distinct(comp, class, n) %>% mutate(y = as.numeric(comp) + dodge[as.character(class)])
   bands <- data.frame(y = seq_along(levels(dd$comp))) %>% filter(y %% 2 == 1)
   ggplot() +
     geom_rect(data = bands, aes(ymin = y - 0.5, ymax = y + 0.5), xmin = -Inf, xmax = Inf, fill = "grey95") +
@@ -86,8 +86,9 @@ build <- function(dd, file, note) {
     guides(fill = "none")
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
   pd2 <- pd + guides(shape = "none")
-  fig <- (pa + labs(tag = "a")) + (pb + labs(tag = "b")) + (pc2 + labs(tag = "c")) + (pd2 + labs(tag = "d")) +
-    plot_layout(ncol = 2, widths = c(1, 1), heights = c(1, 0.9), guides = "collect") +
+  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(guides = "collect")
+  row2 <- ((pc2 + labs(tag = "c")) | (pd2 + labs(tag = "d"))) + plot_layout(guides = "collect")
+  fig <- (row1 / row2) + plot_layout(heights = c(1, 0.9)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
   fig <- fig & theme(legend.position = "right", legend.title = element_text(size = 7, face = "bold"))
   ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.4, dpi = 300, bg = "white")
