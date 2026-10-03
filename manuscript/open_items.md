@@ -22,7 +22,7 @@ All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 ## QA flags (water chambers)
 - Bubble detection misses steps in the final seconds of a placement (no post-bubble baseline): 1 of 30 bubble-free LGR placements (44857_CP40_Water_78, CP40 Oct 2022) has a ~2.4 ppm step at 336 s inside the diffusive window; diffusive flux ~21% high (25.2 vs ~20.8 nmol m-2 s-1). Option: trim the last ~15 s or flag end steps.
 - LGR1_2023-03-18_FLM30_P09: ~80 s flat lag at the start included in the diffusive window (flux likely underestimated). Check stage-02 window start for lagged placements.
-- Gradual bubble releases are missed: 45000_CP40_Water_124 (CP40 Mar 2023) has a ~80 ppb rise at 490-525 s, just before the detected bubble at 528 s, not flagged (outside the diffusive window, so diffusive flux unaffected). Bound: the whole-placement total (goFlux over the full placement) is within 1% for this placement and 2-9% of diffusive + detected ebullition at the site x campaign level (CP40 Oct +6%, CP40 Mar +9%, FLM30 Mar +2%), so missed ebullition is <~10%.
+- Gradual bubble releases are missed: 45000_CP40_Water_124 (CP40 Mar 2023) has a ~80 ppb rise at 490-525 s, just before the detected bubble at 528 s, not flagged (outside the diffusive window, so diffusive flux unaffected). Bound: the whole-placement total (goFlux over the full placement) is within 1% for this placement and 2-9% of diffusive + detected ebullition at the site x campaign level (CP40 Oct +6%, CP40 Mar +9%, FLM30 Mar +2%), so missed ebullition is <~10%. Now shown in fig. S4a as an upper-bound segment with the ebullitive share as a range, and stated in M7.
 - Low R2 (<0.95) bubble-free placements are mostly SRS5 Mar 2023 near-zero fluxes (expected near detection).
 
 ## Optional analyses
