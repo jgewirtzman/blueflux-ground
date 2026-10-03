@@ -117,4 +117,6 @@ osland2020 | Osland, M. J. et al. A tropical cyclone-induced ecological regime s
 griffiths2021 | Griffiths, L. N. & Mitsch, W. J. Estimating the effects of a hurricane on carbon storage in mangrove wetlands in Southwest Florida. Plants 10, 1749 (2021). https://doi.org/10.3390/plants10081749
 volta2020 | Volta, C. et al. Seasonal variations in dissolved carbon inventory and fluxes in a mangrove-dominated estuary. Glob. Biogeochem. Cycles 34, e2019GB006515 (2020). https://doi.org/10.1029/2019GB006515
 romigh2006 | Romigh, M. M., Davis, S. E., Rivera-Monroy, V. H. & Twilley, R. R. Flux of organic carbon in a riverine mangrove wetland in the Florida Coastal Everglades. Hydrobiologia 569, 505–516 (2006). https://doi.org/10.1007/s10750-006-0152-x
+romerouribe2022 | Romero-Uribe, H. M., López-Portillo, J., Reverchon, F. & Hernández, M. E. Effect of degradation of a black mangrove forest on seasonal greenhouse gas emissions. Environ. Sci. Pollut. Res. 29, 11951–11965 (2022). https://doi.org/10.1007/s11356-021-16597-1
+lovelock2011 | Lovelock, C. E., Ruess, R. W. & Feller, I. C. CO2 efflux from cleared mangrove peat. PLoS ONE 6, e21279 (2011). https://doi.org/10.1371/journal.pone.0021279
 
