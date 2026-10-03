@@ -49,8 +49,8 @@ Thanks so much for the map; it's exactly what I needed. I'm using it as a first-
 
 A few quick questions so I describe it correctly:
 1. **Area:** recomputed in an equal-area projection, I get 173 km² in total (Cuba 104, US 60, Puerto Rico 5.4, Venezuela 2.5). The `area` attribute sums to 206 km², which I think is planar Mercator. Does that sound right?
-2. **The `median` attribute** (values 1–6): what does it represent?
-3. **Description and citation:** how should I describe and cite the product? Something like "CIFOR short-term mangrove loss after the 2017 hurricane season, on the Global Mangrove Watch v1 baseline", plus its resolution and how "little recovery" was defined (time window, threshold).
+2. **The `median` attribute** (values 1–6): what does it represent? From the file metadata, the layer is `CIFOR_recoveryYear_2017_GMW_V1_dissolved_shortTermLoss`, selected for median > 0.
+3. **Citation and definition:** I'm citing Taillie et al. 2020 (ERL 15:064010) for the analysis. Their methods use Landsat ΔNDVI < −0.2 within GMW v1, with persistent damage defined as no NDVI recovery over the 7-month post-season. Is that right? And how does this layer (173 km²) relate to the ~790 km² of persistent damage in that paper? Is it a stricter subset, for example no recovery by a later date?
 4. **Optional:** if you have total mangrove area for the same region handy (e.g. from GMW), I'd like to give the affected fraction. No worries if not.
 
 Thanks again!
