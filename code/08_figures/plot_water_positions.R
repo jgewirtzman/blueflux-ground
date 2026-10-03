@@ -14,30 +14,32 @@ df$camp <- with(df, ifelse(year==2022&month==10,"Oct 2022",
 off_pat <- "river|open|off peir|off pier|outside|outisde|pier|interface|edge"   # "outisde": field-note spelling
 w <- df %>% filter(component=="water", !is.na(CH4_best.flux), !is.na(camp)) %>%
   mutate(position = case_when(
-           is.na(collar_location) ~ "unlabeled",
-           grepl(off_pat, collar_location, ignore.case=TRUE) ~ "off-plot / open water",
-           TRUE ~ "in-plot"),
+           is.na(collar_location) ~ "not recorded",
+           grepl(off_pat, collar_location, ignore.case=TRUE) ~ "channel / open water",
+           TRUE ~ "above forest floor"),
          class = recode(plot, CP40="ghost",FLM30="ghost",MI="ghost",
-                        BL60="regen",SE1="scrub",SRS5="healthy",SRS6="healthy",RB10="healthy"),
+                        BL60="regenerating",SE1="scrub",SRS5="intact",SRS6="intact",RB10="intact"),
          site = factor(plot, levels=c("CP40","FLM30","BL60","SE1","SRS5","SRS6")),
          camp = factor(camp, levels=c("Mar 2022","Oct 2022","Mar 2023")),
-         lab = ifelse(position=="off-plot / open water",   # display only: full note, whitespace tidied, "peir" spelled out
-                      stringr::str_wrap(gsub(" ,", ",", gsub("peir", "pier", trimws(gsub("\\s+", " ", collar_location)))), 12), ""))
+         position = factor(position, c("above forest floor", "channel / open water", "not recorded")))
 
 source("code/08_figures/palette.R")   # house palette + theme_fig()
-pos_cols <- c("in-plot" = "#2C7BB6", "off-plot / open water" = "#C2513A", "unlabeled" = "grey65")
+pos_cols <- c("above forest floor" = "#2C7BB6", "channel / open water" = "#C2513A", "not recorded" = "grey65")
 site_cls <- c(CP40 = "ghost", FLM30 = "ghost", BL60 = "regenerating", SE1 = "scrub", SRS5 = "intact", SRS6 = "intact")
 w <- w %>% mutate(site_lab = factor(paste0(site, "\n", site_cls[as.character(site)]),
                                     paste0(levels(site), "\n", site_cls[levels(site)])))
-p <- ggplot(w, aes(site_lab, CH4_best.flux)) +
+# arithmetic mean per site x campaign x position (computed on the raw scale), drawn as a bar
+mn <- w %>% group_by(camp, site_lab, position) %>% summarise(m = mean(CH4_best.flux), .groups = "drop")
+dg <- position_dodge(width = 0.6)
+p <- ggplot(w, aes(site_lab, CH4_best.flux, group = position)) +
   geom_hline(yintercept = 0, colour = "grey60", linewidth = 0.3) +
-  geom_point(aes(fill = position, size = position), shape = 21, colour = "white", stroke = 0.25,
-             position = position_jitter(width = .18, height = 0, seed = 1), alpha = .9) +
-  ggrepel::geom_text_repel(aes(label = lab), size = 2.1, colour = pos_cols[["off-plot / open water"]], max.overlaps = 20,
-                           segment.size = .2, min.segment.length = 0, lineheight = 0.85, seed = 1) +
+  geom_point(aes(fill = position), shape = 21, colour = "white", stroke = 0.25, size = 1.8, alpha = .9,
+             position = position_jitterdodge(jitter.width = 0.12, jitter.height = 0, dodge.width = 0.6, seed = 1)) +
+  geom_errorbar(data = mn, aes(x = site_lab, ymin = m, ymax = m, colour = position, group = position), inherit.aes = FALSE,
+                width = 0.25, linewidth = 0.7, position = dg, show.legend = FALSE) +
+  scale_colour_manual(values = pos_cols) +
   facet_wrap(~camp, nrow = 1, scales = "free_x") +
   scale_fill_manual(values = pos_cols, name = "chamber position") +
-  scale_size_manual(values = c("in-plot" = 1.8, "off-plot / open water" = 2.1, "unlabeled" = 1.4), guide = "none") +
   scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)) +
   labs(x = NULL, y = expression("Water-surface CH"[4]*" (nmol m"^-2*" s"^-1*")"), tag = "b") +
   guides(fill = guide_legend(override.aes = list(size = 2.2))) +
