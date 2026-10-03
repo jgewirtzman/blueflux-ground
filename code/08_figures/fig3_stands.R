@@ -161,10 +161,13 @@ pf <- ggplot(bind_rows(ann, twr) %>% mutate(source = factor(source, src_lev)), a
   labs(x = NULL, y = "Annual stand budget") + theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.x = element_blank())
 
 pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = "none"); pc <- pc + guides(shape = "none", fill = "none")
-pd <- pd + guides(shape = guide_legend(override.aes = list(fill = c("white", "grey30", "grey30"))))
+pd <- pd + guides(shape = guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30", "grey30"))),
+                  fill = guide_legend(ncol = 2))
 fig <- (pe + labs(tag = "a")) + (pf + labs(tag = "b")) + (pa + labs(tag = "c")) + (pb + labs(tag = "d")) +
   (pc + labs(tag = "e")) + (pd + labs(tag = "f")) +
-  plot_layout(ncol = 2, guides = "collect") & theme(legend.position = "right")
+  plot_layout(ncol = 2, guides = "collect") &
+  theme(legend.position = "bottom", legend.box = "horizontal", legend.title.position = "top",
+        legend.margin = margin(0, 8, 0, 8))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 8, device = cairo_pdf)
+ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8.4, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 8.4, device = cairo_pdf)
