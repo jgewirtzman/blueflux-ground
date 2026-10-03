@@ -1003,6 +1003,24 @@ extrap_sens_df %>%
   as.data.frame() %>%
   print()
 
+# --- Woody CH4 by height stratum (stems: exponential profile; prop roots: site x
+# campaign mean rate x above-water share), per m2 of ground, for the figures.
+# Sums equal the stem (exponential) and root terms of the budget.
+woody_by_height <- bind_rows(lapply(campaigns, function(camp) bind_rows(lapply(tls_sites, function(s) {
+  pa <- tree_stats %>% filter(site == s) %>% pull(area_m2)
+  mr <- exp_models %>% filter(plot == s, campaign == camp); w <- depth_samples(s, camp)
+  st <- tls_stem %>% filter(site == s) %>% rowwise() %>%
+    mutate(flux = if (nrow(mr) == 0 || is.null(mr$model[[1]])) NA_real_ else
+             stem_bin_flux(mr$intercept, mr$slope, height_bin_num, height_bin_num + 0.5, w)) %>% ungroup() %>%
+    transmute(surface = "stem", height_bin_m = height_bin_num, sa_m2 = stem_SA_m2, flux_per_surface = flux)
+  rr <- flux_table %>% filter(site == s, campaign == camp, component == "root") %>% pull(flux_rate)
+  rt <- tls_root_bins %>% filter(site == s) %>%
+    transmute(surface = "prop root", height_bin_m = height_bin_num, sa_m2 = root_SA_m2,
+              flux_per_surface = ifelse(length(rr), rr, NA_real_) * sapply(height_bin_num, function(z) exposed_frac(z, z + 0.5, w)))
+  bind_rows(st, rt) %>% mutate(site = s, campaign = camp, sa_per_ground = sa_m2 / pa,
+                               ch4_nmol_m2_s = ifelse(is.na(flux_per_surface), 0, flux_per_surface) * sa_m2 / pa)
+}))))
+
 # --- Save tables --------------------------------------------------------------
 write.csv(results_df, file.path(output_dir, "plot_level_CH4_totals.csv"), row.names = FALSE)
 # site x campaign CH4 by component (mg CH4 m-2 d-1), tide states weighted by
@@ -1014,6 +1032,7 @@ summary_ch4 <- results_df %>%
 write.csv(summary_ch4, file.path(output_dir, "summary_CH4_by_component.csv"), row.names = FALSE)
 write.csv(flux_table, file.path(output_dir, "flux_rates_with_gapfills.csv"), row.names = FALSE)
 write.csv(budget_df, file.path(output_dir, "budget_decomposition.csv"), row.names = FALSE)
+write.csv(woody_by_height, file.path(output_dir, "woody_ch4_by_height.csv"), row.names = FALSE)
 write.csv(cwd_sens_df, file.path(output_dir, "cwd_sensitivity.csv"), row.names = FALSE)
 write.csv(flood_sens_df, file.path(output_dir, "flooding_sensitivity.csv"), row.names = FALSE)
 write.csv(extrap_sens_df, file.path(output_dir, "height_extrap_sensitivity.csv"), row.names = FALSE)
