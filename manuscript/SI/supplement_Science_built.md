@@ -226,7 +226,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/si_S12_carbonate.png>){width=6.5in}
 
-**Fig. S13.** Porewater total alkalinity against salinity (October 2025; 0–90 cm, surface water excluded), with a conservative-mixing reference (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM; text S7). Points above the line indicate alkalinity produced in the sediment. Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.
+**Fig. S13.** Porewater alkalinity against conservative mixing (October 2025; 0–90 cm, surface water excluded; text S7). (a) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (b) Measured against mixing-predicted alkalinity; dashed, 1:1. (c) Measured ÷ mixing-predicted alkalinity by site. Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.
 
 
 ![](<output/figures/other/fig_carbon_budget.png>){width=6.5in}
