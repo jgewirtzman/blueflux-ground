@@ -50,7 +50,7 @@ FIGS = {
  "S3": (["output/figures/other/pub_component_by_plot_campaign_combined_condensed_boot.png"],
         "CH4 (a) and CO2 (b) flux by component for every plot and campaign, including context sites. Points are individual measurements; filled circles are arithmetic means, with bootstrap 95% CIs where n > 3; inverse-hyperbolic-sine axes."),
  "S4": (["output/figures/other/pub_SI_ebullition_partition.png"],
-        "Ebullition. (a) Diffusive and ebullitive water-surface CH4 by site and season; bars, means ± SE (shown where n > 3); points, individual measurements. (b) Example placements showing detected bubble steps (shaded), the de-ebulliated series and the diffusive linear fit (M7)."),
+        "Ebullition. (a) Diffusive and ebullitive water-surface CH4 by site and season; bars, means ± SE (shown where n > 3); points, individual measurements; inverse-hyperbolic-sine axis. (b) Example placements: the largest ebullitive placements in two site × campaigns and the largest clean bubble-free placements at two other sites, showing detected bubble steps (shaded), the de-ebulliated series and the diffusive linear fit (M7)."),
  "S5": (["output/figures/other/pub_SI_pneumatophore_density.png"],
         "Soil CH4 (a) and CO2 (b) flux against pneumatophore density per collar, by site (dry season). Lines, least-squares fits ± 95% CI; r, Pearson correlation (CH4 on the inverse-hyperbolic-sine scale); ρ, Spearman correlation. Marco Island collars had no pneumatophores."),
  "S6": (["output/figures/other/pub_stem_height_composite_combined.png"],
