@@ -161,21 +161,28 @@ height_panel <- function() {
 }
 
 build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
+  lt <- theme(legend.title = element_text(size = 7, face = "bold"), legend.text = element_text(size = 7),
+              legend.key.size = unit(8, "pt"))
+  horiz <- function(p) cowplot::get_plot_component(p + lt + theme(legend.position = "bottom", legend.direction = "horizontal",
+                                                                  legend.title.position = "left"),
+                                                    "guide-box-bottom", return_all = TRUE)
   pa <- rate_panel(dd, "CH4", "CH4_flux_status", c(0, 1, 10, 100, 1000), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
-    guides(fill = guide_legend(override.aes = list(size = 2.5), order = 1))
-  pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE) +
-    guides(fill = "none")
-  pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
-  pd2 <- pd + guides(shape = "none")
+    guides(fill = guide_legend(override.aes = list(size = 2.5), nrow = 1))
+  pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE)
+  pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), nrow = 1))
+  leg_class <- horiz(pa); leg_surf <- horiz(pc2)
+  nl <- theme(legend.position = "none")
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
-  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b")) | (pcc + labs(tag = "c"))) + plot_layout(widths = c(1, 1, 1), guides = "collect")
-  row2 <- ((pc2 + labs(tag = "d")) | (pd2 + labs(tag = "e")) | (height_panel() + labs(tag = "f"))) +
-    plot_layout(widths = c(1, 1, 1), guides = "collect")
-  fig <- (row1 / row2) + plot_layout(heights = c(1, 0.9)) +
+  pcc <- pcc + lt + theme(legend.position = "right")
+  pf <- height_panel() + lt + theme(legend.position = "right")
+  ab <- (((pa + nl + labs(tag = "a")) | (pb + nl + labs(tag = "b"))) / wrap_elements(full = leg_class)) + plot_layout(heights = c(1, 0.07))
+  de <- (((pc2 + nl + labs(tag = "d")) | (pd + nl + labs(tag = "e"))) / wrap_elements(full = leg_surf)) + plot_layout(heights = c(1, 0.07))
+  row1 <- (ab | (pcc + labs(tag = "c"))) + plot_layout(widths = c(2, 1.15))
+  row2 <- (de | (pf + labs(tag = "f"))) + plot_layout(widths = c(2, 1.15))
+  fig <- (row1 / row2) + plot_layout(heights = c(1, 0.95)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
-  fig <- fig & theme(legend.position = "right", legend.title = element_text(size = 7, face = "bold"))
-  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.6, dpi = 300, bg = "white")
-  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 5.6, device = cairo_pdf)
+  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 6.0, dpi = 300, bg = "white")
+  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.0, device = cairo_pdf)
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "")
