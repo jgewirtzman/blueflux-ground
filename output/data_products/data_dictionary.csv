@@ -26,11 +26,10 @@ analyzer_corrected,Analyzer changed by analyzer_corrections.csv,logical
 excluded,TRUE if excluded from analysis (see exclusion_reason),logical
 index,Row index on the field sheet,numeric
 species,Tree species code,logical
-status,alive / dead / CWD,logical
-height,Chamber height on the stem as recorded (cm),logical
+status,alive / dead (downed wood is dead),logical
+height,Chamber height above the sediment (cm),logical
 diameter,Stem / root diameter (cm),logical
 lenticels,Lenticels present (field sheet),logical
-above,Height reference (sediment / water),logical
 chamber_class,"Tree chamber class (A-D, HA, HB, LB) or chamber from scanned sheets",logical
 stem_temp,Stem temperature (C),logical
 soil_temp,Soil temperature (C),numeric
@@ -125,9 +124,7 @@ month_year,YYYY-MM,character
 season,"dry (Mar, Dec) / wet (Oct)",character
 disturbance_level,"healthy (SRS5, SRS6, RB10), regenerating (BL60), ghost (CP40, FLM30, MI), scrub (SE1)",character
 pneumatophore_density,Pneumatophores per m2,logical
-height_datum,"Reference for the recorded height: sediment_surface, water_surface, or root_crown (R. mangle in the 2022 campaigns, chambered from where the prop roots leave the trunk)",logical
-height_sediment,Chamber height above the sediment (cm): as recorded from the sediment; recorded + water depth from the water surface; estimated root-crown height + recorded from the root crown (00_lib/rhizophora_crown.R),logical
-height_corrected,"Analysis height (cm) for stems and prop roots: height_sediment minus standing-water depth (height above the water surface where water stood, otherwise above the sediment); negative = below the water line. Other components: recorded height. Used by the stem height model",logical
+height_corrected,"Analysis height (cm) for stems and prop roots: height minus standing-water depth (height above the water surface where water stood, otherwise above the sediment); negative = below the water line. Used by the stem height model",logical
 placement_start,Floating-chamber placement start (chamber on the water; analyzer clock),logical
 placement_end,"Placement end (chamber lifted, record gap or end of record; analyzer clock)",logical
 placement_duration_s,Placement length (s),logical

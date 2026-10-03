@@ -11,7 +11,7 @@ Resolved 2026-10-02: no tree IDs (not tagged); field clocks were local civil tim
 7. **Authors and funding**: see the proposal below (permits are not needed for the DAAC package).
 8. **Non-mangrove comparison sites.** Cypress Boardwalk stems (*Taxodium*) were measured from the water surface over 34 cm of standing water, so 'upland' is wrong for it; the package now says 'non-mangrove comparison sites'. What habitat label should each of Cypress Boardwalk, Long Pine Key and Mahogany Hammock carry?
 9. (resolved: standing dead stems; tissue_status dead)
-10. **Height datum by campaign**: see output/qa/chamber_heights_review.png. Negative prop-root heights are now datum root_crown with height above sediment unknown. Open: in March and October 2022 stems were chambered at nominal 0/50/100 cm; for *Rhizophora* was 0 the root crown rather than the sediment?
+10. (resolved: all chamber heights are above the sediment; see output/qa/chamber_heights_review.png)
 11. (resolved: all downed wood is dead)
 12. (resolved: convention kept; two downed-wood chambers below the recorded water line carry a height_note)
 

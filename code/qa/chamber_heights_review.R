@@ -1,9 +1,7 @@
 # =============================================================================
 # QA: recorded chamber heights on stems, prop roots and downed wood, by site x
 # campaign, against the water level, to check the height datum.
-# Height above sediment is height_sediment from 05_dataset/01_compile_datasets.R
-# (as recorded from the sediment; + water depth from the water surface; + the
-# estimated root-crown height for 2022 R. mangle, 00_lib/rhizophora_crown.R).
+# Heights are above the sediment (05_dataset/01_compile_datasets.R).
 # Water level per site x campaign: median (line) and range (band) of the depths
 # recorded at stem, root and downed-wood positions. Points below the water line
 # or below the sediment are flagged (open symbols) and listed.
@@ -17,8 +15,7 @@ d <- read.csv("output/data_products/combined_gas_flux_dataset.csv") %>%
   mutate(campaign = recode(month_year, "2022-03" = "Mar 2022", "2022-10" = "Oct 2022", "2023-03" = "Mar 2023"),
          campaign = factor(campaign, c("Mar 2022", "Oct 2022", "Mar 2023")),
          depth = ifelse(is.na(water_depth), 0, pmax(0, water_depth)),
-         datum = recode(height_datum, sediment_surface = "sediment", water_surface = "water surface", root_crown = "root crown (R. mangle 2022)"),
-         h_sed = height_sediment,
+         h_sed = height,
          flag = case_when(is.na(height) ~ "no height",
                           h_sed < 0 ~ "below sediment",
                           h_sed < depth ~ "below water line",
@@ -27,9 +24,9 @@ d <- read.csv("output/data_products/combined_gas_flux_dataset.csv") %>%
                              c("Stem", "Prop root", "Downed wood")))
 wl <- d %>% group_by(plot, campaign) %>%
   summarise(w_med = median(depth), w_min = min(depth), w_max = max(depth), .groups = "drop")
-summ <- d %>% count(plot, campaign, component, datum, flag)
+summ <- d %>% count(plot, campaign, component, flag)
 write.csv(d %>% filter(flag != "ok") %>%
-            select(flux_id = any_of(c("flux_id", "UniqueID", "ID"))[1], plot, campaign, component, status, height, datum,
+            select(flux_id, plot, campaign, component, status, height,
                    water_depth, h_sed, flag),
           "output/qa/chamber_heights_review.csv", row.names = FALSE)
 print(as.data.frame(summ %>% filter(flag != "ok")), row.names = FALSE)
@@ -38,9 +35,9 @@ p <- ggplot(d %>% filter(!is.na(h_sed))) +
   geom_rect(data = wl, aes(xmin = -Inf, xmax = Inf, ymin = w_min, ymax = w_max), fill = "#9ecae1", alpha = 0.35, inherit.aes = FALSE) +
   geom_hline(data = wl, aes(yintercept = w_med), colour = "#2171b5", linewidth = 0.4) +
   geom_hline(yintercept = 0, colour = "#8c510a", linewidth = 0.5) +
-  geom_jitter(aes(component, h_sed, colour = datum, shape = flag == "ok"), width = 0.18, height = 0, size = 1.4, alpha = 0.8) +
+  geom_jitter(aes(component, h_sed, colour = status, shape = flag == "ok"), width = 0.18, height = 0, size = 1.4, alpha = 0.8) +
   scale_shape_manual(values = c(`TRUE` = 16, `FALSE` = 1), labels = c(`TRUE` = "ok", `FALSE` = "below water or sediment"), name = NULL) +
-  scale_colour_manual(values = c(sediment = "#8c510a", `water surface` = "#2171b5", `root crown (R. mangle 2022)` = "#d7301f"), name = "Recorded from") +
+  scale_colour_manual(values = c(alive = "#1b7837", dead = "#762a83"), name = NULL) +
   facet_grid(campaign ~ plot) +
   labs(x = NULL, y = "Height above sediment (cm)",
        subtitle = "Brown line: sediment. Blue line and band: median and range of recorded water depth.") +
