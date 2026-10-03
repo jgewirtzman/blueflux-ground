@@ -81,7 +81,12 @@ df_water <- ds %>% filter(component == "water", !is.na(CH4_best.flux)) %>%
   mutate(CH4_diffusive_flux = coalesce(CH4_diffusive_flux, CH4_best.flux), CH4_ebull_flux = coalesce(CH4_ebull_flux, 0),
          season_display = factor(ifelse(season == "wet", "Wet", "Dry"), levels = c("Wet", "Dry")),
          plot = factor(plot, levels = c("BL60", "CP40", "FLM30", "SE1", "SRS5", "SRS6"))) %>%
-  filter(!is.na(plot))
+  filter(!is.na(plot)) %>%
+  # upper bound on undetected ebullition (gradual or end-of-placement releases): the excess of the
+  # whole-placement fit over diffusive + detected ebullitive flux (LGR placements; Picarro totals are two-point)
+  left_join(part %>% transmute(flux_id = placement_id, whole = CH4_total_whole_placement, tot = CH4_total, analyzer), by = "flux_id") %>%
+  mutate(CH4_missed = ifelse(grepl("^LGR", analyzer) & !is.na(whole), pmax(whole - tot, 0), 0))
+missed <- df_water %>% group_by(plot, season_display) %>% summarise(Missed = mean(CH4_missed), .groups = "drop")
 si_means <- df_water %>%
   tidyr::pivot_longer(cols = c(CH4_diffusive_flux, CH4_ebull_flux), names_to = "flux_component", values_to = "flux_nmol") %>%
   mutate(flux_component = factor(ifelse(flux_component == "CH4_diffusive_flux", "Diffusive", "Ebullitive"),
@@ -97,11 +102,18 @@ disp <- function(d) d %>% mutate(site = site_x(plot), season_lab = factor(season
 si_means <- disp(si_means); si_totals <- disp(si_totals)
 pts_tot <- disp(df_water)
 x_labs <- setNames(paste0(names(site_cls), "\n", site_cls), names(site_cls))
-seg <- si_means %>% tidyr::pivot_wider(names_from = flux_component, values_from = mean_flux) %>%
-  mutate(Ebullitive = coalesce(Ebullitive, 0)) %>%
+wide <- si_means %>% tidyr::pivot_wider(names_from = flux_component, values_from = mean_flux) %>%
+  mutate(Ebullitive = coalesce(Ebullitive, 0)) %>% left_join(disp(missed), by = c("plot", "season_display", "site", "season_lab"))
+seg <- wide %>%
   { bind_rows(transmute(., site, season_lab, flux_component = "Diffusive", lo = 0, hi = Diffusive),
-              transmute(., site, season_lab, flux_component = "Ebullitive", lo = Diffusive, hi = Diffusive + Ebullitive)) } %>%
-  filter(hi > lo)
+              transmute(., site, season_lab, flux_component = "Ebullitive", lo = Diffusive, hi = Diffusive + Ebullitive),
+              transmute(., site, season_lab, flux_component = "possible undetected", lo = Diffusive + Ebullitive,
+                        hi = Diffusive + Ebullitive + Missed)) } %>%
+  filter(hi > lo + 1e-6)
+# ebullitive share: detected, and with the undetected upper bound
+shr <- wide %>% mutate(det = 100 * Ebullitive / (Diffusive + Ebullitive), up = 100 * (Ebullitive + Missed) / (Diffusive + Ebullitive + Missed),
+                       lab = ifelse(round(up) > round(det), sprintf("%.0f\u2013%.0f%%", det, up), sprintf("%.0f%%", det)),
+                       ytop = Diffusive + Ebullitive + Missed)
 # stacked segments built on the raw scale so the asinh axis does not distort them
 fig_bars <- ggplot(seg, aes(x = site)) +
   geom_crossbar(aes(y = lo, ymin = lo, ymax = hi, fill = flux_component), width = 0.62, colour = "white", linewidth = 0.25,
@@ -113,10 +125,13 @@ fig_bars <- ggplot(seg, aes(x = site)) +
                 width = 0.15, linewidth = 0.4, colour = col_ink, inherit.aes = FALSE) +
   geom_text(data = si_totals, aes(x = site, y = -Inf, label = paste0("n = ", n)), vjust = -0.5, size = 2.2,
             colour = "grey35", inherit.aes = FALSE) +
+  geom_text(data = shr, aes(x = site, y = -Inf, label = paste0("ebullitive ", lab)), vjust = -2.0, size = 2.2,
+            colour = col_ebul, inherit.aes = FALSE) +
   facet_grid(~ season_lab, scales = "free_x", space = "free_x") +
   scale_x_discrete(labels = x_labs) +
-  scale_fill_manual(values = c("Diffusive" = col_diff, "Ebullitive" = col_ebul), labels = tolower, name = NULL) +
-  scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100), expand = expansion(mult = c(0.07, 0.04))) +
+  scale_fill_manual(values = c("Diffusive" = col_diff, "Ebullitive" = col_ebul, "possible undetected" = "#E9B3A6"),
+                    labels = c(Diffusive = "diffusive", Ebullitive = "ebullitive (detected)", `possible undetected` = "possible undetected ebullition (upper bound)"), name = NULL) +
+  scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100), expand = expansion(mult = c(0.16, 0.04))) +
   labs(x = NULL, y = expression(CH[4]~flux~(nmol~m^{-2}~s^{-1})), tag = "a") +
   theme_fig(base_size = 8) +
   theme(legend.position = "inside", legend.position.inside = c(0.99, 0.98), legend.justification = c(1, 1),
