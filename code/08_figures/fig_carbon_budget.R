@@ -93,14 +93,17 @@ st <- ch4 %>% mutate(comp = factor(comp_lab[comp], comp_lab[c("water", "soil", "
 tot <- st %>% group_by(class) %>% summarise(v = sum(gCH4), .groups = "drop") %>% left_join(mc, by = "class")
 lat <- data.frame(class = factor("intact", c("intact", "ghost")), v = lit[["Lateral CH4 (aq)"]] * 16.043 / 12.011)
 xk <- function(c) as.numeric(factor(c, c("intact", "ghost")))
+# x positions stored in the data so the saved panel (RDS) is self-contained
+st <- st %>% mutate(x = xk(class) - 0.17); tot <- tot %>% mutate(x = xk(class) - 0.17)
+lat <- lat %>% mutate(x = xk(class) + 0.06); air <- air %>% mutate(x = xk(class) + 0.25)
 pb <- ggplot() +
-  geom_col(data = st, aes(xk(class) - 0.17, gCH4, fill = comp), width = 0.3, colour = "white", linewidth = 0.25) +
-  geom_errorbar(data = tot, aes(xk(class) - 0.17, ymin = lo, ymax = hi), width = 0.08, linewidth = 0.4, colour = col_ink) +
-  geom_point(data = tot, aes(xk(class) - 0.17, v, shape = "bottom-up"), size = 2.2, fill = "white", colour = col_ink) +
-  geom_col(data = lat, aes(xk(class) + 0.06, v), width = 0.12, fill = col_lat, alpha = 0.8) +
-  geom_text(data = lat, aes(xk(class) + 0.06, v, label = "lateral\n(dissolved)"), vjust = -1.6, size = 1.8, colour = col_lat, lineheight = 0.85) +
-  geom_errorbar(data = air, aes(xk(class) + 0.25, ymin = v - 1.96 * se, ymax = v + 1.96 * se), width = 0.06, linewidth = 0.4, colour = "grey40") +
-  geom_point(data = air, aes(xk(class) + 0.25, v, shape = "airborne, mean of 4 deployments"), size = 2.2, fill = "grey40", colour = "grey40") +
+  geom_col(data = st, aes(x, gCH4, fill = comp), width = 0.3, colour = "white", linewidth = 0.25) +
+  geom_errorbar(data = tot, aes(x, ymin = lo, ymax = hi), width = 0.08, linewidth = 0.4, colour = col_ink) +
+  geom_point(data = tot, aes(x, v, shape = "bottom-up"), size = 2.2, fill = "white", colour = col_ink) +
+  geom_col(data = lat, aes(x, v), width = 0.12, fill = col_lat, alpha = 0.8) +
+  geom_text(data = lat, aes(x, v, label = "lateral\n(dissolved)"), vjust = -1.6, size = 1.8, colour = col_lat, lineheight = 0.85) +
+  geom_errorbar(data = air, aes(x, ymin = v - 1.96 * se, ymax = v + 1.96 * se), width = 0.06, linewidth = 0.4, colour = "grey40") +
+  geom_point(data = air, aes(x, v, shape = "airborne, mean of 4 deployments"), size = 2.2, fill = "grey40", colour = "grey40") +
   scale_x_continuous(breaks = 1:2, labels = c("intact", "ghost")) +
   scale_fill_manual(values = setNames(pal_comp[c("water", "soil", "prop root", "stem", "downed wood")], comp_lab[c("water", "soil", "root", "stem", "cwd")]), name = NULL) +
   scale_shape_manual(values = c(`bottom-up` = 23, `airborne, mean of 4 deployments` = 24), name = NULL) +
@@ -113,6 +116,7 @@ fig <- (wrap_elements(full = pa & theme(plot.margin = margin(2, 2, 2, 12))) + la
   theme(plot.tag = element_text(face = "bold", size = 11))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 saveRDS(pa, "output/figures/other/fig_carbon_schematic.rds")   # reused as Fig 5a
+saveRDS(pb, "output/figures/other/fig_ch4_budget.rds")          # methane budget panel (reusable)
 ggsave("output/figures/other/fig_carbon_schematic.png", pa, width = 7.2, height = 4.15, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig_carbon_budget.png", fig, width = 7.2, height = 6.4, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig_carbon_budget.pdf", fig, width = 7.2, height = 6.4, device = cairo_pdf)

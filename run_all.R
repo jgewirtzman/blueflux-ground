@@ -63,7 +63,7 @@ steps <- c(
   "code/08_figures/fig3_stands.R",                  # Fig 3
   "code/08_figures/fig4_geochem.R",                 # Fig 4
   "code/08_figures/ed_porewater_rounds.R",          # Fig S12 (a-c)
-  "code/08_figures/fig_carbon_budget.R",           # Fig 5a schematic; Fig S14
+  "code/08_figures/fig_carbon_budget.R",           # Fig 5a schematic
   "code/08_figures/fig5_climate.R",                 # Fig 5 (reads the schematic saved above)
   "code/08_figures/fig1_system.R",                  # Fig 1 (map, photos; schematic pending)
   "code/08_figures/plot_budget_figs.R",             # Fig 4
@@ -80,9 +80,9 @@ steps <- c(
   "code/08_figures/si_upscaling_figs.R",             # Figs S9-S11 (from upscaling CSVs)
   "code/08_figures/si_porewater_carbonate.R",        # Fig S13
   "code/08_figures/plot_SA_height_fixedY.R",        # Fig S8
-  "code/08_figures/plot_us_skr_gpp.R",              # Fig S15
+  "code/08_figures/plot_us_skr_gpp.R",              # Fig S14
   "code/08_figures/site_characterization_figures.R",# Fig S12c data
-  "code/08_figures/plot_site_closure.R",            # Fig S16
+  "code/08_figures/plot_site_closure.R",            # Fig S15
   "code/08_figures/plot_water_positions.R",         # Fig S2b
   "code/08_figures/figS_sampling_design.R",         # Fig S2a
   "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)

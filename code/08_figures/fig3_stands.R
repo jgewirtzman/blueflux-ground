@@ -1,32 +1,25 @@
 # =============================================================================
-# Fig. 3 | Stand budgets and their independent closure. Panel order in the figure:
-#   a = airborne by deployment, b = annual budgets, c, d = component shares,
-#   e, f = closure (stacked bottom-up components + totals + independent estimates;
-#   CH4 on a linear axis cropped at 70, the ghost October airborne interval runs off).
-#   (a) Share of stand CH4 by component, and (b) share of stand respiration
-#       (CO2) by component, for intact (SRS5, SRS6) and ghost (CP40, FLM30)
-#       forest by campaign (site means, tide-weighted).
-#   (c) CH4 and (d) net CO2 exchange: bottom-up totals (white diamonds, Monte
-#       Carlo 95% intervals) beside independent estimates at the same 95% level:
-#       airborne eddy covariance (CARAFE two-class disaggregation, Delaria et al.
-#       2024; March 2023 = mean of February and April 2023; +/- 1.96 SE; CO2
-#       converted to daily) and the US-Skr tower (intact; campaign-month NEE,
-#       95% CI over days). CH4 on the inverse-hyperbolic-sine axis of Fig. 2.
-#   (e) Airborne CH4 and CO2 for intact and ghost forest by deployment
-#       (PLACEHOLDER until the two-class values for all five deployments,
-#       including July 2024, arrive).
-#   (f) Annual stand budgets: CH4 (g CH4 m-2 yr-1) and net CO2 exchange
-#       (g C m-2 yr-1), bottom-up with Monte Carlo 95% intervals; intact NEE
-#       beside the tower-based estimate (Barr et al. 2010, NEP 1,170 +/- 127).
+# Fig. 3 | Stand budgets and their independent closure.
+#   (a, b) Share of stand CH4 and of stand respiration by component, wet (Oct 2022)
+#       and dry (Mar 2023) campaigns, intact (SRS5, SRS6) and ghost (CP40, FLM30).
+#   (c) Airborne CH4 and midday CO2 by deployment (PLACEHOLDER until the two-class
+#       values for all five deployments, including July 2024, arrive).
+#   (d) CH4 and (e) net CO2 exchange by campaign and annually (mean of the wet and
+#       dry campaigns): stacked bottom-up components, bottom-up totals (Monte Carlo
+#       95%), airborne (CARAFE; Mar 2023 = mean of Feb and Apr 2023; +/- 1.96 SE)
+#       and tower (US-Skr campaign-month NEE). Annual bottom-up budgets printed
+#       above the annual columns (g CH4 m-2 yr-1; g C m-2 yr-1). CH4 axis cropped
+#       at 70; intervals beyond it are clipped and marked with an arrow and value.
 # Writes output/figures/other/fig3_stands.{png,pdf}.
 # =============================================================================
 suppressMessages({library(dplyr); library(tidyr); library(ggplot2); library(patchwork)})
+invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/08_figures/palette.R")
 f <- 1e-3 / 16.04 * 1e9 / 86400          # mg CH4 m-2 d-1 -> nmol m-2 s-1
 CAMP <- c("Oct 2022", "Mar 2023"); cls <- c("intact", "ghost")
 comp_order <- c("water", "soil", "prop root", "stem", "downed wood", "leaf")
-lab_camp <- function(x) sub(" 20", "\n'", x)
+lab_camp <- function(x) c(`Oct 2022` = "wet", `Mar 2023` = "dry")[x]
 z95 <- 1.96
 to_class <- function(x) factor(recode(x, healthy = "intact", mangrove_forest = "intact", ghost_forest = "ghost"), cls)
 
@@ -90,23 +83,47 @@ share_panel <- function(df, ylab) {
     scale_fill_manual(values = pal_comp, limits = comp_order, name = "component") +
     labs(x = NULL, y = ylab) + theme_fig() + theme(panel.grid.major.x = element_blank(), strip.text = element_text(hjust = 0.5))
 }
-closure_panel <- function(stack, df, ylab, ylim = NULL, gpp_df = NULL) {
+# "annual" = mean of the wet and dry campaigns (as in the annual budgets), for every estimate:
+# bottom-up stacks and totals (Monte Carlo bounds averaged), the aircraft campaign-aligned values
+# (SE combined), the tower campaign-month NEE, and tower GPP
+P3 <- c(CAMP, "annual"); lab3 <- c("wet", "dry", "annual")
+add_annual <- function(d, keys) {
+  num <- intersect(c("v", "lo", "hi", "GPP"), names(d))
+  an <- d %>% group_by(across(all_of(keys))) %>%
+    summarise(across(all_of(num), mean), se_comb = if ("se" %in% names(d)) sqrt(sum(se^2)) / n() else NA_real_, .groups = "drop")
+  if ("se" %in% names(d)) an <- an %>% mutate(lo = v - z95 * se_comb, hi = v + z95 * se_comb)
+  bind_rows(d %>% mutate(campaign = as.character(campaign)), an %>% select(-se_comb) %>% mutate(campaign = "annual")) %>%
+    mutate(campaign = factor(campaign, P3))
+}
+closure_panel <- function(stack, df, ylab, ylim = NULL, gpp_df = NULL, ann_lab = NULL) {
   df <- df %>% mutate(source = factor(source, src_lev), x = as.numeric(campaign) + c(0, 0.36, 0.5)[as.integer(source)])
+  # intervals running past the top of a cropped axis: clip and mark with an arrow and the true upper bound
+  off <- if (!is.null(ylim)) df %>% filter(hi > ylim[2]) else df[0, ]
+  if (!is.null(ylim)) df <- df %>% mutate(hi = pmin(hi, ylim[2]))
   p <- ggplot() + geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.3)
   if (!is.null(gpp_df)) p <- p + geom_col(data = gpp_df, aes(as.numeric(campaign), -GPP), width = 0.5, fill = "#A9C6B3") +
-    geom_text(data = data.frame(class = factor("intact", cls)), aes(x = 1.5, y = -7.6, label = "GPP (tower)"),
+    geom_text(data = data.frame(class = factor("intact", cls)), aes(x = 2, y = -7.6, label = "GPP (tower)"),
               size = 2, colour = "grey30", vjust = 1)
   p <- p + geom_col(data = stack, aes(as.numeric(campaign), v, fill = comp), width = 0.5, colour = "white", linewidth = 0.15,
                     position = position_stack(reverse = TRUE)) +
     geom_errorbar(data = df, aes(x = x, ymin = lo, ymax = hi, colour = source), width = 0.07, linewidth = 0.45) +
     geom_point(data = df, aes(x = x, y = v, shape = source), fill = ifelse(df$source == src_lev[1], "white", "grey30"),
                colour = col_ink, size = 2.1, stroke = 0.4) +
+    geom_segment(data = off, aes(x = x, xend = x, y = ylim[2] - 0.06 * diff(ylim), yend = ylim[2]),
+                 arrow = arrow(length = unit(3, "pt"), type = "closed"), colour = col_ink, linewidth = 0.45) +
+    geom_text(data = off, aes(x = x + 0.08, y = ylim[2], label = round(hi)), hjust = 0, vjust = 1, size = 2.1, colour = "grey30") +
     facet_grid(~ class) +
-    scale_x_continuous(breaks = 1:2, labels = lab_camp(CAMP), limits = c(0.6, 2.65)) +
+    geom_vline(xintercept = 2.78, colour = "grey80", linewidth = 0.3) +
+    scale_x_continuous(breaks = 1:3, labels = lab3, limits = c(0.6, 3.65)) +
     scale_fill_manual(values = pal_comp, limits = comp_order, name = "component") +
     scale_shape_manual(values = src_shape, limits = src_lev, name = "estimate") +
     scale_colour_manual(values = c(col_ink, "grey30", "grey30"), limits = src_lev, guide = "none") +
     labs(x = NULL, y = ylab) + theme_fig() + theme(panel.grid.major.x = element_blank(), strip.text = element_text(hjust = 0.5))
+  if (!is.null(ann_lab)) {
+    al <- df %>% filter(campaign == "annual", source == src_lev[1]) %>% mutate(lab = ann_lab(v))
+    p <- p + geom_label(data = al, aes(x = x + 0.25, y = Inf, label = lab), vjust = 1.15, size = 2.2, colour = "grey15",
+                        fill = "white", label.size = 0, label.padding = unit(1, "pt"))
+  }
   if (!is.null(ylim)) p <- p + coord_cartesian(ylim = ylim)
   p
 }
@@ -118,9 +135,14 @@ co_stack <- co_share %>% select(class, campaign, comp, v)
 gpp_df <- read.csv("output/upscaling/plot_level_CO2_totals.csv") %>% filter(campaign %in% CAMP) %>%
   group_by(campaign, disturbance_level) %>% summarise(GPP = mean(GPP_used), .groups = "drop") %>%
   mutate(class = to_class(disturbance_level), campaign = factor(campaign, CAMP))
-pc <- closure_panel(ch_stack, bind_rows(ch_tot, ca_ch4), expression("Stand CH"[4]*" (nmol m"^-2*" s"^-1*")"), ylim = c(-18, 70))
-pd <- closure_panel(co_stack, bind_rows(co_tot, ca_co2, tower), expression("Stand CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*", daily)"),
-                    gpp_df = gpp_df)
+ch_stack3 <- add_annual(ch_stack %>% select(class, campaign, comp, v), c("class", "comp"))
+co_stack3 <- add_annual(co_stack, c("class", "comp"))
+gpp3 <- add_annual(gpp_df %>% select(class, campaign, GPP), "class")
+est3 <- function(...) bind_rows(lapply(list(...), function(d) add_annual(d, c("class", "source"))))
+pc <- closure_panel(ch_stack3, est3(ch_tot, ca_ch4), expression("Stand CH"[4]*" (nmol m"^-2*" s"^-1*")"), ylim = c(-18, 70),
+                    ann_lab = function(v) sprintf("%.1f", v * 16.04e-9 * 3.156e7))
+pd <- closure_panel(co_stack3, est3(co_tot, ca_co2, tower), expression("Stand CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*", daily)"),
+                    gpp_df = gpp3, ann_lab = function(v) format(round(v * 12e-6 * 3.156e7), big.mark = ","))
 
 # ---- (e) aircraft by deployment (placeholder) ----
 deps <- c("Apr 2022", "Oct 2022", "Feb 2023", "Apr 2023", "Jul 2024")
@@ -170,8 +192,8 @@ pc <- pc + guides(shape = "none", fill = "none"); pd <- pd + guides(shape = est_
 # row order follows the narrative from Fig. 2 (rate x area): component shares, then
 # annual stand budgets against airborne data, then closure by campaign
 row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(guides = "collect")
-row2 <- ((pe + labs(tag = "c")) | (pf + labs(tag = "d"))) + plot_layout(guides = "collect")
-row3 <- ((pc + labs(tag = "e")) | (pd + labs(tag = "f"))) + plot_layout(guides = "collect")
+row2 <- ((pe + labs(tag = "c")) | plot_spacer()) + plot_layout(guides = "collect", widths = c(1, 0.02))
+row3 <- ((pc + labs(tag = "d")) | (pd + labs(tag = "e"))) + plot_layout(guides = "collect")
 fig <- (row1 / row2 / row3) & theme(legend.position = "right", legend.justification = "left")
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8, dpi = 300, bg = "white")
