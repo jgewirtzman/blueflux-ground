@@ -100,9 +100,11 @@ print(as.data.frame(out %>% mutate(across(where(is.numeric), ~ signif(.x, 3)))),
 # --- Fig 5d,e draft: induced CH4 on a 0.5 degree grid; regional added forcing by gas and metric
 source("code/08_figures/palette.R")
 xy <- st_coordinates(cent)
-grid <- data.frame(lon = floor(xy[, 1] / 0.5) * 0.5 + 0.25, lat = floor(xy[, 2] / 0.5) * 0.5 + 0.25, a = pieces$area_m2 / 1e6) %>%
+res_deg <- 0.25   # grid cell size for the map (degrees)
+grid <- data.frame(lon = floor(xy[, 1] / res_deg) * res_deg + res_deg / 2, lat = floor(xy[, 2] / res_deg) * res_deg + res_deg / 2,
+                   a = pieces$area_m2 / 1e6) %>%
   group_by(lon, lat) %>% summarise(area_km2 = sum(a), .groups = "drop") %>%
-  mutate(ch4_Mg = area_km2 * 1e6 * dch4[["mid"]] / 1e6, forcing_gwp20_Gg = area_km2 * 1e6 * sw[["gwp20"]] / 1e9)
+  mutate(res_deg = res_deg, ch4_Mg = area_km2 * 1e6 * dch4[["mid"]] / 1e6, forcing_gwp20_Gg = area_km2 * 1e6 * sw[["gwp20"]] / 1e9)
 write.csv(grid, "output/upscaling/regional_ghost_forcing_grid.csv", row.names = FALSE)
 seq_pal <- c("#E4E2EC", "#B9B5CC", "#8E8AA8", "#6E6A86", "#3F3B52")
 # 2017 tracks of Irma and Maria (NHC HURDAT2; data/gis/hurricane_tracks/README.md)
@@ -122,7 +124,7 @@ lab_pts <- tracks %>% group_by(storm) %>% filter(lon > -97, lon < -60, lat > 9, 
   mutate(hjust = ifelse(storm == "Irma", 1.1, 0), vjust = 0.5) %>% mutate(hjust = ifelse(storm == "Irma", 1.1, -0.12))
 pe <- ggplot() +
   geom_sf(data = land, fill = "grey93", colour = "grey75", linewidth = 0.12) +
-  geom_tile(data = grid, aes(lon, lat, fill = ch4_Mg), width = 0.5, height = 0.5, colour = "white", linewidth = 0.1) +
+  geom_tile(data = grid, aes(lon, lat, fill = ch4_Mg), width = res_deg, height = res_deg, colour = "white", linewidth = 0.1) +
   geom_path(data = tracks, aes(lon, lat, group = storm), colour = "grey35", linewidth = 0.35, linetype = "22") +
   geom_text(data = lab_pts, aes(lon, lat, label = paste(storm, "2017"), hjust = hjust, vjust = vjust), colour = "grey25", size = 2.3, fontface = "italic") +
   scale_fill_gradientn(colours = seq_pal, trans = "log10", breaks = c(0.1, 1, 10, 100), labels = c("0.1", "1", "10", "100"),
