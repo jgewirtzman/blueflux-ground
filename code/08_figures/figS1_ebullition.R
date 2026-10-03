@@ -43,7 +43,10 @@ used_plots <- c(e1$plot, e2$plot)
 clean <- lgr %>% filter(n_bubbles == 0, duration_s >= LONG, z <= 8, r2 >= 0.98, plot != used_plots[2]) %>% arrange(desc(CH4_total))
 diff_ids <- c(clean %>% filter(plot %in% c("CP40", "FLM30", "BL60")) %>% slice(1) %>% pull(placement_id),   # one dead-forest
               clean %>% filter(plot %in% c("SRS5", "SRS6")) %>% slice(1) %>% pull(placement_id))             # one intact
-selected_ids <- c(ebull_ids, diff_ids)
+# Examples chosen from the full placement gallery (author choice, 2026-10-03): a clean mid-trace bubble,
+# a placement with two bubbles, and long clean bubble-free placements in ghost and intact forest.
+selected_ids <- c("44857_CP40_Water_80", "45000_CP40_Water_124", "45003_FLM30_Water_154", "44996_SRS6_Water_86")
+stopifnot(all(selected_ids %in% lgr$placement_id))
 cat("Selected placements:", paste(selected_ids, collapse = ", "), "\n")
 
 source("code/08_figures/palette.R")   # house palette + theme_fig()
