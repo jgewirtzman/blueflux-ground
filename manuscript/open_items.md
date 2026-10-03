@@ -12,7 +12,7 @@ All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 - D. Lagomasino: definition of the 2017 dieback layer (173 km2 vs the paper's 790 km2 of persistent damage).
 - TLS scan positions per plot; Powell et al. methods paper (in preparation).
 - Tower instruments, measurement height, processing and u* threshold (US-Skr PIs).
-- References still to complete in manuscript/references.md (entries marked [details to complete] or [CHECK]).
+- References verified (2026-10-03). Remaining: the 2017 dieback layer vs the public Taillie archive (PANGAEA); CARAFE dataset title now reads 2022-2024 on ORNL DAAC — recheck at submission.
 
 ## Optional analyses
 - Global extension: apply the per-area switch to cyclone-driven mangrove mortality worldwide (global loss products x storm tracks), with bounds.
