@@ -13,7 +13,9 @@
 # region: a first-order estimate.
 # Writes output/upscaling/regional_ghost_forcing.csv and
 # output/figures/other/regional_ghost_forcing.{png,pdf} (Fig 5d draft) and
-# regional_ghost_forcing_grid.csv (loss area and added forcing per 0.5 degree cell).
+# regional_ghost_forcing_grid.csv (loss area and added forcing per 0.5 degree cell) and
+# regional_ghost_forcing_by_storm.csv (Irma / Maria attribution, cumulative to March 2023,
+# and a bound with the Lagomasino et al. 2021 Florida dieback area).
 # =============================================================================
 suppressMessages({library(dplyr); library(sf); library(ggplot2); library(patchwork)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
@@ -69,6 +71,29 @@ out <- bind_rows(by_cty, tibble(country = "Total", area_km2 = sum(by_cty$area_km
          ch4_forcing_gwp20_Tg = tg(area_km2, dch4[["mid"]] * GWP20), ch4_forcing_gwp100_Tg = tg(area_km2, dch4[["mid"]] * GWP100),
          ch4_forcing_gwpstar_Tg = tg(area_km2, dch4_star), co2_change_Tg = tg(area_km2, dco2))
 write.csv(out, "output/upscaling/regional_ghost_forcing.csv", row.names = FALSE)
+
+# --- Attribution to the 2017 storms, cumulative since landfall, Florida bound --
+# Territories on Hurricane Irma's track (Sept 2017) vs Maria's; small patches off
+# both tracks are kept with Irma's region total as noise (< 2% of area).
+irma_terr <- c("Cuba", "United States", "Turks and Caicos Islands", "British Virgin Islands", "Antigua and Barbuda",
+               "Sint Maarten", "Saint Martin", "Anguilla", "Bahamas, The")
+maria_terr <- c("Puerto Rico", "Guadeloupe", "Martinique", "Dominica", "United States Virgin Islands")
+yrs <- as.numeric(difftime(as.Date("2023-03-15"), as.Date("2017-09-10"), units = "days")) / 365.25   # Irma landfall to our last campaign
+fl_dieback_km2 <- 107.6   # Lagomasino et al. 2021 Nat Commun: 10,760 ha of post-Irma dieback in Florida
+storm <- out %>% filter(country != "Total") %>%
+  mutate(storm = case_when(country %in% irma_terr ~ "Irma", country %in% maria_terr ~ "Maria", TRUE ~ "other")) %>%
+  group_by(storm) %>% summarise(across(c(area_km2, switch_gwp20_Tg, switch_gwp20_lo_Tg, switch_gwp20_hi_Tg, switch_gwp100_Tg,
+                                         ch4_induced_Gg, ch4_induced_lo_Gg, ch4_induced_hi_Gg, ch4_forcing_gwp20_Tg), sum), .groups = "drop")
+irma <- storm %>% filter(storm == "Irma")
+fl_add <- fl_dieback_km2 - out$area_km2[out$country == "United States"]
+irma_fl <- irma %>% mutate(storm = "Irma, Florida dieback per Lagomasino et al. 2021", area_km2 = area_km2 + fl_add,
+                           across(c(switch_gwp20_Tg, switch_gwp20_lo_Tg, switch_gwp20_hi_Tg, switch_gwp100_Tg, ch4_induced_Gg,
+                                    ch4_induced_lo_Gg, ch4_induced_hi_Gg, ch4_forcing_gwp20_Tg), ~ .x * area_km2 / irma$area_km2))
+storm_out <- bind_rows(storm, irma_fl) %>%
+  mutate(years_since_landfall = yrs, cum_switch_gwp20_Tg = switch_gwp20_Tg * yrs, cum_ch4_induced_Gg = ch4_induced_Gg * yrs,
+         cum_ch4_induced_lo_Gg = ch4_induced_lo_Gg * yrs, cum_ch4_induced_hi_Gg = ch4_induced_hi_Gg * yrs)
+write.csv(storm_out, "output/upscaling/regional_ghost_forcing_by_storm.csv", row.names = FALSE)
+print(as.data.frame(storm_out %>% mutate(across(where(is.numeric), ~ signif(.x, 3)))), row.names = FALSE)
 cat(sprintf("Per-area switch (g CO2-eq m-2 yr-1): GWP20 %.0f [%.0f, %.0f]; GWP100 %.0f; GWP* %.0f; GWP20 NECB %.0f\n",
             sw[["gwp20"]], sw[["gwp20_lo"]], sw[["gwp20_hi"]], sw[["gwp100"]], sw[["gwpstar"]], sw[["gwp20_necb"]]))
 print(as.data.frame(out %>% mutate(across(where(is.numeric), ~ signif(.x, 3)))), row.names = FALSE)
