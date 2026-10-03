@@ -7,7 +7,12 @@
 #       include pneumatophores in the footprint. Core sites (intact SRS5, SRS6;
 #       regenerating BL60; ghost CP40, FLM30), all campaigns, as in the stand
 #       budgets; context sites (RB10, MI, SE1) are in Extended Data 3.
-#   (c) CH4 and (d) CO2 per m2 of woody surface (stems + prop roots) by height
+#   (c) Surface per m2 of ground for the same component rows (intact, ghost;
+#       regenerating not laser-scanned): water surface and exposed soil from the
+#       flooding model, prop roots and stems (trunk + branch) from laser
+#       scanning, downed wood (above-water part) and leaf area from the
+#       literature (lighter). Rate x area along each row = the stand term.
+#   (d) CH4 and (e) CO2 per m2 of woody surface (stems + prop roots) by height
 #       above the water, all classes on one axis, with fitted profiles
 #       (06_analysis/03_woody_height_model.R; live stem, flooded position, wet
 #       season; typical rather than mean flux).
@@ -79,6 +84,37 @@ pc <- prof_panel("CH4", "output/analysis/woody_height_model_curves.csv", c(0, 1,
 pd <- prof_panel("CO2", "output/analysis/woody_height_model_CO2_curves.csv", c(-10, -1, 0, 1, 10),
                  expression("Woody-surface CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")")) + labs(y = NULL)
 
+# ---- surface per ground area, same rows -------------------------------------------
+site_class <- c(SRS5 = "intact", SRS6 = "intact", CP40 = "ghost", FLM30 = "ghost")
+tw <- read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% filter(scenario == "exponential") %>%
+  distinct(site, campaign, tide_state, tide_weight)
+bd <- read.csv("output/upscaling/budget_decomposition.csv") %>% filter(component %in% c("water", "soil", "cwd")) %>%
+  left_join(tw, by = c("site", "campaign", "tide_state")) %>% mutate(sa = surface_area_m2 / area_m2) %>%
+  group_by(site, campaign, component) %>% summarise(sa = weighted.mean(sa, tide_weight), .groups = "drop") %>%
+  group_by(site, component) %>% summarise(sa = mean(sa), .groups = "drop")
+tsz <- read.csv("data/tls/tree_stats_per_site.csv")
+tls <- read.csv("data/tls/all_sites_summary.csv") %>% left_join(tsz %>% select(site, area_m2), by = "site") %>%
+  mutate(component = ifelse(segment_class == "root", "root", "stem")) %>%
+  group_by(site, component) %>% summarise(sa = sum(Total_surface_area_m2) / first(area_m2), .groups = "drop")
+area <- bind_rows(bd, tls, data.frame(site = names(site_class), component = "leaves", sa = ifelse(site_class == "intact", 2.8, 0))) %>%
+  mutate(class = factor(site_class[site], names(pal_class))) %>% group_by(class, component) %>% summarise(sa = mean(sa), .groups = "drop") %>%
+  mutate(comp = factor(comp_rows[component], levels(d$comp)), lit = component %in% c("cwd", "leaves"),
+         y = as.numeric(comp) + dodge[as.character(class)])
+area_panel <- function() {
+  bands <- data.frame(y = seq_along(levels(d$comp))) %>% filter(y %% 2 == 1)
+  ggplot(area) +
+    geom_rect(data = bands, aes(ymin = y - 0.5, ymax = y + 0.5), xmin = -Inf, xmax = Inf, fill = "grey95") +
+    geom_segment(aes(x = 0, xend = sa, y = y, yend = y, colour = class, alpha = lit), linewidth = 2.2) +
+    geom_text(data = data.frame(y = as.numeric(factor("stem", levels(d$comp)))), aes(x = 0.05, y = y),
+              label = "regenerating: not scanned", size = 1.8, colour = "grey50", hjust = 0, fontface = "italic") +
+    scale_alpha_manual(values = c(`FALSE` = 1, `TRUE` = 0.4), guide = "none") +
+    scale_colour_manual(values = pal_class, guide = "none") +
+    scale_y_continuous(breaks = seq_along(levels(d$comp)), labels = NULL, expand = c(0, 0), limits = c(0.5, length(levels(d$comp)) + 0.5)) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.05))) +
+    labs(x = expression("Surface per ground area (m"^2*" m"^-2*")"), y = NULL) +
+    theme_fig() + theme(panel.grid.major.y = element_blank(), axis.ticks.y = element_blank())
+}
+
 build <- function(dd, file, note) {
   pa <- rate_panel(dd, "CH4", "CH4_flux_status", c(0, 1, 10, 100, 1000), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
     guides(fill = guide_legend(override.aes = list(size = 2.5), order = 1))
@@ -86,13 +122,14 @@ build <- function(dd, file, note) {
     guides(fill = "none")
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
   pd2 <- pd + guides(shape = "none")
-  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(guides = "collect")
-  row2 <- ((pc2 + labs(tag = "c")) | (pd2 + labs(tag = "d"))) + plot_layout(guides = "collect")
+  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b")) | (area_panel() + labs(tag = "c"))) +
+    plot_layout(widths = c(1.15, 0.9, 0.75), guides = "collect")
+  row2 <- ((pc2 + labs(tag = "d")) | (pd2 + labs(tag = "e"))) + plot_layout(guides = "collect")
   fig <- (row1 / row2) + plot_layout(heights = c(1, 0.9)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
   fig <- fig & theme(legend.position = "right", legend.title = element_text(size = 7, face = "bold"))
-  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.4, dpi = 300, bg = "white")
-  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 5.4, device = cairo_pdf)
+  ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.6, dpi = 300, bg = "white")
+  ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 5.6, device = cairo_pdf)
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "")
