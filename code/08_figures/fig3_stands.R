@@ -1,5 +1,8 @@
 # =============================================================================
-# Fig. 3 | Stand budgets and their independent closure.
+# Fig. 3 | Stand budgets and their independent closure. Panel order in the figure:
+#   a = airborne by deployment, b = annual budgets, c, d = component shares,
+#   e, f = closure (stacked bottom-up components + totals + independent estimates;
+#   CH4 on a linear axis cropped at 70, the ghost October airborne interval runs off).
 #   (a) Share of stand CH4 by component, and (b) share of stand respiration
 #       (CO2) by component, for intact (SRS5, SRS6) and ghost (CP40, FLM30)
 #       forest by campaign (site means, tide-weighted).
@@ -87,25 +90,37 @@ share_panel <- function(df, ylab) {
     scale_fill_manual(values = pal_comp, limits = comp_order, name = "component") +
     labs(x = NULL, y = ylab) + theme_fig() + theme(panel.grid.major.x = element_blank(), strip.text = element_text(hjust = 0.5))
 }
-closure_panel <- function(df, ylab, asinh_y = FALSE) {
-  df <- df %>% mutate(source = factor(source, src_lev), x = as.numeric(campaign) + dodge[as.character(source)])
-  tr <- if (asinh_y) function(v) asinh(v) else identity
-  p <- ggplot(df) + geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.3) +
-    geom_errorbar(aes(x = x, ymin = tr(lo), ymax = tr(hi), colour = source), width = 0.08, linewidth = 0.45) +
-    geom_point(aes(x = x, y = tr(v), shape = source, fill = source), colour = col_ink, size = 2.1, stroke = 0.4) +
+closure_panel <- function(stack, df, ylab, ylim = NULL, gpp_df = NULL) {
+  df <- df %>% mutate(source = factor(source, src_lev), x = as.numeric(campaign) + c(0, 0.36, 0.5)[as.integer(source)])
+  p <- ggplot() + geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.3)
+  if (!is.null(gpp_df)) p <- p + geom_col(data = gpp_df, aes(as.numeric(campaign), -GPP), width = 0.5, fill = "#A9C6B3") +
+    geom_text(data = data.frame(class = factor("intact", cls)), aes(x = 1.5, y = -7.6, label = "GPP (tower)"),
+              size = 2, colour = "grey30", vjust = 1)
+  p <- p + geom_col(data = stack, aes(as.numeric(campaign), v, fill = comp), width = 0.5, colour = "white", linewidth = 0.15,
+                    position = position_stack(reverse = TRUE)) +
+    geom_errorbar(data = df, aes(x = x, ymin = lo, ymax = hi, colour = source), width = 0.07, linewidth = 0.45) +
+    geom_point(data = df, aes(x = x, y = v, shape = source), fill = ifelse(df$source == src_lev[1], "white", "grey30"),
+               colour = col_ink, size = 2.1, stroke = 0.4) +
     facet_grid(~ class) +
-    scale_x_continuous(breaks = 1:2, labels = lab_camp(CAMP), limits = c(0.55, 2.45)) +
+    scale_x_continuous(breaks = 1:2, labels = lab_camp(CAMP), limits = c(0.6, 2.65)) +
+    scale_fill_manual(values = pal_comp, limits = comp_order, name = "component") +
     scale_shape_manual(values = src_shape, limits = src_lev, name = "estimate") +
-    scale_fill_manual(values = src_fill, limits = src_lev, name = "estimate") +
     scale_colour_manual(values = c(col_ink, "grey30", "grey30"), limits = src_lev, guide = "none") +
     labs(x = NULL, y = ylab) + theme_fig() + theme(panel.grid.major.x = element_blank(), strip.text = element_text(hjust = 0.5))
-  if (asinh_y) p <- p + scale_y_continuous(breaks = asinh(c(-10, 0, 1, 10, 100)), labels = c(-10, 0, 1, 10, 100))
+  if (!is.null(ylim)) p <- p + coord_cartesian(ylim = ylim)
   p
 }
 pa <- share_panel(ch_share, expression("Share of stand CH"[4]*" (%)"))
 pb <- share_panel(co_share, expression("Share of stand respiration (%)"))
-pc <- closure_panel(bind_rows(ch_tot, ca_ch4), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")"), asinh_y = TRUE)
-pd <- closure_panel(bind_rows(co_tot, ca_co2, tower), expression("Net CO"[2]*" exchange ("*mu*"mol m"^-2*" s"^-1*", daily)"))
+ch_stack <- ch %>% pivot_longer(c(water_mg, soil_mg, root_mg, stem_mg, cwd_mg), names_to = "component", values_to = "mg") %>%
+  mutate(v = mg * f, comp = factor(recode(sub("_mg", "", component), root = "prop root", cwd = "downed wood"), comp_order))
+co_stack <- co_share %>% select(class, campaign, comp, v)
+gpp_df <- read.csv("output/upscaling/plot_level_CO2_totals.csv") %>% filter(campaign %in% CAMP) %>%
+  group_by(campaign, disturbance_level) %>% summarise(GPP = mean(GPP_used), .groups = "drop") %>%
+  mutate(class = to_class(disturbance_level), campaign = factor(campaign, CAMP))
+pc <- closure_panel(ch_stack, bind_rows(ch_tot, ca_ch4), expression("Stand CH"[4]*" (nmol m"^-2*" s"^-1*")"), ylim = c(-18, 70))
+pd <- closure_panel(co_stack, bind_rows(co_tot, ca_co2, tower), expression("Stand CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*", daily)"),
+                    gpp_df = gpp_df)
 
 # ---- (e) aircraft by deployment (placeholder) ----
 deps <- c("Apr 2022", "Oct 2022", "Feb 2023", "Apr 2023", "Jul 2024")
@@ -145,9 +160,10 @@ pf <- ggplot(bind_rows(ann, twr) %>% mutate(source = factor(source, src_lev)), a
   scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
   labs(x = NULL, y = "Annual stand budget") + theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.x = element_blank())
 
-pa <- pa + guides(fill = "none"); pc <- pc + guides(shape = "none", fill = "none")
-fig <- (pa + labs(tag = "a")) + (pb + labs(tag = "b")) + (pc + labs(tag = "c")) + (pd + labs(tag = "d")) +
-  (pe + labs(tag = "e")) + (pf + labs(tag = "f")) +
+pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = "none"); pc <- pc + guides(shape = "none", fill = "none")
+pd <- pd + guides(shape = guide_legend(override.aes = list(fill = c("white", "grey30", "grey30"))))
+fig <- (pe + labs(tag = "a")) + (pf + labs(tag = "b")) + (pa + labs(tag = "c")) + (pb + labs(tag = "d")) +
+  (pc + labs(tag = "e")) + (pd + labs(tag = "f")) +
   plot_layout(ncol = 2, guides = "collect") & theme(legend.position = "right")
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8, dpi = 300, bg = "white")
