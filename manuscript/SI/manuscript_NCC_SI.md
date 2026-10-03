@@ -68,7 +68,7 @@ Porewater was sampled in three rounds. During the October 2022 and March 2023 fl
 
 ### S.M12 Net radiative forcing and landscape scaling
 
-Component CH4 fluxes were converted to CO2 equivalents using 20- and 100-year global warming potentials (GWP20 = 81.2, the headline; GWP100 = 27.9; IPCC AR6) and GWP* for the intact-to-ghost change (S.M18), and combined with net CO2 exchange to give net forcing (g CO2-eq m−2 yr−1) for each class. The intact CO2 NEE was anchored to the SRS-6 tower; ghost and regenerating CO2 exchange were evaluated against CARAFE disaggregated fluxes. The disturbance-induced switch is the intact-to-ghost differential. A regional estimate multiplies the per-area differential by the area of Caribbean mangrove converted to ghost forest by recent hurricanes (Fig. 5d). [PLACEHOLDER — Caribbean ghost-forest extent value/source and, for the Everglades-specific figure, the Irma dieback area from Lagomasino et al. (2021), to be finalized.]
+Component CH4 fluxes were converted to CO2 equivalents using 20- and 100-year global warming potentials (GWP20 = 81.2, the headline; GWP100 = 27.9; IPCC AR6) and GWP* for the intact-to-ghost change (S.M18), and combined with net CO2 exchange to give net forcing (g CO2-eq m−2 yr−1) for each class. The intact CO2 NEE was anchored to the SRS-6 tower; ghost and regenerating CO2 exchange were evaluated against CARAFE disaggregated fluxes. The disturbance-induced switch is the intact-to-ghost differential. A regional estimate multiplies the per-area differential by the area of Caribbean mangrove converted to ghost forest by recent hurricanes (Fig. 5b). [PLACEHOLDER — Caribbean ghost-forest extent value/source and, for the Everglades-specific figure, the Irma dieback area from Lagomasino et al. (2021), to be finalized.]
 
 ### S.M13 Statistical analysis
 
@@ -252,7 +252,7 @@ Our ghost-forest forcing is on-site vertical exchange measured five to six years
 | ED3 | Per-plot x campaign flux distributions (CH4, CO2) | pub_component_by_plot_campaign_combined_condensed_boot |
 | ED4 | Ebullition partitioning and example traces | pub_SI_ebullition_partition |
 | ED5 | Flooding representation: logger-based flooded share of the plot floor and the tide/inundation scenarios | scenario_comparison_tidal; flood_fraction.csv |
-| ED6 | Laser-scanned surface area by segment class and height; flux-painted stand point clouds if not used in Fig. 3a | SA_by_segment_height_fixedY; [Lizzy Powell, segmented clouds requested] |
+| ED6 | Laser-scanned surface area by segment class and height; flux-painted stand point clouds if not used in the main text | SA_by_segment_height_fixedY; [Lizzy Powell, segmented clouds requested] |
 | ED7 | Uncertainty: Monte Carlo decomposition; one-at-a-time sensitivity of budgets and forcing (Table S10), including downed-wood volume and flooding | pub_uncertainty_decomp; cwd_sensitivity; flooding_sensitivity; [sensitivity figure TO BUILD] |
 | ED8 | Porewater depth profiles: redox, anions and inorganic N, carbon, δ13C-CH4 and δ13C-CO2; FCE LTER NH4 context | pub_soil_redox_profiles; pub_soil_anion_profiles; pub_soil_carbon_profiles; pub_soil_isotope_profiles; porewater_N_fce_context.csv |
 | ED9 | Carbon-balance flows: vertical exchange, lateral export and burial for intact forest | budget_flow_healthy |
@@ -298,7 +298,7 @@ Chamber flux dataset (combined_gas_flux_dataset.csv) and analysis workflow at [r
 ### Outstanding to complete SI
 1. TLS methods (S.M6) — Powell/Stovall.
 2. Tower (S.M8) and CARAFE (S.M9) instrument/processing detail — tower PIs / Delaria.
-3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 5d.
+3. Caribbean ghost-forest extent value and source, and Irma dieback area (S.M12) for Fig. 5b.
 4. Build Supplementary Fig. S5 (per-site closure) and source the airborne disaggregation panel for Extended Data Fig. 10.
 5. Compile Supplementary References with DOIs.
 6. If sequencing data land: microbial results (main-text Results placeholder) and metagenome discussion, plus any added figure/table.
