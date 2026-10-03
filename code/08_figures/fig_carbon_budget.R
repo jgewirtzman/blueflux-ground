@@ -41,71 +41,44 @@ sumr <- read.csv("output/upscaling/carbon_budget_summary.csv") %>% filter(class 
 comp_lab <- c(leaf = "leaf", stem = "stem + branch", root = "prop root", soil = "soil", water = "water", cwd = "downed wood")
 pal_flow <- c(pal_comp_data, stem = pal_comp[["stem"]])
 
-# ---------------------------------------------------------------- (a) carbon waterfall
-# Carbon is followed in process order: fixed by photosynthesis, respired by each
-# component, emitted as CH4, exported laterally, and what remains is stored.
-# Each bar runs from the running total before a step to the total after it.
-steps_for <- function(k) {
-  r <- co2 %>% filter(class == k); m <- ch4 %>% filter(class == k)
-  G <- gpp$gpp[gpp$class == k]
-  rv <- setNames(r$gC, r$comp)
-  s <- data.frame(proc = "Uptake", step = "GPP", d = G, fill = "GPP")
-  for (c in c("leaf", "stem", "root", "soil", "water", "cwd"))
-    if (!is.na(rv[c]) && rv[c] > 0.5) s <- rbind(s, data.frame(proc = "Respiration", step = comp_lab[[c]], d = -rv[[c]], fill = c))
-  s <- rbind(s, data.frame(proc = "CH4", step = "CH4", d = -sum(m$gC), fill = "CH4"))
-  if (k == "intact") {
-    s <- rbind(s, data.frame(proc = "Lateral export", step = c("DIC", "DOC", "POC"),
-                             d = -c(lit[["Lateral DIC"]], lit[["Lateral DOC"]], lit[["Lateral POC"]]), fill = c("DIC", "DOC", "POC")))
-  }
-  s$end <- cumsum(s$d); s$start <- s$end - s$d
-  s$class <- k; s$i <- seq_len(nrow(s)); s
-}
-wf <- bind_rows(steps_for("intact"), steps_for("ghost"))
-# subtotals: net exchange after CH4; retained carbon (NECB) after lateral export, split into its fates
-sub <- wf %>% group_by(class) %>% summarise(net = end[proc == "CH4"], fin = last(end), n = n(), .groups = "drop")
-stor <- data.frame(class = "intact", part = c("burial", "wood increment", "unexplained (likely lateral)"),
-                   v = c(lit[["Soil C burial"]], lit[["dBiomass C"]], sumr$closure_resid))
-stor <- stor %>% mutate(top = cumsum(v), bot = top - v)
-pal_steps <- c(GPP = pal_class[["intact"]], leaf = pal_comp[["leaf"]], stem = pal_comp[["stem"]], root = pal_comp[["prop root"]],
-               soil = pal_comp[["soil"]], water = pal_comp[["water"]], cwd = pal_comp[["downed wood"]], CH4 = col_ch4,
-               DIC = "#6BAED6", DOC = "#9ECAE1", POC = "#C6DBEF")
-pal_stor <- c(burial = "#4A2E16", `wood increment` = "#8C6235", `unexplained (likely lateral)` = "#D9CBB5")
-proc_lev <- c("Uptake", "Respiration", "CH4", "Lateral export", "Retained")
-wf <- wf %>% mutate(class = factor(class, c("intact", "ghost")), xi = i)
-nx <- max(wf$i) + 2
-bands <- wf %>% group_by(class, proc) %>% summarise(x0 = min(xi) - 0.5, x1 = max(xi) + 0.5, .groups = "drop") %>%
-  mutate(odd = as.integer(factor(proc, proc_lev)) %% 2 == 1)
-xlab <- wf %>% distinct(class, xi, step)
-fin_i <- wf %>% group_by(class) %>% summarise(xi = max(xi) + 1.2, .groups = "drop")
-stor$xi <- fin_i$xi[fin_i$class == "intact"]; stor$class <- factor("intact", c("intact", "ghost"))
-netlab <- sub %>% mutate(class = factor(class, c("intact", "ghost")))
-pa <- ggplot(wf) +
-  geom_rect(data = bands %>% filter(odd), aes(xmin = x0, xmax = x1, ymin = -Inf, ymax = Inf), fill = "grey96") +
-  geom_text(data = bands, aes(x = (x0 + x1) / 2, y = 3300, label = proc), size = 2.1, colour = "grey40", fontface = "italic") +
-  geom_hline(yintercept = 0, colour = "grey45", linewidth = 0.3) +
-  geom_rect(aes(xmin = xi - 0.38, xmax = xi + 0.38, ymin = pmin(start, end), ymax = pmax(start, end), fill = fill)) +
-  geom_segment(data = wf %>% group_by(class) %>% filter(i < max(i)), aes(x = xi + 0.38, xend = xi + 0.62, y = end, yend = end),
-               colour = "grey55", linewidth = 0.25) +
-  geom_text(aes(x = xi, y = pmax(start, end), label = ifelse(abs(d) < 0.05, "0", ifelse(abs(d) >= 1, format(round(abs(d)), big.mark = ","), formatC(abs(d), format = "f", digits = 1)))),
-            vjust = -0.4, size = 1.9, colour = "grey25") +
-  geom_rect(data = stor, aes(xmin = xi - 0.38, xmax = xi + 0.38, ymin = bot, ymax = top, fill = part), inherit.aes = FALSE) +
-  geom_text(data = stor %>% mutate(class = factor(class, c("intact", "ghost"))) %>% filter(class == "intact") %>% slice(1),
-            aes(x = xi, y = max(stor$top), label = sprintf("retained\n%d", round(sumr$NECB_full))), vjust = -0.3, size = 2, fontface = "bold",
-            colour = pal_class[["intact"]], lineheight = 0.9, inherit.aes = FALSE) +
-  geom_text(data = netlab %>% left_join(wf %>% filter(proc == "CH4") %>% select(class, xi, end), by = "class") %>% filter(class == "intact"),
-            aes(x = xi + 0.5, y = end + 330, label = sprintf("net uptake\n%s", format(round(net), big.mark = ","))), size = 2.1, fontface = "bold",
-            colour = "grey25", lineheight = 0.9) +
-  geom_text(data = netlab %>% filter(class == "ghost"), aes(x = 1.5, y = -820, label = sprintf("net loss %d (lateral export\nand burial not measured)", round(-net))),
-            hjust = 0, size = 2.1, fontface = "bold", colour = pal_class[["ghost"]], lineheight = 0.9) +
-  facet_grid(~ class, scales = "free_x", space = "free_x") +
-  scale_x_continuous(breaks = function(l) seq(ceiling(l[1]), floor(l[2])), labels = NULL, expand = expansion(add = 0.3)) +
-  scale_fill_manual(values = c(pal_steps, pal_stor), breaks = names(pal_stor), name = "retained as") +
-  geom_text(data = xlab, aes(x = xi, y = -1070, label = step), angle = 45, hjust = 1, vjust = 1, size = 2.1, colour = "grey25") +
-  geom_text(data = stor %>% slice(1), aes(x = xi, y = -1070, label = "retained"), angle = 45, hjust = 1, vjust = 1, size = 2.1, colour = "grey25", inherit.aes = FALSE) +
-  coord_cartesian(ylim = c(-1000, 3450), clip = "off") +
-  labs(x = NULL, y = expression("Carbon (g C m"^-2*" yr"^-1*"), running total")) + theme_fig() +
-  theme(strip.text = element_text(hjust = 0.5, size = 9), panel.grid.major.x = element_blank(), axis.ticks.x = element_blank(),
-        plot.margin = margin(5, 5, 48, 5), axis.text.x = element_blank(), legend.position = "right", legend.key.size = unit(8, "pt"), legend.text = element_text(size = 7))
+# ---------------------------------------------------------------- (a) carbon budget schematic
+# Cross-sections of intact and ghost forest with annual flows as arrows; drawing
+# helpers live in fig_carbon_stockflow.R.
+co2w <- co2 %>% select(class, comp, gC) %>% pivot_wider(names_from = comp, values_from = gC)
+ch4w <- ch4 %>% select(class, comp, gC) %>% pivot_wider(names_from = comp, values_from = gC)
+gppw <- gpp
+src <- read.csv("output/upscaling/budget_sources_totals.csv")
+sv <- function(t) src$value[src$term == t & src$class == "Healthy"][1]
+LITTER <- sv("Litterfall"); MORT <- sv("CWD prod."); ROOTP <- sv("Root NPP")
+# uncertainties: measured terms +/- 1 SE across the four plot x campaign estimates;
+# literature terms as published ranges. The closure residual (NEE - lateral -
+# burial - wood increment) gets a range from the asymmetric half-widths of its
+# terms combined in quadrature.
+svr <- function(t, s) unlist(src[src$term == t & src$source == s, c("lo", "hi")])
+cmp <- read.csv("output/upscaling/budget_sources_components.csv") %>% filter(source %in% c("This study: total ER", "Chambers (this study)"))
+SE <- lapply(c(intact = "Healthy", ghost = "Ghost"), function(C) {
+  s <- cmp %>% filter(class == C, term == "Reco"); o <- as.list(setNames(s$se, s$component))
+  ch <- src %>% filter(term == "CH4", source == "Chambers (this study)", class == C)
+  o$ch4 <- (ch$hi - ch$lo) / 2; o })
+GPP_SE <- with(src %>% filter(term == "GPP", source == "US-SKR tower (2022-23)"), (hi - lo) / 2)
+RNG <- as.matrix(cb[, c("ci_lo", "ci_hi")]); rownames(RNG) <- cb$term
+LIT_R <- svr("Litterfall", "Castaneda 2013"); MORT_R <- svr("CWD prod.", "Mortality x AGB (FCE)")
+nee <- src %>% filter(term == "NEE", source == "Chambers (this study)", class == "Healthy"); nee_se <- (nee$hi - nee$lo) / 2
+dn <- c(nee_se, sumr$flux_lateral_hi - sumr$flux_lateral, lit[["Soil C burial"]] - RNG["Soil C burial", 1], lit[["dBiomass C"]] - RNG["dBiomass C", 1])
+dn[3:4] <- c(RNG["Soil C burial", 2] - lit[["Soil C burial"]], RNG["dBiomass C", 2] - lit[["dBiomass C"]])
+up_ <- c(nee_se, sumr$flux_lateral - sumr$flux_lateral_lo, lit[["Soil C burial"]] - RNG["Soil C burial", 1], lit[["dBiomass C"]] - RNG["dBiomass C", 1])
+RES_R <- sumr$closure_resid + c(-sqrt(sum(dn^2)), sqrt(sum(up_^2)))
+cat(sprintf("closure residual %.0f (%.0f to %.0f)\n", sumr$closure_resid, RES_R[1], RES_R[2]))
+source("code/08_figures/fig_carbon_stockflow.R")
+ttl <- function(k, sub) labs(title = paste(k, "forest"), subtitle = sub)
+th_t <- function(k) theme(plot.title = element_text(face = "bold", size = 9, colour = pal_class[[k]], margin = margin(0, 0, 1, 0)),
+                          plot.subtitle = element_text(size = 7, colour = "grey30", margin = margin(0, 0, 0, 0)))
+r_i <- co2w[co2w$class == "intact", ]; r_g <- co2w[co2w$class == "ghost", ]
+M_g <- sum(ch4w[ch4w$class == "ghost", -1])
+pa <- ((schematic("intact") + ttl("intact", sprintf("net uptake %s; retained %s (wood %s, burial %s)", fmtv(-sumr$flux_measured),
+          fmtv(sumr$NECB_full), fmtv(lit[["dBiomass C"]]), fmtv(lit[["Soil C burial"]]))) + th_t("intact")) |
+       (schematic("ghost") + ttl("ghost", sprintf("net loss %s, all of it respired or emitted as CH4", fmtv(sum(r_g[, -1]) + M_g))) + th_t("ghost"))) /
+  schematic_key() + plot_layout(heights = c(1, 0.09))
 
 # ---------------------------------------------------------------- (b) methane budget
 mc <- read.csv("output/upscaling/mc_component_uncertainty.csv") %>% filter(component == "total", disturbance_level %in% names(cls)) %>%
@@ -122,22 +95,23 @@ xk <- function(c) as.numeric(factor(c, c("intact", "ghost")))
 pb <- ggplot() +
   geom_col(data = st, aes(xk(class) - 0.17, gCH4, fill = comp), width = 0.3, colour = "white", linewidth = 0.25) +
   geom_errorbar(data = tot, aes(xk(class) - 0.17, ymin = lo, ymax = hi), width = 0.08, linewidth = 0.4, colour = col_ink) +
-  geom_point(data = tot, aes(xk(class) - 0.17, v, shape = "bottom-up (chambers × area)"), size = 2.2, fill = "white", colour = col_ink) +
+  geom_point(data = tot, aes(xk(class) - 0.17, v, shape = "bottom-up"), size = 2.2, fill = "white", colour = col_ink) +
   geom_col(data = lat, aes(xk(class) + 0.06, v), width = 0.12, fill = col_lat, alpha = 0.8) +
   geom_text(data = lat, aes(xk(class) + 0.06, v, label = "lateral\n(dissolved)"), vjust = -1.6, size = 1.8, colour = col_lat, lineheight = 0.85) +
   geom_errorbar(data = air, aes(xk(class) + 0.25, ymin = v - 1.96 * se, ymax = v + 1.96 * se), width = 0.06, linewidth = 0.4, colour = "grey40") +
   geom_point(data = air, aes(xk(class) + 0.25, v, shape = "airborne, mean of 4 deployments"), size = 2.2, fill = "grey40", colour = "grey40") +
   scale_x_continuous(breaks = 1:2, labels = c("intact", "ghost")) +
   scale_fill_manual(values = setNames(pal_comp[c("water", "soil", "prop root", "stem", "downed wood")], comp_lab[c("water", "soil", "root", "stem", "cwd")]), name = NULL) +
-  scale_shape_manual(values = c(`bottom-up (chambers × area)` = 23, `airborne, mean of 4 deployments` = 24), name = NULL) +
+  scale_shape_manual(values = c(`bottom-up` = 23, `airborne, mean of 4 deployments` = 24), name = NULL) +
   geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.3) +
   labs(x = NULL, y = expression("CH"[4]*" (g CH"[4]*" m"^-2*" yr"^-1*")")) + theme_fig() +
   theme(axis.text.x = element_text(face = "bold", colour = pal_class[c("intact", "ghost")], size = 8), panel.grid.major.x = element_blank(),
         legend.position = "right", legend.key.size = unit(8, "pt"), legend.text = element_text(size = 7))
 
-fig <- (pa + labs(tag = "a")) / ((pb + labs(tag = "b")) + plot_spacer() + plot_layout(widths = c(1, 0.35))) + plot_layout(heights = c(1.25, 1)) &
+fig <- (wrap_elements(full = pa & theme(plot.margin = margin(2, 2, 2, 12))) + labs(tag = "a")) / ((pb + labs(tag = "b")) + plot_spacer() + plot_layout(widths = c(1, 0.35))) + plot_layout(heights = c(2.4, 1)) &
   theme(plot.tag = element_text(face = "bold", size = 11))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
+ggsave("output/figures/other/fig_carbon_schematic.png", pa, width = 7.2, height = 4.15, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig_carbon_budget.png", fig, width = 7.2, height = 6.4, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig_carbon_budget.pdf", fig, width = 7.2, height = 6.4, device = cairo_pdf)
 print(tot); print(air)

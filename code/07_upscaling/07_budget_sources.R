@@ -40,8 +40,8 @@ carafe_camp <- function(df, col) {
 totals <- list(); comps <- list()
 add_t <- function(term, source, class, m, lo = NA, hi = NA)
   totals[[length(totals)+1]] <<- tibble(term, source, class, value = m, lo, hi)
-add_c <- function(term, source, class, component, value)
-  comps[[length(comps)+1]] <<- tibble(term, source, class, component, value)
+add_c <- function(term, source, class, component, value, se = NA)   # se: across site x campaign
+  comps[[length(comps)+1]] <<- tibble(term, source, class, component, value, se)
 
 # =============================================================================
 # NEE — three independent estimates: our chambers, US-SKR tower, CARAFE
@@ -88,8 +88,8 @@ for (cl in c("healthy","ghost")) {
   # total ER = below-canopy chambers + literature canopy leaf Rs
   tt <- mse(s$Reco * UMOL_C)
   add_t("Reco", "This study: total ER", C, tt["m"], tt["m"]-tt["se"], tt["m"]+tt["se"])
-  for (cc in BELOW) add_c("Reco", "This study: total ER", C, cc, mean(s[[cc]], na.rm=TRUE) * UMOL_C)
-  add_c("Reco", "This study: total ER", C, "leaf", mean(s$leaf, na.rm=TRUE) * UMOL_C)  # literature Rs
+  for (cc in BELOW) { v <- mse(s[[cc]] * UMOL_C); add_c("Reco", "This study: total ER", C, cc, v["m"], v["se"]) }
+  v <- mse(s$leaf * UMOL_C); add_c("Reco", "This study: total ER", C, "leaf", v["m"], v["se"])  # literature Rs
   # below-canopy only (chamber) — compare to Troxler
   bc <- mse(s$Reco_noleaf * UMOL_C)
   add_t("Reco", "This study: below-canopy", C, bc["m"], bc["m"]-bc["se"], bc["m"]+bc["se"])
@@ -114,7 +114,7 @@ for (cl in c("healthy","ghost")) {
   s <- ch %>% filter(disturbance_level == cl)
   tot <- mse(s$total * MGD_C)
   add_t("CH4", "Chambers (this study)", recl(cl), tot["m"], tot["m"]-abs(tot["se"]), tot["m"]+abs(tot["se"]))
-  for (cc in CH4C) add_c("CH4", "Chambers (this study)", recl(cl), cc, mean(s[[cc]], na.rm=TRUE) * MGD_C)
+  for (cc in CH4C) { v <- mse(s[[cc]] * MGD_C); add_c("CH4", "Chambers (this study)", recl(cl), cc, v["m"], v["se"]) }
 }
 cch <- read.csv("data/carafe_topdown/delaria_endmembers_campaign.csv") %>% filter(gas == "CH4")
 for (klass in c("mangrove_forest","ghost_forest")) {
