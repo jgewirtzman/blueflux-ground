@@ -71,9 +71,7 @@ FIGS = {
          "Porewater alkalinity against conservative mixing (October 2025; 0–90 cm, surface water excluded; text S7). (a) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (b) Measured against mixing-predicted alkalinity; dashed, 1:1. (c) Measured ÷ mixing-predicted alkalinity by site. Fill, forest class; shape, site. FLM30 was not sampled for alkalinity."),
  "S14": (["output/figures/other/si_campaign_context.png"],
          "Campaign context (M2). Monthly z-scores of SRS6 water level (FCE LTER, 2001–2024), air temperature and midday net CO2 uptake (US-Skr tower, 2004–2011 and 2018–2023) and tower CH4 flux (2018–2023; FCH4 + storage, quality flag ≤ 1, u* > 0.2), each standardised over all of its year-months. Lines, median for each calendar month; bands, interquartile range across years (16–22 years per month for water level, 2–6 for tower CH4); points, the campaign months (October 2022, March 2023) with ±1 SD of daily means within the month; shading, campaign months. The tower CH4 record carries a negative dry-season offset that the z-score removes; only its seasonal pattern is shown."),
- "S15": (["output/figures/other/site_closure_comparison.png"],
-         "Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited."),
- "S16": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
+ "S15": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
 }
 def fig_block(k):
     files, cap = FIGS[k]
@@ -101,7 +99,8 @@ def t_S3():
     rr = rows("output/analysis/si/si_sample_sizes.csv")
     comps = [c for c in ["stem", "root", "soil", "water", "cwd", "leaves"] if c in rr[0]]
     b = [[r["plot"], r["campaign"]] + [r[c] for c in comps] + [r["total"]] for r in rr]
-    return "**Table S3. Analysed fluxes by site, campaign and component.**\n\n" + md_table(["Site", "Campaign"] + comps + ["Total"], b)
+    return ("**Table S3. Analysed fluxes by site, campaign and component.** The intact water-surface term in October 2022 (SRS5, SRS6), "
+            "where no floating chamber was deployed, was estimated from dissolved CH4 and CO2 (M8).\n\n" + md_table(["Site", "Campaign"] + comps + ["Total"], b))
 
 def t_S4():
     rr = rows("output/analysis/si/si_component_rates.csv")
