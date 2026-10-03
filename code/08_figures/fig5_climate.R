@@ -7,7 +7,7 @@
 #   (b) The intact-to-ghost switch per m2, split into the CO2 change (lost
 #       uptake + respiration) and the CH4 increase, with the CH4 share and the
 #       regional total over the 2017 loss area.
-#   (c) Induced CH4 emission per 0.5 degree cell over Caribbean mangrove with
+#   (c) Induced CH4 emission per 0.25 degree cell over Caribbean mangrove with
 #       little recovery after the 2017 hurricanes, and the Irma/Maria tracks.
 # Inputs from 07_upscaling (net_forcing_by_class, mc_net_forcing_by_class,
 # forcing_framings, forcing_switch_per_m2, regional_ghost_forcing{,_grid},
@@ -92,11 +92,11 @@ lab_pts <- tracks %>% group_by(storm) %>% filter(lon > -97, lon < -60, lat > 9, 
 seq_ch4 <- grDevices::colorRampPalette(c("#F3E1EA", pal_gas[["CH4"]], "#4A1533"))(5)
 pc <- ggplot() +
   geom_sf(data = land, fill = "grey93", colour = "grey75", linewidth = 0.12) +
-  geom_tile(data = grid, aes(lon, lat, fill = ch4_Mg), width = 0.5, height = 0.5, colour = "white", linewidth = 0.1) +
+  geom_tile(data = grid, aes(lon, lat, fill = ch4_Mg), width = grid$res_deg[1], height = grid$res_deg[1], colour = "white", linewidth = 0.05) +
   geom_path(data = tracks, aes(lon, lat, group = storm), colour = "grey35", linewidth = 0.35, linetype = "22") +
   geom_text(data = lab_pts, aes(lon, lat, label = paste(storm, "2017"), hjust = hjust), colour = "grey25", size = 2.3, fontface = "italic") +
-  scale_fill_gradientn(colours = seq_ch4, trans = "log10", breaks = c(0.1, 1, 10, 100), labels = c("0.1", "1", "10", "100"),
-                       name = expression(atop("Induced CH"[4]*" (Mg", "yr"^-1*" per 0.5"*degree*" cell)"))) +
+  scale_fill_gradientn(colours = seq_ch4, trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100), labels = c("0.01", "0.1", "1", "10", "100"),
+                       name = expression(atop("Induced CH"[4]*" (Mg", "yr"^-1*" per 0.25"*degree*" cell)"))) +
   coord_sf(xlim = c(-98, -59), ylim = c(8, 31), expand = FALSE) +
   labs(x = NULL, y = NULL,
        subtitle = sprintf("Total %.1f Gg CH₄ yr⁻¹ (%.1f–%.1f) from %.0f km² of mangrove with little recovery",
