@@ -15,14 +15,17 @@ sa<-read.csv(file.path(TLS,"all_sites_summary.csv")) %>%
 # per unit ground area (plot areas differ by up to 24%), as in Fig. 2
 pa<-read.csv("output/upscaling/plot_level_CH4_totals.csv") %>% distinct(site,plot_area_m2)
 sa<-sa %>% mutate(site=as.character(site)) %>% left_join(pa,by="site") %>% mutate(sa_g=Total_surface_area_m2/plot_area_m2, site=factor(site,levels=names(site_class)))
+tot<-sa %>% group_by(site) %>% summarise(all=sum(sa_g), above=sum(sa_g[height_m>=1.5]), .groups="drop")
+strip_lab0<-setNames(sprintf("%s (%s)\n%.1f m\u00b2 m\u207b\u00b2; %.0f%% above 1.5 m", tot$site, site_class[as.character(tot$site)],
+                             tot$all, 100*tot$above/tot$all), as.character(tot$site))
 seg_colors<-c(`prop root`=pal_comp[["prop root"]],stem=pal_comp[["stem"]],branch="#B59A6A")   # branch as Fig. 2
-strip_lab<-setNames(paste0(names(site_class)," (",site_class,")"),names(site_class))
+strip_lab<-strip_lab0
 p<-ggplot(sa,aes(sa_g,height_m+0.25,fill=segment_label))+
   geom_col(orientation="y",position=position_stack(reverse=TRUE),width=0.45,colour=NA)+
   geom_hline(yintercept=1.5,linetype="dashed",colour="grey35",linewidth=.35)+
   ggh4x::facet_wrap2(~site,nrow=1,labeller=as_labeller(strip_lab),
                      strip=ggh4x::strip_themed(text_x=lapply(pal_class[site_class],function(cc)
-                       element_text(colour=cc,face="bold",size=8,hjust=0.5))))+
+                       element_text(colour=cc,face="bold",size=7.5,hjust=0.5,lineheight=0.95))))+
   scale_fill_manual(values=seg_colors,name="woody surface")+
   scale_x_continuous(expand=expansion(mult=c(0,0.04)))+
   scale_y_continuous(breaks=seq(0,20,2),expand=c(0,0))+

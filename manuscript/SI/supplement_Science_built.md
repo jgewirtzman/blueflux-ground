@@ -201,7 +201,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/SA_by_segment_height_fixedY.png>){width=6.5in}
 
-**Fig. S8.** Laser-scanned woody surface per unit ground area (m2 m−2 per 0.5 m height bin) by segment class (prop root, stem, branch) for the four scanned plots; dashed line, 1.5 m chamber height limit.
+**Fig. S8.** Laser-scanned woody surface per unit ground area (m2 m−2 per 0.5 m height bin) by segment class (prop root, stem, branch) for the four scanned plots; labels give total woody surface per unit ground area and the share above the 1.5 m chamber height limit (dashed line).
 
 
 ![](<output/figures/other/si_S9_tide_scenarios.png>){width=6.5in}
