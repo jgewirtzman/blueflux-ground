@@ -1,8 +1,8 @@
 # =============================================================================
 # Figure S1: Ebullition partitioning method and results (stage 04 outputs)
-#   (a) 4 example floating-chamber placements: the two LGR placements with the
-#       largest ebullitive flux and the two largest bubble-free LGR placements
-#       at different sites. Top: CH4 over the placement with the detected
+#   (a) 4 example floating-chamber placements: the largest ebullitive LGR
+#       placements in two different site x campaigns and the largest clean
+#       (no residual step) bubble-free placements at two other sites. Top: CH4 over the placement with the detected
 #       bubbles (goAquaFlux, goFlux fork); bottom: de-ebulliated CH4 with the
 #       diffusive window and its linear fit.
 #   (b) Mean diffusive + ebullitive water CH4 per site x season (analysis set).
@@ -25,8 +25,18 @@ used <- ds$flux_id[ds$component == "water"]
 
 # ---- (a) example placements ----
 lgr <- part %>% filter(placement_id %in% used, grepl("^LGR", analyzer), !is.na(CH4_total))
-ebull_ids <- lgr %>% filter(n_bubbles > 0) %>% arrange(desc(CH4_ebullitive)) %>% slice(1:2) %>% pull(placement_id)
-diff_ids <- lgr %>% filter(n_bubbles == 0, duration_s >= 180) %>% arrange(desc(CH4_total)) %>%
+# residual-step screen: largest 5-reading rise relative to the series' typical rise (robust z);
+# placements with any step-like rise (z > 8) or a non-linear diffusive window (R2 < 0.98) are not used as bubble-free examples
+step_z <- tr %>% filter(placement_id %in% lgr$placement_id) %>% group_by(placement_id) %>% arrange(Etime, .by_group = TRUE) %>%
+  summarise(z = { d <- diff(CH4_ppb, lag = 5); max((d - median(d, na.rm = TRUE)) / (mad(d, na.rm = TRUE) + 1e-9), na.rm = TRUE) },
+            r2 = { w <- in_diffusive_window & !is.na(CH4_ppb); if (sum(w) > 10) summary(lm(CH4_ppb[w] ~ Etime[w]))$r.squared else NA_real_ },
+            .groups = "drop")
+lgr <- lgr %>% left_join(step_z, by = "placement_id") %>% mutate(site_camp = paste(plot, substr(date, 1, 7)))
+# two ebullitive examples from different site x campaign; two clean bubble-free examples from other sites
+ebull_ids <- lgr %>% filter(n_bubbles > 0) %>% arrange(desc(CH4_ebullitive)) %>% distinct(site_camp, .keep_all = TRUE) %>%
+  slice(1:2) %>% pull(placement_id)
+used_plots <- lgr$plot[lgr$placement_id %in% ebull_ids]
+diff_ids <- lgr %>% filter(n_bubbles == 0, duration_s >= 180, duration_s <= 600, z <= 8, r2 >= 0.98, !plot %in% used_plots) %>% arrange(desc(CH4_total)) %>%
   distinct(plot, .keep_all = TRUE) %>% slice(1:2) %>% pull(placement_id)
 selected_ids <- c(ebull_ids, diff_ids)
 cat("Selected placements:", paste(selected_ids, collapse = ", "), "\n")
@@ -87,8 +97,15 @@ disp <- function(d) d %>% mutate(site = site_x(plot), season_lab = factor(season
 si_means <- disp(si_means); si_totals <- disp(si_totals)
 pts_tot <- disp(df_water)
 x_labs <- setNames(paste0(names(site_cls), "\n", site_cls), names(site_cls))
-fig_bars <- ggplot(si_means, aes(x = site, y = mean_flux)) +
-  geom_col(aes(fill = flux_component), position = position_stack(reverse = TRUE), width = 0.62, colour = "white", linewidth = 0.25) +
+seg <- si_means %>% tidyr::pivot_wider(names_from = flux_component, values_from = mean_flux) %>%
+  mutate(Ebullitive = coalesce(Ebullitive, 0)) %>%
+  { bind_rows(transmute(., site, season_lab, flux_component = "Diffusive", lo = 0, hi = Diffusive),
+              transmute(., site, season_lab, flux_component = "Ebullitive", lo = Diffusive, hi = Diffusive + Ebullitive)) } %>%
+  filter(hi > lo)
+# stacked segments built on the raw scale so the asinh axis does not distort them
+fig_bars <- ggplot(seg, aes(x = site)) +
+  geom_crossbar(aes(y = lo, ymin = lo, ymax = hi, fill = flux_component), width = 0.62, colour = "white", linewidth = 0.25,
+                middle.linewidth = 0) +
   geom_point(data = pts_tot, aes(site, CH4_best.flux), inherit.aes = FALSE, shape = 21, fill = "white", colour = "grey35",
              size = 0.9, stroke = 0.3, alpha = 0.8, position = position_jitter(width = 0.12, height = 0, seed = 1)) +
   # SE of the total shown only where n > 3
@@ -99,7 +116,7 @@ fig_bars <- ggplot(si_means, aes(x = site, y = mean_flux)) +
   facet_grid(~ season_lab, scales = "free_x", space = "free_x") +
   scale_x_discrete(labels = x_labs) +
   scale_fill_manual(values = c("Diffusive" = col_diff, "Ebullitive" = col_ebul), labels = tolower, name = NULL) +
-  scale_y_continuous(expand = expansion(mult = c(0.07, 0.04))) +
+  scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100), expand = expansion(mult = c(0.07, 0.04))) +
   labs(x = NULL, y = expression(CH[4]~flux~(nmol~m^{-2}~s^{-1})), tag = "a") +
   theme_fig(base_size = 8) +
   theme(legend.position = "inside", legend.position.inside = c(0.99, 0.98), legend.justification = c(1, 1),

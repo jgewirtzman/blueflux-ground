@@ -19,6 +19,11 @@ All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 - CH4 additionality: CH4 increment (845 GWP20 / 290 GWP100 g CO2-eq m-2 yr-1) as a percentage of warming from carbon lost by the dead stand (vertical CO2 + lateral scenario): ~47%/16% (zero lateral), ~30-35%/11-12% (literature), ~27%/9% (intact rate). Lost uptake treated as a recovery debt. Fig 5b/c redesign (regenerating CH4; switch split into lost uptake / carbon released / CH4) and text edits.
 - Global hypothetical scaling (CH4-centred, per 100 km2 of persistently dead stand), framed as hypothetical.
 
+## QA flags (water chambers)
+- Bubble detection misses steps in the final seconds of a placement (no post-bubble baseline): 1 of 30 bubble-free LGR placements (44857_CP40_Water_78, CP40 Oct 2022) has a ~2.4 ppm step at 336 s inside the diffusive window; diffusive flux ~21% high (25.2 vs ~20.8 nmol m-2 s-1). Option: trim the last ~15 s or flag end steps.
+- LGR1_2023-03-18_FLM30_P09: ~80 s flat lag at the start included in the diffusive window (flux likely underestimated). Check stage-02 window start for lagged placements.
+- Low R2 (<0.95) bubble-free placements are mostly SRS5 Mar 2023 near-zero fluxes (expected near detection).
+
 ## Optional analyses
 - Global extension: apply the per-area switch to cyclone-driven mangrove mortality worldwide (global loss products x storm tracks), with bounds.
 - Fig. 1C artist illustration: labels pending.
