@@ -130,7 +130,7 @@ Bottom-up respiration may legitimately exceed tower-partitioned respiration, and
 
 ## Text S6. Regenerating stand
 
-Component rates were measured at BL60, but no scanned surface area or airborne end-member exists for regenerating forest, so it is reported at the component scale and excluded from the closed budgets. BL60 had the highest component CH4 rates of any class (soil 56, 95% CI 27–91; water 57, 33–89; stem 14, 3–34; root 5.7, 2.7–8.1 nmol m−2 s−1). Assigning BL60 stem and root areas midway between the ghost and intact classes and its measured inundated share (0.33 of depth readings with standing water) gives ~33 g CH4 m−2 yr−1 (32.7 exposed to 33.3 flooded), above both ghost (~12) and intact (~1.5) forest. This first-order estimate assumes intermediate structure and rests on pooled campaigns; it is not part of the closed budgets or forcing, but indicates that early regeneration need not be a low-emission state.
+Component rates were measured at BL60, but no scanned surface area or airborne end-member exists for regenerating forest, so it is reported at the component scale and excluded from the closed budgets. BL60 had the highest component CH4 rates of any class (soil 56, 95% CI 27–91; water 57, 33–89; stem 14, 3–34; root 5.7, 2.7–8.1 nmol m−2 s−1). Built like the other classes, campaign by campaign with each campaign's measured flooded share (0.96 of depth readings with standing water in October 2022, 0 in March 2023) and then averaged, BL60 emits ~29 g CH4 m−2 yr−1 with stem and prop-root areas midway between the ghost and intact classes, and 24–33 for no woody surface to the full intact woody surface (fig. S15B); the floor (soil and water) alone supplies ~24. This is above both ghost (~12) and intact (~1.5) forest under every structural assumption. The estimate assumes structure and is not part of the closed budgets or forcing, but indicates that early regeneration need not be a low-emission state.
 
 ## Text S7. Porewater alkalinity and sulfate
 
@@ -559,32 +559,32 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | BL60 | cwd | 0.20 (0.17 to 0.23) | 2 |
 | BL60 | leaves | 0.02 (0.00 to 0.04) | 14 |
 | BL60 | root | 5.74 (2.50 to 8.33) | 5 |
-| BL60 | soil | 55.38 (26.69 to 90.92) | 23 |
-| BL60 | stem | 14.20 (3.12 to 33.19) | 90 |
-| BL60 | water | 57.13 (33.34 to 88.92) | 5 |
-| CP40 | cwd | 2.34 (-0.07 to 6.32) | 10 |
-| CP40 | stem | 14.11 (7.43 to 23.02) | 78 |
-| CP40 | water | 21.22 (8.80 to 38.01) | 17 |
+| BL60 | soil | 55.89 (26.42 to 92.16) | 23 |
+| BL60 | stem | 14.40 (3.25 to 33.37) | 90 |
+| BL60 | water | 57.14 (33.34 to 88.92) | 5 |
+| CP40 | cwd | 2.32 (-0.08 to 6.28) | 10 |
+| CP40 | stem | 14.19 (7.37 to 23.23) | 78 |
+| CP40 | water | 21.65 (9.06 to 38.73) | 17 |
 | FLM30 | root | 0.61 (0.14 to 1.45) | 4 |
-| FLM30 | soil | 30.70 (12.59 to 55.67) | 10 |
-| FLM30 | stem | 11.17 (5.81 to 18.81) | 123 |
-| FLM30 | water | 10.62 (7.33 to 15.10) | 16 |
-| MI | soil | 2.57 (2.11 to 3.05) | 21 |
-| MI | stem | 0.49 (0.19 to 0.90) | 9 |
-| RB10 | soil | 1.04 (0.48 to 1.66) | 10 |
+| FLM30 | soil | 30.77 (12.93 to 55.20) | 10 |
+| FLM30 | stem | 11.14 (5.64 to 18.70) | 123 |
+| FLM30 | water | 10.66 (7.37 to 15.18) | 16 |
+| MI | soil | 2.57 (2.10 to 3.04) | 21 |
+| MI | stem | 0.49 (0.19 to 0.91) | 9 |
+| RB10 | soil | 1.05 (0.47 to 1.66) | 10 |
 | SE1 | leaves | 0.03 (0.02 to 0.05) | 5 |
-| SE1 | root | 3.24 (1.33 to 5.19) | 6 |
+| SE1 | root | 3.22 (1.33 to 5.19) | 6 |
 | SE1 | stem | 0.09 (-0.02 to 0.29) | 5 |
 | SE1 | water | 1.61 | 1 |
-| SRS5 | cwd | 0.28 (0.12 to 0.46) | 6 |
-| SRS5 | root | 0.93 (0.44 to 1.65) | 34 |
-| SRS5 | soil | 0.63 (0.38 to 0.90) | 24 |
+| SRS5 | cwd | 0.28 (0.13 to 0.46) | 6 |
+| SRS5 | root | 0.93 (0.43 to 1.67) | 34 |
+| SRS5 | soil | 0.63 (0.37 to 0.90) | 24 |
 | SRS5 | stem | 0.11 (0.09 to 0.13) | 84 |
 | SRS5 | water | 0.57 (0.24 to 0.96) | 5 |
-| SRS6 | cwd | 0.53 (0.27 to 0.78) | 8 |
-| SRS6 | root | 9.05 (0.69 to 24.94) | 16 |
-| SRS6 | soil | 11.82 (6.14 to 20.75) | 30 |
-| SRS6 | stem | 0.44 (0.27 to 0.66) | 89 |
+| SRS6 | cwd | 0.53 (0.28 to 0.77) | 8 |
+| SRS6 | root | 9.08 (0.70 to 24.86) | 16 |
+| SRS6 | soil | 11.83 (6.10 to 20.88) | 30 |
+| SRS6 | stem | 0.44 (0.27 to 0.67) | 89 |
 | SRS6 | water | 1.35 (1.13 to 1.47) | 3 |
 
 **Table S13. Flooded share of the intact forest floor** (M11): campaign-month mean of the hourly flooded share (±1.96 SE of the floor mean), the all-or-nothing switch and the long-term value, with the fitted floor-height distribution (cm relative to the logger datum).
