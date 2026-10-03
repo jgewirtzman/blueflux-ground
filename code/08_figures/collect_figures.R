@@ -21,8 +21,7 @@ display_items <- c(
   "SI/FigS4_ebullition.png"             = "other/pub_SI_ebullition_partition.png",        # figS1_ebullition.R
   "SI/FigS5_pneumatophore.png"          = "other/pub_SI_pneumatophore_density.png",       # figS2_pneumatophore.R
   "SI/FigS6_stem_detail.png"            = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R
-  "SI/FigS7a_height_extrapolation.png"  = "other/stem_extrap_clean.png",                  # plot_extrap_clean.R
-  "SI/FigS7b_extrap_sensitivity.png"    = "other/si_S7b_extrap_sensitivity.png",          # si_upscaling_figs.R
+  "SI/FigS7_height_extrapolation.png"   = "other/stem_extrap_clean.png",                  # plot_extrap_clean.R
   "SI/FigS8_SA_by_height.png"           = "other/SA_by_segment_height_fixedY.png",        # plot_SA_height_fixedY.R
   "SI/FigS9_tide_scenarios.png"         = "other/si_S9_tide_scenarios.png",               # si_upscaling_figs.R
   "SI/FigS10_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
