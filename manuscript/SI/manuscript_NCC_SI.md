@@ -254,7 +254,7 @@ Our ghost-forest forcing is on-site vertical exchange measured five to six years
 | ED5 | Flooding representation: logger-based flooded share of the plot floor and the tide/inundation scenarios | scenario_comparison_tidal; flood_fraction.csv |
 | ED6 | Laser-scanned surface area by segment class and height; flux-painted stand point clouds if not used in the main text | SA_by_segment_height_fixedY; [Lizzy Powell, segmented clouds requested] |
 | ED7 | Uncertainty: Monte Carlo decomposition; one-at-a-time sensitivity of budgets and forcing (Table S10), including downed-wood volume and flooding | pub_uncertainty_decomp; cwd_sensitivity; flooding_sensitivity; [sensitivity figure TO BUILD] |
-| ED8 | Porewater depth profiles: redox, anions and inorganic N, carbon, δ13C-CH4 and δ13C-CO2; FCE LTER NH4 context | pub_soil_redox_profiles; pub_soil_anion_profiles; pub_soil_carbon_profiles; pub_soil_isotope_profiles; porewater_N_fce_context.csv |
+| ED8 | Porewater CH4 and salinity by site, sampling round and depth (Oct 2022, Mar 2023, Oct 2025; five core sites including FLM30); FCE LTER NH4 context. All October 2025 depth profiles are in Fig. 4c | ed_porewater_rounds; porewater_N_fce_context.csv |
 | ED9 | Carbon-balance flows: vertical exchange, lateral export and burial for intact forest | budget_flow_healthy |
 | ED10 | Tower and aircraft context: tower GPP and within-month Q10; airborne footprint disaggregation by land-cover class | US-Skr GPP plots; [airborne disaggregation panel from Delaria et al.] |
 
