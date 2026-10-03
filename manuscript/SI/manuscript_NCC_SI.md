@@ -140,7 +140,7 @@ Stem CH4 declines with height, so a stand budget requires integrating flux above
 
 Inundation determines which surfaces emit. Tidal sites (SRS5, SRS6) were represented by high-tide (fully flooded, water-surface emission) and low-tide (exposed soil emission) states, weighted by the share of the plot floor under water in each campaign month (S.M15): 0.62 and 0.74 in October 2022 and 0.37 and 0.55 in March 2023 at SRS5 and SRS6. Alternative representations (all-or-nothing switch, long-term hydrology, equal split, floor-height range) are compared in S.T9 and Table S10. Ghost sites (CP40, FLM30) are not tidal. They were fully inundated in October 2022 and largely inundated in March 2023, when one fifth of the floor had no standing water (S.M7).
 
-For the March 2023 ghost floor without standing water we tested four sources for the exposed-soil flux, each with its weakness: FLM30 soil chambers in March 2022 (same site and season, different year; CH4 30.8 [13–56] nmol m⁻² s⁻¹, CO2 2.6 [2.2–3.0] µmol m⁻² s⁻¹; central), Marco Island ghost soils in March 2022 and 2023 (ghost forest, different setting; CH4 2.6, CO2 1.0), the two pooled (CH4 11.7, CO2 1.5), and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class; CH4 39.6, CO2 6.9), and two exposed shares: readings without standing water (0.19 at both sites; central) and readings of ≤ 2 cm (0.19 at CP40, 0.54 at FLM30). Every option raises the ghost source relative to treating the floor as fully inundated, mainly through soil CO2, which exceeds water-surface CO2: ghost net forcing is +2,379 g CO2-eq m⁻² yr⁻¹ at GWP20 when fully inundated, +2,753 in the central case, +2,438 to +3,334 across the soil sources and up to +4,340 with ≤ 2 cm counted as exposed and BL60 soil; ghost CH4 ranges 9.9–13.7 g m⁻² yr⁻¹ (output/qa/ghost_exposed_floor.csv; Table S10). The ghost class is a net radiative source under every option.
+For the March 2023 ghost floor without standing water we tested four sources for the exposed-soil flux, each with its weakness: FLM30 soil chambers in March 2022 (same site and season, different year; CH4 30.8 [13–56] nmol m⁻² s⁻¹, CO2 2.6 [2.2–3.0] µmol m⁻² s⁻¹; central), Marco Island ghost soils in March 2022 and 2023 (ghost forest, different setting; CH4 2.6, CO2 1.0), the two pooled (CH4 11.7, CO2 1.5), and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class; CH4 39.6, CO2 6.9), and two exposed shares: readings without standing water (0.19 at both sites; central) and readings of ≤ 2 cm (0.19 at CP40, 0.54 at FLM30). Every option raises the ghost source relative to treating the floor as fully inundated, mainly through soil CO2, which exceeds water-surface CO2: ghost net forcing is +2,380 g CO2-eq m⁻² yr⁻¹ at GWP20 when fully inundated, +2,753 in the central case, +2,439 to +3,334 across the soil sources and up to +4,340 with ≤ 2 cm counted as exposed and BL60 soil; ghost CH4 ranges 9.9–13.7 g m⁻² yr⁻¹ (output/qa/ghost_exposed_floor.csv; Table S10). The ghost class is a net radiative source under every option.
 
 ### S.T3 Coarse woody debris
 
@@ -202,31 +202,31 @@ The central case combines the choices best supported by our data and the literat
 | **Central** | — | 1.49 | −1,025 | −3,634 [−3,713] | 2,753 [2,119] | 6,387 [5,832] |
 | Q10 (day → 24 h, chamber CO2) | none (Q10 = 1) | 1.49 | −1,002 | −3,550 [−3,629] | 2,978 [2,151] | 6,528 [5,780] |
 | Q10 (day → 24 h, chamber CO2) | literature (Q10 = 2) | 1.49 | −1,097 | −3,899 [−3,978] | 2,843 [2,016] | 6,742 [5,995] |
-| Q10 (day → 24 h, chamber CO2) | our stem chambers (Q10 = 4.33) | 1.49 | −1,167 | −4,154 [−4,234] | 2,740 [1,914] | 6,895 [6,147] |
-| Downed CWD volume | none | 1.49 | −1,176 | −4,187 [−4,266] | 2,535 [1,901] | 6,721 [6,167] |
-| Downed CWD volume | Krauss low (13 m³ ha⁻¹) | 1.49 | −1,147 | −4,079 [−4,159] | 2,577 [1,943] | 6,656 [6,102] |
-| Downed CWD volume | Krauss eyewall (132 m³ ha⁻¹) | 1.49 | −879 | −3,097 [−3,177] | 2,965 [2,331] | 6,062 [5,508] |
+| Q10 (day → 24 h, chamber CO2) | our stem chambers (Q10 = 4.33) | 1.49 | −1,167 | −4,154 [−4,234] | 2,741 [1,914] | 6,895 [6,147] |
+| Downed CWD volume | none | 1.49 | −1,176 | −4,186 [−4,266] | 2,535 [1,901] | 6,721 [6,167] |
+| Downed CWD volume | Krauss low (13 m³ ha⁻¹) | 1.49 | −1,147 | −4,079 [−4,159] | 2,577 [1,943] | 6,657 [6,102] |
+| Downed CWD volume | Krauss eyewall (132 m³ ha⁻¹) | 1.49 | −879 | −3,097 [−3,177] | 2,965 [2,331] | 6,063 [5,508] |
 | Downed CWD volume | Krauss high (181 m³ ha⁻¹) | 1.49 | −768 | −2,693 [−2,772] | 3,125 [2,491] | 5,818 [5,263] |
 | Flooding representation (intact) | equal 50/50 split (SRS5 0.5/0.5; SRS6 0.5/0.5) | 1.98 | −934 | −3,261 [−3,367] | 2,753 [2,119] | 6,014 [5,486] |
-| Flooding representation (intact) | all-or-nothing switch, campaign months (SRS5 1/0.69; SRS6 0.98/0.72) | 0.92 | −1,198 | −4,314 [−4,363] | 2,753 [2,119] | 7,067 [6,482] |
-| Flooding representation (intact) | all-or-nothing switch, 2010–2023 (SRS5 0.63/0.63; SRS6 0.52/0.52) | 1.93 | −972 | −3,404 [−3,506] | 2,753 [2,119] | 6,157 [5,625] |
-| Flooding representation (intact) | area-weighted, floor mean −1.96 SE (SRS5 0.54/0.31; SRS6 0.67/0.48) | 1.65 | −982 | −3,463 [−3,551] | 2,753 [2,119] | 6,216 [5,670] |
+| Flooding representation (intact) | all-or-nothing switch, campaign months (SRS5 1/0.69; SRS6 0.98/0.72) | 0.92 | −1,198 | −4,314 [−4,363] | 2,753 [2,119] | 7,068 [6,483] |
+| Flooding representation (intact) | all-or-nothing switch, 2010–2023 (SRS5 0.63/0.63; SRS6 0.52/0.52) | 1.93 | −972 | −3,403 [−3,506] | 2,753 [2,119] | 6,157 [5,625] |
+| Flooding representation (intact) | area-weighted, floor mean −1.96 SE (SRS5 0.54/0.31; SRS6 0.67/0.48) | 1.66 | −982 | −3,463 [−3,551] | 2,753 [2,119] | 6,216 [5,670] |
 | Flooding representation (intact) | area-weighted, floor mean +1.96 SE (SRS5 0.68/0.44; SRS6 0.8/0.61) | 1.34 | −1,065 | −3,793 [−3,864] | 2,753 [2,119] | 6,546 [5,983] |
-| Flooding representation (intact) | area-weighted, 2010–2023 (SRS5 0.38/0.38; SRS6 0.43/0.43) | 2.15 | −881 | −3,055 [−3,169] | 2,753 [2,119] | 5,808 [5,288] |
-| Tidal phase, intact water CH4 | x 0.6 | 1.40 | −1,025 | −3,641 [−3,716] | 2,753 [2,119] | 6,394 [5,835] |
-| Tidal phase, intact water CH4 | x 2.0 | 1.70 | −1,025 | −3,617 [−3,707] | 2,753 [2,119] | 6,370 [5,826] |
-| CH4 day → 24 h | x 1.30 (all CH4) | 1.94 | −1,025 | −3,597 [−3,701] | 3,046 [2,220] | 6,644 [5,920] |
-| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23 | 1.49 | −1,025 | −3,634 [−3,713] | 2,438 [1,877] | 6,072 [5,590] |
+| Flooding representation (intact) | area-weighted, 2010–2023 (SRS5 0.38/0.38; SRS6 0.43/0.43) | 2.15 | −881 | −3,054 [−3,169] | 2,753 [2,119] | 5,808 [5,288] |
+| Tidal phase, intact water CH4 | x 0.6 | 1.41 | −1,025 | −3,641 [−3,715] | 2,753 [2,119] | 6,394 [5,835] |
+| Tidal phase, intact water CH4 | x 2.0 | 1.70 | −1,025 | −3,616 [−3,707] | 2,753 [2,119] | 6,370 [5,826] |
+| CH4 day → 24 h | x 1.30 (all CH4) | 1.94 | −1,025 | −3,597 [−3,700] | 3,047 [2,220] | 6,644 [5,920] |
+| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23 | 1.49 | −1,025 | −3,634 [−3,713] | 2,439 [1,877] | 6,072 [5,590] |
 | Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI) | 1.49 | −1,025 | −3,634 [−3,713] | 2,540 [1,955] | 6,174 [5,668] |
 | Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023 | 1.49 | −1,025 | −3,634 [−3,713] | 3,334 [2,677] | 6,968 [6,391] |
-| Ghost floor without standing water (Mar 2023) | Floor fully inundated | 1.49 | −1,025 | −3,634 [−3,713] | 2,379 [1,808] | 6,013 [5,521] |
+| Ghost floor without standing water (Mar 2023) | Floor fully inundated | 1.49 | −1,025 | −3,634 [−3,713] | 2,380 [1,808] | 6,013 [5,521] |
 | Ghost floor without standing water (Mar 2023) | FLM30 soil, Mar 2022 (same site); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 3,116 [2,435] | 6,750 [6,148] |
 | Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,454 [1,925] | 6,088 [5,638] |
 | Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,668 [2,089] | 6,301 [5,802] |
 | Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 4,340 [3,611] | 7,974 [7,324] |
 | Leaf respiration | Rd25 1.28, LAI 2.3 | 1.49 | −1,203 | −4,287 [−4,366] | 2,753 [2,119] | 7,040 [6,485] |
-| Leaf respiration | Rd25 1.62, LAI 5.55 | 1.49 | −811 | −2,851 [−2,931] | 2,753 [2,119] | 5,604 [5,050] |
-| Carbon-balance framing | NECB, exported alkalinity retained | 1.96 | −783 | −2,709 [−2,814] | 2,753 [2,119] | 5,462 [4,933] |
+| Leaf respiration | Rd25 1.62, LAI 5.55 | 1.49 | −811 | −2,851 [−2,930] | 2,753 [2,119] | 5,604 [5,050] |
+| Carbon-balance framing | NECB, exported alkalinity retained | 1.96 | −783 | −2,709 [−2,814] | 2,753 [2,119] | 5,463 [4,933] |
 | Carbon-balance framing | NECB, all export returned to the air | 1.96 | −679 | −2,328 [−2,432] | 2,753 [2,119] | 5,081 [4,551] |
 | Carbon-balance framing | storage only (burial + wood) | 1.49 | −254 | −810 [−889] | 2,753 [2,119] | 3,563 [3,008] |
 | Monte Carlo 95 % interval | all propagated terms | – | – | −5233 to −1939 [−5294 to −2035] | 1902 to 3937 [1466 to 3227] | – |
