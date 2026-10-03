@@ -4,11 +4,7 @@ Working notes that used to sit inside the Science draft and supplement. The draf
 now carry only content placeholders (missing data or text).
 
 ## Authors and affiliations
-Affiliations confirmed by J. Gewirtzman (2026-10-03). Still open:
-- William Chen: assumed Yale Chemical & Environmental Engineering (Peccia lab); not confirmed.
-- Spark Climate Solutions: city.
-- University of Vermont (Colwell) and University of Rhode Island (Norton): departments.
-- Peccia and Luhung were bracketed (authorship to be confirmed) in the earlier author list.
+Affiliations confirmed by J. Gewirtzman (2026-10-03). Departments for Colwell (UVM Rubenstein School) and Norton (URI College of the Environment and Life Sciences) are from their public profiles; each to confirm. Peccia and Luhung were bracketed (authorship to be confirmed) in the earlier author list.
 
 ## Checks
 - E. Delaria: airborne uncertainty definition; July 2024 deployment.
