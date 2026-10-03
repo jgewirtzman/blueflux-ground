@@ -5,7 +5,7 @@
 #       short-term loss on GMW v1), the US-Skr tower, Shark River and Taylor
 #       Sloughs and the Everglades National Park boundary; Florida inset.
 #   (b) Intact (SRS5), regenerating (BL60) and ghost (CP40) forest.
-#   (c) PLACEHOLDER for the measurement-scales schematic (artist).
+#   (c) Measurement schematic (draft illustration, data/figures/fig1c_schematic.jpg).
 # Site coordinates from data/sites/site_metadata.csv; photos in data/photos/sites.
 # Writes output/figures/other/fig1_system.{png,pdf}.
 # =============================================================================
@@ -98,15 +98,15 @@ photo <- function(file, class, site, asp) {
 asp <- 1.55
 pb <- photo("SRS5.jpg", "intact", "SRS5", asp) / photo("BL60-2.jpg", "regenerating", "BL60", asp) / photo("CP40.jpg", "ghost", "CP40", asp)
 
-# ---- (c) schematic placeholder ----
-pc <- ggplot() + annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = "grey96", colour = "grey70", linetype = 2) +
-  annotate("text", x = 0.5, y = 0.5, size = 3.2, colour = "firebrick", lineheight = 1,
-           label = "PLACEHOLDER: measurement-scales schematic (artist)\ncomponent chambers -> laser-scanned surfaces -> stand budget -> eddy-covariance tower -> aircraft -> region") +
-  scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0)) + theme_void()
+# ---- (c) measurement schematic (draft illustration; data/figures/fig1c_schematic.jpg) ----
+sch <- readJPEG("data/figures/fig1c_schematic.jpg")
+pc <- ggplot() + annotation_custom(rasterGrob(sch, width = unit(1, "npc"), height = unit(1, "npc"), interpolate = TRUE)) +
+  scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) + scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
+  theme_void() + theme(aspect.ratio = dim(sch)[1] / dim(sch)[2])
 
 top <- pa + (wrap_elements(full = pb) + labs(tag = "b") + theme(plot.tag.position = c(0, 1.02), plot.margin = margin(14, 0, 0, 4), plot.tag = element_text(face = "bold", size = 11))) +
   plot_layout(widths = c(1.75, 1))
-fig <- top / (pc + labs(tag = "c") + theme(plot.tag = element_text(face = "bold", size = 11))) + plot_layout(heights = c(1, 0.42)) 
+fig <- top / (pc + labs(tag = "c") + theme(plot.tag = element_text(face = "bold", size = 11))) + plot_layout(heights = c(1, 0.62)) 
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig1_system.png", fig, width = 7.2, height = 5.9, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig1_system.pdf", fig, width = 7.2, height = 5.9, device = cairo_pdf)
+ggsave("output/figures/other/fig1_system.png", fig, width = 7.2, height = 6.5, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig1_system.pdf", fig, width = 7.2, height = 6.5, device = cairo_pdf)
