@@ -140,7 +140,7 @@ Stem CH4 declines with height, so a stand budget requires integrating flux above
 
 Inundation determines which surfaces emit. Tidal sites (SRS5, SRS6) were represented by high-tide (fully flooded, water-surface emission) and low-tide (exposed soil emission) states, weighted by the share of the plot floor under water in each campaign month (S.M15): 0.62 and 0.74 in October 2022 and 0.37 and 0.55 in March 2023 at SRS5 and SRS6. Alternative representations (all-or-nothing switch, long-term hydrology, equal split, floor-height range) are compared in S.T9 and Table S10. Ghost sites (CP40, FLM30) are not tidal. They were fully inundated in October 2022 and largely inundated in March 2023, when one fifth of the floor had no standing water (S.M7).
 
-For the March 2023 ghost floor without standing water we tested four sources for the exposed-soil flux, each with its weakness: FLM30 soil chambers in March 2022 (same site and season, different year; CH4 30.8 [13–56] nmol m⁻² s⁻¹, CO2 2.6 [2.2–3.0] µmol m⁻² s⁻¹; central), Marco Island ghost soils in March 2022 and 2023 (ghost forest, different setting; CH4 2.6, CO2 1.0), the two pooled (CH4 11.7, CO2 1.5), and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class; CH4 39.6, CO2 6.9), and two exposed shares: readings without standing water (0.19 at both sites; central) and readings of ≤ 2 cm (0.19 at CP40, 0.54 at FLM30). Every option raises the ghost source relative to treating the floor as fully inundated, mainly through soil CO2, which exceeds water-surface CO2: ghost net forcing is +2,380 g CO2-eq m⁻² yr⁻¹ at GWP20 when fully inundated, +2,753 in the central case, +2,439 to +3,334 across the soil sources and up to +4,340 with ≤ 2 cm counted as exposed and BL60 soil; ghost CH4 ranges 9.9–13.7 g m⁻² yr⁻¹ (output/qa/ghost_exposed_floor.csv; Table S10). The ghost class is a net radiative source under every option.
+For the March 2023 ghost floor without standing water we tested four sources for the exposed-soil flux, each with its weakness: FLM30 soil chambers in March 2022 (same site and season, different year; CH4 30.8 [13–56] nmol m⁻² s⁻¹, CO2 2.6 [2.2–3.0] µmol m⁻² s⁻¹; central), Marco Island ghost soils in March 2022 and 2023 (ghost forest, different setting; CH4 2.6, CO2 1.0), the two pooled (CH4 11.7, CO2 1.5), and exposed hurricane-killed soils at BL60 in March 2023 (same campaign, regenerating class; CH4 39.6, CO2 6.9), and two exposed shares: readings without standing water (0.19 at both sites; central) and readings of ≤ 2 cm (0.19 at CP40, 0.54 at FLM30). Every option raises the ghost source relative to treating the floor as fully inundated, mainly through soil CO2, which exceeds water-surface CO2: ghost net forcing is +2,401 g CO2-eq m⁻² yr⁻¹ at GWP20 when fully inundated, +2,775 in the central case, +2,460 to +3,356 across the soil sources and up to +4,362 with ≤ 2 cm counted as exposed and BL60 soil; ghost CH4 ranges 9.9–13.7 g m⁻² yr⁻¹ (output/qa/ghost_exposed_floor.csv; Table S10). The ghost class is a net radiative source under every option.
 
 ### S.T3 Coarse woody debris
 
@@ -199,43 +199,43 @@ The central case combines the choices best supported by our data and the literat
 
 | Choice | Setting | Intact CH4 (g m⁻² yr⁻¹) | Intact NEE (g C) | Intact forcing, GWP20 [GWP100] | Ghost forcing, GWP20 [GWP100] | Switch, GWP20 [GWP100] |
 |---|---|---|---|---|---|---|
-| **Central** | — | 1.49 | −1,025 | −3,634 [−3,713] | 2,753 [2,119] | 6,387 [5,832] |
-| Q10 (day → 24 h, chamber CO2) | none (Q10 = 1) | 1.49 | −1,002 | −3,550 [−3,629] | 2,978 [2,151] | 6,528 [5,780] |
-| Q10 (day → 24 h, chamber CO2) | literature (Q10 = 2) | 1.49 | −1,097 | −3,899 [−3,978] | 2,843 [2,016] | 6,742 [5,995] |
-| Q10 (day → 24 h, chamber CO2) | our stem chambers (Q10 = 4.33) | 1.49 | −1,167 | −4,154 [−4,234] | 2,741 [1,914] | 6,895 [6,147] |
+| **Central** | — | 1.49 | −1,025 | −3,634 [−3,713] | 2,775 [2,141] | 6,409 [5,854] |
+| Q10 (day → 24 h, chamber CO2) | none (Q10 = 1) | 1.49 | −1,002 | −3,550 [−3,629] | 3,000 [2,173] | 6,550 [5,803] |
+| Q10 (day → 24 h, chamber CO2) | literature (Q10 = 2) | 1.49 | −1,097 | −3,899 [−3,978] | 2,863 [2,036] | 6,762 [6,015] |
+| Q10 (day → 24 h, chamber CO2) | our stem chambers (Q10 = 4.33) | 1.49 | −1,167 | −4,154 [−4,234] | 2,758 [1,932] | 6,913 [6,165] |
 | Downed CWD volume | none | 1.49 | −1,176 | −4,186 [−4,266] | 2,535 [1,901] | 6,721 [6,167] |
-| Downed CWD volume | Krauss low (13 m³ ha⁻¹) | 1.49 | −1,147 | −4,079 [−4,159] | 2,577 [1,943] | 6,657 [6,102] |
-| Downed CWD volume | Krauss eyewall (132 m³ ha⁻¹) | 1.49 | −879 | −3,097 [−3,177] | 2,965 [2,331] | 6,063 [5,508] |
-| Downed CWD volume | Krauss high (181 m³ ha⁻¹) | 1.49 | −768 | −2,693 [−2,772] | 3,125 [2,491] | 5,818 [5,263] |
-| Flooding representation (intact) | equal 50/50 split (SRS5 0.5/0.5; SRS6 0.5/0.5) | 1.98 | −934 | −3,261 [−3,367] | 2,753 [2,119] | 6,014 [5,486] |
-| Flooding representation (intact) | all-or-nothing switch, campaign months (SRS5 1/0.69; SRS6 0.98/0.72) | 0.92 | −1,198 | −4,314 [−4,363] | 2,753 [2,119] | 7,068 [6,483] |
-| Flooding representation (intact) | all-or-nothing switch, 2010–2023 (SRS5 0.63/0.63; SRS6 0.52/0.52) | 1.93 | −972 | −3,403 [−3,506] | 2,753 [2,119] | 6,157 [5,625] |
-| Flooding representation (intact) | area-weighted, floor mean −1.96 SE (SRS5 0.54/0.31; SRS6 0.67/0.48) | 1.66 | −982 | −3,463 [−3,551] | 2,753 [2,119] | 6,216 [5,670] |
-| Flooding representation (intact) | area-weighted, floor mean +1.96 SE (SRS5 0.68/0.44; SRS6 0.8/0.61) | 1.34 | −1,065 | −3,793 [−3,864] | 2,753 [2,119] | 6,546 [5,983] |
-| Flooding representation (intact) | area-weighted, 2010–2023 (SRS5 0.38/0.38; SRS6 0.43/0.43) | 2.15 | −881 | −3,054 [−3,169] | 2,753 [2,119] | 5,808 [5,288] |
-| Tidal phase, intact water CH4 | x 0.6 | 1.41 | −1,025 | −3,641 [−3,715] | 2,753 [2,119] | 6,394 [5,835] |
-| Tidal phase, intact water CH4 | x 2.0 | 1.70 | −1,025 | −3,616 [−3,707] | 2,753 [2,119] | 6,370 [5,826] |
-| CH4 day → 24 h | x 1.30 (all CH4) | 1.94 | −1,025 | −3,597 [−3,700] | 3,047 [2,220] | 6,644 [5,920] |
-| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23 | 1.49 | −1,025 | −3,634 [−3,713] | 2,439 [1,877] | 6,072 [5,590] |
-| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI) | 1.49 | −1,025 | −3,634 [−3,713] | 2,540 [1,955] | 6,174 [5,668] |
-| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023 | 1.49 | −1,025 | −3,634 [−3,713] | 3,334 [2,677] | 6,968 [6,391] |
-| Ghost floor without standing water (Mar 2023) | Floor fully inundated | 1.49 | −1,025 | −3,634 [−3,713] | 2,380 [1,808] | 6,013 [5,521] |
-| Ghost floor without standing water (Mar 2023) | FLM30 soil, Mar 2022 (same site); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 3,116 [2,435] | 6,750 [6,148] |
-| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,454 [1,925] | 6,088 [5,638] |
-| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,668 [2,089] | 6,301 [5,802] |
-| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 4,340 [3,611] | 7,974 [7,324] |
-| Leaf respiration | Rd25 1.28, LAI 2.3 | 1.49 | −1,203 | −4,287 [−4,366] | 2,753 [2,119] | 7,040 [6,485] |
-| Leaf respiration | Rd25 1.62, LAI 5.55 | 1.49 | −811 | −2,851 [−2,930] | 2,753 [2,119] | 5,604 [5,050] |
-| Carbon-balance framing | NECB, exported alkalinity retained | 1.96 | −783 | −2,709 [−2,814] | 2,753 [2,119] | 5,463 [4,933] |
-| Carbon-balance framing | NECB, all export returned to the air | 1.96 | −679 | −2,328 [−2,432] | 2,753 [2,119] | 5,081 [4,551] |
-| Carbon-balance framing | storage only (burial + wood) | 1.49 | −254 | −810 [−889] | 2,753 [2,119] | 3,563 [3,008] |
-| Monte Carlo 95 % interval | all propagated terms | – | – | −5233 to −1939 [−5294 to −2035] | 1902 to 3937 [1466 to 3227] | – |
+| Downed CWD volume | Krauss low (13 m³ ha⁻¹) | 1.49 | −1,147 | −4,079 [−4,159] | 2,581 [1,947] | 6,661 [6,106] |
+| Downed CWD volume | Krauss eyewall (132 m³ ha⁻¹) | 1.49 | −879 | −3,097 [−3,177] | 3,008 [2,374] | 6,105 [5,551] |
+| Downed CWD volume | Krauss high (181 m³ ha⁻¹) | 1.49 | −768 | −2,693 [−2,772] | 3,184 [2,549] | 5,876 [5,322] |
+| Flooding representation (intact) | equal 50/50 split (SRS5 0.5/0.5; SRS6 0.5/0.5) | 1.98 | −934 | −3,261 [−3,367] | 2,775 [2,141] | 6,036 [5,508] |
+| Flooding representation (intact) | all-or-nothing switch, campaign months (SRS5 1/0.69; SRS6 0.98/0.72) | 0.92 | −1,198 | −4,314 [−4,363] | 2,775 [2,141] | 7,089 [6,504] |
+| Flooding representation (intact) | all-or-nothing switch, 2010–2023 (SRS5 0.63/0.63; SRS6 0.52/0.52) | 1.93 | −972 | −3,403 [−3,506] | 2,775 [2,141] | 6,178 [5,647] |
+| Flooding representation (intact) | area-weighted, floor mean −1.96 SE (SRS5 0.54/0.31; SRS6 0.67/0.48) | 1.66 | −982 | −3,463 [−3,551] | 2,775 [2,141] | 6,238 [5,692] |
+| Flooding representation (intact) | area-weighted, floor mean +1.96 SE (SRS5 0.68/0.44; SRS6 0.8/0.61) | 1.34 | −1,065 | −3,793 [−3,864] | 2,775 [2,141] | 6,568 [6,005] |
+| Flooding representation (intact) | area-weighted, 2010–2023 (SRS5 0.38/0.38; SRS6 0.43/0.43) | 2.15 | −881 | −3,054 [−3,169] | 2,775 [2,141] | 5,829 [5,310] |
+| Tidal phase, intact water CH4 | x 0.6 | 1.41 | −1,025 | −3,641 [−3,715] | 2,775 [2,141] | 6,415 [5,856] |
+| Tidal phase, intact water CH4 | x 2.0 | 1.70 | −1,025 | −3,616 [−3,707] | 2,775 [2,141] | 6,391 [5,848] |
+| CH4 day → 24 h | x 1.30 (all CH4) | 1.94 | −1,025 | −3,597 [−3,700] | 3,068 [2,242] | 6,665 [5,942] |
+| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23 | 1.49 | −1,025 | −3,634 [−3,713] | 2,460 [1,899] | 6,094 [5,612] |
+| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI) | 1.49 | −1,025 | −3,634 [−3,713] | 2,562 [1,977] | 6,195 [5,690] |
+| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023 | 1.49 | −1,025 | −3,634 [−3,713] | 3,356 [2,699] | 6,990 [6,412] |
+| Ghost floor without standing water (Mar 2023) | Floor fully inundated | 1.49 | −1,025 | −3,634 [−3,713] | 2,401 [1,830] | 6,035 [5,543] |
+| Ghost floor without standing water (Mar 2023) | FLM30 soil, Mar 2022 (same site); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 3,138 [2,457] | 6,772 [6,170] |
+| Ghost floor without standing water (Mar 2023) | Marco Island ghost soil, Mar 2022-23; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,476 [1,946] | 6,110 [5,659] |
+| Ghost floor without standing water (Mar 2023) | Pooled ghost soil (FLM30 2022 + MI); <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 2,689 [2,111] | 6,323 [5,824] |
+| Ghost floor without standing water (Mar 2023) | BL60 dieback soil, Mar 2023; <= 2 cm counted as exposed | 1.49 | −1,025 | −3,634 [−3,713] | 4,362 [3,633] | 7,996 [7,346] |
+| Leaf respiration | Rd25 1.28, LAI 2.3 | 1.49 | −1,203 | −4,287 [−4,366] | 2,775 [2,141] | 7,062 [6,507] |
+| Leaf respiration | Rd25 1.62, LAI 5.55 | 1.49 | −811 | −2,851 [−2,930] | 2,775 [2,141] | 5,626 [5,071] |
+| Carbon-balance framing | NECB, exported alkalinity retained | 1.96 | −783 | −2,709 [−2,814] | 2,775 [2,141] | 5,484 [4,954] |
+| Carbon-balance framing | NECB, all export returned to the air | 1.96 | −679 | −2,328 [−2,432] | 2,775 [2,141] | 5,103 [4,573] |
+| Carbon-balance framing | storage only (burial + wood) | 1.49 | −254 | −810 [−889] | 2,775 [2,141] | 3,585 [3,030] |
+| Monte Carlo 95 % interval | all propagated terms | – | – | −5233 to −1939 [−5294 to −2035] | 1922 to 3978 [1491 to 3263] | – |
 
-Three results hold under every choice. On a 20-year horizon (GWP20) the ghost class is a net radiative source (+2,380 to +4,340 g CO2-eq m⁻² yr⁻¹; +1,800 to +3,600 at GWP100), the intact class is a net sink on vertical exchange (−2,690 to −4,310; −2,770 to −4,370 at GWP100), and intact CH4 emission is clearly non-zero (0.9–2.1 g CH4 m⁻² yr⁻¹). The vertical sink-to-source switch spans ~5,600–8,000 g CO2-eq m⁻² yr⁻¹ at GWP20 (~5,000–7,300 at GWP100), and ~5,100–5,500 under the plausible carbon-balance framings (S.T10). The largest levers on the intact budget are canopy leaf respiration (LAI), the downed-wood volume and the flooding representation. The flooding choice also decides which pathway dominates intact CH4: soils (55 %) and roots (28 %) in the central case, roots (44 %) under the all-or-nothing switch, which floods the whole floor whenever the logger reads above zero. Intact CH4 is lower than under an equal tidal split (2.0 g) because the intact floor was under water for more than half of the campaign months.
+Three results hold under every choice. On a 20-year horizon (GWP20) the ghost class is a net radiative source (+2,400 to +4,360 g CO2-eq m⁻² yr⁻¹; +1,830 to +3,630 at GWP100), the intact class is a net sink on vertical exchange (−2,690 to −4,310; −2,770 to −4,370 at GWP100), and intact CH4 emission is clearly non-zero (0.9–2.1 g CH4 m⁻² yr⁻¹). The vertical sink-to-source switch spans ~5,600–8,000 g CO2-eq m⁻² yr⁻¹ at GWP20 (~5,100–7,300 at GWP100), and ~5,100–5,500 under the plausible carbon-balance framings (S.T10). The largest levers on the intact budget are canopy leaf respiration (LAI), the downed-wood volume and the flooding representation. The flooding choice also decides which pathway dominates intact CH4: soils (55 %) and roots (28 %) in the central case, roots (44 %) under the all-or-nothing switch, which floods the whole floor whenever the logger reads above zero. Intact CH4 is lower than under an equal tidal split (2.0 g) because the intact floor was under water for more than half of the campaign months.
 
 ### S.T10 Net forcing under carbon-balance framings
 
-On vertical exchange the intact class is a sink of −3,630 g CO2-eq m⁻² yr⁻¹ at GWP20 (−3,710 at GWP100), and its CH4 emission offsets 3 % (GWP20) to 1 % (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m⁻² yr⁻¹; S.M17) the intact forest retains ~680 g C m⁻² yr⁻¹. With exported alkalinity retained in the ocean and the rest of the exported carbon returned to the atmosphere — the atmosphere-relevant case — the intact class is a sink of −2,710 g CO2-eq m⁻² yr⁻¹ at GWP20 (−2,960 to −1,710 across the low and high lateral scenarios; −2,810 at GWP100), CH4 offsets 5 % of it at GWP20, and the switch to the ghost class is ~5,500 g CO2-eq m⁻² yr⁻¹ (GWP20; ~4,900 at GWP100). If all exported carbon returns to the atmosphere, the intact sink is −2,330 (−2,730 to −150) at GWP20 and the switch ~5,100. On storage alone (burial plus wood increment, 254 g C m⁻² yr⁻¹) the intact class is −810 and the switch ~3,600; this is a lower bound on the sink, because carbon that is respired downstream or remains in the coastal ocean as DOC is counted as returned to the air.
+On vertical exchange the intact class is a sink of −3,630 g CO2-eq m⁻² yr⁻¹ at GWP20 (−3,710 at GWP100), and its CH4 emission offsets 3 % (GWP20) to 1 % (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m⁻² yr⁻¹; S.M17) the intact forest retains ~680 g C m⁻² yr⁻¹. With exported alkalinity retained in the ocean and the rest of the exported carbon returned to the atmosphere — the atmosphere-relevant case — the intact class is a sink of −2,710 g CO2-eq m⁻² yr⁻¹ at GWP20 (−2,960 to −1,710 across the low and high lateral scenarios; −2,810 at GWP100), CH4 offsets 5 % of it at GWP20, and the switch to the ghost class is ~5,500 g CO2-eq m⁻² yr⁻¹ (GWP20; ~5,000 at GWP100). If all exported carbon returns to the atmosphere, the intact sink is −2,330 (−2,730 to −150) at GWP20 and the switch ~5,100. On storage alone (burial plus wood increment, 254 g C m⁻² yr⁻¹) the intact class is −810 and the switch ~3,600; this is a lower bound on the sink, because carbon that is respired downstream or remains in the coastal ocean as DOC is counted as returned to the air.
 
 Lateral export therefore makes intact mangrove a smaller net sink for the atmosphere than its CO2 uptake implies, which raises the relative weight of its methane emission and reduces the magnitude, but not the direction, of the disturbance switch. The intact sink remains negative in every coherent scenario; it approaches neutrality only if the highest (Eulerian) dissolved export is combined with complete return of all exported carbon to the atmosphere. The width of these ranges reflects how poorly lateral export is constrained (a four-fold spread among published Shark River estimates), and continuous, area-resolved lateral flux measurements are the single most useful constraint for the intact atmospheric balance (output/upscaling/forcing_framings.csv; carbon_budget_scenarios.csv).
 
