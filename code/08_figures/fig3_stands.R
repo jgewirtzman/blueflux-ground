@@ -160,15 +160,17 @@ pf <- ggplot(bind_rows(ann, twr) %>% mutate(source = factor(source, src_lev)), a
   scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
   labs(x = NULL, y = "Annual stand budget") + theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.x = element_blank())
 
-# legends beside their own rows: (a, b) forest class + estimate; (c, d) component; (e, f) estimate
+# legends beside their own rows: (a, b) component; (c, d) forest class + estimate; (e, f) estimate
 est_guide <- guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30", "grey30")))
 pf <- pf + scale_shape_manual(values = src_shape, limits = src_lev[c(1, 3)], name = "estimate") +
   scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
   guides(shape = guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30"))))
 pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = guide_legend(ncol = 1))
 pc <- pc + guides(shape = "none", fill = "none"); pd <- pd + guides(shape = est_guide, fill = "none")
-row1 <- ((pe + labs(tag = "a")) | (pf + labs(tag = "b"))) + plot_layout(guides = "collect")
-row2 <- ((pa + labs(tag = "c")) | (pb + labs(tag = "d"))) + plot_layout(guides = "collect")
+# row order follows the narrative from Fig. 2 (rate x area): component shares, then
+# annual stand budgets against airborne data, then closure by campaign
+row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(guides = "collect")
+row2 <- ((pe + labs(tag = "c")) | (pf + labs(tag = "d"))) + plot_layout(guides = "collect")
 row3 <- ((pc + labs(tag = "e")) | (pd + labs(tag = "f"))) + plot_layout(guides = "collect")
 fig <- (row1 / row2 / row3) & theme(legend.position = "right", legend.justification = "left")
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
