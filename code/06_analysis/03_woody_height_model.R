@@ -16,6 +16,7 @@
 # location-scale, mgcv::gaulss), since scatter is far larger in ghost forest.
 # Height forms compared by AIC; the selected model gives fitted profiles by
 # class (stem, alive, flooded, wet season) with 95% CIs.
+# Also fits CO2 with the same structure (woody_height_model_CO2_{comparison,curves}.csv).
 # Writes output/analysis/woody_height_model_{comparison,fixed,profiles,curves}.csv and
 # output/figures/other/woody_height_model.{png,pdf}.
 # =============================================================================
@@ -107,3 +108,17 @@ p <- ggplot() +
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 ggsave("output/figures/other/woody_height_model.png", p, width = 10, height = 4.2, dpi = 200)
 ggsave("output/figures/other/woody_height_model.pdf", p, width = 10, height = 4.2)
+
+# --- CO2: the same structure and height forms, for the CO2 profile (Fig. 2d) --
+d2 <- d %>% filter(!is.na(CO2_best.flux), CO2_best.flux >= -10) %>% mutate(y = asinh(CO2_best.flux))
+fit2 <- function(f) gam(list(as.formula(paste("y ~", f, "+", fe)), ~ class), family = gaulss(), data = d2, method = "REML")
+mods2 <- lapply(forms, fit2)
+cmp2 <- data.frame(height_form = names(forms), AIC = sapply(mods2, AIC)) %>% mutate(dAIC = AIC - min(AIC)) %>% arrange(AIC)
+cat("\nCO2 height forms:\n"); print(cmp2, row.names = FALSE)
+best2 <- mods2[[cmp2$height_form[1]]]; print(summary(best2)$s.table)
+pr2 <- predict(best2, nd %>% select(h, class, surface, status, season, flooded, tree, site_camp), se.fit = TRUE,
+               exclude = c("s(tree)", "s(site_camp)"))
+nd2 <- nd %>% select(class, h) %>% mutate(fit = pr2$fit[, 1], se = pr2$se.fit[, 1], flux = sinh(fit),
+                                          lo = sinh(fit - 1.96 * se), hi = sinh(fit + 1.96 * se))
+write.csv(cmp2, "output/analysis/woody_height_model_CO2_comparison.csv", row.names = FALSE)
+write.csv(nd2, "output/analysis/woody_height_model_CO2_curves.csv", row.names = FALSE)
