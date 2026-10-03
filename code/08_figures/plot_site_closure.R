@@ -100,32 +100,55 @@ cara <- bind_rows(
 cara_pts <- data.frame(klass=names(carafe_cls), cls=unname(carafe_cls)) %>% left_join(cara,by="cls") %>%
   mutate(campaign=factor(campaign,levels=c("Mar 2022","Oct 2022","Mar 2023")), site=factor(klass,levels=class_order))
 
-# ---- plot -------------------------------------------------------------------
+# ---- plot (house style: palette.R; no baked-in titles, see SI caption) -------
+source("code/08_figures/palette.R")
+invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
+x_lab <- c(Ghost = "ghost", Regen = "regenerating", Scrub = "scrub", Healthy = "intact")
+x_lim <- c("Healthy", "Regen", "Ghost", "Scrub")   # display order only
+x_col <- c(pal_class[c("intact", "regenerating", "ghost")], scrub = "grey45")
+comp_lab <- c(soil = "soil", water = "water", root = "prop root", stem = "stem", cwd = "downed wood")
+ax_x <- theme(axis.text.x = element_text(colour = x_col, face = "bold", size = 7, angle = 35, hjust = 1, vjust = 1))
 pA <- ggplot() +
-  geom_col(data=scaled, aes(site, contrib, fill=component, linetype=assumed), color="grey25", width=.72, linewidth=.25) +
-  geom_point(data=cara_pts, aes(site, flux), shape=23, size=2.6, fill="white", stroke=.8) +
-  geom_errorbar(data=cara_pts, aes(site, ymin=flux-se, ymax=flux+se), width=.22, linewidth=.4) +
+  geom_hline(yintercept = 0, colour = "grey60", linewidth = 0.3) +
+  geom_col(data=scaled, aes(site, contrib, fill=component, linetype=assumed), colour="grey25", width=.72, linewidth=.25) +
+  geom_errorbar(data=cara_pts, aes(site, ymin=flux-se, ymax=flux+se), width=.22, linewidth=.4, colour=col_ink) +
+  geom_point(data=cara_pts, aes(site, flux, shape="CARAFE class flux (\u00b1 SE)"), size=2.2, fill="white", stroke=.7,
+             colour=col_ink) +
   facet_wrap(~campaign, nrow=1) +
-  scale_fill_manual(values=pal, name="component") +
-  scale_linetype_manual(values=c(`FALSE`="blank",`TRUE`="22"), name="structure", labels=c("measured TLS","assumed (no TLS)")) +
-  labs(x=NULL, y=expression("CH"[4]*" (nmol "*m^-2*" ground "*s^-1*")"),
-       title="Class-mean bottom-up components (bars; dashed = assumed structure) vs CARAFE class flux (diamonds +/- SE)") +
-  theme_bw(base_size=11)+theme(legend.position="bottom",panel.grid.minor=element_blank(),
-       strip.text=element_text(face="bold"),plot.title=element_text(size=9.5),
-       axis.text.x=element_text(angle=45,hjust=1))
+  scale_x_discrete(limits = x_lim, labels = x_lab) +
+  scale_fill_manual(values=pal_comp_data[comps], labels=comp_lab, name="component") +
+  scale_linetype_manual(values=c(`FALSE`="solid",`TRUE`="22"), name="structure",
+                        labels=c("TLS measured","assumed (no TLS)"),
+                        guide=guide_legend(override.aes=list(fill="white", colour="grey25"))) +
+  scale_shape_manual(values=23, name=NULL) +
+  labs(x=NULL, y=expression("CH"[4]*" flux (nmol m"^-2*" ground s"^-1*")")) +
+  theme_fig() +
+  theme(axis.text.x=element_blank(), legend.position="bottom", legend.box="vertical", legend.spacing.y=unit(1,"pt"),
+        legend.text=element_text(size=7), legend.title=element_text(size=7),
+        legend.margin=margin(0,0,0,0), panel.spacing.x=unit(8,"pt"))
 
-pB <- ggplot(cov, aes(site, component, fill=status)) +
-  geom_tile(color="white",linewidth=.5)+geom_text(aes(label=lab),size=2.7)+
-  facet_wrap(~campaign,nrow=1)+
-  scale_fill_manual(values=c("measured"="#4daf4a","not measured"="#e41a1c","class not visited"="grey88"),name=NULL)+
-  labs(x=NULL,y=NULL,title="Component coverage (cell = total n chambers in class; red = component not measured that visit)")+
-  theme_bw(base_size=11)+theme(legend.position="bottom",panel.grid=element_blank(),
-       strip.text=element_text(face="bold"),plot.title=element_text(size=9.5),
-       axis.text.x=element_text(angle=45,hjust=1))
+cov <- cov %>% mutate(status=factor(status, c("measured","not measured","class not visited")),
+                      lab=case_when(status=="measured" ~ as.character(n),
+                                    status=="not measured" ~ "0", TRUE ~ ""))
+pB <- ggplot(cov, aes(site, component)) +
+  geom_tile(aes(fill=status, colour=status), linewidth=.35, width=.92, height=.88) +
+  geom_text(aes(label=lab), size=2.3, colour=col_ink) +
+  facet_wrap(~campaign,nrow=1) +
+  scale_x_discrete(limits = x_lim, labels = x_lab) + scale_y_discrete(labels = comp_lab) +
+  scale_fill_manual(values=c("measured"="grey72","not measured"="white","class not visited"="grey95"),
+                    labels=c("measured (n chambers)","not measured (0)","class not visited"), name=NULL) +
+  scale_colour_manual(values=c("measured"="grey72","not measured"="grey30","class not visited"="grey95"),
+                      labels=c("measured (n chambers)","not measured (0)","class not visited"), name=NULL) +
+  labs(x=NULL,y=NULL) +
+  theme_fig() + ax_x +
+  theme(panel.grid.major=element_blank(), axis.line=element_blank(), axis.ticks=element_blank(),
+        strip.text=element_blank(), panel.spacing.x=unit(8,"pt"),
+        axis.text.y=element_text(size=7), legend.text=element_text(size=7),
+        legend.margin=margin(0,0,0,0))
 
-fig <- pA/pB + plot_layout(heights=c(1,0.85))
+fig <- (pA + labs(tag="a")) / (pB + labs(tag="b")) + plot_layout(heights=c(1,0.62))
 dir.create("output/figures/other",recursive=TRUE,showWarnings=FALSE)
-ggsave("output/figures/other/site_closure_comparison.png", fig, width=12.5, height=9, dpi=160)
+ggsave("output/figures/other/site_closure_comparison.png", fig, width=7.2, height=6.4, dpi=300, bg="white")
 cat("written output/figures/other/site_closure_comparison.png\n")
 write.csv(scaled %>% transmute(class=klass,campaign,component,contrib,assumed),
           "output/upscaling/supp_site_component_contributions.csv", row.names=FALSE)

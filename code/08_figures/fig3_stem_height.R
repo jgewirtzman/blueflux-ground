@@ -805,171 +805,118 @@ cat("\n--- CO2 stem height composite figure saved ---\n")
 
 
 # =============================================================================
-# Figure 10c: Combined CH4 + CO2 Height Composite (3 rows × 2 columns)
+# Figure 10c (SI Fig. S6): Combined CH4 + CO2 height composite, house style
 # =============================================================================
-# Left col: CH4 (ridges, box/jitter, species emmeans)
-# Right col: CO2 (ridges, box/jitter, species emmeans)
-# Shared disturbance legend (top) and species legend (bottom)
+# Left column CH4: (a) ridges by height x class, (b) box/points by height x class,
+#   (c) fitted woody-surface profiles by class (06_analysis/03_woody_height_model.R).
+# Right column CO2: (d) ridges, (e) box/points, (f) species x live/dead
+#   emmeans (95% CI) by height (model m_d_co2 above).
+# Presentation only: same data, models and estimates as before.
 # =============================================================================
 cat("\n--- Figure 10c: Combined CH4 + CO2 Height Composite ---\n")
+library(patchwork)
+source("code/08_figures/palette.R")
+invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
 
-no_legend <- theme(legend.position = "none")
+ht_lev <- c("0-50 cm", "50-100 cm", "100-150 cm", ">150 cm")
+cls_lev <- names(pal_class)
+cls_off <- c(intact = 0.26, regenerating = 0, ghost = -0.26)   # within-height order: intact on top
+to_cls <- function(x) factor(class_labels[as.character(x)], levels = cls_lev)
+y_ht <- scale_y_continuous(breaks = seq_along(ht_lev), labels = ht_lev, limits = c(0.55, 4.45),
+                           expand = c(0, 0))
+fill_cls <- scale_fill_manual(values = pal_class, limits = cls_lev, name = "forest class")
+col_cls  <- scale_colour_manual(values = pal_class, limits = cls_lev, name = "forest class")
+no_x <- theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+              axis.line.x = element_blank())
+no_y <- theme(axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank())
+ylab_ht <- "Height above water or soil surface"
 
-# --- CH4 column (rebuild without individual legends) ---
-# --- CH4 column (same aesthetics as individual composites, base_size=9) ---
-ch4_ridges <- stem_height %>%
-  ggplot(aes(x = CH4_best.flux, y = height_category, fill = disturbance_level)) +
-  geom_density_ridges(alpha = 0.6, scale = 0.9, bandwidth = 1.0) +
-  scale_x_continuous(trans = "asinh", limits = x_range,
-                     breaks = asinh_brk_pos, labels = asinh_labels) +
-  scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
-  scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-  labs(y = "Height above water (or soil surface)") +
-  theme_pub(base_size = 9) +
-  theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        plot.margin = margin(5, 5, 0, 5)) +
-  no_legend
+ridge_panel <- function(d, xvar, xr, brk, bw) {
+  d %>% mutate(cls = to_cls(disturbance_level)) %>%
+    ggplot(aes(x = .data[[xvar]], y = height_category, fill = cls)) +
+    geom_density_ridges(alpha = 0.55, scale = 0.9, bandwidth = bw, colour = "grey25", linewidth = 0.25) +
+    scale_x_continuous(trans = "asinh", limits = xr, breaks = brk, labels = asinh_labels) +
+    scale_y_discrete(expand = expansion(mult = c(0.03, 0.3))) +
+    fill_cls + labs(y = NULL) + theme_fig() + no_x + theme(legend.position = "none")
+}
 
-ch4_box <- stem_height %>%
-  mutate(disturbance_level = factor(disturbance_level,
-                                     levels = rev(c("healthy", "regenerating", "ghost")))) %>%
-  ggplot(aes(x = CH4_best.flux,
-             y = interaction(disturbance_level, height_category, sep = " - "),
-             fill = disturbance_level)) +
-  geom_jitter(aes(color = disturbance_level),
-             height = 0.2, width = 0, alpha = 0.5, size = 2) +
-  geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
-  stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
-  scale_x_continuous(trans = "asinh", limits = x_range,
-                     breaks = asinh_brk_pos, labels = asinh_labels) +
-  scale_fill_manual(values = disturbance_colors, guide = "none") +
-  scale_color_manual(values = disturbance_colors, guide = "none") +
-  scale_y_discrete(labels = function(x) sapply(strsplit(x, " - "), `[`, 1)) +
-  labs(x = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1})), y = NULL) +
-  facet_grid(rows = vars(factor(height_category,
-                                levels = rev(c("0-50 cm", "50-100 cm", "100-150 cm", ">150 cm")))),
-             scales = "free_y", space = "free_y", switch = "y") +
-  theme_pub(base_size = 9) +
-  theme(strip.placement = "outside", strip.text.y.left = element_text(angle = 0, size = 8),
-        plot.margin = margin(0, 5, 5, 5)) +
-  no_legend
+box_panel <- function(d, xvar, xr, brk, xlab) {
+  d <- d %>% filter(!is.na(.data[[xvar]])) %>%
+    mutate(cls = to_cls(disturbance_level), v = .data[[xvar]],
+           y = as.numeric(factor(height_category, ht_lev)) + cls_off[as.character(cls)],
+           grp = interaction(cls, height_category)) %>%
+    group_by(grp) %>% mutate(n = n()) %>% ungroup()
+  big <- d %>% filter(n > 3)                       # boxes and means only for n > 3
+  mn <- big %>% group_by(grp, cls, y) %>% summarise(v = mean(v), .groups = "drop")
+  ggplot(d, aes(v, y)) +
+    geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
+    geom_point(aes(colour = cls), position = position_jitter(height = 0.07, width = 0, seed = 1),
+               alpha = 0.45, size = 0.8, stroke = 0) +
+    geom_boxplot(data = big, aes(group = grp, fill = cls), orientation = "y", width = 0.17,
+                 alpha = 0.55, outlier.shape = NA, linewidth = 0.3, colour = "grey20") +
+    geom_point(data = mn, shape = 23, size = 1.6, fill = "white", colour = col_ink, stroke = 0.4) +
+    scale_x_continuous(trans = "asinh", limits = xr, breaks = brk, labels = asinh_labels) +
+    y_ht + fill_cls + col_cls + labs(x = xlab, y = ylab_ht) + theme_fig() +
+    theme(legend.position = "none", panel.grid.major.y = element_blank())
+}
 
-# panel (c): fitted woody-surface (stem + prop root) profiles by class, from
+ch4_lab <- expression(CH[4]~flux~(nmol~m^{-2}~s^{-1}))
+co2_lab <- expression(CO[2]~flux~(mu*mol~m^{-2}~s^{-1}))
+
+ch4_ridges <- ridge_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, 1.0)
+co2_ridges <- ridge_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, 0.8) + no_y
+ch4_box <- box_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, ch4_lab)
+co2_box <- box_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, co2_lab) + no_y
+
+# (c) fitted woody-surface (stem + prop root) profiles by class, from
 # 06_analysis/03_woody_height_model.R (live stem, flooded position, wet season)
 cur <- read.csv("output/analysis/woody_height_model_curves.csv") %>%
-  mutate(disturbance_level = factor(recode(class, intact = "healthy"), levels = c("healthy", "regenerating", "ghost")))
+  mutate(cls = factor(class, levels = cls_lev))
 ch4_emm <- cur %>%
-  ggplot(aes(y = h, colour = disturbance_level, fill = disturbance_level)) +
+  ggplot(aes(y = h, colour = cls, fill = cls)) +
+  geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
   geom_ribbon(aes(xmin = fit - 1.96 * se, xmax = fit + 1.96 * se), alpha = 0.2, colour = NA, orientation = "y") +
-  geom_path(aes(x = fit), linewidth = 0.9) +
-  scale_x_continuous(breaks = asinh(c(0, 1, 3, 10, 30)), labels = c(0, 1, 3, 10, 30),
-                     name = expression(CH[4]~Flux~(nmol~m^{-2}~s^{-1}))) +
-  scale_colour_manual(values = disturbance_colors) + scale_fill_manual(values = disturbance_colors) +
-  labs(y = "Height above water (or soil surface), cm") +
-  theme_pub(base_size = 9) +
-  theme(plot.margin = margin(0, 5, 5, 5)) +
-  no_legend
+  geom_path(aes(x = fit), linewidth = 0.7) +
+  scale_x_continuous(breaks = asinh(c(0, 1, 3, 10, 30)), labels = c(0, 1, 3, 10, 30), name = ch4_lab) +
+  scale_y_continuous(breaks = seq(0, 150, 50), expand = c(0, 0)) +
+  col_cls + fill_cls + labs(y = "Height above water or soil (cm)") + theme_fig() +
+  theme(legend.position = "bottom", legend.title = element_text(size = 7))
 
-# --- CO2 column (same aesthetics, drop redundant y-axis labels) ---
-co2_ridges <- stem_height_co2 %>%
-  ggplot(aes(x = CO2_best.flux, y = height_category, fill = disturbance_level)) +
-  geom_density_ridges(alpha = 0.6, scale = 0.9, bandwidth = 0.8) +
-  scale_x_continuous(trans = "asinh", limits = x_range_co2,
-                     breaks = co2_brk, labels = asinh_labels) +
-  scale_y_discrete(expand = expansion(mult = c(0.05, 0.45))) +
-  scale_fill_manual(values = disturbance_colors, name = "Disturbance Level") +
-  labs(y = NULL) +
-  theme_pub(base_size = 9) +
-  theme(axis.title.x = element_blank(), axis.text.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-        plot.margin = margin(5, 5, 0, 5)) +
-  no_legend
-
-co2_box <- stem_height_co2 %>%
-  mutate(disturbance_level = factor(disturbance_level,
-                                     levels = rev(c("healthy", "regenerating", "ghost")))) %>%
-  ggplot(aes(x = CO2_best.flux,
-             y = interaction(disturbance_level, height_category, sep = " - "),
-             fill = disturbance_level)) +
-  geom_jitter(aes(color = disturbance_level),
-             height = 0.2, width = 0, alpha = 0.5, size = 2) +
-  geom_boxplot(width = 0.4, alpha = 0.7, outlier.shape = NA) +
-  stat_summary(fun = mean, geom = "point", shape = 23,
-               size = 2.5, fill = alpha("white", 0.6), color = alpha("black", 0.6), stroke = 0.7, alpha = 0.7) +
-  scale_x_continuous(trans = "asinh", limits = x_range_co2,
-                     breaks = co2_brk, labels = asinh_labels) +
-  scale_fill_manual(values = disturbance_colors, guide = "none") +
-  scale_color_manual(values = disturbance_colors, guide = "none") +
-  scale_y_discrete(labels = function(x) sapply(strsplit(x, " - "), `[`, 1)) +
-  labs(x = expression(CO[2]~Flux~(mu*mol~m^{-2}~s^{-1})), y = NULL) +
-  facet_grid(rows = vars(factor(height_category,
-                                levels = rev(c("0-50 cm", "50-100 cm", "100-150 cm", ">150 cm")))),
-             scales = "free_y", space = "free_y", switch = "y") +
-  theme_pub(base_size = 9) +
-  theme(strip.placement = "outside", strip.text.y.left = element_blank(),
-        plot.margin = margin(0, 5, 5, 5)) +
-  no_legend
-
+# (f) species x live/dead CO2 emmeans by height; species colours/shapes are
+# Okabe-Ito hues kept apart from the forest-class palette; open = dead
+sp_lev <- c("A. germinans (alive)", "A. germinans (dead)", "C. erectus", "L. racemosa",
+            "R. mangle (alive)", "R. mangle (dead)")
+sp_col <- c("#000000", "#000000", "#CC79A7", "#56B4E9", "#D55E00", "#D55E00"); names(sp_col) <- sp_lev
+sp_shp <- c(16, 1, 18, 15, 17, 2); names(sp_shp) <- sp_lev
+sp_lab <- parse(text = c("italic('A. germinans')~(alive)", "italic('A. germinans')~(dead)",
+                         "italic('C. erectus')", "italic('L. racemosa')",
+                         "italic('R. mangle')~(alive)", "italic('R. mangle')~(dead)"))
 co2_emm <- emm_d_co2_df %>%
-  ggplot(aes(x = emmean, y = height_cat, color = label, shape = label)) +
-  geom_vline(xintercept = 0, linetype = "dashed", color = "grey60") +
-  geom_errorbar(aes(xmin = lower.CL, xmax = upper.CL),
-                width = 0.3, linewidth = 0.5, orientation = "y",
-                position = pd10) +
-  geom_point(size = 2.5, stroke = 0.8, position = pd10) +
-  scale_color_manual(values = spst_colors, name = NULL) +
-  scale_shape_manual(values = spst_shapes, name = NULL) +
-  scale_x_continuous(breaks = emm_co2_breaks, labels = emm_co2_labels,
-                     name = expression(CO[2]~Flux~(mu*mol~m^{-2}~s^{-1}))) +
-  labs(y = NULL) +
-  theme_pub(base_size = 9) +
-  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-        plot.margin = margin(0, 5, 5, 5)) +
-  no_legend
+  mutate(label = factor(as.character(label), levels = rev(sp_lev)),
+         height_cat = factor(height_cat, levels = ht_lev[1:3])) %>%
+  ggplot(aes(x = emmean, y = height_cat, colour = label, shape = label)) +
+  geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
+  geom_errorbar(aes(xmin = lower.CL, xmax = upper.CL), width = 0, linewidth = 0.4, orientation = "y",
+                position = position_dodge(width = 0.75)) +
+  geom_point(size = 1.5, stroke = 0.5, position = position_dodge(width = 0.75)) +
+  scale_colour_manual(values = sp_col, breaks = sp_lev, labels = sp_lab, name = NULL) +
+  scale_shape_manual(values = sp_shp, breaks = sp_lev, labels = sp_lab, name = NULL) +
+  scale_x_continuous(breaks = emm_co2_breaks, labels = emm_co2_labels, name = co2_lab) +
+  labs(y = NULL) + theme_fig() +
+  theme(legend.position = "bottom", legend.text = element_text(size = 6.5),
+        legend.key.width = unit(6, "pt"), legend.spacing.x = unit(1, "pt"),
+        panel.grid.major.y = element_blank()) +
+  guides(colour = guide_legend(ncol = 3, byrow = TRUE), shape = guide_legend(ncol = 3, byrow = TRUE))
 
-# --- Build combined figure with patchwork ---
-library(patchwork)
+fig10_combined <- (ch4_ridges + co2_ridges + ch4_box + co2_box + ch4_emm + co2_emm) +
+  plot_layout(ncol = 2, byrow = TRUE, heights = c(0.8, 1.3, 1), widths = c(1, 1)) +
+  plot_annotation(tag_levels = list(c("a", "d", "b", "e", "c", "f")))
 
-# Add disturbance legend back to CH4 ridges (top of left column)
-ch4_ridges_leg <- ch4_ridges +
-  scale_fill_manual(values = disturbance_colors, name = "Disturbance") +
-  theme(legend.position = "top",
-        legend.title = element_text(size = 8, face = "bold"),
-        legend.text = element_text(size = 7))
-
-# Panel (c) uses the disturbance legend at the top; the species legend goes
-# under the CO2 species panel (f)
-ch4_emm_leg <- ch4_emm
-co2_emm <- co2_emm +
-  theme(legend.position = "bottom",
-        legend.title = element_blank(),
-        legend.text = element_text(size = 7, face = "italic")) +
-  guides(color = guide_legend(ncol = 3, byrow = TRUE,
-                              override.aes = list(size = 2.5)),
-         shape = guide_legend(ncol = 3, byrow = TRUE,
-                              override.aes = list(size = 2.5)))
-
-# Column titles as plot_annotation
-ch4_col <- (ch4_ridges_leg / ch4_box / ch4_emm_leg) +
-  plot_layout(heights = c(0.8, 1.2, 0.8)) +
-  plot_annotation(title = expression(CH[4]~Flux),
-                  theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 11)))
-
-co2_col <- (co2_ridges / co2_box / co2_emm) +
-  plot_layout(heights = c(0.8, 1.2, 0.8)) +
-  plot_annotation(title = expression(CO[2]~Flux),
-                  theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 11)))
-
-# Combine columns side by side, add sequential tags
-fig10_combined <- (ch4_col | co2_col) +
-  plot_layout(widths = c(1, 0.85)) +
-  plot_annotation(tag_levels = list(c("a", "b", "c", "d", "e", "f")),
-                  theme = theme(plot.tag = element_text(size = 10, face = "bold")))
-
-save_pub(fig10_combined, "stem_height_composite_combined", width = 260, height = 280)
+ggsave("output/figures/other/pub_stem_height_composite_combined.png", fig10_combined,
+       width = 7.2, height = 7.4, dpi = 300, bg = "white")
+ggsave("output/figures/other/pub_stem_height_composite_combined.pdf", fig10_combined,
+       width = 7.2, height = 7.4, device = cairo_pdf)
+cat("Saved: pub_stem_height_composite_combined.pdf/.png\n")
 
 cat("\n--- Combined CH4+CO2 height composite figure saved ---\n")
 source("code/08_figures/figure_cleanup.R")

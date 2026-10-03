@@ -15,10 +15,11 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 CAMPS <- c("2022-10" = "Oct 2022", "2023-03" = "Mar 2023")
 SITES <- c("SRS6", "SRS5", "BL60", "CP40", "FLM30")
-# paper palette (plot_closure.R / Fig 4)
-comp_cols <- c(Water = "#4682B4", Soil = "#8B4513", Root = "#D2691E", Stem = "#228B22", CWD = "#808080", Leaf = "#E6AB02")
-site_lab <- c(SRS6 = "SRS6 (intact)", SRS5 = "SRS5 (intact)", BL60 = "BL60 (regenerating)", CP40 = "CP40 (ghost)", FLM30 = "FLM30 (ghost)")
-comp_lab <- c(water = "Water", soil = "Soil", root = "Root", stem = "Stem", cwd = "CWD", leaves = "Leaf")
+source("code/08_figures/palette.R")   # house palette + theme_fig()
+comp_cols <- pal_comp
+site_cls <- c(SRS6 = "intact", SRS5 = "intact", BL60 = "regenerating", CP40 = "ghost", FLM30 = "ghost")
+site_lab <- paste0(names(site_cls), "\n", site_cls); names(site_lab) <- names(site_cls)
+comp_lab <- c(water = "water", soil = "soil", root = "prop root", stem = "stem", cwd = "downed wood", leaves = "leaf")
 
 d <- read.csv("output/data_products/combined_gas_flux_dataset.csv") %>%
   filter(plot %in% SITES, month_year %in% names(CAMPS)) %>%
@@ -59,28 +60,34 @@ pts <- pts %>% mutate(campaign = factor(campaign, levels = CAMPS))
 trace <- trace %>% mutate(campaign = factor(campaign, levels = CAMPS)); dg <- dg %>% mutate(campaign = factor(campaign, levels = CAMPS))
 
 pts <- pts %>% mutate(component = factor(comp_lab[component], levels = names(comp_cols)))
-lab_fun <- function(x) paste0(site_lab[as.character(x$site)], ", ", x$campaign)
-facet_lab <- function(labels) list(paste0(site_lab[as.character(labels$site)], ", ", labels$campaign))
+lev_logger <- "Water level above soil (FCE LTER logger)"
+lev_nr <- "Water depth not recorded (plotted at \u22122 cm)"
 g <- ggplot() +
-  geom_hline(yintercept = 0, colour = "grey70", linewidth = 0.25) +
-  geom_line(data = trace, aes(t, WaterLevel, linetype = "Water level above soil (FCE LTER logger)"), colour = "grey25", linewidth = 0.4) +
-  geom_point(data = pts %>% filter(depth_recorded), aes(t, y, colour = component), size = 1.3, alpha = 0.9,
-             position = position_jitter(width = 0, height = 0.3, seed = 1)) +
-  geom_point(data = pts %>% filter(!depth_recorded), aes(t, y, colour = component, shape = "Water depth not recorded"),
-             size = 1.3, stroke = 0.5, position = position_jitter(width = 0, height = 0.3, seed = 1)) +
-  geom_point(data = dg, aes(t, y, shape = "Dissolved-gas sample"), size = 2.2, fill = "#4682B4", colour = "black", stroke = 0.3) +
-  scale_colour_manual(values = comp_cols, name = "Chamber", drop = FALSE) +
-  scale_shape_manual(values = c("Dissolved-gas sample" = 24, "Water depth not recorded" = 1), name = NULL) +
-  scale_linetype_manual(values = c("Water level above soil (FCE LTER logger)" = 1), name = NULL) +
-  facet_wrap(~ site + campaign, ncol = 2, scales = "free", labeller = facet_lab) +
+  geom_hline(yintercept = 0, colour = "grey60", linewidth = 0.3) +
+  geom_line(data = trace, aes(t, WaterLevel, linetype = lev_logger), colour = "grey30", linewidth = 0.4) +
+  geom_point(data = pts %>% filter(depth_recorded), aes(t, y, fill = component), shape = 21, colour = "grey30",
+             size = 1.3, stroke = 0.2, alpha = 0.9, position = position_jitter(width = 0, height = 0.3, seed = 1)) +
+  geom_point(data = pts %>% filter(!depth_recorded), aes(t, y, fill = component, shape = lev_nr),
+             size = 1.3, stroke = 0.3, colour = "grey30", alpha = 0.9, position = position_jitter(width = 0, height = 0.3, seed = 1)) +
+  geom_point(data = dg, aes(t, y, shape = "Dissolved-gas sample"), size = 2, fill = pal_comp[["water"]], colour = "black", stroke = 0.3) +
+  scale_fill_manual(values = comp_cols, name = "chamber", drop = FALSE) +
+  scale_shape_manual(values = setNames(c(24, 23), c("Dissolved-gas sample", lev_nr)), name = NULL) +
+  scale_linetype_manual(values = setNames(1, lev_logger), name = NULL) +
+  ggh4x::facet_grid2(site ~ campaign, scales = "free", independent = "x",
+                     labeller = labeller(site = site_lab),
+                     strip = ggh4x::strip_themed(text_y = ggh4x::elem_list_text(colour = unname(pal_class[site_cls[SITES]]),
+                                                                                 face = "bold", angle = 0, hjust = 0))) +
   scale_x_datetime(date_labels = "%d %b\n%H:%M", breaks = scales::breaks_pretty(n = 4), expand = expansion(mult = 0.03)) +
-  labs(x = NULL, y = "Water level / depth above soil (cm)") +
-  guides(colour = guide_legend(order = 1, nrow = 1, override.aes = list(size = 2.2)), linetype = guide_legend(order = 2), shape = guide_legend(order = 3)) +
-  theme_classic(base_size = 8.5) +
-  theme(legend.position = "bottom", legend.box = "vertical", legend.spacing.y = unit(0, "pt"), legend.margin = margin(0, 0, 0, 0),
-        strip.background = element_blank(), strip.text = element_text(face = "bold", hjust = 0),
-        panel.grid.major.y = element_line(colour = "grey92", linewidth = 0.25), axis.line = element_line(linewidth = 0.3))
-ggsave("output/figures/other/sampling_design.png", g, width = 7.2, height = 8.6, dpi = 300)
-ggsave("output/figures/other/sampling_design.pdf", g, width = 7.2, height = 8.6)
+  labs(x = NULL, y = "Water level / depth above soil (cm)", tag = "a") +
+  guides(fill = guide_legend(order = 1, nrow = 1, override.aes = list(shape = 21, size = 2.2)),
+         linetype = guide_legend(order = 2), shape = guide_legend(order = 3, override.aes = list(fill = c(pal_comp[["water"]], "white"), size = 1.8))) +
+  theme_fig(base_size = 8) +
+  theme(legend.box = "vertical", legend.spacing.y = unit(0, "pt"), legend.margin = margin(0, 0, 0, 0),
+        legend.title = element_text(face = "bold", size = 7), legend.text = element_text(size = 7),
+        strip.text.x = element_text(hjust = 0.5, size = 8), strip.text.y = element_text(angle = 0, hjust = 0, size = 7.5),
+        panel.grid.major.x = element_blank(), panel.spacing.x = unit(4, "mm"), panel.spacing.y = unit(2.5, "mm"),
+        axis.text.x = element_text(size = 6.5, lineheight = 0.9))
+ggsave("output/figures/other/sampling_design.png", g, width = 7.2, height = 8, dpi = 300, bg = "white")
+ggsave("output/figures/other/sampling_design.pdf", g, width = 7.2, height = 8, device = cairo_pdf)
 cat("Intact-site measurements by tidal phase:\n")
 print(as.data.frame(tidal %>% count(plot, campaign, component, phase) %>% tidyr::pivot_wider(names_from = phase, values_from = n, values_fill = 0)))

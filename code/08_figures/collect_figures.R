@@ -3,34 +3,39 @@
 # main-text / SI display item into output/figures/main and output/figures/SI.
 # Run after the figure scripts (last step of run_all.R). Sources that have not
 # been regenerated are reported and the existing curated copy is left in place.
-# Fig 1 (map/photo composite) is built manually and is not collected here.
 # =============================================================================
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 
 fig <- "output/figures"
 display_items <- c(
-  # curated file                      = generated source                              (script)
-  "main/Fig1_system.png"              = "other/fig1_system.png",                        # fig1_system.R
-  "main/Fig2_rates.png"                = "other/fig2_rates.png",                         # fig2_rates.R (Fig 2a-c)
-  "main/Fig3_stands.png"               = "other/fig3_stands.png",                        # fig3_stands.R
-  "main/Fig4_geochemistry.png"         = "other/fig4_geochem.png",                       # fig4_geochem.R
-  "main/Fig5_climate.png"             = "other/fig5_climate.png",                       # fig5_climate.R
-  "SI/ED8_porewater_rounds.png"       = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
-  "SI/ED2_tree_detail_old_Fig3.png"    = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R (old Fig 3; ED2 source)
-  "SI/FigS1_ebullition.png"           = "other/pub_SI_ebullition_partition.png",        # figS1_ebullition.R
-  "SI/FigS2_pneumatophore.png"        = "other/pub_SI_pneumatophore_density.png",       # figS2_pneumatophore.R
-  "SI/FigS3_chambers.png"             = "other/pub_SI_chamber_photos.png",              # figS3_chamber_photos.R
-  "SI/FigS4_perplot_fluxes.png"       = "other/pub_component_by_plot_campaign_combined_condensed_boot.png", # fig2_component_boot.R
-  "SI/FigS5_height_extrapolation.png" = "other/stem_extrap_clean.png",                  # plot_extrap_clean.R
-  "SI/FigS6_extrap_sensitivity.png"   = "other/height_extrap_sensitivity_total.png", # upscale_methane_to_plots.R
-  "SI/FigS7_tide_scenarios.png"       = "other/scenario_comparison.png", # upscale_methane_to_plots.R
-  "SI/FigS8_SA_by_height.png"         = "other/SA_by_segment_height_fixedY.png",        # plot_SA_height_fixedY.R
-  "SI/FigS9_MC_uncertainty.png"       = "other/pub_uncertainty_decomp.png", # upscale_methane_to_plots.R
-  "SI/FigS10_tower_GPP.png"           = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
-  "SI/FigS11_porewater_depth.png"     = "other/pub_SI_depth_profiles_lines.png",        # site_characterization_figures.R
-  "SI/FigS12_TA_DIC.png"              = "other/pub_SI_ta_vs_dic.png",                   # fig6_porewater_pca.R
-  "SI/FigS14_salinity_CH4_bysite.png" = "other/pub_SI_salinity_vs_ch4_bysite.png"       # site_characterization_figures.R
+  # curated file                        = generated source                              (script)
+  "main/Fig1_system.png"                = "other/fig1_system.png",                        # fig1_system.R
+  "main/Fig2_rates.png"                 = "other/fig2_rates.png",                         # fig2_rates.R
+  "main/Fig3_stands.png"                = "other/fig3_stands.png",                        # fig3_stands.R
+  "main/Fig4_geochemistry.png"          = "other/fig4_geochem.png",                       # fig4_geochem.R
+  "main/Fig5_climate.png"               = "other/fig5_climate.png",                       # fig5_climate.R (+ fig_carbon_budget.R)
+  "SI/FigS1_chambers.png"               = "other/pub_SI_chamber_photos.png",              # figS3_chamber_photos.R
+  "SI/FigS2a_sampling_design.png"       = "other/sampling_design.png",                    # figS_sampling_design.R
+  "SI/FigS2b_water_positions.png"       = "other/water_positions_by_campaign.png",        # plot_water_positions.R
+  "SI/FigS3_component_fluxes.png"       = "other/pub_component_by_plot_campaign_combined_condensed_boot.png", # fig2_component_boot.R
+  "SI/FigS4_ebullition.png"             = "other/pub_SI_ebullition_partition.png",        # figS1_ebullition.R
+  "SI/FigS5_pneumatophore.png"          = "other/pub_SI_pneumatophore_density.png",       # figS2_pneumatophore.R
+  "SI/FigS6_stem_detail.png"            = "other/pub_stem_height_composite_combined.png", # fig3_stem_height.R
+  "SI/FigS7a_height_extrapolation.png"  = "other/stem_extrap_clean.png",                  # plot_extrap_clean.R
+  "SI/FigS7b_extrap_sensitivity.png"    = "other/si_S7b_extrap_sensitivity.png",          # si_upscaling_figs.R
+  "SI/FigS8_SA_by_height.png"           = "other/SA_by_segment_height_fixedY.png",        # plot_SA_height_fixedY.R
+  "SI/FigS9_tide_scenarios.png"         = "other/si_S9_tide_scenarios.png",               # si_upscaling_figs.R
+  "SI/FigS10_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
+  "SI/FigS11_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
+  "SI/FigS12_carbonate.png"             = "other/si_S12_carbonate.png",                   # si_porewater_carbonate.R
+  "SI/FigS13_salinity_CH4_bysite.png"   = "other/pub_SI_salinity_vs_ch4_bysite.png",      # site_characterization_figures.R
+  "SI/FigS14_carbon_budget.png"         = "other/fig_carbon_budget.png",                  # fig_carbon_budget.R
+  "SI/FigS15_tower_GPP.png"             = "../gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png", # plot_us_skr_gpp.R
+  "SI/FigS16_site_closure.png"          = "other/site_closure_comparison.png"             # plot_site_closure.R
 )
+# S17 (metagenome detail) is a placeholder until the sequencing results arrive.
+# Clear stale curated SI copies so the folder mirrors the current numbering.
+unlink(Sys.glob(file.path(fig, "SI", "*.png")))
 
 dir.create(file.path(fig, "main"), recursive = TRUE, showWarnings = FALSE)
 dir.create(file.path(fig, "SI"),   recursive = TRUE, showWarnings = FALSE)

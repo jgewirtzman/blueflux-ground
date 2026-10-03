@@ -10,7 +10,7 @@ Corresponding author: jonathan.gewirtzman@yale.edu
 
 **Other Supplementary Materials for this manuscript include:** Data S1 (chamber flux dataset); Data S2 (external datasets used, with citations).
 
-_[Draft. Section structure follows the analysis workflow (run_all.R); numbers are read from the workflow outputs. Placeholders in brackets. Figures marked † are earlier renders to be restyled to the main-text palette.]_
+_[Draft. Section structure follows the analysis workflow (run_all.R); numbers are read from the workflow outputs. Placeholders in brackets.]_
 
 ---
 
@@ -166,56 +166,56 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/figures/other/pub_SI_chamber_photos.png>){width=6.5in}
 
-**Fig. S1.** Chamber designs: stem chambers at several heights, prop-root chamber, soil collar and cylinder, floating water chamber, leaf chamber and downed-wood chamber. †
+**Fig. S1.** Chamber designs: stem chambers at several heights, prop-root chamber, soil collar and cylinder, floating water chamber, leaf chamber and downed-wood chamber.
 
 
 ![](<output/figures/other/sampling_design.png>){width=6.5in}
 
 ![](<output/figures/other/water_positions_by_campaign.png>){width=6.5in}
 
-**Fig. S2.** Sampling design relative to tide and standing water. (Top) Chamber measurements by site and campaign against water level. (Bottom) Floating-chamber positions and water depth by campaign. †
+**Fig. S2.** Sampling design relative to tide and standing water. (a) Chamber measurements by site and campaign against water level above the soil (FCE LTER loggers); diamonds at −2 cm mark chambers without a recorded water depth; triangles mark dissolved-gas samples. (b) Water-surface CH4 flux by campaign and site, coloured by recorded chamber position (in plot, off plot or open water, unlabelled).
 
 
 ![](<output/figures/other/pub_component_by_plot_campaign_combined_condensed_boot.png>){width=6.5in}
 
-**Fig. S3.** CH4 and CO2 flux by component for every plot and campaign, including context sites (bootstrap means and 95% CIs; individual measurements as points; inverse-hyperbolic-sine axes). †
+**Fig. S3.** CH4 (a) and CO2 (b) flux by component for every plot and campaign, including context sites. Points are individual measurements; filled circles are arithmetic means, with bootstrap 95% CIs where n > 3; inverse-hyperbolic-sine axes.
 
 
 ![](<output/figures/other/pub_SI_ebullition_partition.png>){width=6.5in}
 
-**Fig. S4.** Ebullition. (A) Diffusive and ebullitive water-surface CH4 by site and season. (B) Example placements showing detected bubble steps, the de-ebulliated series and the diffusive fit (M7). †
+**Fig. S4.** Ebullition. (a) Diffusive and ebullitive water-surface CH4 by site and season; bars, means ± SE (shown where n > 3); points, individual measurements. (b) Example placements showing detected bubble steps (shaded), the de-ebulliated series and the diffusive linear fit (M7).
 
 
 ![](<output/figures/other/pub_SI_pneumatophore_density.png>){width=6.5in}
 
-**Fig. S5.** Soil CH4 and CO2 flux against pneumatophore density per collar, by site (dry season). †
+**Fig. S5.** Soil CH4 (a) and CO2 (b) flux against pneumatophore density per collar, by site (dry season). Lines, least-squares fits ± 95% CI; r, Pearson correlation (CH4 on the inverse-hyperbolic-sine scale); ρ, Spearman correlation. Marco Island collars had no pneumatophores.
 
 
 ![](<output/figures/other/pub_stem_height_composite_combined.png>){width=6.5in}
 
-**Fig. S6.** Stem detail. Stem CH4 and CO2 by height category, species and live/dead status at sites with species identification; estimated marginal means (95% CI) from linear mixed-effects models (M20). †
+**Fig. S6.** Stem detail at SRS5, SRS6, BL60, CP40 and FLM30. Stem CH4 (a–c) and CO2 (d–f) by height class and forest class: (a, d) density ridges; (b, e) individual measurements with box plots and means for groups with n > 3; (c) fitted woody-surface CH4 height profiles by class ± 95% CI (live stem, flooded, wet season; M20); (f) CO2 estimated marginal means (95% CI) by species and live/dead status from a linear mixed-effects model (M20).
 
 
 ![](<output/figures/other/stem_extrap_clean.png>){width=6.5in}
 
-![](<output/figures/other/height_extrap_sensitivity_total.png>){width=6.5in}
+![](<output/figures/other/si_S7b_extrap_sensitivity.png>){width=6.5in}
 
-**Fig. S7.** Stem height extrapolation (text S1). (Top) Fitted exponential stem CH4 profiles by site and campaign against the measured heights. (Bottom) Stand CH4 under six extrapolation forms. †
+**Fig. S7.** Stem height extrapolation (text S1). (a) Measured stem CH4 by height with exponential-decay fits by forest class to positive fluxes up to 1.5 m (solid), extrapolated above it and clamped at zero (dashed; shaded zone); inverse-hyperbolic-sine axis. (b) Total plot CH4 (mg m−2 d−1) under six extrapolation rules by site and campaign, with non-stem components held constant and high tide at tidal sites; x axes differ by site.
 
 
 ![](<output/figures/other/SA_by_segment_height_fixedY.png>){width=6.5in}
 
-**Fig. S8.** Laser-scanned surface area per unit ground area by segment class (trunk, branch, prop root) and 0.5 m height bin for the four scanned plots. †
+**Fig. S8.** Laser-scanned woody surface area (m2 per 0.5 m height bin per plot) by segment class (trunk, branch, prop root) for the four scanned plots; dashed line, 1.5 m chamber height limit.
 
 
-![](<output/figures/other/scenario_comparison.png>){width=6.5in}
+![](<output/figures/other/si_S9_tide_scenarios.png>){width=6.5in}
 
-**Fig. S9.** Stand CH4 under tide and inundation representations (text S2; table S10). †
+**Fig. S9.** Total plot CH4 by site and campaign at high and low tide (tidal sites) or non-tidal (ghost sites), under exponential or zero stem extrapolation above 1.5 m (text S2; table S10); log axis.
 
 
-![](<output/figures/other/pub_uncertainty_decomp.png>){width=6.5in}
+![](<output/figures/other/si_S10_mc_uncertainty.png>){width=6.5in}
 
-**Fig. S10.** Monte Carlo uncertainty: contribution of each input to the variance of stand CH4 and net forcing (text S4). †
+**Fig. S10.** Monte Carlo standard error of each CH4 component (joint flux-rate and surface-area uncertainty) by site and campaign, at high tide for tidal sites; components with zero uncertainty omitted (text S4); log axis.
 
 
 ![](<output/figures/other/ed_porewater_rounds.png>){width=6.5in}
@@ -223,16 +223,14 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 **Fig. S11.** Porewater dissolved CH4 (A) and salinity (B) by site, sampling round (October 2022, March 2023, October 2025) and depth, including FLM30.
 
 
-![](<output/figures/other/pub_SI_ta_vs_dic.png>){width=6.5in}
+![](<output/figures/other/si_S12_carbonate.png>){width=6.5in}
 
-![](<output/figures/other/pub_SI_ta_vs_salinity.png>){width=6.5in}
-
-**Fig. S12.** Porewater carbonate chemistry (October 2025): total alkalinity against calculated DIC and against salinity, with conservative-mixing references (text S7). †
+**Fig. S12.** Porewater carbonate chemistry (October 2025; 0–90 cm, surface water excluded). (a) Total alkalinity against DIC calculated from pH and alkalinity, with the 1:1 line (dashed) and least-squares fits by site. (b) Total alkalinity against salinity, with class regressions (95% CI), Pearson r and n by class, and a conservative-mixing reference (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM; text S7). Fill, forest class; shape, site.
 
 
 ![](<output/figures/other/pub_SI_salinity_vs_ch4_bysite.png>){width=6.5in}
 
-**Fig. S13.** Porewater salinity against dissolved CH4 by site, all sampling rounds. †
+**Fig. S13.** Porewater salinity against dissolved CH4 by site (site × round × depth means, including surface water) for the three sampling rounds (October 2022, March 2023, October 2025). Fill, forest class; shape, round; CH4 on a log(1 + x) axis.
 
 
 ![](<output/figures/other/fig_carbon_budget.png>){width=6.5in}
@@ -242,12 +240,12 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 ![](<output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png>){width=6.5in}
 
-**Fig. S15.** US-Skr tower: mean diurnal cycle of partitioned GPP during the campaign months (M14). †
+**Fig. S15.** US-Skr tower: mean diurnal cycle of partitioned GPP during the campaign months (M14). Lines, monthly mean half-hourly GPP; ribbons, mean bootstrap 95% interval (partitioning-parameter uncertainty); local standard time.
 
 
 ![](<output/figures/other/site_closure_comparison.png>){width=6.5in}
 
-**Fig. S16.** Per-site closure: bottom-up stand CH4 and CO2 by site and campaign beside the airborne class values. †
+**Fig. S16.** Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited.
 
 
 

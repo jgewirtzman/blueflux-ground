@@ -11,7 +11,7 @@ df <- read.csv("output/data_products/combined_gas_flux_dataset.csv")
 df$camp <- with(df, ifelse(year==2022&month==10,"Oct 2022",
                     ifelse(year==2023&month==3,"Mar 2023",
                     ifelse(year==2022&month==3,"Mar 2022",NA))))
-off_pat <- "river|open|off peir|off pier|outside|pier|interface|edge"
+off_pat <- "river|open|off peir|off pier|outside|outisde|pier|interface|edge"   # "outisde": field-note spelling
 w <- df %>% filter(component=="water", !is.na(CH4_best.flux), !is.na(camp)) %>%
   mutate(position = case_when(
            is.na(collar_location) ~ "unlabeled",
@@ -21,26 +21,32 @@ w <- df %>% filter(component=="water", !is.na(CH4_best.flux), !is.na(camp)) %>%
                         BL60="regen",SE1="scrub",SRS5="healthy",SRS6="healthy",RB10="healthy"),
          site = factor(plot, levels=c("CP40","FLM30","BL60","SE1","SRS5","SRS6")),
          camp = factor(camp, levels=c("Mar 2022","Oct 2022","Mar 2023")),
-         lab = ifelse(position=="off-plot / open water", gsub(" ","\n",substr(collar_location,1,18)), ""))
+         lab = ifelse(position=="off-plot / open water",   # display only: full note, whitespace tidied, "peir" spelled out
+                      stringr::str_wrap(gsub(" ,", ",", gsub("peir", "pier", trimws(gsub("\\s+", " ", collar_location)))), 12), ""))
 
-pos_cols <- c("in-plot"="#2166ac","off-plot / open water"="#d6604d","unlabeled"="grey60")
-
-p <- ggplot(w, aes(site, CH4_best.flux)) +
-  geom_hline(yintercept=0, color="grey70", linewidth=.3) +
-  geom_point(aes(color=position, size=position), position=position_jitter(width=.18, height=0), alpha=.85) +
-  ggrepel::geom_text_repel(aes(label=lab), size=2, color="#d6604d", max.overlaps=20,
-                           segment.size=.2, min.segment.length=0) +
-  facet_wrap(~camp, nrow=1, scales="free_x") +
-  scale_color_manual(values=pos_cols, name=NULL) +
-  scale_size_manual(values=c("in-plot"=2.4,"off-plot / open water"=2.8,"unlabeled"=1.8), guide="none") +
-  scale_y_continuous(trans="asinh", breaks=c(0,1,2,5,10,20,50,100)) +
-  labs(x=NULL, y=expression("water-surface CH"[4]*" (nmol "*m^-2*" "*s^-1*", asinh)"),
-       title="Water-surface CH4 by measurement position (red = off-plot / open water)") +
-  theme_bw(base_size=11) + theme(legend.position="bottom", panel.grid.minor=element_blank(),
-        strip.text=element_text(face="bold"), axis.text.x=element_text(angle=45,hjust=1))
-
+source("code/08_figures/palette.R")   # house palette + theme_fig()
+pos_cols <- c("in-plot" = "#2C7BB6", "off-plot / open water" = "#C2513A", "unlabeled" = "grey65")
+site_cls <- c(CP40 = "ghost", FLM30 = "ghost", BL60 = "regenerating", SE1 = "scrub", SRS5 = "intact", SRS6 = "intact")
+w <- w %>% mutate(site_lab = factor(paste0(site, "\n", site_cls[as.character(site)]),
+                                    paste0(levels(site), "\n", site_cls[levels(site)])))
+p <- ggplot(w, aes(site_lab, CH4_best.flux)) +
+  geom_hline(yintercept = 0, colour = "grey60", linewidth = 0.3) +
+  geom_point(aes(fill = position, size = position), shape = 21, colour = "white", stroke = 0.25,
+             position = position_jitter(width = .18, height = 0, seed = 1), alpha = .9) +
+  ggrepel::geom_text_repel(aes(label = lab), size = 2.1, colour = pos_cols[["off-plot / open water"]], max.overlaps = 20,
+                           segment.size = .2, min.segment.length = 0, lineheight = 0.85, seed = 1) +
+  facet_wrap(~camp, nrow = 1, scales = "free_x") +
+  scale_fill_manual(values = pos_cols, name = "chamber position") +
+  scale_size_manual(values = c("in-plot" = 1.8, "off-plot / open water" = 2.1, "unlabeled" = 1.4), guide = "none") +
+  scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)) +
+  labs(x = NULL, y = expression("Water-surface CH"[4]*" (nmol m"^-2*" s"^-1*")"), tag = "b") +
+  guides(fill = guide_legend(override.aes = list(size = 2.2))) +
+  theme_fig(base_size = 8) +
+  theme(strip.text = element_text(hjust = 0.5), legend.title = element_text(face = "bold", size = 7),
+        legend.text = element_text(size = 7), panel.grid.major.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.text.x = element_text(lineheight = 0.9))
 dir.create("output/figures/other", recursive=TRUE, showWarnings=FALSE)
-ggsave("output/figures/other/water_positions_by_campaign.png", p, width=11, height=6, dpi=160)
+ggsave("output/figures/other/water_positions_by_campaign.png", p, width=7.2, height=3.2, dpi=300, bg="white")
 cat("written output/figures/other/water_positions_by_campaign.png\n\n")
 
 # full labeled table

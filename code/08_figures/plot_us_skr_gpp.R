@@ -67,25 +67,33 @@ p_daily <- ggplot(daily, aes(date, GPP_gC_m2_day)) +
   ) +
   theme_flux()
 
-p_diurnal <- ggplot(diurnal, aes(time_of_day, GPP, color = month_label, fill = month_label)) +
-  geom_ribbon(aes(ymin = GPP_q025, ymax = GPP_q975), alpha = 0.18, color = NA) +
-  geom_line(linewidth = 0.8) +
-  scale_x_datetime(date_labels = "%H:%M", date_breaks = "3 hours") +
-  labs(
-    title = "US-Skr Mean Diurnal GPP",
-    x = "Time of day",
-    y = expression(GPP~(mu*mol~CO[2]~m^{-2}~s^{-1})),
-    color = NULL,
-    fill = NULL,
-    caption = "Lines: monthly mean half-hourly GPP; ribbons: mean bootstrap 95% interval"
-  ) +
-  theme_flux()
+# ---- SI Fig. S15: mean diurnal cycle (house style, single column) ----
+source("code/08_figures/palette.R")
+invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
+month_display <- c("2022-03" = "Mar 2022", "2022-10" = "Oct 2022", "2023-03" = "Mar 2023")
+pal_month <- c("Mar 2022" = "#D55E00", "Oct 2022" = "#0072B2", "Mar 2023" = "#CC79A7")   # Okabe-Ito; not class colours
+diurnal[, month_disp := factor(month_display[as.character(month_label)], levels = month_display)]
+p_diurnal <- ggplot(diurnal, aes(time_of_day, GPP, colour = month_disp, fill = month_disp)) +
+  geom_ribbon(aes(ymin = GPP_q025, ymax = GPP_q975), alpha = 0.2, colour = NA) +
+  geom_line(aes(linetype = month_disp), linewidth = 0.55) +
+  scale_x_datetime(labels = c("00:00", "06:00", "12:00", "18:00", "24:00"), breaks = as.POSIXct(sprintf("2000-01-01 %02d:00:00", seq(0, 24, 6)), tz = "UTC"),
+                   limits = as.POSIXct(c("2000-01-01 00:00:00", "2000-01-02 00:00:00"), tz = "UTC"),
+                   expand = c(0, 0)) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.05))) +
+  scale_colour_manual(values = pal_month, name = NULL) + scale_fill_manual(values = pal_month, name = NULL) +
+  scale_linetype_manual(values = c("solid", "solid", "22"), name = NULL) +
+  labs(x = "Time of day (local standard time)",
+       y = expression(GPP~(mu*mol~CO[2]~m^{-2}~s^{-1}))) +
+  theme_fig() +
+  theme(legend.position = "inside", legend.position.inside = c(0.02, 0.98),
+        legend.justification = c(0, 1), legend.key.width = unit(14, "pt"),
+        plot.margin = margin(4, 8, 2, 2))
 
 ggsave(file.path(plot_dir, "US-Skr_GPP_halfhourly_timeseries.png"), p_ts,
        width = 11, height = 8.5, dpi = 300)
 ggsave(file.path(plot_dir, "US-Skr_GPP_daily_totals.png"), p_daily,
        width = 11, height = 8.5, dpi = 300)
 ggsave(file.path(plot_dir, "US-Skr_GPP_mean_diurnal_cycle.png"), p_diurnal,
-       width = 10, height = 6, dpi = 300)
+       width = 3.5, height = 2.4, dpi = 300, bg = "white")
 
 cat("Wrote plots to", plot_dir, "\n")
