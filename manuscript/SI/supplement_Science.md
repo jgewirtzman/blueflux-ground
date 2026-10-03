@@ -68,7 +68,7 @@ Ecosystem respiration was built from the same components and areas, with chamber
 
 ## M14. Eddy-covariance tower
 
-Half-hourly CO2 and CH4 fluxes at SRS6 came from the AmeriFlux US-Skr BASE product (data S2) _[CHECK with tower PIs: instruments, measurement height, processing and u* threshold]_. Net exchange was the PI-provided NEE, or FC + SC where NEE was missing. GPP was partitioned per season-year (March–May 2022, September–November 2022, March–May 2023): night-time respiration (shortwave ≤10 W m−2) was fitted as log(NEE) = a + b·T and extrapolated to daytime; daytime GPP = respiration − NEE was fitted with a rectangular-hyperbola light response; NEE was gap-filled with the models; and GPP = respiration − gap-filled NEE in daytime (unclipped) and zero at night. Uncertainty came from 200 bootstrap resamples. Campaign-month means were GPP 7.1 (October 2022) and 8.5 (March 2023) µmol m−2 s−1, and NEE −2.4 and −4.4 (table S8; fig. S16). The within-month Q10 of night-time respiration was estimated from 2004–2023 records (n = 46,641 half-hours; shortwave <10 W m−2, 0 < NEE < 30, u* >0.2 m s−1) as exp(10b) from log(NEE) ~ T with a year × month fixed effect: 1.15 (1.13–1.18).
+Half-hourly CO2 and CH4 fluxes at SRS6 came from the AmeriFlux US-Skr BASE product (data S2) _[CHECK with tower PIs: instruments, measurement height, processing and u* threshold]_. Net exchange was the PI-provided NEE, or FC + SC where NEE was missing. GPP was partitioned per season-year (March–May 2022, September–November 2022, March–May 2023): night-time respiration (shortwave ≤10 W m−2) was fitted as log(NEE) = a + b·T and extrapolated to daytime; daytime GPP = respiration − NEE was fitted with a rectangular-hyperbola light response; NEE was gap-filled with the models; and GPP = respiration − gap-filled NEE in daytime (unclipped) and zero at night. Uncertainty came from 200 bootstrap resamples. Campaign-month means were GPP 7.1 (October 2022) and 8.5 (March 2023) µmol m−2 s−1, and NEE −2.4 and −4.4 (table S8; fig. S15). The within-month Q10 of night-time respiration was estimated from 2004–2023 records (n = 46,641 half-hours; shortwave <10 W m−2, 0 < NEE < 30, u* >0.2 m s−1) as exp(10b) from log(NEE) ~ T with a year × month fixed effect: 1.15 (1.13–1.18).
 
 ## M15. Airborne eddy covariance
 
@@ -152,7 +152,7 @@ Fig. S10 shows the effect of each choice on the intact-to-ghost switch. The cent
 
 ## Text S10. Net forcing under carbon-balance framings
 
-On vertical exchange the intact class is a sink of −3,630 g CO2-eq m−2 yr−1 at GWP20 (−3,710 at GWP100), and its CH4 offsets 3% (GWP20) to 1% (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m−2 yr−1) the intact forest retains ~680 g C m−2 yr−1. With exported alkalinity retained in the ocean and the rest returned to the air, the intact sink is −2,710 g CO2-eq m−2 yr−1 at GWP20 (−2,960 to −1,710 across lateral scenarios), CH4 offsets 5% of it, and the switch is ~5,500 (~5,000 at GWP100). If all exported carbon returns to the air, the intact sink is −2,330 (−2,730 to −150) and the switch ~5,100. On storage alone (burial 123 plus wood increment 131 g C m−2 yr−1; Castañeda-Moya et al. 2013) the intact class is −810 and the switch ~3,600, a lower bound because carbon respired downstream or retained as ocean DOC counts as returned. As an independent check, lateral export should roughly equal net exchange minus wood increment minus burial (≈770 g C m−2 yr−1), which falls between the central and high scenarios (fig. S15). The intact sink stays negative in every coherent scenario and approaches neutrality only with the highest export and complete atmospheric return.
+On vertical exchange the intact class is a sink of −3,630 g CO2-eq m−2 yr−1 at GWP20 (−3,710 at GWP100), and its CH4 offsets 3% (GWP20) to 1% (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m−2 yr−1) the intact forest retains ~680 g C m−2 yr−1. With exported alkalinity retained in the ocean and the rest returned to the air, the intact sink is −2,710 g CO2-eq m−2 yr−1 at GWP20 (−2,960 to −1,710 across lateral scenarios), CH4 offsets 5% of it, and the switch is ~5,500 (~5,000 at GWP100). If all exported carbon returns to the air, the intact sink is −2,330 (−2,730 to −150) and the switch ~5,100. On storage alone (burial 123 plus wood increment 131 g C m−2 yr−1; Castañeda-Moya et al. 2013) the intact class is −810 and the switch ~3,600, a lower bound because carbon respired downstream or retained as ocean DOC counts as returned. As an independent check, lateral export should roughly equal net exchange minus wood increment minus burial (≈770 g C m−2 yr−1), which falls between the central and high scenarios (fig. S14). The intact sink stays negative in every coherent scenario and approaches neutrality only with the highest export and complete atmospheric return.
 
 ## Text S11. Ghost-forest carbon losses not measured
 
@@ -195,8 +195,6 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 {{FIG S16}}
 
 {{FIG S17}}
-
-{{FIG S18}}
 
 ---
 

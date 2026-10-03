@@ -25,6 +25,9 @@ All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 - Gradual bubble releases are missed: 45000_CP40_Water_124 (CP40 Mar 2023) has a ~80 ppb rise at 490-525 s, just before the detected bubble at 528 s, not flagged (outside the diffusive window, so diffusive flux unaffected). Bound: the whole-placement total (goFlux over the full placement) is within 1% for this placement and 2-9% of diffusive + detected ebullition at the site x campaign level (CP40 Oct +6%, CP40 Mar +9%, FLM30 Mar +2%), so missed ebullition is <~10%. Now shown in fig. S4a as an upper-bound segment with the ebullitive share as a range, and stated in M7.
 - Low R2 (<0.95) bubble-free placements are mostly SRS5 Mar 2023 near-zero fluxes (expected near detection).
 
+## Data gaps
+- No porewater CH4 for SRS5 and SRS6 in March 2023: the GC run file (GC Run_Dec_2023) holds only SRS1 surface water for that month. Check whether those samples were collected and run elsewhere.
+
 ## Optional analyses
 - Global extension: apply the per-area switch to cyclone-driven mangrove mortality worldwide (global loss products x storm tracks), with bounds.
 - Fig. 1C artist illustration: labels pending.
