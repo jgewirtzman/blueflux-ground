@@ -1,10 +1,21 @@
 # Hurricane-induced mortality switches mangroves from carbon sink to methane source
 
-**Jonathan Gewirtzman**, Elisabeth Powell, Frannie Adams, Sean Charles, Erin Delaria, Cheryl Doughty, Lin Xiong, Lucy Carruthers, Addison Colwell, Atticus Stovall, Glenn Wolfe, Judith Rosentreter, Derrick Vaughn, Anthony Campbell, Mingyu Zhang, Samuel Tsao, Megan Brueck, Ben Girgenti, Mike Norton, Jessie Peterman, Ayia Lindquist, William Chen, [Jordan Peccia, Irvan Luhung,] Sparkle Malone, Benjamin Poulter, David Lagomasino, Peter Raymond
+Jonathan Gewirtzman^1,2\*^, Elisabeth Powell^3,4^, Frannie Adams^1^, Sean Charles^5^, Erin Delaria^4,6^, Cheryl Doughty^4,6^, Lin Xiong^3^, Lucy Carruthers^?^, Addison Colwell^?^, Atticus Stovall^3,4,7^, Glenn Wolfe^4^, Judith Rosentreter^8^, Derrick Vaughn^?^, Anthony Campbell^?^, Mingyu Zhang^?^, Samuel Tsao^?^, Megan Brueck^?^, Ben Girgenti^?^, Mike Norton^?^, Jessie Peterman^?^, Ayia Lindquist^?^, William Chen^?^, Jordan Peccia^9^, Irvan Luhung^9^, Sparkle Malone^1^, Benjamin Poulter^10^, David Lagomasino^5^, Peter Raymond^1,11^
 
-_[Affiliations to complete (Yale School of the Environment; Yale Center for Natural Carbon Capture; University of Maryland; East Carolina University and Coastal Studies Institute; NASA Goddard Space Flight Center; Southern Cross University; Utah State University; Spark Climate Solutions; Stanford). Corresponding author: J. Gewirtzman.]_
+^1^Yale School of the Environment, Yale University, New Haven, CT, USA.\
+^2^Stanford University, Stanford, CA, USA.\
+^3^Department of Geographical Sciences, University of Maryland, College Park, MD, USA.\
+^4^NASA Goddard Space Flight Center, Greenbelt, MD, USA.\
+^5^Department of Coastal Studies and Coastal Studies Institute, East Carolina University, Wanchese, NC, USA.\
+^6^Earth System Science Interdisciplinary Center, University of Maryland, College Park, MD, USA.\
+^7^CREAF, Cerdanyola del Vallès, Spain.\
+^8^Faculty of Science and Engineering, Southern Cross University, Lismore, NSW, Australia.\
+^9^Department of Chemical and Environmental Engineering, Yale University, New Haven, CT, USA.\
+^10^Spark Climate Solutions.\
+^11^Yale Center for Natural Carbon Capture, Yale University, New Haven, CT, USA.\
+^?^Affiliation to be added.
 
-_Draft for Science (Research Article: ≤3,000-word main text, ≤5 display items, ~50 references; Materials and Methods in the supplementary materials). Citations are reference keys in braces, defined in manuscript/references.md, numbered by manuscript/build_docx.py. Figures follow output/figures/main/Fig1–Fig5. Placeholders in brackets._
+\*Corresponding author. Email: jonathan.gewirtzman@yale.edu
 
 **One-sentence summary.** Hurricane-killed mangroves become methane-amplified carbon sources, a climate feedback missing from blue-carbon accounting.
 
@@ -13,8 +24,6 @@ _Draft for Science (Research Article: ≤3,000-word main text, ≤5 display item
 ## Abstract
 
 Saline mangroves are assumed to emit little methane, and blue-carbon accounting treats them as strong sinks. We measured methane and CO2 from six surfaces across intact, regenerating and hurricane-killed ("ghost") mangrove in the Florida Everglades, scaled them with terrestrial laser scanning, and checked them against tower and airborne eddy covariance. Intact forest emitted methane well above emission-factor assumptions, mostly from soils and prop roots. Mortality raised emission eightfold, moved it to ponded water, and reversed the porewater salinity–methane relationship. Ghost forest was a net source, a switch of ~6,400 g CO2-eq m−2 yr−1 over 20 years, a third of ghost-forest warming coming from methane. Across Caribbean mangrove lost in 2017, the switch adds ~1.1 Tg CO2-eq yr−1, a feedback missing from current accounting.
-
-_[~120 words]_
 
 ---
 
@@ -58,7 +67,7 @@ Intact forest was a strong net sink. Its net CO2 uptake (−3,755 g CO2 m−2 yr
 
 The switch is robust to how the intact sink is defined. Mangroves export part of their fixed carbon to tidal waters {santos2021;ho2017}, so the carbon an intact forest retains is smaller than its net CO2 uptake. Counting exported alkalinity as a durable ocean store {sippo2016;reithmaier2023} and the rest as returned to the atmosphere, using a Shark River synthesis of lateral export {zhao2021}, the intact sink shrinks to ~−2,700 g CO2-eq m−2 yr−1 and the switch remains ~5,500 (Fig. 5A; fig. S14; text S10). Across all other analytical choices we tested (flooding, temperature scaling, downed wood, canopy respiration and the tidal and daily timing of methane), the switch stayed between ~5,600 and ~8,000 (table S10).
 
-Scaled across the Caribbean, the switch is large. In a Landsat map of 2017 hurricane damage {taillie2020}, 173 km2 of mangrove showed little recovery, 95% of it after Irma, mainly in northern Cuba and south Florida (Fig. 5D). At the measured per-area switch, this loss adds ~1.1 Tg CO2-eq yr−1 at GWP20 (0.7–1.6; 1.0 at GWP100), including 1.8 Gg CH4 yr−1 of induced methane (Fig. 5C). We treat this as a scenario: it assumes that hurricane dieback elsewhere in the region behaves like our ghost sites. No comparable measurements exist for hurricane-killed mangrove elsewhere. Die-offs from other causes suggest the response is general when stands stay wet: dead *Avicennia* forest behind a power-plant embankment in a Veracruz lagoon emitted up to ~16 nmol CH4 m−2 s−1 in the rainy season {romerouribe2022}, similar to our exposed ghost soils. Dead stands in Brazil emitted little after about three years {pacheco2024}, however, so how long the enhancement lasts is the main uncertainty. Our ghost sites showed no canopy recovery five to six years after landfall, so this forcing recurs each year until stands recover. The estimate is conservative. The map captures only 60 of the 108 km2 of post-Irma dieback in Florida {lagomasino2021}, and it omits peat collapse after root death {cahoon2003} and the lateral losses of ghost forest. _[OPTIONAL PLACEHOLDER — global extension: apply the per-area switch to cyclone-driven mangrove mortality worldwide (global loss products × storm tracks), with bounds.]_
+Scaled across the Caribbean, the switch is large. In a Landsat map of 2017 hurricane damage {taillie2020}, 173 km2 of mangrove showed little recovery, 95% of it after Irma, mainly in northern Cuba and south Florida (Fig. 5D). At the measured per-area switch, this loss adds ~1.1 Tg CO2-eq yr−1 at GWP20 (0.7–1.6; 1.0 at GWP100), including 1.8 Gg CH4 yr−1 of induced methane (Fig. 5C). We treat this as a scenario: it assumes that hurricane dieback elsewhere in the region behaves like our ghost sites. No comparable measurements exist for hurricane-killed mangrove elsewhere. Die-offs from other causes suggest the response is general when stands stay wet: dead *Avicennia* forest behind a power-plant embankment in a Veracruz lagoon emitted up to ~16 nmol CH4 m−2 s−1 in the rainy season {romerouribe2022}, similar to our exposed ghost soils. Dead stands in Brazil emitted little after about three years {pacheco2024}, however, so how long the enhancement lasts is the main uncertainty. Our ghost sites showed no canopy recovery five to six years after landfall, so this forcing recurs each year until stands recover. The estimate is conservative. The map captures only 60 of the 108 km2 of post-Irma dieback in Florida {lagomasino2021}, and it omits peat collapse after root death {cahoon2003} and the lateral losses of ghost forest.
 
 ### From hurricanes to climate feedbacks
 
@@ -72,13 +81,11 @@ Hurricane mortality is therefore a positive climate feedback that current accoun
 
 Our conclusions are bounded by a space-for-time gradient, two chamber campaigns that miss diurnal, tidal and summer variation, literature-based lateral export and burial, and a regenerating class without TLS or airborne closure (supplementary text). None changes the direction or robustness of the switch. Measuring every pathway, scaling by measured structure and checking against airborne fluxes shows that a hurricane-killed mangrove is not a diminished sink but a methane-amplified source.
 
-_[Main-text word count: see build output]_
-
 ---
 
 ## Figure legends
 
-**Fig. 1. Study system and measurement design.** (**A**) South Florida study sites by forest class (core sites large; supporting sites small), mangrove extent in 2016 (Global Mangrove Watch v3.0) {bunting2022}, 2017 hurricane dieback {taillie2020}, the US-Skr eddy-covariance tower and Everglades National Park (dashed). (**B**) Intact (SRS5), regenerating (BL60) and ghost (CP40) forest. (**C**) Measurement design: chambers on stems at several heights, prop roots, sediment, water and downed wood; terrestrial laser scanning; tower and airborne eddy covariance. _[Draft illustration; labels pending.]_
+**Fig. 1. Study system and measurement design.** (**A**) South Florida study sites by forest class (core sites large; supporting sites small), mangrove extent in 2016 (Global Mangrove Watch v3.0) {bunting2022}, 2017 hurricane dieback {taillie2020}, the US-Skr eddy-covariance tower and Everglades National Park (dashed). (**B**) Intact (SRS5), regenerating (BL60) and ghost (CP40) forest. (**C**) Measurement design: chambers on stems at several heights, prop roots, sediment, water and downed wood; terrestrial laser scanning; tower and airborne eddy covariance.
 
 **Fig. 2. Flux rates and the surfaces they act on.** (**A**) CH4 and (**B**) CO2 flux per unit surface by component and forest class (small points, individual measurements; large points, means; bars, 95% bootstrap CIs for n ≥ 4; inverse-hyperbolic-sine axes). (**C**) Surface per unit ground area by component; pie area proportional to the total. (**D**) CH4 and (**E**) CO2 per unit woody surface by height above water, with generalized additive model fits (95% CI). (**F**) TLS woody surface by 0.5 m height bin; grey band, the chamber-sampled range enlarged in (D) and (E).
 
@@ -92,7 +99,7 @@ _[Main-text word count: see build output]_
 
 ## References and Notes
 
-_[Generated by manuscript/build_docx.py from the cited keys, in order of first appearance.]_
+_[reference list]_
 
 ## Acknowledgments
 
@@ -102,6 +109,5 @@ We thank Nadav Bendavid, Kinsey Blumenthal, Rocco D'Ascanio, Anna Stemberger, Qi
 
 ## Supplementary Materials
 
-Materials and Methods; Supplementary Text S1 to S11; Figs. S1 to S17; Tables S1 to S15; References; Data S1 and S2 (manuscript/SI/supplement_Science.docx, built by manuscript/SI/build_supplement.py).
+Materials and Methods; Supplementary Text S1 to S11; Figs. S1 to S17; Tables S1 to S15; References; Data S1 and S2.
 
-_[CHECK flags: E. Delaria airborne uncertainty definition; inorganic-N dilution; D. Lagomasino on the 2017 layer; TLS scan positions; tower instruments; references marked [details to complete] in manuscript/references.md.]_

@@ -8,6 +8,8 @@ caption, after the main-text section that first cites it; the separate
 usage: python3 manuscript/build_docx.py manuscript/drafts/manuscript_Science_draft.md
 """
 import glob, os, re, subprocess, sys, tempfile
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from refstyle import science
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src = sys.argv[1] if len(sys.argv) > 1 else "manuscript/drafts/manuscript_Science_draft.md"
@@ -40,7 +42,7 @@ def _num(m):
         i = j + 1
     return "(" + ", ".join(out) + ")"
 text = re.sub(r"\{([a-z0-9_;]+)\}", _num, text)
-reflist = "\n".join(f"{i + 1}. {refs[k]}" for i, k in enumerate(order))
+reflist = "\n".join(f"{i + 1}. {science(refs[k])}" for i, k in enumerate(order))
 text = re.sub(r"(## References and Notes\n\n)_\[[^\]]*\]_", lambda m: m.group(1) + reflist, text)
 
 # ---- word counts (main text excludes headings and bracketed placeholders)
