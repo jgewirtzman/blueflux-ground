@@ -1,8 +1,8 @@
 # =============================================================================
 # Fig. 4 | A geochemical regime shift.
 #   (a) PCA of porewater chemistry (October 2025, 0-90 cm at SRS5, SRS6, BL60,
-#       CP40; same variables and treatment as 06_analysis/02_manuscript_results.R
-#       plus DIC from pH + alkalinity: DO correction, numeric variables with
+#       CP40; same 13 variables and treatment as 06_analysis/02_manuscript_results.R
+#       (DIC is not included: it is calculated from pH and TA): DO correction, numeric variables with
 #       <= 20% missing, CO2 and SD columns excluded, inorganic N with
 #       below-detection = 0; centred and scaled). 68% class ellipses, all
 #       loadings (CH4 highlighted). Descriptive only (one core per site).
@@ -10,8 +10,9 @@
 #       (Oct 2022, Mar 2023, Oct 2025; site x round x depth means incl. surface
 #       water; site_characterization_figures.R), class regressions of
 #       log(1 + CH4) on salinity with Pearson r.
-#   (c) October 2025 depth profiles (0-90 cm), 14 analytes in two rows:
-#       salinity, electron acceptors and redox; carbon.
+#   (c) October 2025 depth profiles (0-90 cm), 12 measured analytes in two rows:
+#       salinity, electron acceptors and redox; carbon and nitrogen. (DIC, a
+#       derived quantity, and pH, which varies little, are left to the PCA/SI.)
 #   (d-f) MOCKUP of the sediment metagenome results (hypothetical values,
 #       clearly marked; replaced when the Peccia-lab data arrive).
 # Encoding throughout: colour = forest class, shape = site.
@@ -22,7 +23,6 @@ suppressMessages({library(dplyr); library(tidyr); library(ggplot2); library(patc
 invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))   # plotmath unicode (per mil, mu)
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/08_figures/palette.R")
-source("code/00_lib/porewater_dic.R")
 cls3 <- c(healthy = "intact", regenerating = "regenerating", ghost = "ghost")
 site_cls <- c(SRS5 = "intact", SRS6 = "intact", BL60 = "regenerating", CP40 = "ghost", FLM30 = "ghost")
 site_shape <- c(SRS5 = 21, SRS6 = 24, BL60 = 22, CP40 = 23, FLM30 = 25)
@@ -33,7 +33,7 @@ mock_lab <- function(t = "MOCKUP: hypothetical values") labs(title = t)
 mock_theme <- theme(plot.title = element_text(colour = "firebrick", face = "italic", size = 6.5, hjust = 0))
 
 pw <- read.csv("output/data_products/porewater_all_parameters.csv", check.names = FALSE) %>%
-  mutate(ppmDO = ppmDO - 1.67) %>% add_dic() %>%
+  mutate(ppmDO = ppmDO - 1.67) %>%
   mutate(class = factor(site_cls[Site], names(pal_class)), Site = factor(Site, names(site_shape)),
          depth = case_when(Depth_cm == "Surface" ~ -5, TRUE ~ suppressWarnings(as.numeric(Depth_cm))))
 
@@ -90,14 +90,14 @@ pb <- ggplot(sm, aes(PSU_mean, log1p(CH4_mean), colour = class)) +
   labs(x = "Salinity (PSU)", y = expression("Dissolved CH"[4]*" ("*mu*"M)")) + theme_fig() + small
 
 # ---- (c) depth profiles, 0-90 cm, 14 analytes ----
-vlab <- c(PSU = "Salinity~(PSU)", SO4 = 'SO[4]^{"2-"}~(mM)', Sulfide = "H[2]*S~(mg~L^-1)", Fe = "Fe~(mg~L^-1)",
-          DO = "O[2]~(mg~L^-1)", ORP = "ORP~(mV)", NH4 = 'NH[4]^"+"~(mu*M)',
+vlab <- c(PSU = "Salinity~(PSU)", SO4 = 'SO[4]^{"2-"}~(mM)', Sulfide = "Sulfide~(mg~L^-1)", Fe = "Fe~(mg~L^-1)",
+          DO = "O[2]~(mg~L^-1)", ORP = "ORP~(mV)",
           CH4 = "CH[4]~(mu*M)", d13C = paste0("delta^13*C-CH[4]~('", intToUtf8(0x2030), "')"), CO2 = "CO[2]~(mM)",
-          DIC = "DIC~(mM)", TA = "TA~(mM)", DOC = "DOC~(mg~L^-1)", pH = "pH")
+          DIC = "DIC~(mM)", TA = "TA~(mM)", DOC = "DOC~(mg~L^-1)", NH4 = 'NH[4]^"+"~(mu*M)', pH = "pH")
 prof <- pw %>% filter(depth >= 0) %>%
   transmute(Site, class, depth, PSU, SO4 = SO4_ppm / 96.06, Sulfide, Fe = `Total Iron`, DO = ppmDO, ORP,
             NH4 = NH4_N_mgL * 1000 / 14.007, CH4 = CH4_mean_uM, d13C = d13C_CH4_mean, CO2 = CO2_mean_uM / 1000,
-            DIC = DIC_uM / 1000, TA = Alkalinity_uM / 1000, DOC = DOC_mg_L, pH) %>%
+            TA = Alkalinity_uM / 1000, DOC = DOC_mg_L) %>%
   pivot_longer(-c(Site, class, depth), names_to = "var", values_to = "v") %>% filter(!is.na(v)) %>%
   mutate(var = factor(vlab[var], vlab))
 prof_row <- function(vars, title, ylab = TRUE) {
@@ -113,8 +113,8 @@ prof_row <- function(vars, title, ylab = TRUE) {
     theme(strip.text = element_text(hjust = 0.5), panel.spacing.x = unit(8, "pt"),
           plot.title = element_text(hjust = 0, margin = margin(0, 0, 1, 0)))
 }
-pc1 <- prof_row(c("PSU", "SO4", "Sulfide", "Fe", "DO", "ORP", "NH4"), "Salinity, electron acceptors and redox")
-pc2 <- prof_row(c("CH4", "d13C", "CO2", "DIC", "TA", "DOC", "pH"), "Carbon")
+pc1 <- prof_row(c("PSU", "SO4", "Sulfide", "Fe", "DO", "ORP"), "Salinity, electron acceptors and redox")
+pc2 <- prof_row(c("CH4", "d13C", "CO2", "TA", "DOC", "NH4"), "Carbon and nitrogen")
 
 # ---- (d-f) metagenome MOCKUP (hypothetical values) ----
 # Expected pattern under the working hypothesis: sulfate reducers abundant at all
