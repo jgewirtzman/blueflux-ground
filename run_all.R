@@ -57,13 +57,13 @@ steps <- c(
   "code/07_upscaling/08_supplementary_analyses.R",
   "code/07_upscaling/09_regional_scaling.R",
   # 08 figures: display items, then copy into output/figures/main and SI
-  "code/08_figures/fig2_component_boot.R",          # Fig 2, Fig S4
-  "code/08_figures/fig3_stem_height.R",             # old Fig 3 (Extended Data 2 source)
+  "code/08_figures/fig2_component_boot.R",          # Fig S3
+  "code/08_figures/fig3_stem_height.R",             # Fig S6
   "code/08_figures/fig2_rates.R",                   # Fig 2
   "code/08_figures/fig3_stands.R",                  # Fig 3
   "code/08_figures/fig4_geochem.R",                 # Fig 4
-  "code/08_figures/ed_porewater_rounds.R",          # ED8 porewater by round
-  "code/08_figures/fig_carbon_budget.R",           # carbon budget schematic (Fig 5a) + methane budget (SI S14)
+  "code/08_figures/ed_porewater_rounds.R",          # Fig S11
+  "code/08_figures/fig_carbon_budget.R",           # Fig 5a schematic; Fig S14
   "code/08_figures/fig5_climate.R",                 # Fig 5 (reads the schematic saved above)
   "code/08_figures/fig1_system.R",                  # Fig 1 (map, photos; schematic pending)
   "code/08_figures/plot_budget_figs.R",             # Fig 4
@@ -73,16 +73,18 @@ steps <- c(
   "code/08_figures/plot_budget_multisource.R",      # Fig 8
   "code/08_figures/plot_budget_flow.R",             # Fig 9
   "code/08_figures/plot_budget_waterfall.R",        # Fig 10
-  "code/08_figures/figS1_ebullition.R",             # Fig S1
-  "code/08_figures/figS2_pneumatophore.R",          # Fig S2
-  "code/08_figures/figS3_chamber_photos.R",         # Fig S3
-  "code/08_figures/plot_extrap_clean.R",            # Fig S5
+  "code/08_figures/figS1_ebullition.R",             # Fig S4
+  "code/08_figures/figS2_pneumatophore.R",          # Fig S5
+  "code/08_figures/figS3_chamber_photos.R",         # Fig S1
+  "code/08_figures/plot_extrap_clean.R",            # Fig S7a
+  "code/08_figures/si_upscaling_figs.R",             # Figs S7b, S9, S10 (from upscaling CSVs)
+  "code/08_figures/si_porewater_carbonate.R",        # Fig S12
   "code/08_figures/plot_SA_height_fixedY.R",        # Fig S8
-  "code/08_figures/plot_us_skr_gpp.R",              # Fig S10
-  "code/08_figures/site_characterization_figures.R",# Figs S11, S14
-  "code/08_figures/plot_site_closure.R",            # supplementary per-site closure
-  "code/08_figures/plot_water_positions.R",         # supplementary water positions
-  "code/08_figures/figS_sampling_design.R",
+  "code/08_figures/plot_us_skr_gpp.R",              # Fig S15
+  "code/08_figures/site_characterization_figures.R",# Fig S13
+  "code/08_figures/plot_site_closure.R",            # Fig S16
+  "code/08_figures/plot_water_positions.R",         # Fig S2b
+  "code/08_figures/figS_sampling_design.R",         # Fig S2a
   "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)
   "code/08_figures/fig_metagenome_placeholder.R",       # PLACEHOLDER metagenome figure        # sampling design vs tide (candidate SI figure)
   "code/08_figures/collect_figures.R",

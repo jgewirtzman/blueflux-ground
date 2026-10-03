@@ -390,19 +390,36 @@ ggsave("output/figures/other/pub_SI_salinity_vs_ch4_blue.pdf", p_scatter_blue, w
 ggsave("output/figures/other/pub_SI_salinity_vs_ch4_blue.png", p_scatter_blue, width = 8, height = 6, dpi = 300)
 cat("  Saved salinity vs CH4 scatter (blue)\n")
 
-# Faceted by site
-p_scatter_site <- merged %>%
-  ggplot(aes(x = PSU_mean, y = CH4_mean, color = season, shape = season)) +
-  geom_point(size = 3, alpha = 0.8) +
-  facet_wrap(~ site, scales = "free", nrow = 1) +
-  scale_color_manual(values = season_colors, name = "Campaign") +
-  scale_shape_manual(values = c(16, 17, 15), name = "Campaign") +
-  labs(x = "Salinity (PSU)", y = expression(Dissolved~CH[4]~(mu*M))) +
-  theme_pub(base_size = 10) +
-  theme(legend.position = "bottom")
+# Faceted by site (Fig. S13; house style: fill = forest class of the site,
+# shape = campaign, shared log1p CH4 axis and shared salinity axis)
+local({
+  source("code/08_figures/palette.R", local = TRUE)
+  invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
+  camp_lab <- c("wet (Oct 2022)" = "Oct 2022 (wet)", "dry (Mar 2023)" = "Mar 2023 (dry)", "Oct 2025" = "Oct 2025")
+  camp_shape <- c("wet (Oct 2022)" = 21, "dry (Mar 2023)" = 24, "Oct 2025" = 22)
+  d <- merged %>%
+    mutate(site = factor(site, c("SRS5", "SRS6", "BL60", "CP40", "FLM30")),
+           class = factor(class_labels[disturbance], names(pal_class)),
+           season = factor(season, names(camp_lab)))
+  strip_lab <- setNames(paste0(levels(d$site), " (", class_labels[site_disturbance[levels(d$site)]], ")"),
+                        levels(d$site))
+  p_scatter_site <<- ggplot(d, aes(PSU_mean, log1p(CH4_mean))) +
+    geom_point(aes(shape = season, fill = class), colour = "white", size = 2.1, stroke = 0.35) +
+    facet_wrap(~ site, nrow = 1, labeller = labeller(site = strip_lab)) +
+    scale_y_continuous(breaks = log1p(c(0, 1, 5, 10, 25, 50, 100)), labels = c(0, 1, 5, 10, 25, 50, 100)) +
+    scale_x_continuous(breaks = seq(0, 60, 20)) +
+    scale_shape_manual(values = camp_shape, labels = camp_lab, name = "campaign",
+                       guide = guide_legend(override.aes = list(fill = "grey35", size = 2.2))) +
+    scale_fill_manual(values = pal_class, name = "forest class", drop = FALSE,
+                      guide = guide_legend(override.aes = list(shape = 21, colour = "white", size = 2.6))) +
+    labs(x = "Salinity (PSU)", y = expression("Dissolved CH"[4]*" ("*mu*"M)")) +
+    theme_fig() +
+    theme(panel.spacing.x = unit(6, "pt"), legend.box = "horizontal",
+          legend.text = element_text(size = 7), legend.title = element_text(size = 7))
+})
 
-ggsave("output/figures/other/pub_SI_salinity_vs_ch4_bysite.pdf", p_scatter_site, width = 12, height = 4)
-ggsave("output/figures/other/pub_SI_salinity_vs_ch4_bysite.png", p_scatter_site, width = 12, height = 4, dpi = 300)
+ggsave("output/figures/other/pub_SI_salinity_vs_ch4_bysite.pdf", p_scatter_site, width = 7.2, height = 2.5, device = cairo_pdf)
+ggsave("output/figures/other/pub_SI_salinity_vs_ch4_bysite.png", p_scatter_site, width = 7.2, height = 2.5, dpi = 300, bg = "white")
 cat("  Saved salinity vs CH4 by site\n")
 
 # =============================================

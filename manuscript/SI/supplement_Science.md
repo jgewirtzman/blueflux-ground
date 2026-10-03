@@ -10,7 +10,7 @@ Corresponding author: jonathan.gewirtzman@yale.edu
 
 **Other Supplementary Materials for this manuscript include:** Data S1 (chamber flux dataset); Data S2 (external datasets used, with citations).
 
-_[Draft. Section structure follows the analysis workflow (run_all.R); numbers are read from the workflow outputs. Placeholders in brackets. Figures marked † are earlier renders to be restyled to the main-text palette.]_
+_[Draft. Section structure follows the analysis workflow (run_all.R); numbers are read from the workflow outputs. Placeholders in brackets.]_
 
 ---
 
