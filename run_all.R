@@ -63,8 +63,8 @@ steps <- c(
   "code/08_figures/fig3_stands.R",                  # Fig 3
   "code/08_figures/fig4_geochem.R",                 # Fig 4
   "code/08_figures/ed_porewater_rounds.R",          # ED8 porewater by round
-  "code/08_figures/fig5_climate.R",                 # Fig 5
-  "code/08_figures/fig_carbon_budget.R",           # carbon + methane budget (SI S14 / candidate main)
+  "code/08_figures/fig_carbon_budget.R",           # carbon budget schematic (Fig 5a) + methane budget (SI S14)
+  "code/08_figures/fig5_climate.R",                 # Fig 5 (reads the schematic saved above)
   "code/08_figures/fig1_system.R",                  # Fig 1 (map, photos; schematic pending)
   "code/08_figures/plot_budget_figs.R",             # Fig 4
   "code/08_figures/fig6_porewater_pca.R",           # Fig 5, Figs S12-S13

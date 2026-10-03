@@ -109,7 +109,7 @@ schematic <- function(k) {
     p <- if (is.null(cx)) bez(c(x0, y0), c((x0 + x1) / 2, (y0 + yt) / 2), c(x1, yt)) else bez(c(x0, y0), c(cx, y0 + 0.3), c(x1, yt))
     add_arrow(p, v, col); add_lab(x1, yt + 0.08, txt, col)
   }
-  wx <- 8.3; cx4 <- 9.5                                                   # water CO2 and CH4 columns
+  wx <- 8.2; cx4 <- 9.3                                                   # water CO2 and CH4 columns
   if (!ghost) {
     add_arrow(bez(c(4.25, T2 + 0.05), c(4.27, 7.3), c(4.3, 6.55)), G, col_gpp); add_lab(4.25, T2 + 0.13, sprintf("GPP\n%s", pm(G, GPP_SE)), col_gpp)
     up(1.0, 3.9, 1.95, r$stem, col_co2a, sprintf("stems +\nbranches\n%s", pm(r$stem, e("stem"))), 1, cx = 1.95)
