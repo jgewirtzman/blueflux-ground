@@ -44,7 +44,7 @@ def ci(m, lo, hi, d=1):
 # ------------------------------------------------------------------ figures
 FIGS = {
  "S1": (["output/figures/other/pub_SI_chamber_photos.png"],
-        "Chamber designs: stem chambers at several heights, prop-root chamber, soil collar and cylinder, floating water chamber, leaf chamber and downed-wood chamber."),
+        "Chamber types: (a) soil cylinder, (b) soil cylinder enclosing pneumatophores, (c) soil collar and dome, (d) floating water chamber, (e) prop root, (f) stem, (g) woody debris and (h) leaf."),
  "S2": (["output/figures/other/sampling_design.png", "output/figures/other/water_positions_by_campaign.png"],
         "Sampling design relative to tide and standing water. (a) Chamber measurements by site and campaign against water level above the soil (FCE LTER loggers); diamonds at −2 cm mark chambers without a recorded water depth; triangles mark dissolved-gas samples. (b) Water-surface CH4 flux by campaign and site, coloured by recorded chamber position (in plot, off plot or open water, unlabelled)."),
  "S3": (["output/figures/other/pub_component_by_plot_campaign_combined_condensed_boot.png"],

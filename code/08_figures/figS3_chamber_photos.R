@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # =============================================================================
-# Figure S3: Chamber type photographs
+# Figure S1: Chamber types, one per measured surface
 # Output: pub_SI_chamber_photos
 # =============================================================================
 # To interactively adjust crop regions, run crop_photos_interactive() in RStudio.
@@ -17,14 +17,14 @@ crop_file <- file.path(photo_dir, "crop_offsets.csv")
 dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 
 photos <- list(
-  list(file = "soil_chamber.jpg",                     label = "(a) Soil cylinder"),
-  list(file = "soil_chamber_with_pneumatophores.jpg", label = "(b) Soil w/ pneumatophores"),
-  list(file = "soil_collar_chamber.jpg",              label = "(c) Soil collar + dome"),
-  list(file = "floating_chamber.jpg",                 label = "(d) Floating water"),
-  list(file = "root_chamber.jpg",                     label = "(e) Prop root"),
-  list(file = "stem_chamber.jpg",                     label = "(f) Stem"),
-  list(file = "cwd_chamber.jpg",                      label = "(g) Coarse woody debris"),
-  list(file = "leaf_chamber.jpg",                     label = "(h) Leaf")
+  list(file = "soil_chamber.jpg",                     label = "soil (cylinder)"),
+  list(file = "soil_chamber_with_pneumatophores.jpg", label = "soil with pneumatophores"),
+  list(file = "soil_collar_chamber.jpg",              label = "soil (collar + dome)"),
+  list(file = "floating_chamber.jpg",                 label = "water (floating)"),
+  list(file = "root_chamber.jpg",                     label = "prop root"),
+  list(file = "stem_chamber.jpg",                     label = "stem"),
+  list(file = "cwd_chamber.jpg",                      label = "woody debris"),
+  list(file = "leaf_chamber.jpg",                     label = "leaf")
 )
 
 target_ratio <- 4 / 3
@@ -118,32 +118,26 @@ make_photo <- function(p) {
   ggdraw() + draw_image(img)
 }
 
-make_cap <- function(label) {
-  ggplot() +
-    annotate("text", x = 0.5, y = 0.5, label = label, size = 3.5, fontface = "bold") +
-    theme_void()
+# 2 x 4 grid; each photo tagged a-h with its surface written beneath
+tile <- function(i) {
+  p <- photos[[i]]
+  plot_grid(make_photo(p),
+            ggplot() + annotate("text", x = 0, y = 0.5, hjust = 0, size = 3.4,
+                                label = paste0("bold('", letters[i], "')~~'", p$label, "'"), parse = TRUE) +
+              xlim(0, 1) + theme_void(), ncol = 1, rel_heights = c(1, 0.13))
 }
-
-# Build rows: photo row then caption row
-rows <- list()
-for (i in seq(1, length(photos), by = 2)) {
-  photo_row <- plot_grid(make_photo(photos[[i]]), make_photo(photos[[i + 1]]), ncol = 2)
-  cap_row <- plot_grid(make_cap(photos[[i]]$label), make_cap(photos[[i + 1]]$label), ncol = 2)
-  rows <- c(rows, list(photo_row), list(cap_row))
-}
-
-combined <- plot_grid(plotlist = rows, ncol = 1,
-                      rel_heights = rep(c(1, 0.08), length(photos) / 2))
+combined <- plot_grid(plotlist = lapply(seq_along(photos), tile), ncol = 2) +
+  theme(plot.background = element_rect(fill = "white", colour = NA))
 
 save_pub <- function(plot, name, width, height, units = "mm") {
   ggsave(paste0("output/figures/other/pub_", name, ".pdf"), plot,
-         width = width, height = height, units = units)
+         width = width, height = height, units = units, bg = "white")
   ggsave(paste0("output/figures/other/pub_", name, ".png"), plot,
-         width = width, height = height, units = units, dpi = 300)
+         width = width, height = height, units = units, dpi = 300, bg = "white")
   cat(sprintf("Saved: pub_%s.pdf/.png\n", name))
 }
 
-save_pub(combined, "SI_chamber_photos", width = 190, height = 270)
+save_pub(combined, "SI_chamber_photos", width = 183, height = 265)
 
 # Run figure cleanup if available
 cleanup_script <- "code/08_figures/figure_cleanup.R"
