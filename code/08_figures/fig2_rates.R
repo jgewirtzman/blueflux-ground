@@ -130,14 +130,8 @@ area_stack_panel <- function() {
 # pie alternative: one pie per class, area proportional to total surface per ground area
 col_branch <- "#B59A6A"
 area_pie_panel <- function() {
-  lv <- c("water", "soil", "prop root", "stem", "branch", "downed wood", "leaf")
-  # split the stem slice into trunk (stem) and branch, as in d
-  br <- tls_seg %>% filter(component == "branch") %>% mutate(class = factor(site_class[site], names(pal_class))) %>%
-    group_by(class) %>% summarise(br = mean(sa), .groups = "drop")
-  pa2 <- area %>% filter(!is.na(class)) %>% left_join(br, by = "class") %>%
-    mutate(sa = ifelse(as.character(comp) == "stem", sa - br, sa)) %>% select(class, comp, sa) %>%
-    mutate(comp = as.character(comp)) %>% bind_rows(br %>% transmute(class, comp = "branch", sa = br))
-  pd <- pa2 %>% mutate(comp = factor(comp, lv)) %>% arrange(class, comp) %>%
+  lv <- c("water", "soil", "prop root", "stem", "downed wood", "leaf")
+  pd <- area %>% filter(!is.na(class)) %>% mutate(comp = factor(as.character(comp), lv)) %>% arrange(class, comp) %>%
     group_by(class) %>% mutate(tot = sum(sa), end = 2 * pi * cumsum(sa) / tot, start = lag(end, default = 0),
                                r = sqrt(tot / max(area %>% group_by(class) %>% summarise(t = sum(sa)) %>% pull(t))),
                                x0 = ifelse(class == "intact", 0, 1.9)) %>% ungroup()
@@ -146,7 +140,7 @@ area_pie_panel <- function() {
     ggforce::geom_arc_bar(aes(x0 = x0, y0 = 0, r0 = 0, r = r, start = start, end = end, fill = comp), colour = "white", linewidth = 0.3) +
     geom_text(data = lab, aes(x0, -1.12, label = sprintf("%s\n%.1f m\u00b2 m\u207b\u00b2", class, tot), colour = class),
               size = 2.5, fontface = "bold", lineheight = 0.9, vjust = 1) +
-    scale_fill_manual(values = c(setNames(pal_comp, lv[-5]), branch = col_branch), breaks = lv, name = "component") +
+    scale_fill_manual(values = setNames(pal_comp, lv), labels = ifelse(lv == "stem", "stem + branch", lv), breaks = lv, name = "component") +
     scale_colour_manual(values = pal_class, guide = "none") +
     coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.6, 1.05)) + theme_void() +
     theme(plot.tag = element_text(face = "bold", size = 11), legend.key.size = unit(8, "pt"),
@@ -193,7 +187,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
   pcc <- pcc + lt
   if (pie) {
-    pcc <- pcc + guides(fill = guide_legend(nrow = 3, byrow = TRUE)) +
+    pcc <- pcc + guides(fill = guide_legend(nrow = 2, byrow = TRUE)) +
       coord_fixed(xlim = c(-1.05, 2.5), ylim = c(-1.35, 1.05), clip = "off")
   } else pcc <- pcc + theme(legend.position = "right")
   leg_comp <- if (pie) cowplot::get_plot_component(pcc + theme(legend.position = "bottom", legend.direction = "horizontal",
@@ -213,7 +207,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE) {
        theme(axis.text.y = element_text())) +
     (pf + nl + labs(tag = "d")) +
     wrap_elements(full = leg_class) + wrap_elements(full = leg_comp) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) +
-    plot_layout(design = design, widths = c(1, 1, 1), heights = unit(c(1, 0.45, 1, 0.22), c("null", "in", "null", "in"))) +
+    plot_layout(design = design, widths = c(1, 1, 1), heights = unit(c(1, 0.32, 1, 0.22), c("null", "in", "null", "in"))) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
   ggsave(paste0(file, ".png"), fig, width = 7.2, height = 6.8, dpi = 300, bg = "white")
   ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 6.8, device = cairo_pdf)
