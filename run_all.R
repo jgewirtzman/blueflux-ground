@@ -42,6 +42,7 @@ steps <- c(
   "code/06_analysis/02_manuscript_results.R",
   "code/06_analysis/03_woody_height_model.R",
   "code/06_analysis/04_porewater_carbonate.R",
+  "code/06_analysis/05_si_tables.R",
   # 07 upscaling: tower GPP, plot budgets, forcing, carbon budget
   "code/07_upscaling/01_tower_gpp.R",
   "code/07_upscaling/01b_flood_fraction.R",
