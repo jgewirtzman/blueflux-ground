@@ -66,18 +66,16 @@ FIGS = {
  "S11": (["output/figures/other/si_S10_mc_uncertainty.png"],
          "Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S4); inverse-hyperbolic-sine axis; components that are always zero omitted."),
  "S12": (["output/figures/other/ed_porewater_rounds.png"],
-         "Porewater dissolved CH4 (A) and salinity (B) by site, sampling round (October 2022, March 2023, October 2025) and depth, including FLM30."),
+         "Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only); (c) salinity against dissolved CH4 by site (including surface water; shape, round; log(1 + x) axis). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023."),
  "S13": (["output/figures/other/si_S12_carbonate.png"],
          "Porewater carbonate chemistry (October 2025; 0–90 cm, surface water excluded). (a) Total alkalinity against DIC calculated from pH and alkalinity, with the 1:1 line (dashed) and least-squares fits by site. (b) Total alkalinity against salinity, with class regressions (95% CI), Pearson r and n by class, and a conservative-mixing reference (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM; text S7). Fill, forest class; shape, site."),
- "S14": (["output/figures/other/pub_SI_salinity_vs_ch4_bysite.png"],
-         "Porewater salinity against dissolved CH4 by site (site × round × depth means, including surface water) for the three sampling rounds (October 2022, March 2023, October 2025). Fill, forest class; shape, round; CH4 on a log(1 + x) axis."),
- "S15": (["output/figures/other/fig_carbon_budget.png"],
+ "S14": (["output/figures/other/fig_carbon_budget.png"],
          "Carbon and methane budgets. (A) Carbon budget schematic (as Fig. 5A) for intact and ghost forest (g C m−2 yr−1; arrow width proportional to the square root of the flux, one scale for both). Solid arrows are measured here: GPP (tower) and CO2 and CH4 from each surface (chambers × scanned area), shown as mean ± 1 SE across the four plot × campaign estimates. Translucent, dashed arrows are literature values with their published ranges: litterfall, root production, wood mortality, wood increment, burial and lateral export (DIC, DOC, POC, dissolved CH4), for intact forest only. The closure residual (net exchange minus lateral export, burial and wood increment; M18, text S10) is 423 g C m−2 yr−1, with a range of −182 to 595 when the half-ranges of its terms are combined in quadrature. The imbalance is therefore within the uncertainty of lateral export. (B) Methane budget by pathway (g CH4 m−2 yr−1; diamonds, bottom-up total with Monte Carlo 95% interval), lateral dissolved CH4 export (intact), and the airborne mean of four 2022–2023 deployments (triangles, ±1.96 SE; daytime)."),
- "S16": (["output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png"],
+ "S15": (["output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png"],
          "US-Skr tower: mean diurnal cycle of partitioned GPP during the campaign months (M14). Lines, monthly mean half-hourly GPP; ribbons, mean bootstrap 95% interval (partitioning-parameter uncertainty); local standard time."),
- "S17": (["output/figures/other/site_closure_comparison.png"],
+ "S16": (["output/figures/other/site_closure_comparison.png"],
          "Class-mean bottom-up CH4 by component and campaign compared with the airborne estimate. (a) Stacked component contributions (nmol m−2 ground s−1); dashed outlines mark classes with assumed structure (no TLS: regenerating, scrub and context sites); diamonds, airborne class flux ± SE (intact and ghost only). (b) Component coverage: chambers per class and campaign; white cells with 0, component not measured on that visit; pale cells, class not visited."),
- "S18": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
+ "S17": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
 }
 def fig_block(k):
     files, cap = FIGS[k]
