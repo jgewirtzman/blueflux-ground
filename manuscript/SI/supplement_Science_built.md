@@ -66,7 +66,7 @@ Stand budgets were built for the scanned sites (SRS5, SRS6, CP40, FLM30) in Octo
 
 ## M13. Stand CO2 budgets
 
-Ecosystem respiration was built from the same components and areas, with chamber CO2 efflux of stems (no height profile), prop roots, soil, water and downed wood, plus canopy leaf respiration. Chamber respiration of stems, roots, soil and downed wood was scaled from measurement-time to 24-h temperature with the within-month Q10 of night-time respiration at the US-Skr tower (1.15; M14), giving factors of 0.96–1.02. Canopy leaf respiration in intact forest was Rd25 × mean[f(T) × (1 − 0.3 × day)] × LAIeff, with leaf dark respiration at 25 °C Rd25 = 1.55 (1.28–1.62) µmol m−2 leaf s−1 from *R. mangle* at SRS6 (Barr et al. 2009) and *A. germinans* (Sturchio et al. 2022), the temperature response of Heskel et al. (2016), f(T) = exp[0.1012(T − 25) − 0.0005(T2 − 252)], driven by tower air temperature, 30% daytime light inhibition (Atkin et al. 2014; daytime when shortwave >5 W m−2), and an effective leaf area LAIeff = (1 − e−0.5L)/0.5 with L = 2.8 (2.3–5.55) (Troxler et al. 2015; Reed et al. 2025), giving 1.7–2.0 µmol m−2 s−1. Leaf respiration was zero in ghost forest. Net ecosystem exchange was respiration minus gross primary production (GPP), with GPP the tower campaign mean in intact forest (M14) and zero in ghost forest (defoliated). Because the imported GPP is partitioned from the tower's own net exchange, intact bottom-up net exchange equals tower net exchange plus the difference between bottom-up and tower-partitioned respiration; it reconciles the two respiration estimates rather than providing an independent net flux (text S5). Airborne fluxes provide the independent check (M15).
+Ecosystem respiration was built from the same components and areas, with chamber CO2 efflux of stems (no height profile), prop roots, soil, water and downed wood, plus canopy leaf respiration. Chamber respiration of stems, roots, soil and downed wood was scaled from measurement-time to 24-h temperature with the within-month Q10 of night-time respiration at the US-Skr tower (1.15; M14), giving factors of 0.96–1.02. Canopy leaf respiration in intact forest was Rd25 × mean[f(T) × (1 − 0.3 × day)] × LAIeff, with leaf dark respiration at 25 °C Rd25 = 1.55 (1.28–1.62) µmol m−2 leaf s−1 from *R. mangle* at SRS6 (Barr et al. 2009) and *A. germinans* (Sturchio et al. 2022), the temperature response of Heskel et al. (2016), f(T) = exp[0.1012(T − 25) − 0.0005(T2 − 252)], driven by tower air temperature, 30% daytime light inhibition (Atkin et al. 2014; Huntingford et al. 2017; daytime when shortwave >5 W m−2) _[CHECK: source of the 30% value]_, and an effective leaf area LAIeff = (1 − e−0.5L)/0.5 with L = 2.8 (2.3–5.55) (Troxler et al. 2015; Reed et al. 2025), giving 1.7–2.0 µmol m−2 s−1. Leaf respiration was zero in ghost forest. Net ecosystem exchange was respiration minus gross primary production (GPP), with GPP the tower campaign mean in intact forest (M14) and zero in ghost forest (defoliated). Because the imported GPP is partitioned from the tower's own net exchange, intact bottom-up net exchange equals tower net exchange plus the difference between bottom-up and tower-partitioned respiration; it reconciles the two respiration estimates rather than providing an independent net flux (text S5). Airborne fluxes provide the independent check (M15).
 
 ## M14. Eddy-covariance tower
 
@@ -696,43 +696,44 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 # References
 
-- [allen2018 — to add]
-- [atkin2014 — to add]
-- [barr2009 — to add]
-- [bouillon2007 — to add]
+- Allen, M. R. et al. A solution to the misrepresentations of CO2-equivalent emissions of short-lived climate pollutants under ambitious mitigation. npj Clim. Atmos. Sci. 1, 16 (2018). https://doi.org/10.1038/s41612-018-0026-8
+- Atkin, O. K., Meir, P. & Turnbull, M. H. Improving representation of leaf respiration in large-scale predictive climate–vegetation models. New Phytol. 202, 743–748 (2014). https://doi.org/10.1111/nph.12686
+- Barr, J. G., Fuentes, J. D., Engel, V. & Zieman, J. C. Physiological responses of red mangroves to the climate in the Florida Everglades. J. Geophys. Res. Biogeosci. 114, G02008 (2009). https://doi.org/10.1029/2008JG000843
+- Bouillon, S. et al. Importance of intertidal sediment processes and porewater exchange on the water column biogeochemistry in a pristine mangrove creek (Ras Dege, Tanzania). Biogeosciences 4, 311–322 (2007). https://doi.org/10.5194/bg-4-311-2007
 - Bunting, P. et al. Global Mangrove Extent Change 1996–2020: Global Mangrove Watch Version 3.0. Remote Sens. 14, 3657 (2022). https://doi.org/10.3390/rs14153657
 - Cahoon, D. R. et al. Mass tree mortality leads to mangrove peat collapse at Bay Islands, Honduras after Hurricane Mitch. J. Ecol. 91, 1093–1105 (2003). https://doi.org/10.1046/j.1365-2745.2003.00841.x
 - Castañeda-Moya, E., Twilley, R. R. & Rivera-Monroy, V. H. Allocation of biomass and net primary productivity of mangrove forests along environmental gradients in the Florida Coastal Everglades, USA. For. Ecol. Manage. 307, 226–241 (2013). https://doi.org/10.1016/j.foreco.2013.07.011
 - Delaria, E. R. et al. Assessment of landscape-scale fluxes of carbon dioxide and methane in subtropical coastal wetlands of South Florida. J. Geophys. Res. Biogeosci. 129, e2024JG008165 (2024). https://doi.org/10.1029/2024JG008165
 - Forster, P. et al. The Earth's energy budget, climate feedbacks, and climate sensitivity. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the IPCC, Ch. 7, 923–1054 (Cambridge Univ. Press, 2021).
-- [griffiths2021 — to add]
+- Griffiths, L. N. & Mitsch, W. J. Estimating the effects of a hurricane on carbon storage in mangrove wetlands in Southwest Florida. Plants 10, 1749 (2021). https://doi.org/10.3390/plants10081749
 - Hannun, R. A. et al. Spatial heterogeneity in CO2, CH4, and energy fluxes: insights from airborne eddy covariance measurements over the Mid-Atlantic region. Environ. Res. Lett. 15, 035008 (2020). https://doi.org/10.1088/1748-9326/ab7391
 - Heskel, M. A. et al. Convergence in the temperature response of leaf respiration across biomes and plant functional types. Proc. Natl Acad. Sci. USA 113, 3832–3837 (2016). https://doi.org/10.1073/pnas.1520282113
 - Ho, D. T. et al. Dissolved carbon biogeochemistry and export in mangrove-dominated rivers of the Florida Everglades. Biogeosciences 14, 2543–2559 (2017). https://doi.org/10.5194/bg-14-2543-2017
+- Huntingford, C. et al. Implications of improved representations of plant respiration in a changing climate. Nat. Commun. 8, 1602 (2017). https://doi.org/10.1038/s41467-017-01774-z [CHECK article number]
 - Hutchinson, G. L. & Mosier, A. R. Improved soil cover method for field measurement of nitrous oxide fluxes. Soil Sci. Soc. Am. J. 45, 311–316 (1981). https://doi.org/10.2136/sssaj1981.03615995004500020017x
 - Hutjes, R. W. A. et al. Dis-aggregation of airborne flux measurements using footprint analysis. Agric. For. Meteorol. 150, 966–983 (2010). https://doi.org/10.1016/j.agrformet.2010.03.004
 - Kljun, N., Calanca, P., Rotach, M. W. & Schmid, H. P. A simple two-dimensional parameterisation for Flux Footprint Prediction (FFP). Geosci. Model Dev. 8, 3695–3713 (2015). https://doi.org/10.5194/gmd-8-3695-2015
 - Krauss, K. W. et al. Woody debris in the mangrove forests of South Florida. Biotropica 37, 9–15 (2005). https://doi.org/10.1111/j.1744-7429.2005.03058.x
 - Lagomasino, D. et al. Storm surge and ponding explain mangrove dieback in southwest Florida following Hurricane Irma. Nat. Commun. 12, 4003 (2021). https://doi.org/10.1038/s41467-021-24253-y
-- [lin2024 — to add]
-- [osland2020 — to add]
+- Lin, C.-W. et al. Flushing emissions of methane and carbon dioxide from mangrove soils during tidal cycles. Sci. Total Environ. 919, 170768 (2024). https://doi.org/10.1016/j.scitotenv.2024.170768
+- Osland, M. J. et al. A tropical cyclone-induced ecological regime shift: mangrove forest conversion to mudflat in Everglades National Park (Florida, USA). Wetlands 40, 1445–1458 (2020). https://doi.org/10.1007/s13157-020-01291-8
 - Pedersen, A. R., Petersen, S. O. & Schelde, K. A comprehensive approach to soil-atmosphere trace-gas flux estimation with static chambers. Eur. J. Soil Sci. 61, 888–902 (2010). https://doi.org/10.1111/j.1365-2389.2010.01291.x
 - Poulter, B. et al. Multi-scale observations of mangrove blue carbon ecosystem fluxes: the NASA Carbon Monitoring System BlueFlux field campaign. Environ. Res. Lett. 18, 075009 (2023). https://doi.org/10.1088/1748-9326/acdae6
 - Powell, E. B. et al. [Terrestrial laser scanning of Everglades mangrove structure and surface area across a hurricane-disturbance gradient — methods paper in preparation; details to complete]
-- [reed2025 — to add]
-- [reithmaier2020 — to add]
+- Reed, D. et al. Resilience to hurricanes is high in mangrove blue carbon forests. Glob. Change Biol. 31, e70124 (2025). https://doi.org/10.1111/gcb.70124
+- Reithmaier, G. M. S., Ho, D. T., Johnston, S. G. & Maher, D. T. Mangroves as a source of greenhouse gases to the atmosphere and alkalinity and dissolved carbon to the coastal ocean: a case study from the Everglades National Park, Florida. J. Geophys. Res. Biogeosci. 125, e2020JG005812 (2020). https://doi.org/10.1029/2020JG005812
 - Rheault, K., Christiansen, J. R. & Larsen, K. S. goFlux: a user-friendly way to calculate GHG fluxes yourself, regardless of user experience. J. Open Source Softw. 9, 6393 (2024). https://doi.org/10.21105/joss.06393
 - Sippo, J. Z. et al. Coastal carbon cycle changes following mangrove loss. Limnol. Oceanogr. 65, 2642–2656 (2020). https://doi.org/10.1002/lno.11476
 - Smith, M. A., Cain, M. & Allen, M. R. Further improvement of warming-equivalent emissions calculation. npj Clim. Atmos. Sci. 4, 19 (2021). https://doi.org/10.1038/s41612-021-00169-8
-- [stegehuis2026 — to add]
-- [sturchio2022 — to add]
+- Stegehuis, A. I., Ho, D. T., Bopp, L. & Guenet, B. Reduced carbon outflow from a Floridian mangrove estuary up to two years after a hurricane. Commun. Earth Environ. 7, 395 (2026). https://doi.org/10.1038/s43247-026-03249-w
+- Sturchio, M. A. et al. Temperature acclimation of leaf respiration differs between marsh and mangrove vegetation in a coastal wetland ecotone. Glob. Change Biol. 28, 612–629 (2022). https://doi.org/10.1111/gcb.15938
 - Taillie, P. J. et al. Widespread mangrove damage resulting from the 2017 Atlantic mega hurricane season. Environ. Res. Lett. 15, 064010 (2020). https://doi.org/10.1088/1748-9326/ab82cf
 - Troxler, T. G. et al. Component-specific dynamics of riverine mangrove CO2 efflux in the Florida coastal Everglades. Agric. For. Meteorol. 213, 273–282 (2015). https://doi.org/10.1016/j.agrformet.2014.12.012
-- [wanninkhof2014 — to add]
-- [weiss1974 — to add]
+- Wanninkhof, R. Relationship between wind speed and gas exchange over the ocean revisited. Limnol. Oceanogr. Methods 12, 351–362 (2014). https://doi.org/10.4319/lom.2014.12.351
+- Weiss, R. F. Carbon dioxide in water and seawater: the solubility of a non-ideal gas. Mar. Chem. 2, 203–215 (1974). https://doi.org/10.1016/0304-4203(74)90015-2
 - Wolfe, G. M. et al. The NASA Carbon Airborne Flux Experiment (CARAFE): instrumentation and methodology. Atmos. Meas. Tech. 11, 1757–1776 (2018). https://doi.org/10.5194/amt-11-1757-2018
-- [wood2023 — to add]
-- [yamamoto1976 — to add]
-- [yong2024 — to add]
+- Wood, S. A. et al. Mitigating near-term climate change. Environ. Res. Lett. 18, 101002 (2023). https://doi.org/10.1088/1748-9326/acfdbd
+- Yamamoto, S., Alcauskas, J. B. & Crozier, T. E. Solubility of methane in distilled water and seawater. J. Chem. Eng. Data 21, 78–80 (1976). https://doi.org/10.1021/je60068a029
+- Yong, Z.-J., Lin, W.-J., Lin, C.-W. & Lin, H.-J. Tidal influence on carbon dioxide and methane fluxes from tree stems and soils in mangrove forests. Biogeosciences 21, 5247–5260 (2024). https://doi.org/10.5194/bg-21-5247-2024
 - Zhao, X. et al. Tropical cyclones cumulatively control regional carbon fluxes in Everglades mangrove wetlands (Florida, USA). Sci. Rep. 11, 13927 (2021). https://doi.org/10.1038/s41598-021-92899-1
-- [zhu2024 — to add]
+- Zhu, X. et al. Asynchronous methane and carbon dioxide fluxes drive temporal variability of mangrove blue carbon sequestration. Geophys. Res. Lett. 51, e2023GL107235 (2024). https://doi.org/10.1029/2023GL107235

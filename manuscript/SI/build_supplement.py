@@ -226,7 +226,7 @@ for line in open(P("manuscript/references.md"), encoding="utf-8"):
     if " | " in line and not line.startswith("#"):
         k, v = line.split(" | ", 1); refs[k.strip()] = v.strip()
 SI_REFS = ["allen2018", "atkin2014", "barr2009", "bouillon2007", "bunting2022", "cahoon2003", "castanedamoya2013",
-           "carafe_instrument", "delaria2024", "forster2021", "griffiths2021", "hannun2020", "heskel2016", "ho2017",
+           "carafe_instrument", "delaria2024", "forster2021", "griffiths2021", "hannun2020", "heskel2016", "ho2017", "huntingford2017",
            "hutchinson1981", "hutjes2010", "kljun2015", "krauss2005", "lagomasino2021", "lin2024", "osland2020",
            "pedersen2010", "poulter2023", "powell_tls", "reed2025", "reithmaier2020", "gofluxref", "sippo2020", "smith2021",
            "stegehuis2026", "sturchio2022", "taillie2020", "troxler2015", "wanninkhof2014", "weiss1974", "wood2023",
