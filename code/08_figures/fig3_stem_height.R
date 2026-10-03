@@ -860,13 +860,36 @@ box_panel <- function(d, xvar, xr, brk, xlab) {
     theme(legend.position = "none", panel.grid.major.y = element_blank())
 }
 
+# raincloud: density ridge (on the asinh scale) for each height x class, raw points beneath it, and the
+# arithmetic mean (diamond) for groups with n > 3; classes stacked within each height band
+rain_panel <- function(d, xvar, xr, brk, xlab, bw) {
+  d <- d %>% filter(!is.na(.data[[xvar]])) %>%
+    mutate(cls = to_cls(disturbance_level), v = .data[[xvar]],
+           hi = as.numeric(factor(height_category, ht_lev)),
+           row = (hi - 1) * 4.6 + c(intact = 2.6, regenerating = 1.3, ghost = 0)[as.character(cls)]) %>%
+    group_by(row) %>% mutate(n = n()) %>% ungroup()
+  dens <- d %>% filter(n >= 3)
+  mn <- d %>% filter(n > 3) %>% group_by(row, cls) %>% summarise(v = mean(v), .groups = "drop")
+  ggplot(d, aes(v, row)) +
+    geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
+    ggridges::geom_density_ridges(data = dens, aes(group = row, fill = cls), scale = 0.62, alpha = 0.6, bandwidth = bw, rel_min_height = 0.01,
+                                  colour = "grey30", linewidth = 0.25) +
+    geom_point(aes(y = row - 0.24, colour = cls), position = position_jitter(height = 0.1, width = 0, seed = 1),
+               alpha = 0.5, size = 0.6, stroke = 0) +
+    geom_point(data = mn, aes(y = row + 0.12), shape = 23, size = 1.5, fill = "white", colour = col_ink, stroke = 0.4) +
+    scale_x_continuous(trans = "asinh", limits = xr, breaks = brk, labels = asinh_labels) +
+    scale_y_continuous(breaks = (seq_along(ht_lev) - 1) * 4.6 + 1.5, labels = ht_lev, expand = expansion(add = c(0.4, 0.2))) +
+    fill_cls + col_cls + labs(x = xlab, y = ylab_ht) + theme_fig() +
+    theme(legend.position = "none", panel.grid.major.y = element_blank())
+}
+
 ch4_lab <- expression(CH[4]~flux~(nmol~m^{-2}~s^{-1}))
 co2_lab <- expression(CO[2]~flux~(mu*mol~m^{-2}~s^{-1}))
 
 ch4_ridges <- ridge_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, 1.0)
 co2_ridges <- ridge_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, 0.8) + no_y
-ch4_box <- box_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, ch4_lab)
-co2_box <- box_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, co2_lab) + no_y
+ch4_box <- rain_panel(stem_height, "CH4_best.flux", x_range, asinh_brk_pos, ch4_lab, bw = 0.7)
+co2_box <- rain_panel(stem_height_co2, "CO2_best.flux", x_range_co2, co2_brk, co2_lab, bw = 0.45) + no_y
 
 # (c) fitted woody-surface (stem + prop root) profiles by class, from
 # 06_analysis/03_woody_height_model.R (live stem, flooded position, wet season)
@@ -908,14 +931,41 @@ co2_emm <- emm_d_co2_df %>%
         panel.grid.major.y = element_blank()) +
   guides(colour = guide_legend(ncol = 3, byrow = TRUE), shape = guide_legend(ncol = 3, byrow = TRUE))
 
-fig10_combined <- (ch4_ridges + co2_ridges + ch4_box + co2_box + ch4_emm + co2_emm) +
-  plot_layout(ncol = 2, byrow = TRUE, heights = c(0.8, 1.3, 1), widths = c(1, 1)) +
-  plot_annotation(tag_levels = list(c("a", "d", "b", "e", "c", "f")))
+# (c) species x live/dead effects, averaged over height (the models are additive in height, so the
+# species pattern is the same at every height); CH4 (m_d) and CO2 (m_d_co2), with n per group
+sp_emm <- function(m, dat, gas) {
+  as.data.frame(summary(emmeans(m, ~ sp_status))) %>%
+    left_join(dat %>% count(sp_status), by = "sp_status") %>%
+    mutate(gas = gas, label = recode(as.character(sp_status), AVGE_alive = "A. germinans (alive)",
+                                     AVGE_dead = "A. germinans (dead)", COER = "C. erectus", LARA = "L. racemosa",
+                                     RHMA_alive = "R. mangle (alive)", RHMA_dead = "R. mangle (dead)"))
+}
+sp_tab <- bind_rows(sp_emm(m_d, stem_ad_ht, "CH4"), sp_emm(m_d_co2, stem_ad_ht_co2, "CO2")) %>%
+  mutate(label = factor(label, rev(sp_lev)))
+sp_ylab <- setNames(sp_lab, sp_lev)
+sp_panel <- function(g, xlab, brk) {
+  d <- sp_tab %>% filter(gas == g)
+  ggplot(d, aes(emmean, label, colour = label, shape = label)) +
+    geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3, linetype = "dashed") +
+    geom_errorbar(aes(xmin = lower.CL, xmax = upper.CL), width = 0, linewidth = 0.45, orientation = "y") +
+    geom_point(size = 1.8, stroke = 0.6) +
+    geom_text(aes(x = Inf, label = paste0("n = ", n)), hjust = 1.05, size = 2.1, colour = "grey35") +
+    scale_colour_manual(values = sp_col, guide = "none") + scale_shape_manual(values = sp_shp, guide = "none") +
+    scale_y_discrete(labels = sp_ylab[levels(d$label)]) +
+    scale_x_continuous(breaks = asinh(brk), labels = brk, expand = expansion(mult = c(0.05, 0.18))) +
+    labs(x = xlab, y = NULL) + theme_fig() + theme(panel.grid.major.y = element_blank())
+}
+sp_ch4 <- sp_panel("CH4", ch4_lab, c(0, 1, 2, 5, 10, 20))
+sp_co2 <- sp_panel("CO2", co2_lab, c(0, 1, 2, 5, 10)) + theme(axis.text.y = element_blank())
+
+fig10_combined <- (ch4_box + co2_box + sp_ch4 + sp_co2) +
+  plot_layout(ncol = 2, byrow = TRUE, heights = c(1.3, 0.75), widths = c(1, 1), guides = "collect") +
+  plot_annotation(tag_levels = list(c("a", "b", "c", "d"))) & theme(legend.position = "bottom")
 
 ggsave("output/figures/other/pub_stem_height_composite_combined.png", fig10_combined,
-       width = 7.2, height = 7.4, dpi = 300, bg = "white")
+       width = 7.2, height = 6.2, dpi = 300, bg = "white")
 ggsave("output/figures/other/pub_stem_height_composite_combined.pdf", fig10_combined,
-       width = 7.2, height = 7.4, device = cairo_pdf)
+       width = 7.2, height = 6.2, device = cairo_pdf)
 cat("Saved: pub_stem_height_composite_combined.pdf/.png\n")
 
 cat("\n--- Combined CH4+CO2 height composite figure saved ---\n")
