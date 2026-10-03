@@ -15,12 +15,13 @@ component,,"stem, prop_root, downed_wood, leaf, soil or water_surface"
 area_basis,,Surface the flux is expressed per
 species_code,,"Tree species code (RHMA, AVGE, LARA, COER, ...); trees only"
 species_name,,Scientific name; trees only
-tissue_status,,"alive or dead (trees, roots, downed wood)"
+tissue_status,,"alive or dead (stems, prop roots, leaves); downed wood is always dead"
 diameter_cm,cm,"Stem, root or wood diameter at the chamber"
 chamber_height_cm,cm,"Chamber height as recorded, measured from height_datum"
-height_datum,,Reference surface for chamber_height_cm: sediment_surface or water_surface
+height_datum,,"Reference for chamber_height_cm: sediment_surface, water_surface, or root_crown (negative heights measured down a prop root from where it leaves the stem)"
 height_above_sediment_cm,cm,"Chamber height above the sediment: chamber_height_cm, plus water_depth_cm where measured from the water surface"
-height_above_water_cm,cm,Chamber height above the standing-water surface where water was present (negative = chamber below the water line)
+height_above_water_cm,cm,Chamber height above the standing-water surface where water was present (negative = chamber below the water line; see height_note)
+height_note,,Note on the chamber height where the datum or water depth needs explanation
 water_depth_cm,cm,Standing-water depth at the measurement
 pneumatophore_count,count,Pneumatophores inside the soil collar
 pneumatophore_density_m2,count m-2,Pneumatophore density inside the soil collar

@@ -12,11 +12,11 @@ Per-measurement methane (CH4) and carbon dioxide (CO2) fluxes measured with clos
 
 **Related publications:** [manuscript in preparation; preprint DOI to add].
 
-**Acknowledgements:** [to complete: NASA CMS grant number; Everglades National Park research permit].
+**Acknowledgements:** NASA Carbon Monitoring System grant 80NSSC21K1564 (BlueFlux).
 
 ## 2. Data Characteristics
 
-- **Spatial coverage:** 11 sites, 25.141 to 26.027 N, 80.632 to 81.744 W. Coordinates are site level (no per-tree positions); SRS5 and SRS6 from FCE LTER, others from the BlueFlux site list (`coord_source`). Three single-visit non-mangrove comparison sites (Cypress Boardwalk, Long Pine Key, Mahogany Hammock; October 2022, 3 stem closures each) have no coordinates yet.
+- **Spatial coverage:** 11 sites, 25.149 to 25.930 N, 80.381 to 81.673 W. Coordinates are site level (no per-tree positions); SRS5 and SRS6 from FCE LTER, others from the BlueFlux site list (`coord_source`). Three single-visit non-mangrove comparison sites (Cypress Boardwalk, Long Pine Key, Mahogany Hammock; October 2022, 3 stem closures each) have no coordinates yet.
 - **Temporal coverage:** 2022-03-18 to 2023-03-20; campaigns March 2022, October 2022, March 2023.
 - **Temporal resolution:** one value per chamber closure (fit windows typically 3-3.5 min) or per floating-chamber placement (median ~6.5 min).
 - **Records:** 763 (downed_wood 27, leaf 19, prop_root 65, soil 118, stem 487, water_surface 47).
