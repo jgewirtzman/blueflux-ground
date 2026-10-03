@@ -2,7 +2,8 @@
 # Fig. 2 | Flux rates: what each surface emits.
 #   (a) CH4 and (b) CO2 per m2 of surface by component (rows) and forest class
 #       (side by side, class colours, one shared axis): individual measurements
-#       and bootstrapped means with 95% CIs (5,000 resamples). Soil collars
+#       and bootstrapped means with 95% CIs (5,000 resamples); groups with
+#       fewer than 5 closures show points only (no mean); n at the right. Soil collars
 #       include pneumatophores in the footprint. Core sites (intact SRS5, SRS6;
 #       regenerating BL60; ghost CP40, FLM30), all campaigns, as in the stand
 #       budgets; context sites (RB10, MI, SE1) are in Extended Data 3.
@@ -34,18 +35,22 @@ rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {
   x <- dd %>% filter(.data[[status]] == "valid", !is.na(comp)) %>% mutate(v = .data[[paste0(gas, "_best.flux")]])
   s <- x %>% group_by(comp, class) %>% summarise(n = n(), m = boot(v)[1], lo = boot(v)[2], hi = boot(v)[3], .groups = "drop") %>%
     mutate(y = as.numeric(comp) + dodge[as.character(class)])
-  x <- x %>% mutate(y = as.numeric(comp) + dodge[as.character(class)] + runif(n(), -0.06, 0.06))
+  x <- x %>% left_join(s %>% select(comp, class, n), by = c("comp", "class")) %>%
+    mutate(y = as.numeric(comp) + dodge[as.character(class)] + runif(n(), -0.06, 0.06), small = n < 5)
+  s <- s %>% filter(n >= 5); nlab <- x %>% distinct(comp, class, n) %>% mutate(y = as.numeric(comp) + dodge[as.character(class)])
   bands <- data.frame(y = seq_along(levels(dd$comp))) %>% filter(y %% 2 == 1)
   ggplot() +
     geom_rect(data = bands, aes(ymin = y - 0.5, ymax = y + 0.5), xmin = -Inf, xmax = Inf, fill = "grey95") +
     geom_vline(xintercept = 0, colour = "grey60", linewidth = 0.3) +
-    geom_point(data = x, aes(asinh(v), y, colour = class, shape = site_type), size = 0.75, alpha = 0.35, stroke = 0.35) +
+    geom_point(data = x %>% filter(!small), aes(asinh(v), y, colour = class, shape = site_type), size = 0.75, alpha = 0.35, stroke = 0.35) +
+    geom_point(data = x %>% filter(small), aes(asinh(v), y, fill = class), shape = 21, colour = "white", size = 1.6, stroke = 0.3) +
+    geom_text(data = nlab, aes(x = Inf, y = y, label = n), hjust = 1.2, size = 1.9, colour = "grey45") +
     geom_errorbar(data = s, aes(xmin = asinh(lo), xmax = asinh(hi), y = y, colour = class), width = 0, linewidth = 0.6, orientation = "y") +
     geom_point(data = s, aes(asinh(m), y, fill = class), shape = 21, colour = "white", size = 2.1, stroke = 0.5) +
     scale_y_continuous(breaks = seq_along(levels(dd$comp)), labels = if (show_y) levels(dd$comp) else NULL,
                        expand = c(0, 0), limits = c(0.5, length(levels(dd$comp)) + 0.5)) +
-    scale_x_continuous(breaks = asinh(breaks), labels = breaks) +
-    scale_colour_manual(values = pal_class, name = NULL, guide = "none") + scale_fill_manual(values = pal_class, name = NULL) +
+    scale_x_continuous(breaks = asinh(breaks), labels = breaks, expand = expansion(mult = c(0.03, 0.09))) +
+    scale_colour_manual(values = pal_class, name = NULL, guide = "none") + scale_fill_manual(values = pal_class, breaks = names(pal_class), name = "forest class") +
     scale_shape_manual(values = c(`core site` = 16, `context site` = 4), guide = "none") +
     labs(x = xlab, y = NULL) + theme_fig() + theme(panel.grid.major.y = element_blank(), axis.ticks.y = element_blank())
 }
@@ -65,7 +70,7 @@ prof_panel <- function(gas, curves, breaks, xlab) {
     scale_x_continuous(breaks = asinh(breaks), labels = breaks) +
     scale_y_continuous(limits = c(-0.03, 1.9), expand = c(0, 0)) +
     scale_colour_manual(values = pal_class, guide = "none") + scale_fill_manual(values = pal_class, guide = "none") +
-    scale_shape_manual(values = c(stem = 16, `prop root` = 2), name = NULL) +
+    scale_shape_manual(values = c(stem = 16, `prop root` = 2), name = "surface") +
     labs(x = xlab, y = "Height above water (m)") + theme_fig() +
     guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1)))
 }
@@ -76,15 +81,15 @@ pd <- prof_panel("CO2", "output/analysis/woody_height_model_CO2_curves.csv", c(-
 
 build <- function(dd, file, note) {
   pa <- rate_panel(dd, "CH4", "CH4_flux_status", c(0, 1, 10, 100, 1000), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
-    theme(legend.position = c(0.99, 0.02), legend.justification = c(1, 0), legend.background = element_rect(fill = "white", colour = NA)) +
-    guides(fill = guide_legend(override.aes = list(size = 2.5)))
+    guides(fill = guide_legend(override.aes = list(size = 2.5), order = 1))
   pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE) +
-    theme(legend.position = "none")
-  pc2 <- pc + theme(legend.position = c(0.99, 0.98), legend.justification = c(1, 1), legend.background = element_rect(fill = "white", colour = NA))
-  pd2 <- pd + theme(legend.position = "none")
+    guides(fill = "none")
+  pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
+  pd2 <- pd + guides(shape = "none")
   fig <- (pa + labs(tag = "a")) + (pb + labs(tag = "b")) + (pc2 + labs(tag = "c")) + (pd2 + labs(tag = "d")) +
-    plot_layout(ncol = 2, widths = c(1, 1), heights = c(1, 0.9)) +
+    plot_layout(ncol = 2, widths = c(1, 1), heights = c(1, 0.9), guides = "collect") +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
+  fig <- fig & theme(legend.position = "right", legend.title = element_text(size = 7, face = "bold"))
   ggsave(paste0(file, ".png"), fig, width = 7.2, height = 5.4, dpi = 300, bg = "white")
   ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 5.4, device = cairo_pdf)
 }
