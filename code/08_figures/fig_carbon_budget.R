@@ -112,6 +112,7 @@ pb <- ggplot() +
 fig <- (wrap_elements(full = pa & theme(plot.margin = margin(2, 2, 2, 12))) + labs(tag = "a")) / ((pb + labs(tag = "b")) + plot_spacer() + plot_layout(widths = c(1, 0.35))) + plot_layout(heights = c(2.4, 1)) &
   theme(plot.tag = element_text(face = "bold", size = 11))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
+saveRDS(pa, "output/figures/other/fig_carbon_schematic.rds")   # reused as Fig 5a
 ggsave("output/figures/other/fig_carbon_schematic.png", pa, width = 7.2, height = 4.15, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig_carbon_budget.png", fig, width = 7.2, height = 6.4, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig_carbon_budget.pdf", fig, width = 7.2, height = 6.4, device = cairo_pdf)
