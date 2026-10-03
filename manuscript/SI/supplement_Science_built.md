@@ -229,9 +229,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 **Fig. S13.** Porewater salinity against dissolved CH4 by site, all sampling rounds. †
 
 
-![](<output/figures/presentation/budget_flow_healthy.png>){width=6.5in}
+![](<output/figures/other/fig_carbon_budget.png>){width=6.5in}
 
-**Fig. S14.** Carbon flows in intact forest (g C m−2 yr−1): measured vertical exchange (GPP, respiration, CH4), literature lateral export and storage (burial, wood increment), and the closure residual (M18; text S10). †
+**Fig. S14.** Carbon and methane budgets. (A) Carbon flows in intact and ghost forest on one scale (g C m−2 yr−1): GPP (tower), respiration and CH4 by component (chambers × scanned area), lateral export (DIC, DOC, POC, dissolved CH4) and storage (burial, wood increment) from the literature for intact forest, and the closure residual (M18; text S10). (B) Methane budget by pathway (g CH4 m−2 yr−1; diamonds, bottom-up total with Monte Carlo 95% interval), lateral dissolved CH4 export (intact), and the airborne mean of four 2022–2023 deployments (triangles, ±1.96 SE; daytime).
 
 
 ![](<output/gpp/plots/US-Skr_GPP_mean_diurnal_cycle.png>){width=6.5in}
