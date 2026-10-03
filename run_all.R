@@ -62,6 +62,7 @@ steps <- c(
   "code/08_figures/fig4_geochem.R",                 # Fig 4
   "code/08_figures/ed_porewater_rounds.R",          # ED8 porewater by round
   "code/08_figures/fig5_climate.R",                 # Fig 5
+  "code/08_figures/fig1_system.R",                  # Fig 1 (map, photos; schematic pending)
   "code/08_figures/plot_budget_figs.R",             # Fig 4
   "code/08_figures/fig6_porewater_pca.R",           # Fig 5, Figs S12-S13
   "code/08_figures/plot_closure.R",                 # Fig 6
@@ -84,8 +85,6 @@ steps <- c(
   "code/08_figures/collect_figures.R",
   "code/09_archive/build_ornl_daac_package.R"     # DRAFT ORNL DAAC package (measured fluxes)
 )
-# Fig 1 (map + photo composite, code/08_figures/publication_map_composite.R) is
-# assembled interactively and is not run here.
 
 qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, intermediate/
   "code/qa/compare_auxfile_vs_legacy.R",

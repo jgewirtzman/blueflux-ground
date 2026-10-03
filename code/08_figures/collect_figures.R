@@ -10,6 +10,7 @@ if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 fig <- "output/figures"
 display_items <- c(
   # curated file                      = generated source                              (script)
+  "main/Fig1_system.png"              = "other/fig1_system.png",                        # fig1_system.R
   "main/Fig2_rates.png"                = "other/fig2_rates.png",                         # fig2_rates.R (Fig 2a-c)
   "main/Fig3_stands.png"               = "other/fig3_stands.png",                        # fig3_stands.R
   "main/Fig4_geochemistry.png"         = "other/fig4_geochem.png",                       # fig4_geochem.R
