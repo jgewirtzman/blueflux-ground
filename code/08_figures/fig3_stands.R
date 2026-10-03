@@ -160,14 +160,17 @@ pf <- ggplot(bind_rows(ann, twr) %>% mutate(source = factor(source, src_lev)), a
   scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
   labs(x = NULL, y = "Annual stand budget") + theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.x = element_blank())
 
-pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = "none"); pc <- pc + guides(shape = "none", fill = "none")
-pd <- pd + guides(shape = guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30", "grey30"))),
-                  fill = guide_legend(ncol = 2))
-fig <- (pe + labs(tag = "a")) + (pf + labs(tag = "b")) + (pa + labs(tag = "c")) + (pb + labs(tag = "d")) +
-  (pc + labs(tag = "e")) + (pd + labs(tag = "f")) +
-  plot_layout(ncol = 2, guides = "collect") &
-  theme(legend.position = "bottom", legend.box = "horizontal", legend.title.position = "top",
-        legend.margin = margin(0, 8, 0, 8))
+# legends beside their own rows: (a, b) forest class + estimate; (c, d) component; (e, f) estimate
+est_guide <- guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30", "grey30")))
+pf <- pf + scale_shape_manual(values = src_shape, limits = src_lev[c(1, 3)], name = "estimate") +
+  scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
+  guides(shape = guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30"))))
+pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = guide_legend(ncol = 1))
+pc <- pc + guides(shape = "none", fill = "none"); pd <- pd + guides(shape = est_guide, fill = "none")
+row1 <- ((pe + labs(tag = "a")) | (pf + labs(tag = "b"))) + plot_layout(guides = "collect")
+row2 <- ((pa + labs(tag = "c")) | (pb + labs(tag = "d"))) + plot_layout(guides = "collect")
+row3 <- ((pc + labs(tag = "e")) | (pd + labs(tag = "f"))) + plot_layout(guides = "collect")
+fig <- (row1 / row2 / row3) & theme(legend.position = "right", legend.justification = "left")
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8.4, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 8.4, device = cairo_pdf)
+ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 8, device = cairo_pdf)
