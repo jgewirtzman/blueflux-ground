@@ -105,21 +105,53 @@ area_panel <- function() {
     geom_segment(aes(x = 0, xend = sa, y = y, yend = y, colour = class, alpha = lit), linewidth = 2.2) +
     scale_alpha_manual(values = c(`FALSE` = 1, `TRUE` = 0.4), guide = "none") +
     scale_colour_manual(values = pal_class, guide = "none") +
-    scale_y_continuous(breaks = seq_along(levels(d$comp)), labels = levels(d$comp), expand = c(0, 0), limits = c(0.5, length(levels(d$comp)) + 0.5)) +
+    scale_y_continuous(breaks = seq_along(levels(d$comp)), labels = NULL, expand = c(0, 0), limits = c(0.5, length(levels(d$comp)) + 0.5)) +
     scale_x_continuous(expand = expansion(mult = c(0, 0.05))) +
     labs(x = expression("Surface per ground area (m"^2*" m"^-2*")"), y = NULL) +
     theme_fig() + theme(panel.grid.major.y = element_blank(), axis.ticks.y = element_blank())
 }
 
-build <- function(dd, file, note) {
+# stacked alternative: total surface per ground area by class, components stacked
+area_stack_panel <- function() {
+  st <- area %>% filter(!is.na(class)) %>% mutate(comp = factor(as.character(comp), rev(levels(d$comp))))
+  ggplot(st, aes(sa, class, fill = comp)) +
+    geom_col(width = 0.6, colour = "white", linewidth = 0.25, position = position_stack(reverse = TRUE)) +
+    scale_fill_manual(values = setNames(pal_comp, c("water", "soil", "prop root", "stem", "downed wood", "leaf")), name = "component") +
+    scale_y_discrete(limits = rev(c("intact", "ghost"))) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.05))) +
+    labs(x = expression("Surface per ground area (m"^2*" m"^-2*")"), y = NULL) +
+    theme_fig() + theme(panel.grid.major.y = element_blank(), axis.ticks.y = element_blank(),
+                        axis.text.y = element_text(colour = pal_class[c("ghost", "intact")], face = "bold"))
+}
+# woody surface by height (TLS, 0.5 m bins), intact vs ghost; measured chamber zone shaded
+hb <- read.csv("data/tls/all_sites_summary.csv") %>% left_join(tsz %>% select(site, area_m2), by = "site") %>%
+  mutate(class = factor(site_class[site], names(pal_class)),
+         part = ifelse(segment_class == "root", "prop root", "stem and branch"),
+         h = height_bin_num) %>%
+  group_by(class, site, part, h) %>% summarise(sa = sum(Total_surface_area_m2) / first(area_m2), .groups = "drop") %>%
+  group_by(class, part, h) %>% summarise(sa = mean(sa), .groups = "drop")
+height_panel <- function() {
+  ggplot(hb, aes(sa, h + 0.25, fill = part)) +
+    annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = 1.8, fill = "grey93") +
+    geom_col(orientation = "y", width = 0.45, position = position_stack(reverse = TRUE), colour = NA) +
+    facet_grid(~ class) +
+    scale_fill_manual(values = c(`prop root` = pal_comp[["prop root"]], `stem and branch` = pal_comp[["stem"]]), name = "woody surface") +
+    scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0)) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.05)), breaks = c(0, 0.1)) +
+    labs(x = expression("Surface per ground area (m"^2*" m"^-2*" per 0.5 m)"), y = "Height (m)") +
+    theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.y = element_blank())
+}
+
+build <- function(dd, file, note, stacked = FALSE) {
   pa <- rate_panel(dd, "CH4", "CH4_flux_status", c(0, 1, 10, 100, 1000), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
     guides(fill = guide_legend(override.aes = list(size = 2.5), order = 1))
   pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE) +
     guides(fill = "none")
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), order = 2))
   pd2 <- pd + guides(shape = "none")
-  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(widths = c(1, 1), guides = "collect")
-  row2 <- ((pc2 + labs(tag = "c")) | (pd2 + labs(tag = "d")) | (area_panel() + labs(tag = "e"))) +
+  pcc <- if (stacked) area_stack_panel() else area_panel()
+  row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b")) | (pcc + labs(tag = "c"))) + plot_layout(widths = c(1, 1, 1), guides = "collect")
+  row2 <- ((pc2 + labs(tag = "d")) | (pd2 + labs(tag = "e")) | (height_panel() + labs(tag = "f"))) +
     plot_layout(widths = c(1, 1, 1), guides = "collect")
   fig <- (row1 / row2) + plot_layout(heights = c(1, 0.9)) +
     plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0)))
@@ -129,5 +161,6 @@ build <- function(dd, file, note) {
 }
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates", "")
+build(d %>% filter(site_type == "core site"), "output/figures/other/fig2_rates_stacked", "", stacked = TRUE)
 build(d, "output/figures/other/fig2_rates_with_context",
       "a, b: includes context sites (Rookery Bay with intact, Marco Island with ghost; crosses); SE-1 (scrub) not shown.")

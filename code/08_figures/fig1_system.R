@@ -53,9 +53,9 @@ pa <- ggplot() +
   geom_sf(data = loss, aes(fill = "2017 hurricane dieback"), colour = "#A9A5BD", linewidth = 0.2) +
   geom_sf(data = srs, fill = alpha("grey45", 0.18), colour = "grey55", linewidth = 0.2) +
   geom_sf(data = ts, fill = alpha("grey45", 0.18), colour = "grey55", linewidth = 0.2) +
+  geom_point(data = txy, aes(X, Y), shape = 24, size = 2.4, fill = "white", colour = col_ink, stroke = 0.5) +
   geom_segment(data = lab %>% filter(moved), aes(X, Y, xend = px, yend = py), colour = "grey35", linewidth = 0.3) +
   geom_point(data = lab %>% filter(moved), aes(X, Y), size = 0.7, colour = col_ink) +
-  geom_point(data = txy, aes(X, Y), shape = 24, size = 2.4, fill = "white", colour = col_ink, stroke = 0.5) +
   geom_text(data = txy, aes(X - 3500, Y + 4500, label = lab), size = 2.7, hjust = 1, colour = "grey25") +
   geom_point(data = lab %>% filter(!core), aes(px, py, fill = class), shape = 21, size = 2.2, colour = "white", stroke = 0.3) +
   geom_point(data = lab %>% filter(core), aes(px, py, fill = class), shape = 21, size = 3.1, colour = "white", stroke = 0.4) +
