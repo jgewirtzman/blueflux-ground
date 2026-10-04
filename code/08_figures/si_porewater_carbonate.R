@@ -1,5 +1,5 @@
 # =============================================================================
-# Fig. S15 | Porewater total alkalinity vs salinity (October 2025) with a
+# Fig. S16 | Porewater total alkalinity vs salinity (October 2025) with a
 #   conservative-mixing reference: (a) vs salinity, (b) measured vs predicted, (c) ratio (Florida endmembers: S = 0, TA 3000 uM;
 #   S = 35, TA 2400 uM; heuristic, not calibrated). FLM30 not sampled.
 # Same data, filters and endmembers as the legacy panels pub_SI_ta_vs_dic /

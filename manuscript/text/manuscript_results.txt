@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-10-03 15:24 
+Manuscript Results — generated 2026-10-03 20:47 
 
 
 ================================================================
@@ -91,7 +91,7 @@ R.2: COMPONENT FLUX RATES (Fig 2)
     soil            regenerating    55.630 (95% CI: 26.763–91.525), n = 23
     soil            ghost           11.670 (95% CI: 4.770–21.836), n = 31
     stem            healthy         0.289 (95% CI: 0.194–0.409), n = 172
-    stem            regenerating    14.335 (95% CI: 3.154–34.894), n = 89
+    stem            regenerating    14.336 (95% CI: 3.155–34.893), n = 89
     stem            ghost           11.793 (95% CI: 7.525–17.408), n = 210
     stem            scrub           0.090 (95% CI: -0.016–0.287), n = 5
     water           healthy         0.863 (95% CI: 0.509–1.209), n = 8
@@ -107,7 +107,7 @@ R.2: COMPONENT FLUX RATES (Fig 2)
     root            Dry    2.156 (95% CI: 1.195–3.253), n = 33
     soil            Wet    11.613 (95% CI: 5.701–20.467), n = 29
     soil            Dry    18.926 (95% CI: 10.155–30.076), n = 89
-    stem            Wet    14.678 (95% CI: 6.994–25.196), n = 191
+    stem            Wet    14.678 (95% CI: 6.994–25.197), n = 191
     stem            Dry    3.505 (95% CI: 2.261–5.004), n = 285
     water           Wet    44.790 (95% CI: 29.374–64.135), n = 15
     water           Dry    4.815 (95% CI: 3.731–6.005), n = 32
@@ -136,7 +136,7 @@ R.2: COMPONENT FLUX RATES (Fig 2)
     soil            regenerating    8.417 (95% CI: 6.501–10.492), n = 23
     soil            ghost           1.488 (95% CI: 0.935–2.040), n = 31
     stem            healthy         1.728 (95% CI: 1.510–1.938), n = 172
-    stem            regenerating    5.150 (95% CI: 4.261–6.225), n = 89
+    stem            regenerating    5.150 (95% CI: 4.262–6.225), n = 89
     stem            ghost           2.200 (95% CI: 1.868–2.587), n = 210
     stem            scrub           0.435 (95% CI: 0.297–0.696), n = 5
     water           healthy         1.368 (95% CI: 1.159–1.590), n = 8
@@ -152,14 +152,14 @@ R.2: COMPONENT FLUX RATES (Fig 2)
     root            Dry    1.972 (95% CI: 1.235–2.895), n = 33
     soil            Wet    1.974 (95% CI: 1.058–2.955), n = 28
     soil            Dry    3.193 (95% CI: 2.397–4.110), n = 89
-    stem            Wet    3.130 (95% CI: 2.615–3.717), n = 191
+    stem            Wet    3.131 (95% CI: 2.615–3.717), n = 191
     stem            Dry    2.182 (95% CI: 1.920–2.481), n = 285
     water           Wet    1.049 (95% CI: 0.687–1.478), n = 15
     water           Dry    0.672 (95% CI: 0.495–0.860), n = 32
 
   Dead vs alive stem CH4 flux ratio (boot CI):
     Dead stems:  10.921 (95% CI: 6.792–16.049), n = 226
-    Alive stems: 5.337 (95% CI: 1.439–12.042), n = 250
+    Alive stems: 5.338 (95% CI: 1.439–12.042), n = 250
     Dead/Alive ratio: 2.05
 
   Percent negative fluxes by component:
@@ -229,18 +229,18 @@ Species x site:
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
                   Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species           7.2324  2.4108     3 243.22  3.0641 0.0287450 *  
-height_corrected 20.6897 20.6897     1 248.95 26.2969 5.887e-07 ***
-season_agg        8.7792  8.7792     1 247.09 11.1585 0.0009659 ***
+species           7.2354  2.4118     3 243.32  3.0677 0.0286119 *  
+height_corrected 20.6022 20.6022     1 248.95 26.2047 6.147e-07 ***
+season_agg        8.8348  8.8348     1 247.09 11.2373 0.0009274 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for species:
  species emmean    SE   df lower.CL upper.CL
- AVGE     0.290 0.246 4.04   -0.391    0.971
- COER     0.242 0.279 6.35   -0.431    0.914
- LARA     0.806 0.245 4.15    0.134    1.478
- RHMA     0.534 0.210 2.21   -0.290    1.358
+ AVGE     0.291 0.247 4.02   -0.393    0.975
+ COER     0.240 0.279 6.31   -0.435    0.915
+ LARA     0.806 0.246 4.13    0.132    1.481
+ RHMA     0.535 0.210 2.21   -0.293    1.362
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -248,52 +248,52 @@ Confidence level used: 0.95
 
 Pairwise contrasts:
  contrast      estimate        SE     df t.ratio p.value
- AVGE - COER  0.0480721 0.2671123 230.15   0.180  0.9979
- AVGE - LARA -0.5166194 0.2101651 248.69  -2.458  0.0692
- AVGE - RHMA -0.2441266 0.1743645 247.98  -1.400  0.5005
- COER - LARA -0.5646915 0.2413708 248.66  -2.340  0.0920
- COER - RHMA -0.2921987 0.2163592 246.17  -1.351  0.5317
- LARA - RHMA  0.2724928 0.1727719 247.42   1.577  0.3935
+ AVGE - COER  0.0508062 0.2669853 230.52   0.190  0.9976
+ AVGE - LARA -0.5153490 0.2100806 248.71  -2.453  0.0701
+ AVGE - RHMA -0.2436168 0.1742926 248.02  -1.398  0.5019
+ COER - LARA -0.5661552 0.2412735 248.67  -2.347  0.0905
+ COER - RHMA -0.2944229 0.2162674 246.26  -1.361  0.5248
+ LARA - RHMA  0.2717322 0.1727084 247.42   1.573  0.3958
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
 P value adjustment: tukey method for comparing a family of 4 estimates 
 
-  Height coefficient: -0.00678 +/- 0.00132 (95% CI: -0.00937–-0.00419)
+  Height coefficient: -0.00677 +/- 0.00132 (95% CI: -0.00936–-0.00417)
 
 --- CH4 Model 2: species * height_cat + season + (1|plot) [0-150 cm] ---
 
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
                    Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species             6.841  2.2804     3 217.08  3.0271 0.0304173 *  
-height_cat         37.990 18.9951     2 217.13 25.2147 1.423e-10 ***
-season_agg         10.721 10.7208     1 217.04 14.2311 0.0002086 ***
-species:height_cat 20.131  3.3552     6 217.14  4.4538 0.0002840 ***
+species             6.843  2.2812     3 217.10  3.0322 0.0302145 *  
+height_cat         37.949 18.9744     2 217.13 25.2214 1.415e-10 ***
+season_agg         10.782 10.7823     1 217.04 14.3322 0.0001983 ***
+species:height_cat 20.171  3.3619     6 217.14  4.4687 0.0002745 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans by species | height_cat:
 height_cat = 0-50 cm:
  species emmean    SE    df lower.CL upper.CL
- AVGE     0.787 0.334  5.68  -0.0413    1.616
- COER     1.366 0.394 10.62   0.4943    2.237
- LARA     2.112 0.346  6.62   1.2834    2.940
- RHMA     0.658 0.314  4.44  -0.1799    1.495
+ AVGE     0.788 0.335  5.65   -0.043    1.619
+ COER     1.363 0.395 10.54    0.490    2.236
+ LARA     2.111 0.347  6.57    1.281    2.942
+ RHMA     0.657 0.314  4.42   -0.183    1.498
 
 height_cat = 50-100 cm:
  species emmean    SE    df lower.CL upper.CL
- AVGE     0.364 0.335  5.73  -0.4646    1.193
- COER    -0.185 0.375  8.70  -1.0368    0.667
- LARA     0.482 0.347  6.64  -0.3464    1.311
- RHMA     0.419 0.275  2.66  -0.5224    1.361
+ AVGE     0.365 0.335  5.70   -0.466    1.197
+ COER    -0.186 0.375  8.63   -1.040    0.668
+ LARA     0.482 0.347  6.59   -0.349    1.313
+ RHMA     0.420 0.276  2.66   -0.526    1.365
 
 height_cat = 100-150 cm:
  species emmean    SE    df lower.CL upper.CL
- AVGE     0.324 0.364  8.01  -0.5157    1.164
- COER    -0.402 0.444 16.86  -1.3398    0.535
- LARA     0.112 0.361  7.81  -0.7240    0.948
- RHMA     0.429 0.278  2.75  -0.5010    1.359
+ AVGE     0.325 0.365  7.95   -0.517    1.167
+ COER    -0.404 0.444 16.70   -1.343    0.534
+ LARA     0.112 0.361  7.75   -0.727    0.950
+ RHMA     0.432 0.278  2.75   -0.502    1.366
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -314,20 +314,20 @@ n per sp_status x height_cat:
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
             Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-sp_status   18.090   3.618     5 340.51  2.8601 0.0151735 *  
-height_cat 213.593 106.796     2 414.23 84.4223 < 2.2e-16 ***
-season_agg  16.467  16.467     1 415.39 13.0170 0.0003463 ***
+sp_status   18.115   3.623     5 340.65  2.8646 0.0150390 *  
+height_cat 213.454 106.727     2 414.23 84.3837 < 2.2e-16 ***
+season_agg  16.529  16.529     1 415.39 13.0683 0.0003372 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for sp_status:
  sp_status  emmean    SE    df lower.CL upper.CL
- AVGE_alive  0.653 0.283  6.31  -0.0327     1.34
- AVGE_dead   1.168 0.289  5.84   0.4560     1.88
- COER        0.706 0.367 15.05  -0.0760     1.49
- LARA        1.257 0.320  9.43   0.5386     1.97
- RHMA_alive  1.120 0.282  5.72   0.4230     1.82
- RHMA_dead   0.764 0.333 11.69   0.0364     1.49
+ AVGE_alive  0.653 0.283  6.31  -0.0322     1.34
+ AVGE_dead   1.168 0.289  5.84   0.4561     1.88
+ COER        0.705 0.367 15.05  -0.0776     1.49
+ LARA        1.256 0.320  9.42   0.5381     1.97
+ RHMA_alive  1.122 0.282  5.72   0.4239     1.82
+ RHMA_dead   0.764 0.333 11.68   0.0361     1.49
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -338,21 +338,21 @@ Alive vs Dead contrasts:
 
 All pairwise contrasts:
  contrast                  estimate        SE     df t.ratio p.value
- AVGE_alive - AVGE_dead  -0.5152156 0.2163656 310.26  -2.381  0.1660
- AVGE_alive - COER       -0.0534843 0.3291261 368.78  -0.163  1.0000
- AVGE_alive - LARA       -0.6038947 0.2612572 396.87  -2.311  0.1918
- AVGE_alive - RHMA_alive -0.4678150 0.2088253 373.47  -2.240  0.2219
- AVGE_alive - RHMA_dead  -0.1117117 0.2769560 417.47  -0.403  0.9986
- AVGE_dead - COER         0.4617313 0.3654599 217.52   1.263  0.8045
- AVGE_dead - LARA        -0.0886791 0.3084262 207.28  -0.288  0.9997
- AVGE_dead - RHMA_alive   0.0474005 0.2668529 149.35   0.178  1.0000
- AVGE_dead - RHMA_dead    0.4035039 0.3066183 287.80   1.316  0.7760
- COER - LARA             -0.5504105 0.3047680 417.95  -1.806  0.4630
- COER - RHMA_alive       -0.4143308 0.2753626 416.57  -1.505  0.6615
- COER - RHMA_dead        -0.0582274 0.3378863 417.03  -0.172  1.0000
- LARA - RHMA_alive        0.1360797 0.2187371 414.92   0.622  0.9894
- LARA - RHMA_dead         0.4921830 0.2923506 416.37   1.684  0.5435
- RHMA_alive - RHMA_dead   0.3561034 0.2501291 416.04   1.424  0.7126
+ AVGE_alive - AVGE_dead  -0.5148623 0.2163467 310.36  -2.380  0.1666
+ AVGE_alive - COER       -0.0514047 0.3290961 368.84  -0.156  1.0000
+ AVGE_alive - LARA       -0.6029422 0.2612334 396.90  -2.308  0.1932
+ AVGE_alive - RHMA_alive -0.4682655 0.2088065 373.52  -2.243  0.2209
+ AVGE_alive - RHMA_dead  -0.1109382 0.2769300 417.48  -0.401  0.9987
+ AVGE_dead - COER         0.4634576 0.3654295 217.65   1.268  0.8020
+ AVGE_dead - LARA        -0.0880799 0.3084009 207.40  -0.286  0.9997
+ AVGE_dead - RHMA_alive   0.0465968 0.2668319 149.47   0.175  1.0000
+ AVGE_dead - RHMA_dead    0.4039241 0.3065921 287.91   1.317  0.7752
+ COER - LARA             -0.5515375 0.3047391 417.95  -1.810  0.4605
+ COER - RHMA_alive       -0.4168607 0.2753365 416.57  -1.514  0.6554
+ COER - RHMA_dead        -0.0595335 0.3378544 417.03  -0.176  1.0000
+ LARA - RHMA_alive        0.1346768 0.2187163 414.92   0.616  0.9899
+ LARA - RHMA_dead         0.4920040 0.2923229 416.37   1.683  0.5438
+ RHMA_alive - RHMA_dead   0.3573272 0.2501054 416.04   1.429  0.7095
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -363,18 +363,18 @@ P value adjustment: tukey method for comparing a family of 6 estimates
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
                   Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species          17.0533  5.6844     3 247.66 15.7038 2.217e-09 ***
-height_corrected  0.1286  0.1286     1 247.48  0.3553    0.5517    
-season_agg        0.3419  0.3419     1 247.01  0.9447    0.3320    
+species          17.0473  5.6824     3 247.66 15.6911 2.252e-09 ***
+height_corrected  0.1276  0.1276     1 247.48  0.3522    0.5534    
+season_agg        0.3416  0.3416     1 247.01  0.9433    0.3324    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans for species (CO2):
  species emmean    SE   df lower.CL upper.CL
  AVGE      1.66 0.368 2.28    0.248     3.07
- COER      1.17 0.378 2.54   -0.169     2.51
- LARA      2.02 0.368 2.28    0.612     3.44
- RHMA      1.30 0.357 2.03   -0.219     2.81
+ COER      1.17 0.378 2.54   -0.168     2.51
+ LARA      2.02 0.368 2.28    0.613     3.44
+ RHMA      1.30 0.357 2.03   -0.218     2.81
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -382,52 +382,52 @@ Confidence level used: 0.95
 
 Pairwise contrasts (CO2):
  contrast      estimate        SE     df t.ratio p.value
- AVGE - COER  0.4914758 0.1788613 248.73   2.748  0.0324
- AVGE - LARA -0.3636213 0.1419231 247.76  -2.562  0.0533
- AVGE - RHMA  0.3634515 0.1176226 247.91   3.090  0.0119
- COER - LARA -0.8550971 0.1629842 247.77  -5.247  <.0001
- COER - RHMA -0.1280243 0.1457413 248.11  -0.878  0.8160
- LARA - RHMA  0.7270728 0.1171430 247.07   6.207  <.0001
+ AVGE - COER  0.4909151 0.1789021 248.73   2.744  0.0328
+ AVGE - LARA -0.3637417 0.1419553 247.76  -2.562  0.0532
+ AVGE - RHMA  0.3633553 0.1176493 247.91   3.088  0.0119
+ COER - LARA -0.8546568 0.1630212 247.77  -5.243  <.0001
+ COER - RHMA -0.1275598 0.1457744 248.12  -0.875  0.8178
+ LARA - RHMA  0.7270970 0.1171695 247.07   6.206  <.0001
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
 P value adjustment: tukey method for comparing a family of 4 estimates 
 
-  Height coefficient (CO2): 0.00054 +/- 0.00090 (95% CI: -0.00123–0.00230)
+  Height coefficient (CO2): 0.00053 +/- 0.00090 (95% CI: -0.00123–0.00230)
 
 --- CO2 Model 2: species * height_cat + season + (1|plot) [0-150 cm] ---
 
 Type III ANOVA:
 Type III Analysis of Variance Table with Satterthwaite's method
-                    Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-species            16.0988  5.3663     3 217.66 14.6809 9.665e-09 ***
-height_cat          0.0567  0.0283     2 217.03  0.0776    0.9254    
-season_agg          0.4696  0.4696     1 217.01  1.2848    0.2583    
-species:height_cat  1.6182  0.2697     6 217.04  0.7378    0.6197    
+                    Sum Sq Mean Sq NumDF  DenDF F value   Pr(>F)    
+species            16.0957  5.3652     3 217.66 14.6703 9.79e-09 ***
+height_cat          0.0565  0.0282     2 217.03  0.0772   0.9257    
+season_agg          0.4693  0.4693     1 217.01  1.2831   0.2586    
+species:height_cat  1.6163  0.2694     6 217.04  0.7366   0.6207    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Emmeans by species | height_cat (CO2):
 height_cat = 0-50 cm:
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.65 0.385 2.76   0.3578     2.93
- COER      1.01 0.412 3.59  -0.1882     2.20
- LARA      2.09 0.390 2.92   0.8233     3.35
- RHMA      1.35 0.377 2.53   0.0156     2.69
+ AVGE      1.65 0.385 2.76   0.3581     2.93
+ COER      1.01 0.412 3.59  -0.1868     2.20
+ LARA      2.09 0.390 2.92   0.8237     3.35
+ RHMA      1.35 0.377 2.53   0.0160     2.69
 
 height_cat = 50-100 cm:
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.45 0.386 2.77   0.1603     2.73
- COER      1.31 0.403 3.29   0.0935     2.53
- LARA      1.96 0.391 2.92   0.7025     3.23
- RHMA      1.30 0.362 2.16  -0.1488     2.76
+ AVGE      1.45 0.385 2.77   0.1606     2.73
+ COER      1.31 0.403 3.29   0.0941     2.53
+ LARA      1.96 0.391 2.92   0.7029     3.23
+ RHMA      1.30 0.362 2.16  -0.1484     2.76
 
 height_cat = 100-150 cm:
  species emmean    SE   df lower.CL upper.CL
- AVGE      1.84 0.398 3.16   0.6045     3.07
- COER      1.11 0.436 4.50  -0.0438     2.27
- LARA      1.98 0.397 3.12   0.7464     3.22
- RHMA      1.28 0.363 2.18  -0.1648     2.72
+ AVGE      1.84 0.398 3.16   0.6048     3.07
+ COER      1.11 0.436 4.50  -0.0433     2.27
+ LARA      1.98 0.397 3.12   0.7468     3.22
+ RHMA      1.28 0.363 2.18  -0.1647     2.72
 
 Results are averaged over the levels of: season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -448,9 +448,9 @@ n per sp_status x height_cat (CO2):
 Type III ANOVA (CO2):
 Type III Analysis of Variance Table with Satterthwaite's method
             Sum Sq Mean Sq NumDF  DenDF F value    Pr(>F)    
-sp_status  16.0183  3.2037     5 412.62  7.2504 1.596e-06 ***
-height_cat  0.9427  0.4714     2 414.29  1.0667 0.3450735    
-season_agg  6.6585  6.6585     1 414.80 15.0691 0.0001206 ***
+sp_status  16.0150  3.2030     5 412.60  7.2473 1.606e-06 ***
+height_cat  0.9442  0.4721     2 414.29  1.0682 0.3445650    
+season_agg  6.6573  6.6573     1 414.80 15.0631 0.0001209 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -458,10 +458,10 @@ Emmeans for sp_status (CO2):
  sp_status  emmean    SE   df lower.CL upper.CL
  AVGE_alive   1.40 0.232 5.00    0.807     2.00
  AVGE_dead    1.54 0.235 5.03    0.936     2.14
- COER         1.04 0.270 8.79    0.426     1.65
- LARA         1.86 0.248 6.40    1.262     2.46
+ COER         1.04 0.270 8.79    0.427     1.65
+ LARA         1.86 0.248 6.40    1.263     2.46
  RHMA_alive   1.21 0.231 4.86    0.613     1.81
- RHMA_dead    1.11 0.254 7.14    0.513     1.71
+ RHMA_dead    1.11 0.254 7.14    0.514     1.71
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -469,21 +469,21 @@ Confidence level used: 0.95
 
 All pairwise contrasts (CO2 alive/dead):
  contrast                  estimate        SE     df t.ratio p.value
- AVGE_alive - AVGE_dead  -0.1353799 0.1285205 394.12  -1.053  0.8993
- AVGE_alive - COER        0.3632616 0.1949767 411.15   1.863  0.4266
- AVGE_alive - LARA       -0.4574948 0.1547870 415.99  -2.956  0.0385
- AVGE_alive - RHMA_alive  0.1893485 0.1238440 411.29   1.529  0.6458
- AVGE_alive - RHMA_dead   0.2908794 0.1638333 417.62   1.775  0.4828
- AVGE_dead - COER         0.4986415 0.2176670 354.51   2.291  0.2005
- AVGE_dead - LARA        -0.3221149 0.1838516 347.82  -1.752  0.4983
- AVGE_dead - RHMA_alive   0.3247284 0.1594274 306.93   2.037  0.3239
- AVGE_dead - RHMA_dead    0.4262593 0.1823356 385.56   2.338  0.1816
- COER - LARA             -0.8207565 0.1801239 416.62  -4.557  0.0001
- COER - RHMA_alive       -0.1739131 0.1627468 417.73  -1.069  0.8936
- COER - RHMA_dead        -0.0723822 0.1997850 417.69  -0.362  0.9992
- LARA - RHMA_alive        0.6468434 0.1292740 414.43   5.004  <.0001
- LARA - RHMA_dead         0.7483742 0.1728197 415.33   4.330  0.0003
- RHMA_alive - RHMA_dead   0.1015309 0.1478606 415.14   0.687  0.9834
+ AVGE_alive - AVGE_dead  -0.1353784 0.1285341 394.08  -1.053  0.8993
+ AVGE_alive - COER        0.3627286 0.1949974 411.14   1.860  0.4284
+ AVGE_alive - LARA       -0.4576062 0.1548035 415.98  -2.956  0.0384
+ AVGE_alive - RHMA_alive  0.1893519 0.1238572 411.28   1.529  0.6458
+ AVGE_alive - RHMA_dead   0.2907914 0.1638508 417.62   1.775  0.4833
+ AVGE_dead - COER         0.4981070 0.2176898 354.44   2.288  0.2016
+ AVGE_dead - LARA        -0.3222278 0.1838708 347.74  -1.752  0.4981
+ AVGE_dead - RHMA_alive   0.3247303 0.1594440 306.82   2.037  0.3240
+ AVGE_dead - RHMA_dead    0.4261698 0.1823548 385.52   2.337  0.1819
+ COER - LARA             -0.8203348 0.1801432 416.62  -4.554  0.0001
+ COER - RHMA_alive       -0.1733767 0.1627643 417.73  -1.065  0.8949
+ COER - RHMA_dead        -0.0719372 0.1998064 417.69  -0.360  0.9992
+ LARA - RHMA_alive        0.6469581 0.1292879 414.44   5.004  <.0001
+ LARA - RHMA_dead         0.7483976 0.1728383 415.33   4.330  0.0003
+ RHMA_alive - RHMA_dead   0.1014395 0.1478764 415.14   0.686  0.9835
 
 Results are averaged over the levels of: height_cat, season_agg 
 Degrees-of-freedom method: kenward-roger 
@@ -712,7 +712,7 @@ R.7: NET CO2-EQUIVALENT FORCING
   Disturbance      nmol/m2/s    g/m2/yr Mg CH4/ha/yr   CO2eq(100)    CO2eq(20)
                                                           g/m2/yr      g/m2/yr
   healthy              2.009     1.0138     0.010138       28.285       82.321
-  regenerating        20.789    10.4898     0.104898      292.665      851.770
+  regenerating        20.790    10.4902     0.104902      292.675      851.801
   ghost               11.796     5.9518     0.059518      166.055      483.285
   scrub                1.270     0.6407     0.006407       17.876       52.026
 
@@ -721,7 +721,7 @@ R.7: NET CO2-EQUIVALENT FORCING
 
   Disturbance        umol/m2/s  g CO2/m2/yr     Mg/ha/yr     n
   healthy                1.846       2561.6      25.6157   307
-  regenerating           4.870       6757.0      67.5704   138
+  regenerating           4.870       6757.8      67.5778   138
   ghost                  2.118       2938.4      29.3844   288
   scrub                 -0.242       -335.6      -3.3558    17
 
@@ -732,7 +732,7 @@ R.7: NET CO2-EQUIVALENT FORCING
   Disturbance         CO2 resp CH4 CO2eq100  CH4 CO2eq20   Total(100)  CH4%100   CH4%20
                        g/m2/yr      g/m2/yr      g/m2/yr      g/m2/yr                  
   healthy               2561.6       28.285       82.321       2589.9     1.1%     3.1%
-  regenerating          6757.0      292.665      851.770       7049.7     4.2%    11.2%
+  regenerating          6757.8      292.675      851.801       7050.5     4.2%    11.2%
   ghost                 2938.4      166.055      483.285       3104.5     5.3%    14.1%
   scrub                 -335.6       17.876       52.026       -317.7    -5.6%   -18.3%
 

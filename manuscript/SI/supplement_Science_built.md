@@ -6,7 +6,7 @@ Jonathan Gewirtzman et al.
 
 Corresponding author: jonathan.gewirtzman@yale.edu
 
-**This PDF file includes:** Materials and Methods; Supplementary Text S1 to S12; Figs. S1 to S17; Tables S1 to S15; References.
+**This PDF file includes:** Materials and Methods; Supplementary Text S1 to S12; Figs. S1 to S18; Tables S1 to S15; References.
 
 **Other Supplementary Materials for this manuscript include:** Data S1 (chamber flux dataset); Data S2 (external datasets used, with citations).
 
@@ -20,7 +20,7 @@ We worked in mangrove forests of the southwest Florida coast within and adjacent
 
 ## M2. Campaigns and measurement design
 
-Repeat measurements were made in October 2022 (late wet season; inundated soils, high water) and March 2023 (dry season; lower water and reduced freshwater inflow) at the five core sites, each campaign combining chamber fluxes, laser scanning and environmental sampling. A March 2022 pilot campaign at BL60, FLM30, SRS6, MI and RB10 contributed chamber fluxes that enter the component rates and two sensitivity analyses but not the stand budgets. Hurricane Ian made landfall north of the study region on 28 September 2022, and water levels were elevated in the following weeks. Airborne eddy-covariance flights (CARAFE) were part of the wider NASA BlueFlux campaign (Poulter et al. 2023), with deployments in April 2022, October 2022, February 2023, April 2023 and July 2024; the October 2022 deployment coincided with our first campaign, and the February and April 2023 deployments bracket our second. The design nests four scales: chambers isolate flux per unit surface of each component; laser-scanned surface areas convert those rates to stand budgets; the US-Skr eddy-covariance tower at SRS6 constrains intact-forest CO2 exchange; and airborne fluxes constrain intact and ghost forest at landscape scale. Against the long-term records (fig. S16), October 2022 was unusually wet (SRS6 water level above the typical October range) with tower CH4 near its seasonal maximum, whereas March 2023 had tower CH4 below the typical March range and high midday CO2 uptake; the two campaigns therefore bracket the seasonal range of CH4 rather than sample its mean, and the warmest months (July–September) were not sampled.
+Repeat measurements were made in October 2022 (late wet season; inundated soils, high water) and March 2023 (dry season; lower water and reduced freshwater inflow) at the five core sites, each campaign combining chamber fluxes, laser scanning and environmental sampling. A March 2022 pilot campaign at BL60, FLM30, SRS6, MI and RB10 contributed chamber fluxes that enter the component rates and two sensitivity analyses but not the stand budgets. Hurricane Ian made landfall north of the study region on 28 September 2022, and water levels were elevated in the following weeks. Airborne eddy-covariance flights (CARAFE) were part of the wider NASA BlueFlux campaign (Poulter et al. 2023), with deployments in April 2022, October 2022, February 2023, April 2023 and July 2024; the October 2022 deployment coincided with our first campaign, and the February and April 2023 deployments bracket our second. The design nests four scales: chambers isolate flux per unit surface of each component; laser-scanned surface areas convert those rates to stand budgets; the US-Skr eddy-covariance tower at SRS6 constrains intact-forest CO2 exchange; and airborne fluxes constrain intact and ghost forest at landscape scale. Against the long-term records (fig. S17), October 2022 was unusually wet (SRS6 water level above the typical October range) with tower CH4 near its seasonal maximum, whereas March 2023 had tower CH4 below the typical March range and high midday CO2 uptake; the two campaigns therefore bracket the seasonal range of CH4 rather than sample its mean, and the warmest months (July–September) were not sampled.
 
 ## M3. Chamber flux measurements
 
@@ -44,7 +44,7 @@ Water-surface fluxes were computed once per floating-chamber placement, from pla
 
 ## M8. Water-surface flux from dissolved gases
 
-Where no floating-chamber flux existed for a plot and campaign (SRS5 and SRS6, October 2022), water-surface fluxes were estimated as F = k600 (Sc/600)−0.5 (Cw − Ceq), with CH4 solubility from Yamamoto et al. (1976), CO2 solubility from Weiss (1974), Schmidt numbers from Wanninkhof (2014), and atmospheric CH4 1.95 ppm and CO2 417 µatm. Dissolved concentrations came from our surface-water samples at the plot (SRS5) and a BlueFlux aquatic-transect station (SRS6). The gas-transfer velocity k600 was calibrated on the plot × campaign pairs that had both chamber water flux and dissolved CH4 (median of 7 retained pairs, 1.10 cm h−1; range 0.56–7.07, used as the uncertainty range; one pair with k600 >50 cm h−1 was rejected).
+Where no floating-chamber flux existed for a plot and campaign (SRS5 and SRS6, October 2022), water-surface fluxes were estimated as F = k600 (Sc/600)−0.5 (Cw − Ceq), with CH4 solubility from Yamamoto et al. (1976), CO2 solubility from Weiss (1974), Schmidt numbers from Wanninkhof (2014), and atmospheric CH4 1.95 ppm and CO2 417 µatm. Dissolved concentrations came from our triplicate surface-water samples at the plots (headspace equilibration, GC; a replicate below 30% of its triplicate median was treated as a failed vial) and from the BlueFlux tidal-river survey (Vaughn and Raymond 2024; data S2): river stations beside SRS5 and SRS6 and a tidal creek inside the SRS6 forest. Salinity and temperature were those measured with each sample: sonde values for the survey, and for plot samples the surface-water salinity measured at the plot and the water temperature recorded at the chambers or on the plot datasheet. k600 was calibrated on chamber water fluxes grouped by plot, campaign and position (over the flooded forest floor, or in a channel or open water) and paired with dissolved CH4 from the same position (plot samples and the tidal creek with floor chambers, river stations with channel chambers), taking survey samples from within a day of the chambers. Ten pairs gave k600 of 0.44–7.6 cm h−1; one (CP40, October 2022; 524 cm h−1, chamber flux dominated by ebullition against low dissolved CH4) was rejected as implausible (>50 cm h−1). We used the median of the site medians (1.29 cm h−1; site medians 0.49–6.8, the uncertainty range), so that each site counts once, for both gases. This value lies within measurements for sheltered Everglades wetland water (0.3–3.2 cm h−1, compiled by Ho et al. 2018) and below those for the Shark River channel (3.3–8.3; Ho et al. 2014, 2016) and the river and estuary wind relations (Cole and Caraco 1998; Raymond and Cole 2001; Borges et al. 2004), which were developed for deeper, more turbulent water (fig. S12). The highest site value (SRS6, 6.8) would raise the October 2022 SRS6 water flux about fivefold; with it, SRS6 respiration exceeds the tower-partitioned value by ~50% and its net CO2 uptake nearly vanishes against the tower, so it is treated as a sensitivity case.
 
 ## M9. Heights and the water line
 
@@ -118,15 +118,17 @@ At the tidal intact sites, high- and low-tide states were weighted by the floode
 
 ## Text S3. Downed wood
 
-Laser scanning represents standing live and dead trees as trunk and branch segments, so standing dead trees enter through the stem term (our stem chambers include dead stems), but downed wood is not modelled. We used the South Florida mangrove survey of Krauss et al. (2005), 9–10 years after Hurricane Andrew: 67 m3 ha−1 on average (13–181 across sites; 132 in the eyewall region). Converted with a 10 cm piece diameter (as at SRS6 by Troxler et al. 2015), this gives 0.27 (0.05–0.72) m2 of wood per m2 of ground; because about half the volume was fine debris, the conversion probably underestimates surface. Woody litterfall at SRS4–6 (FCE LTER; data S2) was 68–95 g dry m−2 yr−1 in 2001–04, 149–389 in 2005 (Wilma), 264–276 in 2017 (Irma), 34–46 in 2018–21 and 47–56 in 2022–23. Our campaigns came ~5 years after Irma, against 9–10 years after Andrew for the survey, so the present pool is plausibly at least comparable to the survey mean. Downed wood exchanges with the air only above the water, so most ghost-forest downed wood (water 7–23 cm deep) was submerged. Downed wood is ~2% of intact and <1% of ghost CH4. Across the full volume range, intact net exchange spans about −1,150 to −770 g C m−2 yr−1 and the ghost class remains a source (table S10).
+Laser scanning represents standing live and dead trees as trunk and branch segments, so standing dead trees enter through the stem term (our stem chambers include dead stems), but downed wood is not modelled. We used the South Florida mangrove survey of Krauss et al. (2005), 9–10 years after Hurricane Andrew: 67 m3 ha−1 on average (13–181 across sites; 132 in the eyewall region). Converted with a 10 cm piece diameter (as at SRS6 by Troxler et al. 2015), this gives 0.27 (0.05–0.72) m2 of wood per m2 of ground; because about half the volume was fine debris, the conversion probably underestimates surface. Woody litterfall at SRS4–6 (FCE LTER; data S2) was 68–95 g dry m−2 yr−1 in 2001–04, 149–389 in 2005 (Wilma), 264–276 in 2017 (Irma), 34–46 in 2018–21 and 47–56 in 2022–23. Our campaigns came ~5 years after Irma, against 9–10 years after Andrew for the survey, so the present pool is plausibly at least comparable to the survey mean. Downed wood exchanges with the air only above the water, so most ghost-forest downed wood (water 7–23 cm deep) was submerged. Downed wood is ~2% of intact and <1% of ghost CH4. Across the full volume range, intact net exchange spans about −1,170 to −760 g C m−2 yr−1 and the ghost class remains a source (table S10).
 
 ## Text S4. Monte Carlo uncertainty
 
-For the CH4 budget, ghost-class uncertainty is dominated by water-surface flux in the wet season and by exposed-soil flux in the dry season (91–100% of the variance). In intact forest the leading term varies by site and campaign among water, prop roots and soil; stems contribute ≤1% everywhere (fig. S13). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,214 to −1,918 and ghost +1,931 to +3,977 g CO2-eq m−2 yr−1 at GWP20 (−5,291 to −2,012 and +1,505 to +3,266 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
+For the CH4 budget, ghost-class uncertainty is dominated by water-surface flux in the wet season and by exposed-soil flux in the dry season (91–100% of the variance). In intact forest the leading term varies by site and campaign among water, prop roots and soil; stems contribute ≤1% everywhere (fig. S14). For net forcing, canopy leaf respiration (Rd25 and LAI) and tower GPP dominate the intact interval and the CH4 budget dominates the ghost interval. The intervals of the two states do not overlap: intact −5,183 to −1,854 and ghost +1,931 to +3,977 g CO2-eq m−2 yr−1 at GWP20 (−5,262 to −1,953 and +1,505 to +3,266 at GWP100). Structural choices outside the Monte Carlo are compared one at a time in text S9.
 
 ## Text S5. CO2 closure caveats
 
 Bottom-up respiration may legitimately exceed tower-partitioned respiration, and chamber–airborne CO2 comparisons need care, for two reasons: airborne midday fluxes were converted to daily values while chamber respiration was measured in daytime and scaled to 24 h with the tower's within-month Q10; and tower-partitioned respiration extrapolates night-time respiration across daylight without light inhibition, whereas the bottom-up leaf term includes it. Lateral export of dissolved inorganic carbon removes respired carbon that neither the tower nor the chambers see, because both measure only exchange with the air. Closure was therefore judged as consistency within uncertainty rather than forced. Within-month Q10 (1.15) was preferred to the across-season tower value (1.8), which also carries phenology, water level and salinity, and to our stem-chamber value (4.3; 2.5–7.4), which is likely inflated because daytime stem efflux also follows sap flow.
+
+The ghost-forest CO2 budget sums component releases and contains no primary production beyond what the water chambers capture, whereas the aircraft resolved a small midday sink over ghost forest (−1 ± 2 µmol m−2 s−1 in October 2022 and −2.5 ± 2 in February 2023; table S6). The water chemistry points to photosynthesis in the ghost ponds: daytime dissolved O2 reached 75–131% of saturation at FLM30 (October 2022) and ~170% at CP40 (October 2025), pH was 8.0–8.4, and dissolved CO2 was 0.5–10 times air saturation, against 39–90% O2 saturation, pH 7.4–7.9 and 4–14 times CO2 saturation in the intact-forest river and creek water and anoxic water at BL60 (~1% O2 saturation; 90–120 times CO2 saturation). Exposed ghost sediments at Marco Island took up CO2 in daylight (9 of 11 soil chambers in March 2023). The floating chambers were clear but not fully transparent and never recorded net CO2 uptake (all 42 water closures were positive, all at midday), so they include only part of any aquatic photosynthesis; some low, flat closures at CP40 (March 2023) are consistent with uptake nearly balancing respiration. Sparse margin vegetation and occasional resprouting or recruiting trees are outside the chamber footprint. Ghost-forest gross primary production is therefore probably small but non-zero, and the chamber budget, a daily sum of component releases, is an upper bound on ghost-forest CO2 release; this, together with the midday timing and wider footprint of the aircraft, can account for the opposite signs of the two estimates.
 
 ## Text S6. Regenerating stand
 
@@ -134,7 +136,7 @@ Component rates were measured at BL60, but no scanned surface area or airborne e
 
 ## Text S7. Porewater alkalinity and sulfate
 
-Porewater alkalinity (October 2025, 0–90 cm) was 11–33 mM (site medians), five to fifteen times seawater: 11–12 mM at the intact sites, 16 mM at CP40 and 33 mM at BL60. Alkalinity at this level indicates that sulfate reduction was active at every site. At CP40, sulfate remained near 32 mM, the highest of any site, alongside the highest dissolved CH4: methane accumulated alongside sulfate reduction rather than after sulfate was exhausted, consistent with methanogenesis from substrates sulfate reducers do not compete for. Alkalinity–DIC slopes are not interpreted, because DIC was calculated from probe pH and alkalinity rather than measured, and each site has four depths (fig. S15).
+Porewater alkalinity (October 2025, 0–90 cm) was 11–33 mM (site medians), five to fifteen times seawater: 11–12 mM at the intact sites, 16 mM at CP40 and 33 mM at BL60. Alkalinity at this level indicates that sulfate reduction was active at every site. At CP40, sulfate remained near 32 mM, the highest of any site, alongside the highest dissolved CH4: methane accumulated alongside sulfate reduction rather than after sulfate was exhausted, consistent with methanogenesis from substrates sulfate reducers do not compete for. Alkalinity–DIC slopes are not interpreted, because DIC was calculated from probe pH and alkalinity rather than measured, and each site has four depths (fig. S16).
 
 ## Text S8. Context sites
 
@@ -148,11 +150,11 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 
 ## Text S9. Sensitivity to analytical choices
 
-Fig. S12 shows the effect of each choice on the intact-to-ghost switch. The central case combines the choices best supported by our data and the literature: flooding weighted by floor area over the campaign months, the within-month tower Q10, the Krauss downed-wood volume, LAI 2.8, and no tidal-phase or diel correction to CH4. Monte Carlo intervals propagate measurement and parameter uncertainty within that case; structural alternatives are compared one at a time in table S10. Three results hold under every choice: at GWP20 the ghost class is a net source (+2,400 to +4,360 g CO2-eq m−2 yr−1; +1,830 to +3,630 at GWP100), the intact class is a net sink on vertical exchange (−2,690 to −4,310), and intact CH4 emission is clearly non-zero (0.9–2.1 g CH4 m−2 yr−1). The switch spans ~5,600–8,000 g CO2-eq m−2 yr−1 at GWP20 (~5,100–7,300 at GWP100), and ~5,100–5,500 under the plausible carbon-balance framings. The largest levers on the intact budget are canopy leaf respiration (LAI), the downed-wood volume and the flooding representation, which also decides the leading intact CH4 pathway: soils (55%) and roots (28%) in the central case; roots (44%) under the all-or-nothing switch.
+Fig. S13 shows the effect of each choice on the intact-to-ghost switch. The central case combines the choices best supported by our data and the literature: flooding weighted by floor area over the campaign months, the within-month tower Q10, the Krauss downed-wood volume, LAI 2.8, and no tidal-phase or diel correction to CH4. Monte Carlo intervals propagate measurement and parameter uncertainty within that case; structural alternatives are compared one at a time in table S10. Three results hold under every choice: at GWP20 the ghost class is a net source (+2,400 to +4,360 g CO2-eq m−2 yr−1; +1,830 to +3,630 at GWP100), the intact class is a net sink on vertical exchange (−2,650 to −4,250), and intact CH4 emission is clearly non-zero (1.0–2.2 g CH4 m−2 yr−1). The switch spans ~5,600–8,000 g CO2-eq m−2 yr−1 at GWP20 (~5,000–7,300 at GWP100), and ~5,100–5,400 under the plausible carbon-balance framings. The largest levers on the intact budget are canopy leaf respiration (LAI), the downed-wood volume and the flooding representation, which also decides the leading intact CH4 pathway: soils (54%) and roots (28%) in the central case; roots (44%) under the all-or-nothing switch.
 
 ## Text S10. Net forcing under carbon-balance framings
 
-On vertical exchange the intact class is a sink of −3,630 g CO2-eq m−2 yr−1 at GWP20 (−3,710 at GWP100), and its CH4 offsets 3% (GWP20) to 1% (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m−2 yr−1) the intact forest retains ~680 g C m−2 yr−1. With exported alkalinity retained in the ocean and the rest returned to the air, the intact sink is −2,710 g CO2-eq m−2 yr−1 at GWP20 (−2,960 to −1,710 across lateral scenarios), CH4 offsets 5% of it, and the switch is ~5,500 (~5,000 at GWP100). If all exported carbon returns to the air, the intact sink is −2,330 (−2,730 to −150) and the switch ~5,100. On storage alone (burial 123 plus wood increment 131 g C m−2 yr−1; Castañeda-Moya et al. 2013) the intact class is −810 and the switch ~3,600, a lower bound because carbon respired downstream or retained as ocean DOC counts as returned. As an independent check, lateral export should roughly equal net exchange minus wood increment minus burial (≈770 g C m−2 yr−1), which falls between the central and high scenarios (Fig. 5A). Lateral export of dissolved CH4 from intact forest (~0.35 g C m−2 yr−1; Yau et al. 2024, an analogue) is small beside stand emission (1.1 g C m−2 yr−1). The intact sink stays negative in every coherent scenario and approaches neutrality only with the highest export and complete atmospheric return.
+On vertical exchange the intact class is a sink of −3,593 g CO2-eq m−2 yr−1 at GWP20 (−3,674 at GWP100), and its CH4 offsets 3% (GWP20) to 1% (GWP100) of the CO2 sink. Under the central lateral scenario (346 g C m−2 yr−1) the intact forest retains ~670 g C m−2 yr−1. With exported alkalinity retained in the ocean and the rest returned to the air, the intact sink is −2,669 g CO2-eq m−2 yr−1 at GWP20 (−2,914 to −1,670 across lateral scenarios), CH4 offsets 5% of it, and the switch is ~5,400 (~4,900 at GWP100). If all exported carbon returns to the air, the intact sink is −2,288 (−2,689 to −113) and the switch ~5,100. On storage alone (burial 123 plus wood increment 131 g C m−2 yr−1; Castañeda-Moya et al. 2013) the intact class is −810 and the switch ~3,600, a lower bound because carbon respired downstream or retained as ocean DOC counts as returned. As an independent check, lateral export should roughly equal net exchange minus wood increment minus burial (≈760 g C m−2 yr−1), which falls between the central and high scenarios (Fig. 5A). Lateral export of dissolved CH4 from intact forest (~0.35 g C m−2 yr−1; Yau et al. 2024, an analogue) is small beside stand emission (1.1 g C m−2 yr−1). The intact sink stays negative in every coherent scenario and approaches neutrality only with the highest export and complete atmospheric return.
 
 ## Text S11. Ghost-forest carbon losses not measured
 
@@ -219,34 +221,39 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 **Fig. S11.** Water level against the woody surfaces at the four laser-scanned sites (M10, M11; vertical axis to scale, cm above the plot's mean floor; horizontal positions, prop-root reach and pneumatophores illustrative). Lines, water level by campaign (dark, wet season, October 2022; light, dry season, March 2023): at the tidal intact sites (a, b), mean high (dashed) and low (solid) water of the campaign month from the FCE LTER loggers; at the ghost sites (c, d), mean recorded depth. Floor relief follows the fitted floor-height distribution (tidal sites) or the recorded depths (ghost sites); stems stand on the mean floor (tidal) or at the mean floor height of the stem chambers (ghost); stem and prop-root diameters, root heights and stem number per 7 m are from TLS; downed wood has the median measured diameter and lies on the mean floor. Subtitles give the share of each surface above water used in the budgets (mean of the two campaigns; lowest 0.5 m of stem), the flooded share of the floor, and the median annual maximum water level (2001–2024). Hourly extremes (99th and 1st percentiles) in the campaign months were +20 and −2 cm (October) and +12 and −28 cm (March) at SRS5, and +43 and −3 cm and +33 and −26 cm at SRS6.
 
 
+![](<output/figures/other/si_k600_compare.png>){width=6.5in}
+
+**Fig. S12.** Gas-transfer velocity (k600) used for the water-surface fluxes estimated from dissolved gases (M8), against published values. Diamond, median of the site medians of chamber-implied k600 (1.29 cm h−1; dashed line), the value used; bar, range of the site medians; ticks, the site medians. Measured: sheltered Everglades wetland water (Happell et al. 1995; Variano et al. 2009; Ho et al. 2018, as compiled there), Shark River channel tracer releases (Ho et al. 2014, 2016) and the river and estuary compilation of Raymond and Cole (2001). Equations, evaluated for forest-floor water (no current, 0.1 m depth) at the 1.2–2.4 m s−1 winds of the campaigns (point at 1.8): Ho et al. (2016) and Borges et al. (2004) without their current terms, Rosentreter et al. (2017; CH4), Wanninkhof (2014), Cole and Caraco (1998) and the three wind fits of Raymond and Cole (2001). The stream relations of Raymond et al. (2012) require channel slope and velocity and are not applicable to standing water.
+
+
 ![](<output/figures/other/si_sensitivity_switch.png>){width=6.5in}
 
-**Fig. S12.** Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,411 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,100–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.
+**Fig. S13.** Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,369 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,000–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.
 
 
 ![](<output/figures/other/si_S10_mc_uncertainty.png>){width=6.5in}
 
-**Fig. S13.** Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S4); inverse-hyperbolic-sine axis; components that are always zero omitted.
+**Fig. S14.** Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S4); inverse-hyperbolic-sine axis; components that are always zero omitted.
 
 
 ![](<output/figures/other/ed_porewater_rounds.png>){width=6.5in}
 
-**Fig. S14.** Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only); (c) salinity against dissolved CH4 by site (including surface water; shape, round; log(1 + x) axis). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023.
+**Fig. S15.** Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only); (c) salinity against dissolved CH4 by site (including surface water; shape, round; log(1 + x) axis). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023.
 
 
 ![](<output/figures/other/si_S12_carbonate.png>){width=6.5in}
 
-**Fig. S15.** Porewater alkalinity against conservative mixing (October 2025; 0–90 cm, surface water excluded; text S7). (a) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (b) Measured against mixing-predicted alkalinity; dashed, 1:1. (c) Measured ÷ mixing-predicted alkalinity by site. Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.
+**Fig. S16.** Porewater alkalinity against conservative mixing (October 2025; 0–90 cm, surface water excluded; text S7). (a) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (b) Measured against mixing-predicted alkalinity; dashed, 1:1. (c) Measured ÷ mixing-predicted alkalinity by site. Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.
 
 
 ![](<output/figures/other/si_campaign_context.png>){width=6.5in}
 
-**Fig. S16.** Campaign context (M2). Monthly z-scores of SRS6 water level (FCE LTER, 2001–2024), air temperature and midday net CO2 uptake (US-Skr tower, 2004–2011 and 2018–2023) and tower CH4 flux (2018–2023; FCH4 + storage, quality flag ≤ 1, u* > 0.2), each standardised over all of its year-months. Lines, median for each calendar month; bands, interquartile range across years (16–22 years per month for water level, 2–6 for tower CH4); points, the campaign months (October 2022, March 2023) with ±1 SD of daily means within the month; shading, campaign months. The tower CH4 record carries a negative dry-season offset that the z-score removes; only its seasonal pattern is shown.
+**Fig. S17.** Campaign context (M2). Monthly z-scores of SRS6 water level (FCE LTER, 2001–2024), air temperature and midday net CO2 uptake (US-Skr tower, 2004–2011 and 2018–2023) and tower CH4 flux (2018–2023; FCH4 + storage, quality flag ≤ 1, u* > 0.2), each standardised over all of its year-months. Lines, median for each calendar month; bands, interquartile range across years (16–22 years per month for water level, 2–6 for tower CH4); points, the campaign months (October 2022, March 2023) with ±1 SD of daily means within the month; shading, campaign months. The tower CH4 record carries a negative dry-season offset that the z-score removes; only its seasonal pattern is shown.
 
 
 
 
-**Fig. S17.** _[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_
+**Fig. S18.** _[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_
 
 
 ---
@@ -352,9 +359,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Height form | AIC | edf | ΔAIC |
 |---|---|---|---|
-| smooth_log | 977.6 | 19.6 | 0.0 |
-| log | 989.1 | 16.7 | 11.5 |
-| smooth | 990.3 | 22.1 | 12.7 |
+| smooth_log | 977.5 | 19.7 | 0.0 |
+| log | 989.1 | 16.7 | 11.6 |
+| smooth | 990.2 | 22.1 | 12.7 |
 | linear | 1 021 | 17.3 | 43.0 |
 
 (B)
@@ -362,12 +369,12 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Term | Estimate | SE | p |
 |---|---|---|---|
 | (Intercept) | 0.327 | 0.108 | 0.002 |
-| classregenerating | 0.733 | 0.182 | 0.000 |
-| classghost | 1.042 | 0.160 | 0.000 |
+| classregenerating | 0.736 | 0.182 | 0.000 |
+| classghost | 1.043 | 0.161 | 0.000 |
 | surfaceprop root | 0.139 | 0.095 | 0.144 |
 | statusdead | 0.031 | 0.075 | 0.679 |
-| seasondry | -0.081 | 0.127 | 0.523 |
-| floodedyes | -0.005 | 0.066 | 0.937 |
+| seasondry | -0.082 | 0.127 | 0.521 |
+| floodedyes | -0.005 | 0.066 | 0.935 |
 | (Intercept).1 | -0.996 | 0.054 | 0.000 |
 | classregenerating.1 | 1.046 | 0.098 | 0.000 |
 | classghost.1 | 1.196 | 0.078 | 0.000 |
@@ -376,9 +383,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | term | Estimate | Std. Error | z value | Pr(>|z|) |
 |---|---|---|---|---|
-| spAVGE | -0.113 | 0.078 | -1.443 | 0.149 |
-| spCOER | -0.557 | 0.257 | -2.170 | 0.030 |
-| spLARA | -0.149 | 0.093 | -1.610 | 0.107 |
+| spAVGE | -0.113 | 0.078 | -1.444 | 0.149 |
+| spCOER | -0.559 | 0.257 | -2.178 | 0.029 |
+| spLARA | -0.149 | 0.093 | -1.613 | 0.107 |
 | spunidentified | -2.219 | 0.711 | -3.121 | 0.002 |
 
 **Table S6. Airborne end-member fluxes** (two-class disaggregation, Delaria et al. 2024) and the airborne check of the ghost-forest inundation representation (text S2). _[July 2024 pending; confirm uncertainty definition.]_
@@ -418,9 +425,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | CP40 | Mar 2023 | ghost | 0.16 | 0.03 | 8.24 | 5.91 | -0.01 | 14.32 |
 | FLM30 | Oct 2022 | ghost | 0.15 | 0.01 | 0.00 | 28.77 | 0.00 | 28.93 |
 | FLM30 | Mar 2023 | ghost | 0.18 | 0.02 | 7.98 | 8.17 | -0.02 | 16.34 |
-| SRS5 | Oct 2022 | intact | 0.03 | 0.22 | 0.65 | 0.41 | 0.10 | 1.41 |
+| SRS5 | Oct 2022 | intact | 0.03 | 0.22 | 0.65 | 0.63 | 0.10 | 1.63 |
 | SRS5 | Mar 2023 | intact | 0.04 | 0.40 | 0.28 | 0.29 | 0.04 | 1.06 |
-| SRS6 | Oct 2022 | intact | 0.05 | 3.81 | 5.79 | 0.60 | 0.08 | 10.33 |
+| SRS6 | Oct 2022 | intact | 0.05 | 3.81 | 5.79 | 0.70 | 0.08 | 10.43 |
 | SRS6 | Mar 2023 | intact | 0.05 | 0.18 | 2.22 | 1.02 | 0.06 | 3.52 |
 
 (B)
@@ -432,9 +439,9 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | FLM30 | Mar 2023 | 0.53 | 0.04 | 0.46 | 0.37 | 0.06 | 0.00 | 1.47 | 0.00 | 1.47 |
 | FLM30 | Oct 2022 | 0.38 | 0.04 | 0.00 | 0.36 | 0.00 | 0.00 | 0.77 | 0.00 | 0.77 |
 | SRS5 | Mar 2023 | 1.46 | 0.62 | 0.73 | 0.46 | 0.28 | 1.74 | 5.29 | 8.51 | -3.21 |
-| SRS5 | Oct 2022 | 0.90 | 0.36 | 0.47 | 0.27 | 0.51 | 2.00 | 4.52 | 7.12 | -2.60 |
+| SRS5 | Oct 2022 | 0.90 | 0.36 | 0.47 | 0.33 | 0.51 | 2.00 | 4.57 | 7.12 | -2.55 |
 | SRS6 | Mar 2023 | 1.60 | 0.17 | 0.67 | 0.86 | 0.47 | 1.74 | 5.51 | 8.51 | -3.00 |
-| SRS6 | Oct 2022 | 1.17 | 0.62 | 0.60 | 0.38 | 0.34 | 2.00 | 5.11 | 7.12 | -2.01 |
+| SRS6 | Oct 2022 | 1.17 | 0.62 | 0.60 | 0.44 | 0.34 | 2.00 | 5.17 | 7.12 | -1.94 |
 
 (C)
 
@@ -450,11 +457,11 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | FLM30 | Oct 2022 | cwd | 4.78 (0.30 to 12.26) | 5 | gap: CP40 cwd |
 | SRS5 | Oct 2022 | root | 0.70 (0.31 to 1.17) | 19 | site |
 | SRS5 | Oct 2022 | soil | 1.23 (0.88 to 1.53) | 8 | site |
-| SRS5 | Oct 2022 | water | 0.48 (0.24 to 3.08) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
+| SRS5 | Oct 2022 | water | 0.74 (0.28 to 3.90) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
 | SRS5 | Oct 2022 | cwd | 0.70 | 1 | site |
 | SRS6 | Oct 2022 | root | 15.56 (0.87 to 43.55) | 9 | site |
 | SRS6 | Oct 2022 | soil | 15.94 (7.93 to 28.71) | 20 | site |
-| SRS6 | Oct 2022 | water | 0.59 (0.30 to 3.79) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
+| SRS6 | Oct 2022 | water | 0.69 (0.26 to 3.64) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
 | SRS6 | Oct 2022 | cwd | 0.84 (0.64 to 0.97) | 3 | site |
 | CP40 | Mar 2023 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
 | CP40 | Mar 2023 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
@@ -477,8 +484,8 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Class | CH4 | Net CO2 | Net GWP20 | 95% interval | Net GWP100 | 95% interval | Net GWP* | CH4 share (GWP20) |
 |---|---|---|---|---|---|---|---|---|
-| intact | 1.49 | -3 756 | -3 635 | -5 214 to -1 918 | -3 715 | -5 291 to -2 012 | -3 744 | 3.1% |
-| ghost | 11.90 | 1 810 | 2 776 | 1 931 to 3 977 | 2 142 | 1 505 to 3 266 | 3 137 | 34.8% |
+| intact | 1.52 | -3 717 | -3 593 | -5 183 to -1 854 | -3 674 | -5 262 to -1 953 | -3 705 | 3.2% |
+| ghost | 11.90 | 1 810 | 2 776 | 1 931 to 3 977 | 2 142 | 1 505 to 3 266 | 3 133 | 34.8% |
 
 **Table S9. Literature-derived values.**
 
@@ -571,7 +578,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | BL60 | leaves | 0.02 (0.00 to 0.04) | 14 |
 | BL60 | root | 5.73 (2.78 to 8.29) | 5 |
 | BL60 | soil | 55.63 (27.01 to 90.45) | 23 |
-| BL60 | stem | 14.18 (3.36 to 32.02) | 90 |
+| BL60 | stem | 14.18 (3.37 to 32.02) | 90 |
 | BL60 | water | 56.85 (33.34 to 88.92) | 5 |
 | CP40 | cwd | 2.34 (-0.06 to 6.25) | 10 |
 | CP40 | stem | 14.13 (7.55 to 22.68) | 78 |
@@ -615,10 +622,10 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 | Territory | Area (km2) | Switch GWP20 (Tg CO2-eq yr−1) | GWP100 | GWP* | Induced CH4 (Gg yr−1) |
 |---|---|---|---|---|---|
-| Cuba | 104.03 | 0.667 (0.400 to 0.956) | 0.609 | 0.716 | 1.082 (0.335 to 1.829) |
-| United States | 60.09 | 0.385 (0.231 to 0.552) | 0.352 | 0.413 | 0.625 (0.193 to 1.057) |
+| Cuba | 104.03 | 0.663 (0.394 to 0.953) | 0.605 | 0.711 | 1.079 (0.327 to 1.829) |
+| United States | 60.09 | 0.383 (0.227 to 0.550) | 0.349 | 0.411 | 0.624 (0.189 to 1.056) |
 | Puerto Rico | 5.42 | 0.035 (0.021 to 0.050) | 0.032 | 0.037 | 0.056 (0.017 to 0.095) |
-| Venezuela | 2.51 | 0.016 (0.010 to 0.023) | 0.015 | 0.017 | 0.026 (0.008 to 0.044) |
+| Venezuela | 2.51 | 0.016 (0.009 to 0.023) | 0.015 | 0.017 | 0.026 (0.008 to 0.044) |
 | Antigua and Barbuda | 0.33 | 0.002 (0.001 to 0.003) | 0.002 | 0.002 | 0.003 (0.001 to 0.006) |
 | Turks and Caicos Islands | 0.31 | 0.002 (0.001 to 0.003) | 0.002 | 0.002 | 0.003 (0.001 to 0.006) |
 | British Virgin Islands | 0.30 | 0.002 (0.001 to 0.003) | 0.002 | 0.002 | 0.003 (0.001 to 0.005) |
@@ -636,16 +643,16 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Anguilla | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
 | Grenada | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
 | Honduras | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
-| Total | 173.43 | 1.112 (0.667 to 1.594) | 1.016 | 1.193 | 1.805 (0.558 to 3.049) |
+| Total | 173.43 | 1.105 (0.656 to 1.589) | 1.009 | 1.186 | 1.800 (0.545 to 3.049) |
 
 (B)
 
 | Storm | Area (km2) | Switch GWP20 (Tg) | GWP100 (Tg) | Induced CH4 (Gg) |
 |---|---|---|---|---|
-| Irma | 165.1 | 1.06 (0.64 to 1.52) | 0.97 | 1.72 (0.53 to 2.90) |
+| Irma | 165.1 | 1.05 (0.62 to 1.51) | 0.96 | 1.71 (0.52 to 2.90) |
 | Maria | 5.6 | 0.04 (0.02 to 0.05) | 0.03 | 0.06 (0.02 to 0.10) |
 | other | 2.7 | 0.02 (0.01 to 0.02) | 0.02 | 0.03 (0.01 to 0.05) |
-| Irma, Florida dieback per Lagomasino et al. 2021 | 212.6 | 1.36 (0.82 to 1.95) | 1.25 | 2.21 (0.68 to 3.74) |
+| Irma, Florida dieback per Lagomasino et al. 2021 | 212.6 | 1.35 (0.80 to 1.95) | 1.24 | 2.21 (0.67 to 3.74) |
 
 **Table S15. Literature values for canopy leaf respiration and leaf area** (M13; full provenance in the repository).
 
@@ -706,17 +713,22 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 - M. R. Allen et al., A solution to the misrepresentations of CO2-equivalent emissions of short-lived climate pollutants under ambitious mitigation. *npj Clim. Atmos. Sci.* **1**, 16 (2018).
 - O. K. Atkin, P. Meir, M. H. Turnbull, Improving representation of leaf respiration in large-scale predictive climate–vegetation models. *New Phytol.* **202**, 743–748 (2014).
 - J. G. Barr, J. D. Fuentes, V. Engel, J. C. Zieman, Physiological responses of red mangroves to the climate in the Florida Everglades. *J. Geophys. Res. Biogeosci.* **114**, G02008 (2009).
+- A. V. Borges et al., Variability of the gas transfer velocity of CO2 in a macrotidal estuary (the Scheldt). *Estuaries* **27**, 593–603 (2004).
 - S. Bouillon et al., Importance of intertidal sediment processes and porewater exchange on the water column biogeochemistry in a pristine mangrove creek (Ras Dege, Tanzania). *Biogeosciences* **4**, 311–322 (2007).
 - P. Bunting et al., Global Mangrove Extent Change 1996–2020: Global Mangrove Watch Version 3.0. *Remote Sens.* **14**, 3657 (2022).
 - A. Cabezas et al., Methane emissions from mangrove soils in hydrologically disturbed and reference mangrove tidal creeks in southwest Florida. *Ecol. Eng.* **114**, 57–65 (2018).
 - D. R. Cahoon et al., Mass tree mortality leads to mangrove peat collapse at Bay Islands, Honduras after Hurricane Mitch. *J. Ecol.* **91**, 1093–1105 (2003).
 - E. Castañeda-Moya, R. R. Twilley, V. H. Rivera-Monroy, Allocation of biomass and net primary productivity of mangrove forests along environmental gradients in the Florida Coastal Everglades, USA. *For. Ecol. Manage.* **307**, 226–241 (2013).
+- J. J. Cole, N. F. Caraco, Atmospheric exchange of carbon dioxide in a low-wind oligotrophic lake measured by the addition of SF6. *Limnol. Oceanogr.* **43**, 647–656 (1998).
 - E. R. Delaria et al., Assessment of landscape-scale fluxes of carbon dioxide and methane in subtropical coastal wetlands of South Florida. *J. Geophys. Res. Biogeosci.* **129**, e2024JG008165 (2024).
 - P. Forster et al., The Earth's energy budget, climate feedbacks, and climate sensitivity. In Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change (eds Masson-Delmotte, V. et al.) 923–1054 (Cambridge Univ. Press, 2021).
 - L. N. Griffiths, W. J. Mitsch, Estimating the effects of a hurricane on carbon storage in mangrove wetlands in Southwest Florida. *Plants* **10**, 1749 (2021).
 - R. A. Hannun et al., Spatial heterogeneity in CO2, CH4, and energy fluxes: insights from airborne eddy covariance measurements over the Mid-Atlantic region. *Environ. Res. Lett.* **15**, 035008 (2020).
 - M. A. Heskel et al., Convergence in the temperature response of leaf respiration across biomes and plant functional types. *Proc. Natl Acad. Sci. USA* **113**, 3832–3837 (2016).
 - D. T. Ho et al., Dissolved carbon biogeochemistry and export in mangrove-dominated rivers of the Florida Everglades. *Biogeosciences* **14**, 2543–2559 (2017).
+- D. T. Ho, S. Ferrón, V. C. Engel, L. G. Larsen, J. G. Barr, Air-water gas exchange and CO2 flux in a mangrove-dominated estuary. *Geophys. Res. Lett.* **41**, 108–113 (2014).
+- D. T. Ho et al., Influence of current velocity and wind speed on air-water gas exchange in a mangrove estuary. *Geophys. Res. Lett.* **43**, 3813–3821 (2016).
+- D. T. Ho et al., On factors influencing air-water gas exchange in emergent wetlands. *J. Geophys. Res. Biogeosci.* **123**, 178–192 (2018).
 - C. Huntingford et al., Implications of improved representations of plant respiration in a changing climate. *Nat. Commun.* **8**, 1602 (2017).
 - G. L. Hutchinson, A. R. Mosier, Improved soil cover method for field measurement of nitrous oxide fluxes. *Soil Sci. Soc. Am. J.* **45**, 311–316 (1981).
 - R. W. A. Hutjes et al., Dis-aggregation of airborne flux measurements using footprint analysis. *Agric. For. Meteorol.* **150**, 966–983 (2010).
@@ -734,10 +746,12 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 - B. Poulter et al., Multi-scale observations of mangrove blue carbon ecosystem fluxes: the NASA Carbon Monitoring System BlueFlux field campaign. *Environ. Res. Lett.* **18**, 075009 (2023).
 - E. B. Powell et al., manuscript in preparation.
 - K. R. Radabaugh et al., Mangrove damage, delayed mortality, and early recovery following Hurricane Irma at two landfall sites in Southwest Florida, USA. *Estuar. Coasts* **43**, 1104–1118 (2020).
+- P. A. Raymond, J. J. Cole, Gas exchange in rivers and estuaries: choosing a gas transfer velocity. *Estuaries* **24**, 312–317 (2001).
 - D. Reed et al., Resilience to hurricanes is high in mangrove blue carbon forests. *Glob. Change Biol.* **31**, e70124 (2025).
 - G. M. S. Reithmaier, D. T. Ho, S. G. Johnston, D. T. Maher, Mangroves as a source of greenhouse gases to the atmosphere and alkalinity and dissolved carbon to the coastal ocean: a case study from the Everglades National Park, Florida. *J. Geophys. Res. Biogeosci.* **125**, e2020JG005812 (2020).
 - K. Rheault, J. R. Christiansen, K. S. Larsen, goFlux: a user-friendly way to calculate GHG fluxes yourself, regardless of user experience. *J. Open Source Softw.* **9**, 6393 (2024).
 - H. M. Romero-Uribe, J. López-Portillo, F. Reverchon, M. E. Hernández, Effect of degradation of a black mangrove forest on seasonal greenhouse gas emissions. *Environ. Sci. Pollut. Res.* **29**, 11951–11965 (2022).
+- J. A. Rosentreter et al., Spatial and temporal variability of CO2 and CH4 gas transfer velocities and quantification of the CH4 microbubble flux in mangrove dominated estuaries. *Limnol. Oceanogr.* **62**, 561–578 (2017).
 - J. A. Salas-Rabaza et al., Impacts of leaks and gas accumulation on closed chamber methods for measuring methane and carbon dioxide fluxes from tree stems. *Sci. Total Environ.* **904**, 166358 (2023).
 - J. Z. Sippo et al., Coastal carbon cycle changes following mangrove loss. *Limnol. Oceanogr.* **65**, 2642–2656 (2020).
 - M. A. Smith, M. Cain, M. R. Allen, Further improvement of warming-equivalent emissions calculation. *npj Clim. Atmos. Sci.* **4**, 19 (2021).

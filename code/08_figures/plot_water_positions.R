@@ -11,12 +11,9 @@ df <- read.csv("output/data_products/combined_gas_flux_dataset.csv")
 df$camp <- with(df, ifelse(year==2022&month==10,"Oct 2022",
                     ifelse(year==2023&month==3,"Mar 2023",
                     ifelse(year==2022&month==3,"Mar 2022",NA))))
-off_pat <- "river|open|off peir|off pier|pier|interface|edge"   # channel/open-water placements; "outside plot" at ghost sites is still over the floor
+source("code/00_lib/water_position.R")   # channel/open-water placements; "outside plot" at ghost sites is still over the floor
 w <- df %>% filter(component=="water", !is.na(CH4_best.flux), !is.na(camp)) %>%
-  mutate(position = case_when(
-           is.na(collar_location) ~ "above forest floor",   # unlabelled = standard placement over the flooded floor (no channels at ghost/regenerating sites)
-           grepl(off_pat, collar_location, ignore.case=TRUE) ~ "channel / open water",
-           TRUE ~ "above forest floor"),
+  mutate(position = water_position(collar_location),
          class = recode(plot, CP40="ghost",FLM30="ghost",MI="ghost",
                         BL60="regenerating",SE1="scrub",SRS5="intact",SRS6="intact",RB10="intact"),
          site = factor(plot, levels=c("CP40","FLM30","BL60","SE1","SRS5","SRS6")),
