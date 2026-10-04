@@ -12,6 +12,10 @@
 #                              floor, as si_waterline.R) and the flooded share of the
 #                              floor (flood_fraction.csv); other sites: mean (max)
 #                              recorded water depth at chamber positions
+#   species, LTER structure    FCE LTER mangrove forest growth (knb-lter-fce.1113.7;
+#                              data/environmental/vegetation/): trees > 2.5 cm DBH in two
+#                              20 x 20 m plots at SRS5 and SRS6, 2023 survey; species
+#                              shares of basal area, stem density and basal area
 #   salinity                   porewater PSU by season
 #                              (data/environmental/site_characterization_salinity_ch4.csv)
 # Writes output/analysis/si/si_site_table.csv (long: site, row, value).
@@ -49,6 +53,21 @@ struct <- tst %>% left_join(wsa, by = "site") %>% transmute(site,
   `Woody surface, stem / root (m² m⁻²)` = sprintf("%s / %s", f1(stem, 2), f1(root, 2))) %>%
   pivot_longer(-site, names_to = "row", values_to = "value")
 
+# ---- FCE LTER tree survey (SRS5, SRS6), 2023
+veg <- read.csv("data/environmental/vegetation/FCE_LTER_1113_mangrove_forest_growth.csv") %>%
+  filter(SITENAME %in% c("SRS5", "SRS6"), Tree_DBH > 0, substr(Date, 1, 4) == "2023") %>%
+  mutate(ba = pi * (Tree_DBH / 200)^2)
+plot_area_ha <- veg %>% distinct(SITENAME, Plot_ID) %>% count(SITENAME, name = "nplot") %>% mutate(ha = nplot * 400 / 1e4)
+spp <- veg %>% group_by(site = SITENAME, Species_Tree) %>% summarise(ba = sum(ba), .groups = "drop") %>%
+  group_by(site) %>% mutate(p = 100 * ba / sum(ba)) %>% arrange(site, desc(p)) %>%
+  summarise(value = paste(sprintf("%s %.0f", c(R = "*R. mangle*", L = "*L. racemosa*", A = "*A. germinans*", C = "*C. erectus*")[Species_Tree], p),
+                          collapse = ", "), .groups = "drop") %>%
+  mutate(row = "Basal area by species, FCE LTER 2023 (%)")
+lter <- veg %>% group_by(site = SITENAME) %>% summarise(n = n(), ba = sum(ba), .groups = "drop") %>%
+  left_join(plot_area_ha, by = c(site = "SITENAME")) %>%
+  transmute(site, row = "Stem density / basal area, FCE LTER 2023 (ha⁻¹ / m² ha⁻¹)",
+            value = sprintf("%s / %s", f1(n / ha), f1(ba / ha, 1)))
+
 # ---- hydrology
 ff <- read.csv("output/upscaling/flood_fraction.csv")
 wl <- read.csv("data/environmental/water_level/FCE_LTER_1168_water_levels.csv") %>%
@@ -83,7 +102,7 @@ out <- bind_rows(
   data.frame(site = names(role), row = "Class", value = unname(role)),
   meta %>% transmute(site = site_id, row = "Latitude, longitude", value = sprintf("%.4f, %.4f", latitude, longitude)),
   meta %>% transmute(site = site_id, row = "Dominant species", value = dominant_species),
-  samp, struct, hyd, sal) %>%
+  samp, struct, lter, spp, hyd, sal) %>%
   filter(site %in% site_lv, value != "")
 row_lv <- unique(out$row)
 out <- out %>% mutate(site = factor(site, site_lv), row = factor(row, row_lv)) %>% arrange(row, site)
