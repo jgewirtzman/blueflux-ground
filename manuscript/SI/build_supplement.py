@@ -82,7 +82,9 @@ FIGS = {
  "S19": (["output/figures/other/si_campaign_context.png"],
          "Campaign context (M2). Monthly z-scores of SRS6 water level (FCE LTER, 2001–2024), air temperature and midday net CO2 uptake (US-Skr tower, 2004–2011 and 2018–2023) and tower CH4 flux (2018–2023; FCH4 + storage, quality flag ≤ 1, u* > 0.2), each standardised over all of its year-months. Lines, median for each calendar month; bands, interquartile range across years (16–22 years per month for water level, 2–6 for tower CH4); points, the campaign months (October 2022, March 2023) with ±1 SD of daily means within the month; shading, campaign months. The tower CH4 record carries a negative dry-season offset that the z-score removes; only its seasonal pattern is shown."),
  "S20": ([], "_[PLACEHOLDER — CARAFE flight tracks and coverage (E. Delaria): flight legs of each deployment (April 2022, October 2022, February and April 2023, July 2024) over the mangrove extent and the 2017 dieback; footprint climatology; area of intact and ghost mangrove within the footprints (km2) and its share of each class in south Florida; the ground sites marked.]_"),
- "S21": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
+ "S21": (["output/figures/other/si_switch_methods.png"],
+         "The intact-to-ghost switch by three routes (text S5): chamber site budgets (this study; Monte Carlo 95% interval); CARAFE airborne class fluxes alone (Delaria et al. 2024; four deployments, wet and dry seasons weighted equally), with midday CO2 scaled to daily for both classes by the tower relation of Doughty et al. (2026), and as a sensitivity with ghost midday flux taken as daily (pale); and the regional reflectance-based upscaling of Doughty et al. (2026), mangrove-forest versus mapped-dieback pixels, 2022–2024 (values read from its figs. S2 and S3; no interval). Bars, CO2 and CH4 parts; diamonds and whiskers, switch and 95% interval."),
+ "S22": ([], "_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_"),
 }
 def fig_block(k):
     files, cap = FIGS[k]
@@ -247,7 +249,7 @@ for line in open(P("manuscript/references.md"), encoding="utf-8"):
     if " | " in line and not line.startswith("#"):
         k, v = line.split(" | ", 1); refs[k.strip()] = v.strip()
 SI_REFS = ["yau2024", "pacheco2024", "cabezas2018", "martin2020", "sotomayor1994", "salasrabaza2023", "allen2018", "atkin2014", "barr2009", "bouillon2007", "bunting2022", "cahoon2003", "castanedamoya2013",
-           "carafe_instrument", "delaria2024", "forster2021", "griffiths2021", "hannun2020", "heskel2016", "ho2017", "ho2014", "ho2016", "ho2018", "raymondcole2001", "borges2004", "colecaraco1998", "rosentreter2017", "huntingford2017", "jeffrey2019", "lovelock2011", "martinez2021", "radabaugh2020", "romerouribe2022", "yu2023",
+           "carafe_instrument", "delaria2024", "doughty2026", "forster2021", "griffiths2021", "hannun2020", "heskel2016", "ho2017", "ho2014", "ho2016", "ho2018", "raymondcole2001", "borges2004", "colecaraco1998", "rosentreter2017", "huntingford2017", "jeffrey2019", "lovelock2011", "martinez2021", "radabaugh2020", "romerouribe2022", "yu2023",
            "hutchinson1981", "hutjes2010", "kljun2015", "krauss2005", "lagomasino2021", "lin2024", "osland2020",
            "pedersen2010", "poulter2023", "powell_tls", "reed2025", "reithmaier2020", "gofluxref", "sippo2020", "smith2021",
            "stegehuis2026", "sturchio2022", "taillie2020", "troxler2015", "wanninkhof2014", "weiss1974", "wood2023",

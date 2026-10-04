@@ -33,7 +33,8 @@ display_items <- c(
   "SI/FigS16_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",                # si_upscaling_figs.R
   "SI/FigS17_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                  # ed_porewater_rounds.R
   "SI/FigS18_carbonate.png"             = "other/si_S12_carbonate.png",                     # si_porewater_carbonate.R
-  "SI/FigS19_campaign_context.png"      = "other/si_campaign_context.png"                   # si_campaign_context.R
+  "SI/FigS19_campaign_context.png"      = "other/si_campaign_context.png",                  # si_campaign_context.R
+  "SI/FigS21_switch_methods.png"        = "other/si_switch_methods.png"                     # si_switch_methods.R
 )
 # S16 (metagenome detail) is a placeholder until the sequencing results arrive.
 # Clear stale curated SI copies so the folder mirrors the current numbering.

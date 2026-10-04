@@ -56,6 +56,7 @@ steps <- c(
   "code/07_upscaling/07_budget_sources.R",
   "code/07_upscaling/08_supplementary_analyses.R",
   "code/07_upscaling/09_regional_scaling.R",
+  "code/07_upscaling/10_airborne_switch.R",          # switch by method (chamber, airborne, regional model)
   "code/06_analysis/06_site_table.R",                # Table S1 (needs flood_fraction.csv)
   "code/06_analysis/07_site_greenness_modis.R",     # site greenness (MODIS; cached download)
   "code/06_analysis/08_site_greenness_s2.R",        # site greenness (Sentinel-2; cached)
@@ -93,6 +94,7 @@ steps <- c(
   "code/08_figures/si_porewater_carbonate.R",        # Fig S18
   "code/08_figures/plot_SA_height_fixedY.R",        # Fig S10
   "code/08_figures/plot_us_skr_gpp.R",              # tower GPP diagnostics
+  "code/08_figures/si_switch_methods.R",            # Fig S21
   "code/08_figures/si_campaign_context.R",          # Fig S19
   "code/08_figures/site_characterization_figures.R",# Fig S17c data
   "code/08_figures/plot_site_closure.R",            # exploratory site closure (not in SI)
