@@ -47,9 +47,11 @@ txy <- data.frame(st_coordinates(tower), lab = "US-Skr tower")
 # (small dot); labels sit beside each symbol
 off <- data.frame(site_id = c("SRS5", "SRS6", "BL60", "CP40", "FLM30", "MI", "RB10", "SE1"),
                   sx = c(7000, -8000, -8000, 2500, 8000, 0, 0, 0),
-                  sy = c(5500, -6000, 4500, -8000, 5500, 0, 0, 0),
+                  sy = c(5500, -6000, 4500, -8000, 5500, 2500, -2500, 0),
                   side = c(1, -1, -1, 1, 1, 1, 1, -1))
-lab <- sxy %>% left_join(off, by = "site_id") %>%
+nm <- c(SRS5 = "Gunboat Island", SRS6 = "Lower Shark River", BL60 = "Bear Lake", CP40 = "Christian Point",
+        FLM30 = "Flamingo", MI = "Marco Island", RB10 = "Rookery Bay", SE1 = "")
+lab <- sxy %>% left_join(off, by = "site_id") %>% mutate(txt = ifelse(nm[site_id] == "", site_id, paste0(site_id, "\n", nm[site_id]))) %>%
   mutate(px = X + sx, py = Y + sy, moved = sx != 0 | sy != 0,
          lx = px + side * 3000, ly = py, hj = ifelse(side > 0, 0, 1))
 pal_map <- pal_class
@@ -67,11 +69,11 @@ pa <- ggplot() +
   geom_text(data = txy, aes(X - 3500, Y + 4500, label = lab), size = 2.7, hjust = 1, colour = "grey25") +
   geom_point(data = lab %>% filter(!core), aes(px, py, fill = class), shape = 21, size = 2.2, colour = "white", stroke = 0.3) +
   geom_point(data = lab %>% filter(core), aes(px, py, fill = class), shape = 21, size = 3.1, colour = "white", stroke = 0.4) +
-  geom_label(data = lab, aes(lx, ly, label = site_id, hjust = hj, colour = class, fontface = ifelse(core, "bold", "plain")),
-             size = 2.9, label.size = 0, label.padding = unit(0.08, "lines"), fill = alpha("white", 0.8)) +
+  geom_label(data = lab, aes(lx, ly, label = txt, hjust = hj, colour = class, fontface = ifelse(core, "bold", "plain")),
+             size = 2.5, lineheight = 0.85, label.size = 0, label.padding = unit(0.08, "lines"), fill = alpha("white", 0.8)) +
   annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
-  annotate("text", x = 531000, y = 2806000, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
-  annotate("text", x = 448000, y = 2800000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 540000, y = 2797500, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
+  annotate("text", x = 436000, y = 2788000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
   annotate("text", x = 548000, y = 2783000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
   scale_fill_manual(values = c(pal_class, `mangrove (2016)` = "#A8CDB9", `2017 hurricane dieback` = "#B9B5CB"),
                     breaks = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"),
@@ -137,8 +139,8 @@ traj_panel <- function(v, ylab, ylim, ybr) {
   ggplot(nd, aes(year, .data[[v]], colour = cls, group = site)) +
     geom_rect(data = camps %>% filter(type == "airborne"), aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "#B9D3E8") +
     geom_rect(data = camps %>% filter(type == "ground"), aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "grey55", alpha = 0.6) +
-    annotate("text", x = 2024.85, y = ylim[1] + diff(ylim) * 0.55, label = "ground campaign", size = 1.9, colour = "grey40", hjust = 0) +
-    annotate("text", x = 2024.85, y = ylim[1] + diff(ylim) * 0.47, label = "airborne campaign", size = 1.9, colour = "#4A7DB0", hjust = 0) +
+    annotate("text", x = 2021.9, y = ylim[1] + diff(ylim) * 0.50, label = "ground campaign", size = 1.9, colour = "grey40", hjust = 1) +
+    annotate("text", x = 2021.9, y = ylim[1] + diff(ylim) * 0.43, label = "airborne campaign", size = 1.9, colour = "#4A7DB0", hjust = 1) +
     geom_vline(data = storms, aes(xintercept = x), colour = "grey55", linetype = "22", linewidth = 0.3) +
     geom_text(data = storms, aes(x = x, y = ylim[1] + diff(ylim) * 0.03, label = name), inherit.aes = FALSE, angle = 90, hjust = 0, vjust = -0.4, size = 2.1, colour = "grey40") +
     geom_line(linewidth = 0.45) + geom_point(size = 0.7) +

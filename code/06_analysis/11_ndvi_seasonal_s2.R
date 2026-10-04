@@ -77,6 +77,7 @@ p <- ggplot(d, aes(season, ndvi, colour = cls)) +
   facet_wrap(~ site, nrow = 1) + scale_y_continuous(limits = c(-0.2, 1)) +
   scale_colour_manual(values = c(pal_class, scrub = "#9A8C7A"), guide = "none") +
   labs(x = NULL, y = "Sentinel-2 NDVI (30 m), 2018-2025") + theme_fig() + theme(strip.text = element_text(face = "bold"))
+saveRDS(p, "output/figures/other/si_ndvi_seasonal.rds")
 ggsave("output/figures/other/si_ndvi_seasonal.png", p, width = 7.2, height = 2.8, dpi = 300, bg = "white")
 ggsave("output/figures/other/si_ndvi_seasonal.pdf", p, width = 7.2, height = 2.8, device = cairo_pdf)
 print(as.data.frame(avg %>% mutate(across(where(is.numeric), ~ round(.x, 2)))))

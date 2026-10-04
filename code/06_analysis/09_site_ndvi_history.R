@@ -75,6 +75,7 @@ pa <- ggplot(ann %>% mutate(cls = site_cls[site], site = factor(site, names(site
   scale_colour_manual(values = c(pal_class, scrub = "#9A8C7A"), guide = "none") +
   labs(x = NULL, y = "Landsat NDVI (dry season, Jan-Apr)") + scale_y_continuous(limits = c(0, 1)) + theme_fig()
 p <- pa
+saveRDS(pa, "output/figures/other/si_ndvi_history.rds")
 ggsave("output/figures/other/si_ndvi_history.png", p, width = 7.2, height = 4.4, dpi = 300, bg = "white")
 ggsave("output/figures/other/si_ndvi_history.pdf", p, width = 7.2, height = 4.4, device = cairo_pdf)
 print(as.data.frame(ann %>% filter(site == "BL60")))
