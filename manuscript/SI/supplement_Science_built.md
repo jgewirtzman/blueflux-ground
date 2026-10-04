@@ -253,18 +253,22 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 # Supplementary Tables
 
-**Table S1. Study sites.**
+**Table S1. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year (number of chamber closures). Stand structure from terrestrial laser scanning of the four scanned plots (M10); DBH and height include standing dead trunks at the ghost sites; woody surface per m² of ground. Water level: at the tidal sites, mean high / low water of the campaign month above the plot's mean floor (FCE LTER loggers; M11), with the flooded share of the floor in hours; elsewhere, mean (maximum) water depth recorded at chamber positions. Porewater salinity: mean of the porewater samples (M16).
 
-| Site | Name | Class | Latitude | Longitude | Dominant species |
-|---|---|---|---|---|---|
-| FLM30 | Flamingo | ghost (core) | 25.15989 | -80.91197 | Avicennia germinans, Conocarpus erectus |
-| CP40 | Christian Point | ghost (core) | 25.14932 | -80.91102 | Avicennia germinans |
-| BL60 | Bear Lake | regenerating (core) | 25.15783 | -80.92320 | Rhizophora mangle, Avicennia germinans |
-| SE1 | SE-1 / US-EvM | scrub (context) | 25.35310 | -80.38071 | Rhizophora mangle, Avicennia germinans |
-| MI | Marco Island | ghost (context) | 25.93033 | -81.67251 | Avicennia germinans |
-| RB10 | Rookery Bay | intact (context) | 25.86289 | -81.56119 | Rhizophora mangle |
-| SRS5 | Gunboat Island / SRS5 | intact (core) | 25.37702 | -81.03235 | Rhizophora mangle |
-| SRS6 | Lower Shark / SRS6 | intact (core) | 25.36463 | -81.07795 | Rhizophora mangle |
+|  | SRS5 | SRS6 | BL60 | CP40 | FLM30 | RB10 | SE1 | MI |
+|---|---|---|---|---|---|---|---|---|
+| Name | Gunboat Island / SRS5 | Lower Shark / SRS6 | Bear Lake | Christian Point | Flamingo | Rookery Bay | SE-1 / US-EvM | Marco Island |
+| Class | intact | intact | regenerating | ghost | ghost | intact (context) | scrub (context) | ghost (context) |
+| Latitude, longitude | 25.3770, -81.0323 | 25.3646, -81.0779 | 25.1578, -80.9232 | 25.1493, -80.9110 | 25.1599, -80.9120 | 25.8629, -81.5612 | 25.3531, -80.3807 | 25.9303, -81.6725 |
+| Dominant species | *Rhizophora mangle* | *Rhizophora mangle* | *Rhizophora mangle*, *Avicennia germinans* | *Avicennia germinans* | *Avicennia germinans*, *Conocarpus erectus* | *Rhizophora mangle* | *Rhizophora mangle*, *Avicennia germinans* | *Avicennia germinans* |
+| Campaigns (closures) | Oct 22 (64); Mar 23 (89) | Mar 22 (15); Oct 22 (66); Mar 23 (65) | Mar 22 (27); Oct 22 (44); Mar 23 (68) | Oct 22 (57); Mar 23 (48) | Mar 22 (43); Oct 22 (49); Mar 23 (61) | Mar 22 (10) | Mar 23 (17) | Mar 22 (10); Mar 23 (20) |
+| Stem density (ha⁻¹) | 3,203 | 1,694 | – | 552 | 752 | – | – | – |
+| Basal area (m² ha⁻¹) | 24.5 | 19.1 | – | 6.5 | 5.6 | – | – | – |
+| Tree height, mean / 95th pct. (m) | 7.6 / 14.7 | 8.6 / 19.2 | – | 6.1 / 11.8 | 5.6 / 9.4 | – | – | – |
+| Mean DBH (cm) | 8.9 | 10.6 | – | 10.8 | 9.0 | – | – | – |
+| Woody surface, stem / root (m² m⁻²) | 0.98 / 0.24 | 0.86 / 0.19 | – | 0.22 / 0.03 | 0.17 / 0.02 | – | – | – |
+| Water level (cm) | Oct 22: +12 / -1 (62%); Mar 23: 0 / -7 (37%) | Oct 22: +29 / +1 (74%); Mar 23: +17 / -5 (55%) | Oct 22: 6 (15); Mar 23: 0 (0) | Oct 22: 11 (23); Mar 23: 9 (24) | Oct 22: 16 (31); Mar 23: 6 (27) | – | Mar 23: 11 (15) | Mar 23: 0 (1) |
+| Porewater salinity (PSU) | Oct 22: 20; Oct 25: 20 | Oct 22: 27; Oct 25: 29 | Oct 22: 38; Mar 23: 38; Oct 25: 35 | Oct 22: 59; Mar 23: 63; Oct 25: 49 | Oct 22: 64; Mar 23: 61 | – | Mar 23: 8 | – |
 
 **Table S2. Measurement exclusions by criterion** (M6). Duplicate records are not independent closures; no flux was removed for being small, negative or below detection.
 

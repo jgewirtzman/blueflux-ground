@@ -56,6 +56,7 @@ steps <- c(
   "code/07_upscaling/07_budget_sources.R",
   "code/07_upscaling/08_supplementary_analyses.R",
   "code/07_upscaling/09_regional_scaling.R",
+  "code/06_analysis/06_site_table.R",                # Table S1 (needs flood_fraction.csv)
   # 08 figures: display items, then copy into output/figures/main and SI
   "code/08_figures/fig2_component_boot.R",          # Fig S3
   "code/08_figures/fig3_stem_height.R",             # Fig S6

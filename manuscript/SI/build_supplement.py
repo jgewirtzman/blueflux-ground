@@ -90,9 +90,19 @@ site_class = {"SRS5": "intact (core)", "SRS6": "intact (core)", "BL60": "regener
               "FLM30": "ghost (core)", "MI": "ghost (context)", "RB10": "intact (context)", "SE1": "scrub (context)"}
 
 def t_S1():
-    b = [[r["site_id"], r["site_name"], site_class.get(r["site_id"], ""), fmt(r["latitude"], 5), fmt(r["longitude"], 5),
-          r["dominant_species"]] for r in rows("data/sites/site_metadata.csv")]
-    return "**Table S1. Study sites.**\n\n" + md_table(["Site", "Name", "Class", "Latitude", "Longitude", "Dominant species"], b)
+    rs = rows("output/analysis/si/si_site_table.csv")
+    sites = list(dict.fromkeys(r["site"] for r in rs))
+    attrs = list(dict.fromkeys(r["row"] for r in rs))
+    val = {(r["row"], r["site"]): r["value"] for r in rs}
+    sp = lambda s: ", ".join(f"*{x.strip()}*" for x in s.split(","))
+    b = [[a] + [sp(val.get((a, s), "")) if a == "Dominant species" else val.get((a, s), "–") for s in sites] for a in attrs]
+    return ("**Table S1. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year "
+            "(number of chamber closures). Stand structure from terrestrial laser scanning of the four scanned plots (M10); "
+            "DBH and height include standing dead trunks at the ghost sites; woody surface per m² of ground. "
+            "Water level: at the tidal sites, mean high / low water of the campaign month above the plot's mean floor "
+            "(FCE LTER loggers; M11), with the flooded share of the floor in hours; elsewhere, mean (maximum) water depth "
+            "recorded at chamber positions. Porewater salinity: mean of the porewater samples (M16).\n\n"
+            + md_table([""] + sites, b))
 
 def t_S2():
     b = [[r["category"], r["n"], r["components"]] for r in rows("output/analysis/si/si_exclusions.csv")]
