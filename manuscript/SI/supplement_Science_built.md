@@ -264,6 +264,11 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 **Fig. S19.** Campaign context (M2). Monthly z-scores of SRS6 water level (FCE LTER, 2001–2024), air temperature and midday net CO2 uptake (US-Skr tower, 2004–2011 and 2018–2023) and tower CH4 flux (2018–2023; FCH4 + storage, quality flag ≤ 1, u* > 0.2), each standardised over all of its year-months. Lines, median for each calendar month; bands, interquartile range across years (16–22 years per month for water level, 2–6 for tower CH4); points, the campaign months (October 2022, March 2023) with ±1 SD of daily means within the month; shading, campaign months. The tower CH4 record carries a negative dry-season offset that the z-score removes; only its seasonal pattern is shown.
 
 
+
+
+**Fig. S20.** _[PLACEHOLDER — CARAFE flight tracks and coverage (E. Delaria): flight legs of each deployment (April 2022, October 2022, February and April 2023, July 2024) over the mangrove extent and the 2017 dieback; footprint climatology; area of intact and ghost mangrove within the footprints (km2) and its share of each class in south Florida; the ground sites marked.]_
+
+
 ![](<output/figures/other/si_switch_methods.png>){width=6.5in}
 
 **Fig. S21.** The intact-to-ghost switch by three routes (text S5): chamber site budgets (this study; Monte Carlo 95% interval); CARAFE airborne class fluxes alone (Delaria et al. 2024; four deployments, wet and dry seasons weighted equally), with midday CO2 scaled to daily for both classes by the tower relation of Doughty et al. (2026), and as a sensitivity with ghost midday flux taken as daily (pale); and the regional reflectance-based upscaling of Doughty et al. (2026), mangrove-forest versus mapped-dieback pixels, 2022–2024 (values read from its figs. S2 and S3; no interval). Bars, CO2 and CH4 parts; diamonds and whiskers, switch and 95% interval.

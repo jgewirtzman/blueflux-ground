@@ -205,6 +205,8 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 {{FIG S19}}
 
+{{FIG S20}}
+
 {{FIG S21}}
 
 {{FIG S22}}
