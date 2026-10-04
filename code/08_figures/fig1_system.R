@@ -50,7 +50,7 @@ off <- data.frame(site_id = c("SRS5", "SRS6", "BL60", "CP40", "FLM30", "MI", "RB
                   sy = c(5500, -6000, 4500, -8000, 5500, 2500, -2500, 0),
                   side = c(1, -1, -1, 1, 1, 1, 1, -1))
 nm <- c(SRS5 = "Gunboat Island", SRS6 = "Lower Shark River", BL60 = "Bear Lake", CP40 = "Christian Point",
-        FLM30 = "Flamingo", MI = "Marco Island", RB10 = "Rookery Bay", SE1 = "")
+        FLM30 = "Flamingo", MI = "Marco Island", RB10 = "Rookery Bay", SE1 = "Intrusion marsh")
 lab <- sxy %>% left_join(off, by = "site_id") %>% mutate(txt = ifelse(nm[site_id] == "", site_id, paste0(site_id, "\n", nm[site_id]))) %>%
   mutate(px = X + sx, py = Y + sy, moved = sx != 0 | sy != 0,
          lx = px + side * 3000, ly = py, hj = ifelse(side > 0, 0, 1))

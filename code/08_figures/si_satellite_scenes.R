@@ -76,8 +76,9 @@ chip <- function(site, lat, lon, key, dt, target) {
 }
 all <- bind_rows(lapply(site_lv, function(s) { m <- meta[meta$site_id == s, ]
   bind_rows(lapply(seq_len(nrow(windows)), function(j) chip(s, m$latitude, m$longitude, windows$key[j], windows$dt[j], windows$target[j]))) }))
-st <- function(v) { v[!is.finite(v)] <- 0; pmin(pmax(v / 0.15, 0), 1) }
-all <- all %>% mutate(col = rgb(st(r), st(g), st(b)),
+st <- function(v) { v[!is.finite(v)] <- 0; pmin(pmax(v / 0.15, 0), 1) }    # fixed stretch, reflectance 0-0.15
+all <- all %>%
+  mutate(col = rgb(st(r), st(g), st(b)),
                       site = factor(site, site_lv), win = factor(windows$win[match(key, windows$key)], windows$win))
 lab <- all %>% distinct(site, win, date, clear) %>% mutate(txt = format(as.Date(date), "%d %b %Y"))
 strip_y <- ggh4x::strip_themed(text_y = lapply(c(pal_class, scrub = "#9A8C7A")[cls[site_lv]],
