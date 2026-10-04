@@ -223,11 +223,10 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE)
       scale_x_continuous(breaks = asinh(c(-1, 0, 10)), labels = c(-1, 0, 10))
     p_tls <- pf + nl + labs(tag = "f") + scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0), position = "right") +
       theme(plot.margin = margin(5.5, 5.5, 5.5, 22))
-    tls_ph <- ggplot() + annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = "grey92") +
-      annotate("text", x = c(0.25, 0.75), y = 0.5, label = c("intact (SRS6)", "ghost (CP40)"), size = 2.6, colour = "grey35") +
-      annotate("segment", x = 0.5, xend = 0.5, y = 0.05, yend = 0.95, colour = "white", linewidth = 1) +
-      labs(subtitle = "PLACEHOLDER: TLS point-cloud renders") + coord_cartesian(expand = FALSE) + theme_void() +
-      theme(plot.subtitle = element_text(size = 6.5, colour = "firebrick"))
+    # (c) terrestrial laser scans, intact vs ghost (tls_render.py)
+    img <- png::readPNG("output/figures/other/tls_render_panel.png")
+    tls_ph <- ggplot() + annotation_raster(img, 0, 1, 0, 1) + coord_fixed(ratio = dim(img)[1] / dim(img)[2], expand = FALSE) +
+      scale_x_continuous(limits = c(0, 1)) + scale_y_continuous(limits = c(0, 1)) + theme_void()
     sh <- readRDS("output/figures/other/fig_component_shares.rds")
     design <- "
     AAABBB
