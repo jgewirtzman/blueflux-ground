@@ -25,11 +25,12 @@ display_items <- c(
   "SI/FigS8_SA_by_height.png"           = "other/SA_by_segment_height_fixedY.png",        # plot_SA_height_fixedY.R
   "SI/FigS9_tide_states.png"            = "other/si_tide_states.png",                     # si_upscaling_figs.R
   "SI/FigS10_flood_fraction.png"        = "other/si_flood_fraction.png",                  # si_flood_fraction.R
-  "SI/FigS11_sensitivity_switch.png"    = "other/si_sensitivity_switch.png",              # si_upscaling_figs.R
-  "SI/FigS12_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
-  "SI/FigS13_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
-  "SI/FigS14_carbonate.png"             = "other/si_S12_carbonate.png",                   # si_porewater_carbonate.R
-  "SI/FigS15_campaign_context.png"      = "other/si_campaign_context.png"                 # si_campaign_context.R
+  "SI/FigS11_waterline.png"             = "other/si_waterline.png",                       # si_waterline.R
+  "SI/FigS12_sensitivity_switch.png"    = "other/si_sensitivity_switch.png",              # si_upscaling_figs.R
+  "SI/FigS13_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",              # si_upscaling_figs.R
+  "SI/FigS14_porewater_rounds.png"      = "other/ed_porewater_rounds.png",                # ed_porewater_rounds.R
+  "SI/FigS15_carbonate.png"             = "other/si_S12_carbonate.png",                   # si_porewater_carbonate.R
+  "SI/FigS16_campaign_context.png"      = "other/si_campaign_context.png"                 # si_campaign_context.R
 )
 # S16 (metagenome detail) is a placeholder until the sequencing results arrive.
 # Clear stale curated SI copies so the folder mirrors the current numbering.

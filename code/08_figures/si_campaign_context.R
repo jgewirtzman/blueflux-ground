@@ -1,5 +1,5 @@
 # =============================================================================
-# Fig. S14 | Campaign context: how the two flux campaigns sit in the seasonal cycle.
+# Fig. S16 | Campaign context: how the two flux campaigns sit in the seasonal cycle.
 #   (a) Monthly z-scores (each variable standardised over all its year-months) of
 #       SRS6 water level (FCE LTER, 2001-2024), air temperature, tower CH4 flux and
 #       midday net CO2 uptake (US-Skr, 2004-2023 where available). Lines: median z
