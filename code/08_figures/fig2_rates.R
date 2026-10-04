@@ -65,7 +65,7 @@ rate_panel <- function(dd, gas, status, breaks, xlab, show_y = TRUE) {
 w <- d %>% filter(site_type == "core site", component %in% c("stem", "root"), month_year %in% c("2022-10", "2023-03"), !is.na(height_corrected)) %>%
   mutate(surface = factor(ifelse(component == "root", "prop root", "stem"), c("stem", "prop root")),
          h = pmax(height_corrected, 0) / 100)
-zoom_fill <- "grey96"; zoom_top <- 1.9; f_xmax <- 0.17; zoom_dx <- 0.042
+zoom_fill <- "#EEF1F4"; zoom_line <- "grey35"; zoom_top <- 1.9; f_xmax <- 0.17; zoom_dx <- 0.042
 prof_panel <- function(gas, curves, breaks, xlab) {
   cur <- read.csv(curves) %>% mutate(class = factor(class, names(pal_class)))
   ww <- w %>% mutate(v = .data[[paste0(gas, "_best.flux")]]) %>% filter(!is.na(v))
@@ -81,7 +81,7 @@ prof_panel <- function(gas, curves, breaks, xlab) {
     scale_colour_manual(values = pal_class, guide = "none") + scale_fill_manual(values = pal_class, guide = "none") +
     scale_shape_manual(values = c(stem = 16, `prop root` = 2), name = "surface") +
     labs(x = xlab, y = "Height above water (m)") + theme_fig() +
-    theme(panel.background = element_rect(fill = zoom_fill, colour = "grey55", linewidth = 0.4)) +
+    theme(panel.background = element_rect(fill = zoom_fill, colour = NA), panel.border = element_rect(fill = NA, colour = zoom_line, linewidth = 0.6)) +
     guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1)))
 }
 pc <- prof_panel("CH4", "output/analysis/woody_height_model_curves.csv", c(0, 1, 10, 100, 1000),
@@ -165,10 +165,13 @@ height_panel <- function(right = FALSE) {
     data.frame(class = factor("ghost", levels(hb$class)), x = f_xmax, y = c(0, zoom_top),
                xend = f_xmax + zoom_dx, yend = c(0, 18.5))
   ggplot(hb, aes(sa, h + 0.25, fill = part)) +
-    annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = zoom_top, fill = "grey90") +
+    annotate("rect", xmin = 0, xmax = f_xmax, ymin = 0, ymax = zoom_top, fill = zoom_fill, colour = NA) +
     geom_col(orientation = "y", width = 0.45, position = position_stack(reverse = TRUE), colour = NA) +
     geom_segment(data = con, aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE,
-                 colour = "grey55", linewidth = 0.4, linetype = "22") +
+                 colour = zoom_line, linewidth = 0.45) +
+    annotate("rect", xmin = 0, xmax = f_xmax, ymin = 0, ymax = zoom_top, fill = NA, colour = zoom_line, linewidth = 0.6) +
+    geom_text(data = data.frame(class = factor("intact", levels(hb$class))), aes(x = f_xmax * 0.97, y = 12),
+              label = "chamber range\n(box), enlarged\nin d and e", hjust = 1, vjust = 0, size = 2, lineheight = 0.9, colour = zoom_line, inherit.aes = FALSE) +
     facet_grid(~ class) +
     scale_fill_manual(values = c(`prop root` = pal_comp[["prop root"]], stem = pal_comp[["stem"]], branch = col_branch), name = "woody surface") +
     scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0)) +

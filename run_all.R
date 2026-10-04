@@ -67,6 +67,7 @@ steps <- c(
   "code/08_figures/fig2_component_boot.R",          # Fig S5
   "code/08_figures/fig3_stem_height.R",             # Fig S8
   "code/08_figures/fig_carbon_budget.R",           # Fig 3d schematic (rds)
+  "code/08_figures/tls_render.py",                  # Fig 2c laser-scan panel (python3; from committed slab subsets)
   "code/08_figures/fig3_stands.R",                  # Fig 3; saves component shares (rds) for Fig 2
   "code/08_figures/fig2_rates.R",                   # Fig 2
   "code/08_figures/fig4_geochem.R",                 # Fig 4
@@ -161,7 +162,7 @@ for (s in run) {
   log <- file.path("output/logs", paste0(stage_of(s), "__", sub("\\.R$", ".log", basename(s))))
   t0 <- Sys.time()
   if (file.exists("Rplots.pdf")) file.remove("Rplots.pdf")
-  rc <- system2("Rscript", s, stdout = log, stderr = log)
+  rc <- system2(if (grepl("\\.py$", s)) "python3" else "Rscript", s, stdout = log, stderr = log)
   if (file.exists("Rplots.pdf")) {   # a plot drawn without an open device: not an output
     file.remove("Rplots.pdf"); cat(sprintf("  (note: %s drew to the default device; Rplots.pdf removed)\n", label_of(s))) }
   cat(sprintf("%-45s %s  %5.0f s\n", label_of(s), if (rc == 0) "ok    " else "FAILED",

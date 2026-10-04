@@ -39,4 +39,4 @@ output/logs/
 # Large raw FCE LTER water-level file (downloaded by code/07_upscaling/01b_flood_fraction.R)
 data/environmental/water_level/FCE_LTER_1168_water_levels.csv
 data/gis/hurricane_tracks/hurdat2-*.txt
-data/tls/point_clouds/*.npz
+data/tls/point_clouds/*_clip.npz
