@@ -253,7 +253,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 
 # Supplementary Tables
 
-**Table S1. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year (number of chamber closures). Stand structure from terrestrial laser scanning of the four scanned plots (M10); DBH and height include standing dead trunks at the ghost sites; woody surface per m² of ground. Water level: at the tidal sites, mean high / low water of the campaign month above the plot's mean floor (FCE LTER loggers; M11), with the flooded share of the floor in hours; elsewhere, mean (maximum) water depth recorded at chamber positions. Porewater salinity: mean of the porewater samples (M16).
+**Table S1. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year (number of chamber closures). Stand structure from terrestrial laser scanning of the four scanned plots (M10); DBH and height include standing dead trunks at the ghost sites; woody surface per m² of ground. FCE LTER: trees > 2.5 cm DBH in two 20 × 20 m plots, 2023 survey (data S2). Water level: at the tidal sites, mean high / low water of the campaign month above the plot's mean floor (FCE LTER loggers; M11), with the flooded share of the floor in hours; elsewhere, mean (maximum) water depth recorded at chamber positions. Porewater salinity: mean of the porewater samples (M16).
 
 |  | SRS5 | SRS6 | BL60 | CP40 | FLM30 | RB10 | SE1 | MI |
 |---|---|---|---|---|---|---|---|---|
@@ -267,6 +267,8 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Tree height, mean / 95th pct. (m) | 7.6 / 14.7 | 8.6 / 19.2 | – | 6.1 / 11.8 | 5.6 / 9.4 | – | – | – |
 | Mean DBH (cm) | 8.9 | 10.6 | – | 10.8 | 9.0 | – | – | – |
 | Woody surface, stem / root (m² m⁻²) | 0.98 / 0.24 | 0.86 / 0.19 | – | 0.22 / 0.03 | 0.17 / 0.02 | – | – | – |
+| Stem density / basal area, FCE LTER 2023 (ha⁻¹ / m² ha⁻¹) | 2,525 / 25.0 | 1,712 / 21.0 | – | – | – | – | – | – |
+| Basal area by species, FCE LTER 2023 (%) | *R. mangle* 75, *L. racemosa* 15, *A. germinans* 10 | *R. mangle* 43, *A. germinans* 41, *L. racemosa* 16 | – | – | – | – | – | – |
 | Water level (cm) | Oct 22: +12 / -1 (62%); Mar 23: 0 / -7 (37%) | Oct 22: +29 / +1 (74%); Mar 23: +17 / -5 (55%) | Oct 22: 6 (15); Mar 23: 0 (0) | Oct 22: 11 (23); Mar 23: 9 (24) | Oct 22: 16 (31); Mar 23: 6 (27) | – | Mar 23: 11 (15) | Mar 23: 0 (1) |
 | Porewater salinity (PSU) | Oct 22: 20; Oct 25: 20 | Oct 22: 27; Oct 25: 29 | Oct 22: 38; Mar 23: 38; Oct 25: 35 | Oct 22: 59; Mar 23: 63; Oct 25: 49 | Oct 22: 64; Mar 23: 61 | – | Mar 23: 8 | – |
 
@@ -687,6 +689,7 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 | Castañeda-Moya, E., Kominoski, J., Rivera-Monroy, V., Rizzie, C. & Reisa, C. Water levels and porewater temperature data from the Shark River and Taylor River Slough mangrove sites, Everglades National Park (FCE LTER), South Florida, USA: May 2001 – ongoing. Environmental Data Initiative, knb-lter-fce.1168.15 (2025). https://doi.org/10.6073/pasta/9fd1d290fbe0753e76be1f748c4e9dab | Hourly water level for the flooded share of the intact floor and the stem exposure model |
 | Castañeda-Moya, E. et al. Monitoring of nutrient and sulfide concentrations in porewaters of mangrove forests from the Shark River Slough and Taylor Slough, Everglades National Park (FCE LTER), Florida, USA, December 2000–ongoing. Environmental Data Initiative, knb-lter-fce.1171.16 (2025). https://doi.org/10.6073/pasta/cd38181a01297bc25a086d71635a1a26 | Long-term porewater NH4 and NO3 at SRS5 and SRS6 (table S11) |
 | Castañeda-Moya, E. et al. Mangrove litterfall from the Shark River Slough and Taylor Slough, Everglades National Park (FCE), South Florida, USA, January 2001 – ongoing. Environmental Data Initiative, knb-lter-fce.1195.14 (2026). https://doi.org/10.6073/pasta/1cf9dbd75f5d75c4514673eee55b79ec | Woody litterfall context for downed wood (text S3) |
+| Castañeda-Moya, E., Rivera-Monroy, V. & Twilley, R. Mangrove forest growth from the Shark River Slough, Everglades National Park (FCE), South Florida, USA, January 1995 – ongoing. Environmental Data Initiative, knb-lter-fce.1113.7 (2024). https://doi.org/10.6073/pasta/45b440211d5756a157e72b1ee3a7a0ec | Species composition, stem density and basal area at SRS5 and SRS6 (table S1) |
 | Xiong, L., Lagomasino, D. & Poulter, B. BlueFlux: Terrestrial lidar scans of mangrove forests, Everglades, FL, USA, 2022–2023. ORNL DAAC (2024). https://doi.org/10.3334/ORNLDAAC/2311 | Point clouds for surface area by component and height |
 | Delaria, E. R., Wolfe, G. M., Hannun, R. A., Blanock, K., Poulter, B. & Thornhill, K. L. BlueFlux airborne trace gases, fluxes, and mixing ratios, southern Florida, 2022–2023 (Version 1). ORNL DAAC (2024). https://doi.org/10.3334/ORNLDAAC/2327 | Airborne CH4 and CO2 fluxes by deployment |
 | Doughty, C. L. et al. BlueFlux: Modeled daily CO2 and CH4 wetland fluxes, southern Florida, 2000–2024. ORNL DAAC (2025). https://doi.org/10.3334/ORNLDAAC/2404 | Regional context |

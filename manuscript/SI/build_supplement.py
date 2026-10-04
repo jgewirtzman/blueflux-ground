@@ -99,6 +99,7 @@ def t_S1():
     return ("**Table S1. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year "
             "(number of chamber closures). Stand structure from terrestrial laser scanning of the four scanned plots (M10); "
             "DBH and height include standing dead trunks at the ghost sites; woody surface per m² of ground. "
+            "FCE LTER: trees > 2.5 cm DBH in two 20 × 20 m plots, 2023 survey (data S2). "
             "Water level: at the tidal sites, mean high / low water of the campaign month above the plot's mean floor "
             "(FCE LTER loggers; M11), with the flooded share of the floor in hours; elsewhere, mean (maximum) water depth "
             "recorded at chamber positions. Porewater salinity: mean of the porewater samples (M16).\n\n"
