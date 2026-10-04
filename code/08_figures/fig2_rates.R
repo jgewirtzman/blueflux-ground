@@ -16,6 +16,11 @@
 #       above the water, all classes on one axis, with fitted profiles
 #       (06_analysis/03_woody_height_model.R; live stem, flooded position, wet
 #       season; typical rather than mean flux).
+# Main-text layout (fig2_rates): row 1, rates (a, b); row 2, laser-scanned
+# structure (c, point-cloud renders: PLACEHOLDER), woody flux by height (d, e) and
+# woody surface by height (f); row 3, surface per m2 ground (g, pies) and the share
+# of stand CH4 (h) and respiration (i) by component and campaign
+# (output/figures/other/fig_component_shares.rds, saved by fig3_stands.R).
 # Writes output/figures/other/fig2_rates.{png,pdf}.
 # =============================================================================
 suppressMessages({library(dplyr); library(ggplot2); library(patchwork)})
@@ -211,16 +216,37 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE)
       theme(axis.text.y = element_text())
     p_tls <- pf + nl + labs(tag = "d")
   } else {
-    design <- "
-    ABC
-    GGH
-    DEF
-    SST
-  "
-    p_ch4 <- pc2 + nl + labs(tag = "d")
-    p_co2 <- pd + nl + labs(tag = "e")
+    # three rows: rates | structure + woody flux by height | surfaces + component shares
+    p_ch4 <- pc2 + nl + labs(tag = "d", x = expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
+      scale_x_continuous(breaks = asinh(c(0, 10, 1000)), labels = c(0, 10, 1000))
+    p_co2 <- pd + nl + labs(tag = "e", x = expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")")) +
+      scale_x_continuous(breaks = asinh(c(-1, 0, 10)), labels = c(-1, 0, 10))
     p_tls <- pf + nl + labs(tag = "f") + scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0), position = "right") +
       theme(plot.margin = margin(5.5, 5.5, 5.5, 22))
+    tls_ph <- ggplot() + annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = "grey92") +
+      annotate("text", x = c(0.25, 0.75), y = 0.5, label = c("intact (SRS6)", "ghost (CP40)"), size = 2.6, colour = "grey35") +
+      annotate("segment", x = 0.5, xend = 0.5, y = 0.05, yend = 0.95, colour = "white", linewidth = 1) +
+      labs(subtitle = "PLACEHOLDER: TLS point-cloud renders") + coord_cartesian(expand = FALSE) + theme_void() +
+      theme(plot.subtitle = element_text(size = 6.5, colour = "firebrick"))
+    sh <- readRDS("output/figures/other/fig_component_shares.rds")
+    design <- "
+    AAABBB
+    LLLLLL
+    TTDEFF
+    NNNOOO
+    CCGGHH
+  "
+    # design areas take plots in alphabetical order of their letters: A B C D E F G H L N O T
+    fig <- (pa + nl + labs(tag = "a")) + (pb + nl + labs(tag = "b")) + (pcc + labs(tag = "g")) +
+      p_ch4 + p_co2 + p_tls + (sh$ch4 + labs(tag = "h")) + (sh$resp + labs(tag = "i")) +
+      wrap_elements(full = leg_class) + wrap_elements(full = leg_surf) + wrap_elements(full = leg_wood) + (tls_ph + labs(tag = "c")) +
+      plot_layout(design = design, heights = unit(c(1, 0.2, 1, 0.2, 1), c("null", "in", "null", "in", "null"))) +
+      plot_annotation(caption = note, theme = theme(plot.caption = element_text(size = 6.5, colour = "grey40", hjust = 0),
+                                                     plot.margin = margin(2, 2, 2, 2))) &
+      theme(plot.tag = element_text(face = "bold", size = 11), plot.margin = margin(2, 3, 2, 3))
+    ggsave(paste0(file, ".png"), fig, width = 7.2, height = 7.6, dpi = 300, bg = "white")
+    ggsave(paste0(file, ".pdf"), fig, width = 7.2, height = 7.6, device = cairo_pdf)
+    return(invisible(NULL))
   }
   fig <- (pa + nl + labs(tag = "a")) + (pb + nl + labs(tag = "b")) + (pcc + labs(tag = "c")) +
     p_ch4 + p_co2 + p_tls +

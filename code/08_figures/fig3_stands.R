@@ -1,13 +1,14 @@
 # =============================================================================
-# Fig. 3 | Stand budgets and their independent closure.
-#   (a, b) Share of stand CH4 and of stand respiration by component, wet (Oct 2022)
-#       and dry (Mar 2023) campaigns, intact (SRS5, SRS6) and ghost (CP40, FLM30).
-#   (c) Airborne CH4 and midday CO2 by deployment (PLACEHOLDER until the two-class
-#       values for all five deployments, including July 2024, arrive).
-#   (d) CH4 and (e) net CO2 exchange by campaign and annually (mean of the wet and
+# Fig. 3 | The stand carbon budget and its independent closure.
+#   (a) Airborne CH4 and midday CO2 over intact and ghost forest by deployment
+#       (CARAFE; +/- 1.96 SE band; grey, our campaign months; July 2024 pending).
+#   (b) CH4 and (c) net CO2 exchange by campaign and annually (mean of the wet and
 #       dry campaigns): stacked bottom-up components, bottom-up totals (Monte Carlo
-#       95%), airborne (CARAFE; Mar 2023 = mean of Feb and Apr 2023; +/- 1.96 SE)
-#       and tower (US-Skr campaign-month NEE); shaded green, tower GPP (intact).
+#       95%), airborne (Mar 2023 = mean of Feb and Apr 2023) and tower (US-Skr
+#       campaign-month NEE); shaded green, tower GPP (intact).
+#   (d) Carbon stock-and-flow schematics (fig_carbon_budget.R -> fig_carbon_schematic.rds).
+# Also saves the component-share panels (stand CH4 and respiration by component and
+# campaign) for Fig. 2 h, i (fig_component_shares.rds).
 # Writes output/figures/other/fig3_stands.{png,pdf}.
 # =============================================================================
 suppressMessages({library(dplyr); library(tidyr); library(ggplot2); library(patchwork)})
@@ -179,19 +180,36 @@ pf <- ggplot(bind_rows(ann, twr) %>% mutate(source = factor(source, src_lev)), a
   scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
   labs(x = NULL, y = "Annual stand budget") + theme_fig() + theme(strip.text = element_text(hjust = 0.5), panel.grid.major.x = element_blank())
 
-# legends beside their own rows: (a, b) component; (c, d) forest class + estimate; (e, f) estimate
-est_guide <- guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30", "grey30")))
-pf <- pf + scale_shape_manual(values = src_shape, limits = src_lev[c(1, 3)], name = "estimate") +
-  scale_fill_manual(values = src_fill, limits = src_lev, guide = "none") +
-  guides(shape = guide_legend(ncol = 1, override.aes = list(fill = c("white", "grey30"))))
-pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = guide_legend(ncol = 1))
-pc <- pc + guides(shape = "none", fill = "none"); pd <- pd + guides(shape = est_guide, fill = "none")
-# row order follows the narrative from Fig. 2 (rate x area): component shares, then
-# annual stand budgets against airborne data, then closure by campaign
-row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(guides = "collect")
-row2 <- ((pe + labs(tag = "c")) | plot_spacer()) + plot_layout(guides = "collect", widths = c(1, 0.02))
-row3 <- ((pc + labs(tag = "d")) | (pd + labs(tag = "e"))) + plot_layout(guides = "collect")
-fig <- (row1 / row2 / row3) & theme(legend.position = "right", legend.justification = "left")
+pa <- pa + guides(fill = "none"); pb <- pb + guides(fill = "none")
+saveRDS(list(ch4 = pa, resp = pb), "output/figures/other/fig_component_shares.rds")
+pc <- pc + guides(shape = "none", fill = "none")
+pd <- pd + guides(shape = guide_legend(nrow = 1, override.aes = list(fill = c("white", "grey30", "grey30"))), fill = "none")
+# (a) airborne time series: dated deployments, CI band, dotted connectors
+dep_date <- c("Apr 2022" = "2022-04-15", "Oct 2022" = "2022-10-15", "Feb 2023" = "2023-02-15", "Apr 2023" = "2023-04-15", "Jul 2024" = "2024-07-15")
+gas_lab <- c(CH4 = "CH[4]~(nmol~m^-2~s^-1)", CO2 = "CO[2]*','~midday~(mu*mol~m^-2~s^-1)")
+air_ts <- read.csv("data/carafe_topdown/delaria_endmembers_campaign.csv") %>%
+  mutate(class = to_class(class), date = as.Date(dep_date[campaign]), lo = flux - z95 * se, hi = flux + z95 * se,
+         gas = factor(gas_lab[gas], gas_lab))
+camp_band <- data.frame(xmin = as.Date(c("2022-10-01", "2023-03-01")), xmax = as.Date(c("2022-10-31", "2023-03-31")))
+pend_lab <- data.frame(gas = factor(gas_lab, gas_lab), date = as.Date("2024-07-15"))
+pts <- ggplot(air_ts, aes(date, flux, colour = class, fill = class, group = class)) +
+  geom_rect(data = camp_band, aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "grey90") +
+  geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.3) +
+  geom_ribbon(aes(ymin = lo, ymax = hi), alpha = 0.15, colour = NA) +
+  geom_line(linewidth = 0.35, linetype = "13") + geom_point(size = 1.4) +
+  geom_text(data = pend_lab, aes(date, Inf, label = "Jul 2024\npending"), inherit.aes = FALSE, vjust = 1.3, size = 2, colour = "grey45") +
+  facet_wrap(~ gas, scales = "free_y", labeller = label_parsed) +
+  scale_colour_manual(values = pal_class[cls], breaks = c("intact", "ghost"), name = NULL) +
+  scale_fill_manual(values = pal_class[cls], breaks = c("intact", "ghost"), name = NULL) +
+  scale_x_date(limits = as.Date(c("2022-02-01", "2024-09-30")), date_labels = "%b %Y", date_breaks = "6 months") +
+  labs(x = NULL, y = "Airborne flux (95% CI)") + theme_fig() +
+  theme(strip.text = element_text(hjust = 0.5), legend.position = "right", axis.text.x = element_text(size = 6))
+sch <- readRDS("output/figures/other/fig_carbon_schematic.rds")
+row_cl <- ((pc + labs(tag = "b")) | (pd + labs(tag = "c"))) + plot_layout(guides = "collect") &
+  theme(legend.position = "bottom", legend.direction = "horizontal", legend.margin = margin(0, 0, 0, 0), legend.box.spacing = unit(2, "pt"),
+        plot.margin = margin(2, 3, 2, 3))
+fig <- (pts + labs(tag = "a")) / wrap_elements(full = row_cl) / (wrap_elements(full = sch & theme(plot.margin = margin(0, 2, 0, 12))) + labs(tag = "d")) +
+  plot_layout(heights = c(0.42, 1, 1.42)) & theme(plot.tag = element_text(face = "bold", size = 11), plot.margin = margin(2, 3, 2, 3))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 8, device = cairo_pdf)
+ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 9, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 9, device = cairo_pdf)

@@ -1,11 +1,15 @@
 # =============================================================================
 # Fig. 1 | System and design.
-#   (a) South Florida: sites by forest class (core sites large and bold, supporting
+# Layout: (a) measurement schematic on top; (b) map; (c) photos; (d) trajectories.
+#   (b) South Florida: sites by forest class (core sites large and bold, supporting
 #       sites small), mangrove extent (GMW v3 2016), mangrove with little recovery after the 2017 hurricanes (CIFOR
 #       short-term loss on GMW v1), the US-Skr tower, Shark River and Taylor
 #       Sloughs and the Everglades National Park boundary; Florida inset.
-#   (b) Intact (SRS5), regenerating (BL60) and ghost (CP40) forest.
-#   (c) Measurement schematic (draft illustration, data/figures/fig1c_schematic.jpg).
+#   (c) Intact (SRS5), regenerating (BL60) and ghost (CP40) forest.
+#   (d) Site trajectories: Landsat dry-season (Jan-Apr) NDVI at the five core plots,
+#       1995-2025 (median of clear scenes; 06_analysis/09_site_ndvi_history.R cache),
+#       with hurricanes Wilma (Oct 2005) and Irma (Sep 2017).
+#   (a) Measurement schematic (draft illustration, data/figures/fig1c_schematic.jpg).
 # Site coordinates from data/sites/site_metadata.csv; photos in data/photos/sites.
 # Writes output/figures/other/fig1_system.{png,pdf}.
 # =============================================================================
@@ -83,7 +87,7 @@ pa <- ggplot() +
 inset <- ggplot() + geom_sf(data = fl_in, fill = "grey90", colour = "grey55", linewidth = 0.15) +
   geom_sf(data = box, fill = NA, colour = col_ink, linewidth = 0.4) + theme_void() +
   theme(panel.background = element_rect(fill = "white", colour = "grey40", linewidth = 0.3))
-pa <- (pa + labs(tag = "a")) + inset_element(inset, left = 0.81, bottom = 0.75, right = 1.02, top = 1.06, align_to = "panel", clip = FALSE)
+pa_map <- pa + inset_element(inset, left = 0.81, bottom = 0.75, right = 1.02, top = 1.06, align_to = "panel", clip = FALSE)
 
 # ---- (b) photos ----
 photo <- function(file, class, site, asp) {
@@ -106,9 +110,39 @@ pc <- ggplot() + annotation_custom(rasterGrob(sch, width = unit(1, "npc"), heigh
   scale_x_continuous(limits = c(0, 1), expand = c(0, 0)) + scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
   theme_void() + theme(aspect.ratio = dim(sch)[1] / dim(sch)[2])
 
-top <- pa + (wrap_elements(full = pb) + labs(tag = "b") + theme(plot.tag.position = c(0, 1.02), plot.margin = margin(14, 0, 0, 14), plot.tag = element_text(face = "bold", size = 11))) +
-  plot_layout(widths = c(2.15, 1))
-fig <- top / (pc + labs(tag = "c") + theme(plot.tag = element_text(face = "bold", size = 11))) + plot_layout(heights = c(1, 0.62)) 
-dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig1_system.png", fig, width = 7.2, height = 6.5, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig1_system.pdf", fig, width = 7.2, height = 6.5, device = cairo_pdf)
+# ---- (c) trajectories ----
+tcls <- core
+lsf <- file.path("data/environmental/satellite/landsat_ndvi", paste0(names(tcls), ".csv"))
+nd <- bind_rows(lapply(lsf[file.exists(lsf)], read.csv)) %>% filter(!is.na(ndvi)) %>%
+  mutate(year = as.integer(substr(date, 1, 4))) %>% group_by(site, year) %>% summarise(ndvi = median(ndvi), .groups = "drop") %>%
+  mutate(cls = factor(tcls[site], c("intact", "regenerating", "ghost"))) %>%
+  group_by(site) %>% mutate(rel = 100 * ndvi / quantile(ndvi[year <= 2016], 0.9)) %>% ungroup()   # % of pre-Irma 90th percentile
+storms <- data.frame(name = c("Wilma", "Irma"), x = c(2005.8, 2017.7))
+camps <- data.frame(xmin = c(2022.17, 2022.75, 2023.17), xmax = c(2022.25, 2022.83, 2023.25))   # Mar 2022, Oct 2022, Mar 2023
+traj_panel <- function(v, ylab, ylim, ybr) {
+  endlab <- nd %>% mutate(val = .data[[v]]) %>% group_by(site) %>% filter(year == max(year)) %>% ungroup() %>% arrange(desc(val)) %>% mutate(ylab = val)
+  gap <- diff(ylim) * 0.045
+  for (i in seq_len(nrow(endlab))[-1]) endlab$ylab[i] <- min(endlab$ylab[i], endlab$ylab[i - 1] - gap)
+  ggplot(nd, aes(year, .data[[v]], colour = cls, group = site)) +
+    annotate("rect", xmin = camps$xmin, xmax = camps$xmax, ymin = -Inf, ymax = Inf, fill = "grey80", alpha = 0.7) +
+    annotate("text", x = 2022.7, y = ylim[2], label = "campaigns", size = 1.9, colour = "grey40", hjust = 1, vjust = 1) +
+    geom_vline(data = storms, aes(xintercept = x), colour = "grey55", linetype = "22", linewidth = 0.3) +
+    geom_text(data = storms, aes(x = x, y = ylim[1] + diff(ylim) * 0.03, label = name), inherit.aes = FALSE, angle = 90, hjust = 0, vjust = -0.4, size = 2.1, colour = "grey40") +
+    geom_line(linewidth = 0.45) + geom_point(size = 0.7) +
+    geom_text(data = endlab, aes(x = year + 0.4, y = ylab, label = site), hjust = 0, size = 2.1, show.legend = FALSE) +
+    scale_colour_manual(values = pal_class[c("intact", "regenerating", "ghost")], guide = "none") +
+    scale_x_continuous(limits = c(1995, 2027.5), breaks = seq(1995, 2025, 5), expand = c(0.01, 0)) +
+    scale_y_continuous(limits = ylim, breaks = ybr) + labs(x = NULL, y = ylab) + theme_fig()
+}
+p_traj <- traj_panel("ndvi", "NDVI (Landsat, Jan-Apr)", c(0, 1), seq(0, 1, 0.25))
+p_rel <- traj_panel("rel", "NDVI (% of pre-Irma 90th pct.)", c(0, 125), seq(0, 125, 25))
+fig_with <- function(ptraj) {
+  T11 <- theme(plot.tag = element_text(face = "bold", size = 11))
+  top2 <- (pa_map + labs(tag = "b")) + (wrap_elements(full = pb) + labs(tag = "c") + theme(plot.tag.position = c(-0.04, 1.0), plot.margin = margin(4, 0, 0, 16)) + T11) +
+    plot_layout(widths = c(2.15, 1))
+  (pc + labs(tag = "a") + T11) / top2 / (ptraj + labs(tag = "d") + T11) + plot_layout(heights = c(0.62, 1, 0.42))
+}
+fig <- fig_with(p_traj)
+ggsave("output/figures/other/fig1_system.png", fig, width = 7.2, height = 8.4, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig1_system.pdf", fig, width = 7.2, height = 8.4, device = cairo_pdf)
+ggsave("output/figures/other/fig1_system_relative.png", fig_with(p_rel), width = 7.2, height = 8.4, dpi = 300, bg = "white")

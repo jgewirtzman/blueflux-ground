@@ -1,5 +1,5 @@
 # =============================================================================
-# Fig. 5 | Climate consequence.
+# Fig. 5 | Climate consequence. (The carbon budget schematic is Fig. 3d.)
 #   (a) Net forcing per m2 of intact and ghost forest at GWP20, GWP100 and GWP*:
 #       net CO2 exchange and CH4 (as CO2-eq) stacked; diamond = net with Monte
 #       Carlo 95% interval (GWP20/100); open circle = intact net ecosystem carbon
@@ -109,13 +109,10 @@ pc <- ggplot() +
                       panel.grid.major = element_line(colour = "grey88", linewidth = 0.2), axis.line = element_blank(),
                       plot.subtitle = element_text(size = 6.5, colour = "grey30"))
 
-# (a) carbon budget schematic, built and saved by fig_carbon_budget.R
-sch <- readRDS("output/figures/other/fig_carbon_schematic.rds")
-row1 <- ((pa + labs(tag = "b")) | (pb + labs(tag = "c"))) + plot_layout(widths = c(1.25, 1), guides = "collect") &
+row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(widths = c(1.25, 1), guides = "collect") &
   theme(legend.position = "bottom", legend.direction = "horizontal")
-fig <- (wrap_elements(full = sch & theme(plot.margin = margin(2, 2, 2, 12))) + labs(tag = "a")) / row1 / (pc + labs(tag = "d")) +
-  plot_layout(heights = c(1.6, 1, 1.1)) & theme(plot.tag = element_text(face = "bold", size = 11))
+fig <- row1 / (pc + labs(tag = "c")) + plot_layout(heights = c(1, 1.1)) & theme(plot.tag = element_text(face = "bold", size = 11))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig5_climate.png", fig, width = 7.2, height = 10.8, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig5_climate.pdf", fig, width = 7.2, height = 10.8, device = cairo_pdf)
+ggsave("output/figures/other/fig5_climate.png", fig, width = 7.2, height = 7.4, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig5_climate.pdf", fig, width = 7.2, height = 7.4, device = cairo_pdf)
 print(swt)
