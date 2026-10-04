@@ -170,8 +170,6 @@ height_panel <- function(right = FALSE) {
     geom_segment(data = con, aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE,
                  colour = zoom_line, linewidth = 0.45) +
     annotate("rect", xmin = 0, xmax = f_xmax, ymin = 0, ymax = zoom_top, fill = NA, colour = zoom_line, linewidth = 0.6) +
-    geom_text(data = data.frame(class = factor("intact", levels(hb$class))), aes(x = f_xmax * 0.97, y = 12),
-              label = "chamber range\n(box), enlarged\nin d and e", hjust = 1, vjust = 0, size = 2, lineheight = 0.9, colour = zoom_line, inherit.aes = FALSE) +
     facet_grid(~ class) +
     scale_fill_manual(values = c(`prop root` = pal_comp[["prop root"]], stem = pal_comp[["stem"]], branch = col_branch), name = "woody surface") +
     scale_y_continuous(breaks = seq(0, 20, 2), expand = c(0, 0)) +
