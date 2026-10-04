@@ -5,6 +5,8 @@
 # pixels (SCL not 0, 1, 3, 8, 9, 10) in a 3 x 3 pixel (30 m) window at the site
 # coordinates; NDVI = median over the window (BOA offset applied for processing
 # baseline >= 04.00). Microsoft Planetary Computer STAC (public; anonymous token).
+# At the river-edge plots (SRS5, SRS6) the window is centred 100 m inland, in the
+# direction chosen from Landsat by 10_ndvi_grain_srs.R (highest median NDVI of 8).
 # Extractions cached in data/environmental/satellite/sentinel2_seasonal/<site>.csv.
 # Writes output/analysis/si/site_ndvi_seasonal.csv and
 # output/figures/other/si_ndvi_seasonal.{png,pdf}.
@@ -27,7 +29,14 @@ search <- function(lon, lat, dt) {
 setGDALconfig("GDAL_HTTP_MAX_RETRY", "5"); setGDALconfig("GDAL_HTTP_RETRY_DELAY", "3")
 cache <- "data/environmental/satellite/sentinel2_seasonal"; dir.create(cache, recursive = TRUE, showWarnings = FALSE)
 seasons <- c(dry = "%d-01-01/%d-04-30", wet = "%d-08-01/%d-11-30")
+inland_offset <- function(site) {             # metres east / north, from the Landsat grain cache
+  f <- file.path("data/environmental/satellite/landsat_ndvi_grain", paste0(site, ".csv"))
+  if (!file.exists(f)) return(c(0, 0))
+  g <- read.csv(f) %>% filter(grepl("^dir", variant), !is.na(ndvi)) %>% group_by(variant) %>% summarise(m = median(ndvi), .groups = "drop")
+  d <- as.numeric(strsplit(sub("^dir", "", g$variant[which.max(g$m)]), ",")[[1]]); 100 * d / sqrt(sum(d^2))
+}
 site_series <- function(site, lat, lon) {
+  shift <- inland_offset(site)
   f <- file.path(cache, paste0(site, ".csv")); if (file.exists(f)) return(read.csv(f))
   out <- bind_rows(lapply(2018:2025, function(y) bind_rows(lapply(names(seasons), function(sn) {
     tk <- tok(); its <- search(lon, lat, sprintf(seasons[[sn]], y, y))
@@ -38,7 +47,7 @@ site_series <- function(site, lat, lon) {
       r <- tryCatch({
         h <- function(b) paste0("/vsicurl/", it$assets[[b]]$href, "?", tk)
         pb <- as.numeric(it$properties$`s2:processing_baseline`); off <- if (!is.na(pb) && pb >= 4) -1000 else 0
-        b4 <- rast(h("B04")); pt <- project(vect(cbind(lon, lat), crs = "EPSG:4326"), crs(b4)); xy <- geom(pt)[, c("x", "y")]
+        b4 <- rast(h("B04")); pt <- project(vect(cbind(lon, lat), crs = "EPSG:4326"), crs(b4)); xy <- geom(pt)[, c("x", "y")] + shift
         e <- ext(xy[1] - 15, xy[1] + 15, xy[2] - 15, xy[2] + 15)
         red <- (values(crop(b4, e)) + off) / 1e4; nir <- (values(crop(rast(h("B08")), e)) + off) / 1e4
         scl <- values(resample(crop(rast(h("SCL")), e + 20), crop(b4, e), method = "near"))

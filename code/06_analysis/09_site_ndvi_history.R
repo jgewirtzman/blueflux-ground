@@ -60,6 +60,10 @@ ann <- ls_all %>% filter(!is.na(ndvi)) %>% mutate(year = as.integer(substr(date,
 dir.create("output/analysis/si", showWarnings = FALSE, recursive = TRUE)
 write.csv(ann, "output/analysis/si/site_ndvi_history.csv", row.names = FALSE)
 
+# river-edge plots: use the inland window (10_ndvi_grain_srs.R), as Fig. 1c
+gr <- "output/analysis/si/site_ndvi_grain.csv"
+if (file.exists(gr)) { inl <- read.csv(gr) %>% filter(variant == "inland") %>% transmute(site, year, ndvi, n)
+  ann <- bind_rows(ann %>% filter(!site %in% unique(inl$site)), inl) }
 # ---- figure -----------------------------------------------------------------------------------
 site_cls <- c(SRS5 = "intact", SRS6 = "intact", RB10 = "intact", BL60 = "regenerating", CP40 = "ghost", FLM30 = "ghost", MI = "ghost", SE1 = "scrub")
 storms <- data.frame(name = c("Andrew", "Wilma", "Irma", "Ian"), date = as.Date(c("1992-08-24", "2005-10-24", "2017-09-10", "2022-09-28")))

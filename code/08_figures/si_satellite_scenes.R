@@ -7,7 +7,7 @@
 # (Microsoft Planetary Computer; scene cloud < 30%) with the most cloud-free pixels
 # in a 600 x 600 m chip centred on the plot (scene classification SCL not 3, 8, 9, 10)
 # is shown as a true-colour composite (B04, B03, B02; reflectance stretched 0-0.15,
-# BOA offset applied for processing baseline >= 04.00). Circle: 50 m around the plot.
+# BOA offset applied for processing baseline >= 04.00).
 # Chips are cached in data/environmental/satellite/sentinel2_chips/ (one RDS per
 # site x window).
 # Writes output/figures/other/si_satellite_scenes.{png,pdf}.
@@ -80,18 +80,19 @@ st <- function(v) { v[!is.finite(v)] <- 0; pmin(pmax(v / 0.15, 0), 1) }
 all <- all %>% mutate(col = rgb(st(r), st(g), st(b)),
                       site = factor(site, site_lv), win = factor(windows$win[match(key, windows$key)], windows$win))
 lab <- all %>% distinct(site, win, date, clear) %>% mutate(txt = format(as.Date(date), "%d %b %Y"))
-circ <- data.frame(t = seq(0, 2 * pi, length.out = 60)) %>% mutate(x = 50 * cos(t), y = 50 * sin(t))
 strip_y <- ggh4x::strip_themed(text_y = lapply(c(pal_class, scrub = "#9A8C7A")[cls[site_lv]],
                                                 function(cc) element_text(colour = cc, face = "bold", angle = 0, hjust = 1)))
+# divider between the yearly series and the two campaign columns
+div <- data.frame(site = factor(site_lv, site_lv), win = factor(windows$win[windows$key == "cw22"], windows$win))
 p <- ggplot(all, aes(x, y)) + geom_raster(aes(fill = col)) + scale_fill_identity() +
-  geom_path(data = circ, aes(x, y), colour = "yellow", linewidth = 0.35) +
+  geom_segment(data = div, aes(x = -HALF - 75, xend = -HALF - 75, y = -HALF - 40, yend = HALF + 40), colour = "grey25", linewidth = 0.7) +
   geom_label(data = lab, aes(x = -HALF + 8, y = -HALF + 8, label = txt), hjust = 0, vjust = 0, size = 1.15,
              linewidth = 0, label.padding = unit(0.8, "pt"), fill = alpha("white", 0.75)) +
-  ggh4x::facet_grid2(site ~ win, strip = strip_y, switch = "y") + coord_equal(expand = FALSE) +
+  ggh4x::facet_grid2(site ~ win, strip = strip_y, switch = "y") + coord_equal(expand = FALSE, clip = "off") +
   labs(x = NULL, y = NULL) + theme_void(base_size = 7) +
   theme(strip.text.x = element_text(size = 6, face = "bold", margin = margin(0, 0, 2, 0)),
         strip.text.y.left = element_text(size = 7, angle = 0, hjust = 1, margin = margin(0, 3, 0, 0)),
-        strip.placement = "outside", panel.spacing = unit(1.5, "pt"), plot.margin = margin(2, 2, 2, 2))
+        strip.placement = "outside", panel.spacing.y = unit(1.5, "pt"), panel.spacing.x = unit(c(rep(1.5, 9), 12, 1.5), "pt"), plot.margin = margin(2, 2, 2, 2))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 ggsave("output/figures/other/si_satellite_scenes.png", p, width = 11, height = 6.6, dpi = 300, bg = "white")
 ggsave("output/figures/other/si_satellite_scenes.pdf", p, width = 11, height = 6.6, device = cairo_pdf)

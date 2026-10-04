@@ -60,14 +60,16 @@ steps <- c(
   "code/06_analysis/07_site_greenness_modis.R",     # site greenness (MODIS; cached download)
   "code/06_analysis/08_site_greenness_s2.R",        # site greenness (Sentinel-2; cached)
   "code/06_analysis/09_site_ndvi_history.R",        # Landsat NDVI 1995-2025 (cached); Fig 1c, Fig S3
+  "code/06_analysis/10_ndvi_grain_srs.R",           # river-edge SRS5/SRS6: inland NDVI window (cached); Fig 1c
+  "code/06_analysis/11_ndvi_seasonal_s2.R",         # wet vs dry Sentinel-2 NDVI 2018-2025 (cached); Fig S4
   # 08 figures: display items, then copy into output/figures/main and SI
-  "code/08_figures/fig2_component_boot.R",          # Fig S5
-  "code/08_figures/fig3_stem_height.R",             # Fig S8
+  "code/08_figures/fig2_component_boot.R",          # Fig S6
+  "code/08_figures/fig3_stem_height.R",             # Fig S9
   "code/08_figures/fig_carbon_budget.R",           # Fig 3d schematic (rds)
   "code/08_figures/fig3_stands.R",                  # Fig 3; saves component shares (rds) for Fig 2
   "code/08_figures/fig2_rates.R",                   # Fig 2
   "code/08_figures/fig4_geochem.R",                 # Fig 4
-  "code/08_figures/ed_porewater_rounds.R",          # Fig S17
+  "code/08_figures/ed_porewater_rounds.R",          # Fig S18
   "code/08_figures/fig5_climate.R",                 # Fig 5
   "code/08_figures/fig1_system.R",                  # Fig 1 (map, photos, NDVI trajectories, schematic)
   "code/08_figures/plot_budget_figs.R",             # Fig 4
@@ -77,24 +79,24 @@ steps <- c(
   "code/08_figures/plot_budget_multisource.R",      # Fig 8
   "code/08_figures/plot_budget_flow.R",             # Fig 9
   "code/08_figures/plot_budget_waterfall.R",        # Fig 10
-  "code/08_figures/figS1_ebullition.R",             # Fig S6
-  "code/08_figures/figS2_pneumatophore.R",          # Fig S7
+  "code/08_figures/figS1_ebullition.R",             # Fig S7
+  "code/08_figures/figS2_pneumatophore.R",          # Fig S8
   "code/08_figures/figS3_chamber_photos.R",         # Fig S1
-  "code/08_figures/plot_extrap_clean.R",            # Fig S9
-  "code/08_figures/si_flood_fraction.R",             # Fig S12
+  "code/08_figures/plot_extrap_clean.R",            # Fig S10
+  "code/08_figures/si_flood_fraction.R",             # Fig S13
   "code/08_figures/si_exposure.R",                  # exposure shares (si_exposure_values.csv) for Fig S13
   "code/08_figures/si_satellite_scenes.R",          # Fig S2 (cached Sentinel-2 chips)
-  "code/08_figures/si_waterline.R",                 # Fig S13
-  "code/08_figures/si_k600_compare.R",              # Fig S14
-  "code/08_figures/si_upscaling_figs.R",             # Figs S11, S15, S16 (from upscaling CSVs)
-  "code/08_figures/si_porewater_carbonate.R",        # Fig S18
-  "code/08_figures/plot_SA_height_fixedY.R",        # Fig S10
+  "code/08_figures/si_waterline.R",                 # Fig S14
+  "code/08_figures/si_k600_compare.R",              # Fig S15
+  "code/08_figures/si_upscaling_figs.R",             # Figs S12, S16, S17 (from upscaling CSVs)
+  "code/08_figures/si_porewater_carbonate.R",        # Fig S19
+  "code/08_figures/plot_SA_height_fixedY.R",        # Fig S11
   "code/08_figures/plot_us_skr_gpp.R",              # tower GPP diagnostics
-  "code/08_figures/si_campaign_context.R",          # Fig S19
-  "code/08_figures/site_characterization_figures.R",# Fig S17c data
+  "code/08_figures/si_campaign_context.R",          # Fig S20
+  "code/08_figures/site_characterization_figures.R",# Fig S18c data
   "code/08_figures/plot_site_closure.R",            # exploratory site closure (not in SI)
-  "code/08_figures/plot_water_positions.R",         # Fig S4b
-  "code/08_figures/figS_sampling_design.R",         # Fig S4a
+  "code/08_figures/plot_water_positions.R",         # Fig S5b
+  "code/08_figures/figS_sampling_design.R",         # Fig S5a
   "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)
   "code/08_figures/fig_metagenome_placeholder.R",       # PLACEHOLDER metagenome figure        # sampling design vs tide (candidate SI figure)
   "code/08_figures/collect_figures.R",
