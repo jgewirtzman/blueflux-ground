@@ -44,7 +44,7 @@ ours <- cal %>% left_join(two_pos %>% select(plot, campaign, two), by = c("plot"
 k_used <- ksite$k600[ksite$level == "all"]
 u <- c(lo = 1.2, mid = 1.8, hi = 2.4); h <- 0.1
 eqs <- list(
-  "Ho et al. 2016 (Shark River; no current)" = function(u) 0.266 * u^2,
+  "Ho et al. 2016 (Shark River; no current term)" = function(u) 0.266 * u^2,
   "Rosentreter et al. 2017 (mangrove creeks, CH₄)" = function(u) -1.07 + 0.99 * u + 0.87 * h,
   "Wanninkhof 2014 (wind)" = function(u) 0.251 * u^2 * (600 / 660)^-0.5,
   "Cole & Caraco 1998 (low-wind lake)" = function(u) 2.07 + 0.215 * u^1.7,
@@ -55,32 +55,38 @@ eqs <- list(
 eq <- bind_rows(lapply(names(eqs), function(n) data.frame(lab = n, k = eqs[[n]](u["mid"]), lo = eqs[[n]](u["lo"]), hi = eqs[[n]](u["hi"]))))
 lit <- data.frame(
   lab = c("Shark River channel, SF₆ (Ho et al. 2014)", "Shark River channel, ³He/SF₆ (Ho et al. 2016)",
-          "Everglades sawgrass wetland (Ho et al. 2018)", "  sheltered, convection only (Ho et al. 2018)",
+          "Everglades sawgrass wetland (Ho et al. 2018)", "Everglades sawgrass, sheltered (Ho et al. 2018)",
           "Everglades wetland (Variano et al. 2009)", "Everglades, floating dome CH₄ (Happell et al. 1995)",
-          "Rivers and estuaries > 1 m deep (Raymond & Cole 2001)", "  recommended for estuaries (Raymond & Cole 2001)"),
+          "Rivers and estuaries > 1 m deep (Raymond & Cole 2001)", "Estuaries, recommended (Raymond & Cole 2001)"),
   k = c(8.2, 3.3, 2.3, 0.56, NA, 0.77, NA, NA), lo = c(8.1, 2.8, 1.1, 0.52, 0.3, 0.22, 1.0, 3), hi = c(8.3, 4.2, 3.2, 0.61, 1.4, 1.32, 26, 7))
 ks_site <- ksite %>% filter(level == "site")
 ours <- data.frame(lab = "This study: median of site medians", k = k_used, lo = min(ks_site$k600), hi = max(ks_site$k600), cls = "this study")
 site_pts <- ks_site %>% arrange(k600) %>% transmute(lab = ours$lab, k = k600, site = name, vj = rep(c(-1.1, 2.1), length.out = n()))
-ord <- c(rev(eq$lab), rev(lit$lab), ours$lab)
-dd <- bind_rows(ours %>% mutate(group = "This study"),
-                lit %>% mutate(cls = "literature", group = "Measured (literature)"),
-                eq %>% mutate(cls = "equation", group = "Equations, forest-floor water (u₁₀ 1.2–2.4 m s⁻¹)")) %>%
-  mutate(lab = factor(lab, rev(ord)), group = factor(group, unique(group)))
-site_pts <- site_pts %>% mutate(lab = factor(lab, levels(dd$lab)), group = factor("This study", levels(dd$group)))
+ever_lit <- grepl("Shark River|Everglades", lit$lab)
+ever_eq <- grepl("Shark River", eq$lab)
+grp <- c("This study (Everglades)", "Measured, Everglades", "Measured, other rivers and estuaries",
+         "Equation fitted in the Everglades", "Equations from other systems")
+dd <- bind_rows(ours %>% mutate(group = grp[1], ever = TRUE),
+                lit %>% mutate(cls = "literature", ever = ever_lit, group = ifelse(ever_lit, grp[2], grp[3])),
+                eq %>% mutate(cls = "equation", ever = ever_eq, group = ifelse(ever_eq, grp[4], grp[5]))) %>%
+  mutate(lab = sub("Shark River; ", "", lab),
+         col = ifelse(cls == "this study", "this study", ifelse(ever, "everglades", "other")))
+ord <- c(rev(dd$lab[dd$cls == "equation"]), rev(dd$lab[dd$cls == "literature"]), dd$lab[dd$cls == "this study"])
+dd <- dd %>% mutate(lab = factor(lab, rev(unique(ord))), group = factor(group, grp))
+site_pts <- site_pts %>% mutate(lab = factor(lab, levels(dd$lab)), group = factor(grp[1], levels(dd$group)))
 p <- ggplot(dd, aes(y = lab)) +
   geom_vline(xintercept = k_used, colour = pal_class[["intact"]], linewidth = 0.4, linetype = "dashed") +
-  geom_errorbar(aes(xmin = lo, xmax = hi, colour = cls), width = 0.3, linewidth = 0.4, orientation = "y", na.rm = TRUE) +
+  geom_errorbar(aes(xmin = lo, xmax = hi, colour = col), width = 0.3, linewidth = 0.4, orientation = "y", na.rm = TRUE) +
   geom_point(data = site_pts, aes(x = k), shape = 124, size = 2.5, colour = "grey35") +
   geom_text(data = site_pts, aes(x = k, label = site, vjust = vj), size = 1.7, colour = "grey35") +
-  geom_point(aes(x = k, colour = cls, shape = cls), size = 2.2, na.rm = TRUE) +
-  facet_grid(group ~ ., scales = "free_y", space = "free_y") +
-  scale_shape_manual(values = c("this study" = 18, literature = 16, equation = 16), guide = "none") +
-  scale_colour_manual(values = c("this study" = pal_class[["intact"]], literature = "grey25", equation = "#4A6FA5"), guide = "none") +
+  geom_point(aes(x = k, colour = col, shape = cls), size = 2.2, na.rm = TRUE) +
+  scale_shape_manual(values = c("this study" = 18, literature = 16, equation = 17), guide = "none") +
+  scale_colour_manual(values = c("this study" = pal_class[["intact"]], everglades = "#B5651D", other = "grey45"), guide = "none") +
   scale_x_log10(breaks = c(0.3, 1, 3, 10, 30), labels = c("0.3", "1", "3", "10", "30")) +
   labs(x = expression(k[600] ~ "(cm h"^-1 * ")"), y = NULL) + theme_fig() +
-  theme(strip.text.y = element_text(angle = 0, hjust = 0, size = 6.5), panel.grid.minor = element_blank())
+  theme(strip.text.y = element_text(angle = 0, hjust = 0, size = 6.5), panel.grid.minor = element_blank()) +
+  ggh4x::facet_grid2(group ~ ., scales = "free_y", space = "free_y", strip = ggh4x::strip_themed(text_y = lapply(c(pal_class[["intact"]], "#B5651D", "grey35", "#B5651D", "grey35"), function(cc) element_text(colour = cc, angle = 0, hjust = 0, size = 6.5, face = "bold"))))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/si_k600_compare.png", p, width = 7.2, height = 4.6, dpi = 300, bg = "white")
-ggsave("output/figures/other/si_k600_compare.pdf", p, width = 7.2, height = 4.6, device = cairo_pdf)
+ggsave("output/figures/other/si_k600_compare.png", p, width = 7.2, height = 5, dpi = 300, bg = "white")
+ggsave("output/figures/other/si_k600_compare.pdf", p, width = 7.2, height = 5, device = cairo_pdf)
 print(eq %>% mutate(across(where(is.numeric), ~ round(.x, 2))))
