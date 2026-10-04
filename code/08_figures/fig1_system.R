@@ -47,13 +47,14 @@ txy <- data.frame(st_coordinates(tower), lab = "US-Skr tower")
 # (small dot); labels sit beside each symbol
 off <- data.frame(site_id = c("SRS5", "SRS6", "BL60", "CP40", "FLM30", "MI", "RB10", "SE1"),
                   sx = c(7000, -8000, -8000, 2500, 8000, 0, 0, 0),
-                  sy = c(5500, -6000, 4500, -8000, 5500, 2500, -2500, 0),
-                  side = c(1, -1, -1, 1, 1, 1, 1, -1))
+                  sy = c(5500, -6000, 4500, -8000, 5500, 0, 0, 0),
+                  side = c(1, -1, -1, 1, 1, 1, 1, 0),                    # 0 = label centred above the symbol
+                  ldy = c(0, 0, 0, 0, 0, 3500, -3500, 6500))              # label vertical offset (m)
 nm <- c(SRS5 = "Gunboat Island", SRS6 = "Lower Shark River", BL60 = "Bear Lake", CP40 = "Christian Point",
         FLM30 = "Flamingo", MI = "Marco Island", RB10 = "Rookery Bay", SE1 = "Intrusion marsh")
 lab <- sxy %>% left_join(off, by = "site_id") %>% mutate(txt = ifelse(nm[site_id] == "", site_id, paste0(site_id, "\n", nm[site_id]))) %>%
   mutate(px = X + sx, py = Y + sy, moved = sx != 0 | sy != 0,
-         lx = px + side * 3000, ly = py, hj = ifelse(side > 0, 0, 1))
+         lx = px + side * 3000, ly = py + ldy, hj = ifelse(side > 0, 0, ifelse(side < 0, 1, 0.5)))
 pal_map <- pal_class
 
 pa <- ggplot() +
@@ -74,7 +75,7 @@ pa <- ggplot() +
   annotate("text", x = 505000, y = 2826000, label = "Shark River\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 540000, y = 2797500, label = "Taylor\nSlough", size = 2.8, colour = "grey45", fontface = "italic", lineheight = 0.9) +
   annotate("text", x = 436000, y = 2788000, label = "Gulf of\nMexico", lineheight = 0.9, size = 2.9, colour = "grey55", fontface = "italic") +
-  annotate("text", x = 500000, y = 2765000, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
+  annotate("text", x = 519000, y = 2762500, label = "Florida Bay", size = 2.9, colour = "grey55", fontface = "italic") +
   scale_fill_manual(values = c(pal_class, `mangrove (2016)` = "#A8CDB9", `2017 hurricane dieback` = "#B9B5CB"),
                     breaks = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"),
                     labels = c("intact", "regenerating", "ghost", "mangrove (2016)", "2017 hurricane dieback"), name = NULL,
@@ -132,15 +133,16 @@ mo <- function(y, m) y + (m - 1) / 12
 camps <- rbind(data.frame(type = "ground", y = c(2022, 2022, 2023), m = c(3, 10, 3)),
                data.frame(type = "airborne", y = c(2022, 2022, 2023, 2023, 2024), m = c(4, 10, 2, 4, 7))) %>%
   mutate(xmin = mo(y, m), xmax = xmin + 1 / 12)
-traj_panel <- function(v, ylab, ylim, ybr) {
+traj_panel <- function(v, ylab, ylim, ybr, camp_key = TRUE) {
   endlab <- nd %>% mutate(val = .data[[v]]) %>% group_by(site) %>% filter(year == max(year)) %>% ungroup() %>% arrange(desc(val)) %>% mutate(ylab = val)
   gap <- diff(ylim) * 0.065
   for (i in seq_len(nrow(endlab))[-1]) endlab$ylab[i] <- min(endlab$ylab[i], endlab$ylab[i - 1] - gap)
   ggplot(nd, aes(year, .data[[v]], colour = cls, group = site)) +
     geom_rect(data = camps %>% filter(type == "airborne"), aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "#B9D3E8") +
     geom_rect(data = camps %>% filter(type == "ground"), aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "grey55", alpha = 0.6) +
-    annotate("text", x = 2021.9, y = ylim[1] + diff(ylim) * 0.50, label = "ground campaign", size = 1.9, colour = "grey40", hjust = 1) +
-    annotate("text", x = 2021.9, y = ylim[1] + diff(ylim) * 0.43, label = "airborne campaign", size = 1.9, colour = "#4A7DB0", hjust = 1) +
+    { if (camp_key) list(
+        annotate("text", x = 2025.4, y = ylim[1] + diff(ylim) * 0.56, label = "ground\ncampaign", size = 2.1, colour = "grey40", hjust = 0, lineheight = 0.85),
+        annotate("text", x = 2025.4, y = ylim[1] + diff(ylim) * 0.42, label = "airborne\ncampaign", size = 2.1, colour = "#4A7DB0", hjust = 0, lineheight = 0.85)) } +
     geom_vline(data = storms, aes(xintercept = x), colour = "grey55", linetype = "22", linewidth = 0.3) +
     geom_text(data = storms, aes(x = x, y = ylim[1] + diff(ylim) * 0.03, label = name), inherit.aes = FALSE, angle = 90, hjust = 0, vjust = -0.4, size = 2.1, colour = "grey40") +
     geom_line(linewidth = 0.45) + geom_point(size = 0.7) +
@@ -159,3 +161,5 @@ fig_with <- function(ptraj) {
 fig <- fig_with(p_traj)
 ggsave("output/figures/other/fig1_system.png", fig, width = 7.2, height = 8.4, dpi = 300, bg = "white")
 ggsave("output/figures/other/fig1_system.pdf", fig, width = 7.2, height = 8.4, device = cairo_pdf)
+ggsave("output/figures/other/fig1_system_nokey.png",
+       fig_with(traj_panel("ndvi", "NDVI (Landsat, Jan-Apr)", c(0, 1), seq(0, 1, 0.25), camp_key = FALSE)), width = 7.2, height = 8.4, dpi = 300, bg = "white")
