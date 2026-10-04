@@ -141,8 +141,8 @@ traj_panel <- function(v, ylab, ylim, ybr, camp_key = TRUE) {
     geom_rect(data = camps %>% filter(type == "airborne"), aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "#B9D3E8") +
     geom_rect(data = camps %>% filter(type == "ground"), aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "grey55", alpha = 0.6) +
     { if (camp_key) list(
-        annotate("text", x = 2025.4, y = ylim[1] + diff(ylim) * 0.56, label = "ground\ncampaign", size = 2.1, colour = "grey40", hjust = 0, lineheight = 0.85),
-        annotate("text", x = 2025.4, y = ylim[1] + diff(ylim) * 0.42, label = "airborne\ncampaign", size = 2.1, colour = "#4A7DB0", hjust = 0, lineheight = 0.85)) } +
+        annotate("label", x = 2023.3, y = ylim[1] + diff(ylim) * 0.50, label = "ground", size = 2.1, colour = "grey35", fill = alpha("white", 0.85), linewidth = 0, label.padding = unit(0.08, "lines")),
+        annotate("label", x = 2023.3, y = ylim[1] + diff(ylim) * 0.42, label = "airborne", size = 2.1, colour = "#4A7DB0", fill = alpha("white", 0.85), linewidth = 0, label.padding = unit(0.08, "lines"))) } +
     geom_vline(data = storms, aes(xintercept = x), colour = "grey55", linetype = "22", linewidth = 0.3) +
     geom_text(data = storms, aes(x = x, y = ylim[1] + diff(ylim) * 0.03, label = name), inherit.aes = FALSE, angle = 90, hjust = 0, vjust = -0.4, size = 2.1, colour = "grey40") +
     geom_line(linewidth = 0.45) + geom_point(size = 0.7) +
