@@ -36,8 +36,8 @@
     "k.ratio": 1,
     "warn.length": 20
   },
-  "n_closures": 757,
-  "date": "2026-10-02 00:48:58 PDT",
+  "n_closures": 756,
+  "date": "2026-10-03 20:47:03 PDT",
   "sigma_method": "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign",
   "sigma_by_group": {
     "LGR1 Mar2023": 0.9477142885,
@@ -46,7 +46,7 @@
     "LGR2 Oct2022": 0.4832923529,
     "LGR3 Mar2022": 0.6405458299,
     "LGR3 Mar2023": 0.7642518986,
-    "LGR3 Oct2022": 0.7023988642,
+    "LGR3 Oct2022": 0.7013505077,
     "Picarro Mar2022": 1.322767618,
     "Picarro Oct2022": 0.9210471049
   },

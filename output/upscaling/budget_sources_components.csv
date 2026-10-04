@@ -2,13 +2,13 @@
 "Reco","This study: total ER","Healthy","soil",233.00494128445,21.396365009469
 "Reco","This study: total ER","Healthy","root",168.397611068205,41.608571109962
 "Reco","This study: total ER","Healthy","stem",486.365226715035,58.5308055913268
-"Reco","This study: total ER","Healthy","water",187.518918505558,48.3494071737877
+"Reco","This study: total ER","Healthy","water",198.295636929609,44.0083792113771
 "Reco","This study: total ER","Healthy","cwd",151.061443149322,20.8140375448728
 "Reco","This study: total ER","Healthy","leaf",710.166857570329,28.3651968590201
 "Reco","This study: below-canopy","Healthy","soil",233.00494128445,NA
 "Reco","This study: below-canopy","Healthy","root",168.397611068205,NA
 "Reco","This study: below-canopy","Healthy","stem",486.365226715035,NA
-"Reco","This study: below-canopy","Healthy","water",187.518918505558,NA
+"Reco","This study: below-canopy","Healthy","water",198.295636929609,NA
 "Reco","This study: below-canopy","Healthy","cwd",151.061443149322,NA
 "Reco","This study: total ER","Ghost","soil",89.4141534057643,51.6360419160028
 "Reco","This study: total ER","Ghost","root",19.0348375360517,2.39987403465526
@@ -24,7 +24,7 @@
 "CH4","Chambers (this study)","Healthy","stem",0.0116089784519397,0.000856615379273011
 "CH4","Chambers (this study)","Healthy","soil",0.611089834909922,0.343478759529007
 "CH4","Chambers (this study)","Healthy","root",0.314584580505039,0.242358088051598
-"CH4","Chambers (this study)","Healthy","water",0.158971759473505,0.0438131883134348
+"CH4","Chambers (this study)","Healthy","water",0.180675573905911,0.0409095763950916
 "CH4","Chambers (this study)","Ghost","stem",0.0549171005730101,0.0101429610442275
 "CH4","Chambers (this study)","Ghost","soil",1.10835578853723,0.640067637782537
 "CH4","Chambers (this study)","Ghost","root",0.0057417821612001,0.000727468883947824

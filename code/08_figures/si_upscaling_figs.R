@@ -3,8 +3,8 @@
 # code/07_upscaling/02_upscale_methane.R (no values recomputed):
 #   (legacy) si_S7b_extrap_sensitivity.png, si_S9_tide_scenarios.png (superseded; not collected)
 #   Fig. S9   plot_level_CH4_totals.csv + mc_component_uncertainty.csv -> si_tide_states.png
-#   Fig. S12  qa/sensitivity_summary.csv     -> si_sensitivity_switch.png
-#   Fig. S13  mc_component_uncertainty.csv   -> si_S10_mc_uncertainty.png
+#   Fig. S13  qa/sensitivity_summary.csv     -> si_sensitivity_switch.png
+#   Fig. S14  mc_component_uncertainty.csv   -> si_S10_mc_uncertainty.png
 #             Monte Carlo SE per component (fixed / high-tide rows, SE > 0), as pub4.
 # =============================================================================
 suppressMessages({library(dplyr); library(tidyr); library(ggplot2)})

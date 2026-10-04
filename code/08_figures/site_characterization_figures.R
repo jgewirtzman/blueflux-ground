@@ -390,7 +390,7 @@ ggsave("output/figures/other/pub_SI_salinity_vs_ch4_blue.pdf", p_scatter_blue, w
 ggsave("output/figures/other/pub_SI_salinity_vs_ch4_blue.png", p_scatter_blue, width = 8, height = 6, dpi = 300)
 cat("  Saved salinity vs CH4 scatter (blue)\n")
 
-# Faceted by site (Fig. S14; house style: fill = forest class of the site,
+# Faceted by site (Fig. S15; house style: fill = forest class of the site,
 # shape = campaign, shared log1p CH4 axis and shared salinity axis)
 local({
   source("code/08_figures/palette.R", local = TRUE)
