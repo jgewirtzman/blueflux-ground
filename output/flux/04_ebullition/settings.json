@@ -1,7 +1,7 @@
 {
   "goFlux": {
     "version": "0.4.0",
-    "path": "/Users/jongewirtzman/My Drive/Research/Blueflux/blueflux-ground/.claude/worktrees/flux-rebuild/.Rlib/goflux-aqua-2ed7224/goFlux"
+    "path": "/Users/jongewirtzman/My Drive/Research/Blueflux/blueflux-ground/.Rlib/goflux-aqua-2ed7224/goFlux"
   },
   "tarball": "vendor/goFlux_0.4.0_aqua-deebulliated_2ed7224.tar.gz",
   "goAquaFlux_args": {

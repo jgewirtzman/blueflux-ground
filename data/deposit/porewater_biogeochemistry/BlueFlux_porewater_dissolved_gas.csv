@@ -1,0 +1,104 @@
+site_id,campaign,date,sample_type,depth_cm,sample_label,method,CH4_uM,CO2_uM,d13C_CH4_permil
+BL60,2022-10,2022-10-25,porewater,-9999,BL 60 pore water,"headspace equilibration, gas chromatography",10.705653704564307,3258.0040006379213,-9999
+BL60,2022-10,2022-10-25,porewater,-9999,BL 60 pore water,"headspace equilibration, gas chromatography",20.493595204819755,3130.7355924230565,-9999
+BL60,2022-10,2022-10-25,porewater,-9999,BL 60 pore water,"headspace equilibration, gas chromatography",110.53794747259312,3129.9712858974017,-9999
+BL60,2022-10,2022-10-25,surface_water,-9999,BL 60 surface water,"headspace equilibration, gas chromatography",9.774280617763116,692.9637857071953,-9999
+BL60,2022-10,2022-10-25,surface_water,-9999,BL 60 surface water,"headspace equilibration, gas chromatography",23.144932337886367,1451.5294234279295,-9999
+BL60,2022-10,2022-10-25,surface_water,-9999,BL 60 surface water,"headspace equilibration, gas chromatography",29.212097917747418,2048.7688994678724,-9999
+CP40,2022-10,2022-10-22,porewater,-9999,CP 40,"headspace equilibration, gas chromatography",5.851900920469262,101.21508586672444,-9999
+CP40,2022-10,2022-10-22,porewater,-9999,CP 40,"headspace equilibration, gas chromatography",3.0744602714279883,49.32180350739512,-9999
+CP40,2022-10,2022-10-22,porewater,-9999,CP 40,"headspace equilibration, gas chromatography",3.344938852542419,44.05792159387993,-9999
+CP40,2022-10,2022-10-24,surface_water,-9999,CP 40 surface water,"headspace equilibration, gas chromatography",0.02424937357165228,6.154092221050981,-9999
+CP40,2022-10,2022-10-24,surface_water,-9999,CP 40 surface water,"headspace equilibration, gas chromatography",0.06351431004979997,6.220599572817144,-9999
+CP40,2022-10,2022-10-24,surface_water,-9999,CP 40 surface water,"headspace equilibration, gas chromatography",0.01685329383676566,6.642090300051012,-9999
+CP40,2022-10,2022-10-23,surface_water,-9999,CP 40 surface water,"headspace equilibration, gas chromatography",0.01324259520655149,8.137210717676027,-9999
+CP40,2022-10,2022-10-23,surface_water,-9999,CP 40 surface water,"headspace equilibration, gas chromatography",0.01073940723072587,4.825155391363697,-9999
+CP40,2022-10,2022-10-23,surface_water,-9999,CP 40 surface water,"headspace equilibration, gas chromatography",0.0212607584474171,4.385557829486952,-9999
+FLM30,2022-10,2022-10-18,porewater,-9999,FLM 30 pore water,"headspace equilibration, gas chromatography",177.08073174118283,2487.9763781515458,-9999
+FLM30,2022-10,2022-10-18,porewater,-9999,FLM 30 pore water,"headspace equilibration, gas chromatography",29.131481361626832,2252.027460813312,-9999
+FLM30,2022-10,2022-10-18,porewater,-9999,FLM 30 pore water,"headspace equilibration, gas chromatography",50.89478999905697,2552.489496029192,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",1.9313203338307137,58.61428269183635,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",1.382199439632271,38.56136415729316,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",0.0266266000352835,79.20263242882565,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",1.2211742827178618,49.264357281266534,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",1.3835202530360828,36.175983328077365,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",1.9261523468822848,60.07633057900787,-9999
+FLM30,2022-10,2022-10-18,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",1.756844626383017,54.71957887248403,-9999
+FLM30,2022-10,2022-10-15,surface_water,-9999,FML 30,"headspace equilibration, gas chromatography",1.0104169064935655,31.061592643871077,-9999
+FLM30,2022-10,2022-10-15,surface_water,-9999,FML 30,"headspace equilibration, gas chromatography",0.947557952802022,27.798234604853917,-9999
+FLM30,2022-10,2022-10-15,surface_water,-9999,FML 30,"headspace equilibration, gas chromatography",0.7737940467298392,40.55811866519248,-9999
+SRS5,2022-10,2022-10-20,porewater,-9999,SRS 5 pore water,"headspace equilibration, gas chromatography",0.4980066632028752,2128.9240253987487,-9999
+SRS5,2022-10,2022-10-20,porewater,-9999,SRS 5 pore water,"headspace equilibration, gas chromatography",2.706928345167768,2685.6645710790776,-9999
+SRS5,2022-10,2022-10-20,porewater,-9999,SRS 5 pore water,"headspace equilibration, gas chromatography",13.78003435881006,2661.94807102255,-9999
+SRS5,2022-10,2022-10-20,porewater,-9999,SRS 5 pore water,"headspace equilibration, gas chromatography",0.6218173231607539,2002.009895248424,-9999
+SRS5,2022-10,2022-10-19,surface_water,-9999,SRS 5 surface water,"headspace equilibration, gas chromatography",0.19681842775221747,173.5570818159356,-9999
+SRS5,2022-10,2022-10-19,surface_water,-9999,SRS 5 surface water,"headspace equilibration, gas chromatography",0.12738808573581512,117.43373378055308,-9999
+SRS5,2022-10,2022-10-19,surface_water,-9999,SRS 5 surface water,"headspace equilibration, gas chromatography",0.202410643567188,114.6187492213526,-9999
+SRS5,2022-10,2022-10-19,surface_water,-9999,SRS 5 surface water,"headspace equilibration, gas chromatography",0.00830573574983773,123.96521745212792,-9999
+SRS6,2022-10,2022-10-01,porewater,-9999,SRS 6 pore water,"headspace equilibration, gas chromatography",5.143258089289674,2015.317486004681,-9999
+SRS6,2022-10,2022-10-01,porewater,-9999,SRS 6 pore water,"headspace equilibration, gas chromatography",19.89818820815448,1817.7331587831504,-9999
+SRS6,2022-10,2022-10-01,porewater,-9999,SRS 6 pore water,"headspace equilibration, gas chromatography",3.5195304208150113,1698.2669540118038,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 100 cm,"headspace equilibration, gas chromatography",24.443585427923384,2996.281746265005,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 15 cm,"headspace equilibration, gas chromatography",25.135978629871826,3300.8100993969056,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 15 cm,"headspace equilibration, gas chromatography",21.593116809713184,3335.103118380131,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 15 cm,"headspace equilibration, gas chromatography",24.43541813100535,3354.9997084089377,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 40 cm,"headspace equilibration, gas chromatography",28.322667637874645,3730.453708355189,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 40 cm,"headspace equilibration, gas chromatography",22.424175217687285,3588.089333786725,-9999
+BL60,2023-03,2023-03-01,porewater,-9999,BL60 pore water 40 cm,"headspace equilibration, gas chromatography",27.12429120054782,3635.727405942711,-9999
+CP40,2023-03,2023-03-01,porewater,-9999,CP pour water,"headspace equilibration, gas chromatography",60.45636024299868,1188.067479182494,-9999
+CP40,2023-03,2023-03-01,porewater,-9999,CP pour water,"headspace equilibration, gas chromatography",58.0906402446748,1392.9449834820784,-9999
+CP40,2023-03,2023-03-01,porewater,-9999,CP pour water,"headspace equilibration, gas chromatography",67.0199544022117,1132.5528337487476,-9999
+CP40,2023-03,2023-03-01,surface_water,-9999,CP surface,"headspace equilibration, gas chromatography",0.7198421167614392,256.73237611952464,-9999
+CP40,2023-03,2023-03-01,surface_water,-9999,CP surface,"headspace equilibration, gas chromatography",0.6682983094766425,107.45247029796424,-9999
+CP40,2023-03,2023-03-01,surface_water,-9999,CP surface,"headspace equilibration, gas chromatography",1.0191545951649377,126.062970172419,-9999
+FLM30,2023-03,2023-03-01,porewater,-9999,FLM 20 pore water,"headspace equilibration, gas chromatography",54.65860138308226,1626.1463370483425,-9999
+FLM30,2023-03,2023-03-01,porewater,-9999,FLM 20 pore water,"headspace equilibration, gas chromatography",57.73725581637148,1625.4479828756917,-9999
+FLM30,2023-03,2023-03-01,porewater,-9999,FLM 20 pore water,"headspace equilibration, gas chromatography",67.43535764468656,1675.8294216255022,-9999
+FLM30,2023-03,2023-03-01,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",2.843598962531004,30.68931180695654,-9999
+FLM30,2023-03,2023-03-01,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",2.076093484881662,41.50360530785985,-9999
+FLM30,2023-03,2023-03-01,surface_water,-9999,FLM 30 surface,"headspace equilibration, gas chromatography",2.5055491600211903,71.77808251858045,-9999
+SE1,2023-03,2023-03-17,porewater,-9999,SE1 Porewater,"headspace equilibration, gas chromatography",0.05252535642699083,16.135270912162113,-9999
+SE1,2023-03,2023-03-17,porewater,-9999,SE1 Porewater,"headspace equilibration, gas chromatography",0.20652221745579785,41.52698077659316,-9999
+SE1,2023-03,2023-03-17,porewater,-9999,SE1 Porewater,"headspace equilibration, gas chromatography",0.06364027156199438,12.28031887920967,-9999
+SE1,2023-03,2023-03-01,surface_water,-9999,SE 1 surface,"headspace equilibration, gas chromatography",0.01230739039431567,11.737083006658835,-9999
+SE1,2023-03,2023-03-01,surface_water,-9999,SE 1 surface,"headspace equilibration, gas chromatography",1.1956165730620016,497.83939800286765,-9999
+BL60,2025-10,-9999,porewater,0,BL60-0cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",15.458124879206853,4381.417740114002,-62.37937953
+BL60,2025-10,-9999,porewater,0,BL60-0cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",6.693343427540185,4545.6347465718945,-52.98694246
+BL60,2025-10,-9999,porewater,15,BL60-15cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",17.697951970897794,5043.31514003072,-62.22470053
+BL60,2025-10,-9999,porewater,15,BL60-15cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",14.472983009614454,4837.336054934812,-62.21911823
+BL60,2025-10,-9999,porewater,45,BL60-45cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",5.78707566654575,3984.007763577412,-62.33409178
+BL60,2025-10,-9999,porewater,45,BL60-45cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",3.847550895807462,3354.022051629118,-62.22883284
+BL60,2025-10,-9999,porewater,90,BL60-90cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",20.948135521638008,4610.146753738994,-65.20952176
+BL60,2025-10,-9999,porewater,90,BL60-90cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",25.9564294650532,4882.85704249172,-65.36099993
+BL60,2025-10,-9999,surface_water,-9999,BL60-Surf-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",75.1482958839826,1062.881227706223,-78.06810672
+BL60,2025-10,-9999,surface_water,-9999,BL60-Surf-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",98.09800103648944,1132.9460431669847,-79.1320826
+CP40,2025-10,-9999,porewater,0,CP40-0cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",65.65890463990661,2596.7909349313536,-63.89651542
+CP40,2025-10,-9999,porewater,0,CP40-0cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",54.05308892297868,2500.8490795661623,-63.37920687
+CP40,2025-10,-9999,porewater,15,CP40-15cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",42.92265502843465,2153.3917763865925,-62.79172187
+CP40,2025-10,-9999,porewater,15,CP40-15cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",45.01216071005453,1739.6314776895492,-60.83784555
+CP40,2025-10,-9999,porewater,45,CP40-45cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",41.29788378249709,1703.4142659314882,-61.72417897
+CP40,2025-10,-9999,porewater,45,CP40-45cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",43.50838551824397,1783.8015545627247,-60.30638041
+CP40,2025-10,-9999,porewater,90,CP40-90cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",20.27758396729696,1444.6602068216057,-63.46794376
+CP40,2025-10,-9999,porewater,90,CP40-90cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",24.415248124716413,2226.096648044201,-63.71568544
+CP40,2025-10,-9999,surface_water,-9999,CP40-Surf-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",2.8047112066012416,50.06779461368406,-70.09774507
+CP40,2025-10,-9999,surface_water,-9999,CP40-Surf-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",2.688896812277448,24.11985261385098,-71.18143377
+SRS5,2025-10,-9999,porewater,0,SRS5-0cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",6.6058027054503885,2380.377342560408,-96.83200093
+SRS5,2025-10,-9999,porewater,0,SRS5-0cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.7080183964712695,1267.633654295262,-82.33212164
+SRS5,2025-10,-9999,porewater,15,SRS5-15cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",3.7839255538337007,2697.7978174058794,-96.4510811
+SRS5,2025-10,-9999,porewater,15,SRS5-15cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",6.899638286456905,2768.839751985628,-100.7223245
+SRS5,2025-10,-9999,porewater,45,SRS5-45cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.9826634905087992,2738.8276314853665,-81.34785114
+SRS5,2025-10,-9999,porewater,45,SRS5-45cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.6375795539755412,2261.7887587744485,-77.62069691
+SRS5,2025-10,-9999,porewater,90,SRS5-90cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",2.628198920181242,3385.183461629159,-85.02311493
+SRS5,2025-10,-9999,porewater,90,SRS5-90cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",4.838587431531154,3573.8353077060606,-86.27603871
+SRS5,2025-10,-9999,surface_water,-9999,SRS5_10_22,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.2949299233354574,646.589450796997,-72.29960268
+SRS5,2025-10,-9999,surface_water,-9999,SRS5_10_22,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.29818353569488915,508.0865578546926,-72.52383863
+SRS6,2025-10,-9999,porewater,0,SRS6-0cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.08793008653282397,60.01046911784378,-55.24766873
+SRS6,2025-10,-9999,porewater,0,SRS6-0cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.28015299243426106,951.7503498400991,-74.844837
+SRS6,2025-10,-9999,porewater,15,SRS6-15cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",1.112186336719711,1778.4027323119485,-78.06624676
+SRS6,2025-10,-9999,porewater,15,SRS6-15cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.9738448849938144,1746.6300202810648,-76.61998277
+SRS6,2025-10,-9999,porewater,45,SRS6-45cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.4997254688785549,2124.684272489078,-82.6981894
+SRS6,2025-10,-9999,porewater,45,SRS6-45cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.8218781017487626,2527.7855570120423,-86.10536989
+SRS6,2025-10,-9999,porewater,90,SRS6-90cm-1,"headspace equilibration, Picarro G2201-i (1:5 dilution)",1.8061461757369044,3175.213685542944,-93.67057191
+SRS6,2025-10,-9999,porewater,90,SRS6-90cm-2,"headspace equilibration, Picarro G2201-i (1:5 dilution)",1.4299394053803776,2566.6781592753837,-92.9976945
+SRS6,2025-10,-9999,surface_water,-9999,SRS6_10_22,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.4348657604708896,601.5222969596115,-75.2620705
+SRS6,2025-10,-9999,surface_water,-9999,SRS6_10_22,"headspace equilibration, Picarro G2201-i (1:5 dilution)",0.4999663079434445,580.4503669780984,-75.76073708

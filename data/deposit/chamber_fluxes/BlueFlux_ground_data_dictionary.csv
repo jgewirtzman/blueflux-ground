@@ -30,6 +30,13 @@ analyzer,,"LGR (ABB/LGR GLA131, off-axis ICOS) or Picarro (G4301, cavity ring-do
 analyzer_unit,,"Analyzer unit (LGR1-3, Picarro)"
 air_temp_C,degC,Air temperature used in the flux (US-Skr tower TA at the measurement time)
 pressure_kPa,kPa,Pressure used in the flux (US-Skr tower; 101.325 where unavailable)
+analyzer_clock_offset_s,s,Analyzer clock minus field-log clock (analyzer time = local field time + offset)
+fit_start_analyzer,,"Start of the fitted concentration series, analyzer clock (as time_analyzer in analyzer_records/)"
+fit_end_analyzer,,"End of the fitted concentration series, analyzer clock"
+placement_start_analyzer,,"Floating-chamber placement start, analyzer clock (water only)"
+placement_end_analyzer,,"Floating-chamber placement end, analyzer clock (water only; ebullition summed over the placement)"
+diffusive_start_analyzer,,"Start of the window for the diffusive CH4 flux, analyzer clock (water only)"
+diffusive_end_analyzer,,"End of the window for the diffusive CH4 flux, analyzer clock (water only)"
 placement_duration_s,s,Floating-chamber placement duration (water only)
 CH4_flux,nmol m-2 s-1,"CH4 flux, positive = emission to the atmosphere; water = diffusive + ebullitive"
 CH4_flux_model,,Model of the reported flux: LM (linear) or HM (Hutchinson-Mosier)

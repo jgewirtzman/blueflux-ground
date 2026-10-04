@@ -1,0 +1,50 @@
+table,column,units,description
+all,site_id,,Site code (BlueFlux_porewater_sites.csv; the chamber-flux sites)
+all,campaign,,Sampling campaign (YYYY-MM)
+all,sample_type,,porewater or surface_water (standing water on the plot)
+all,depth_cm,cm,Porewater sampling depth below the sediment surface; -9999 for surface water or where not recorded (2022-2023 porewater mostly ~40 cm)
+dissolved_gas,date,,Sampling date (2022-2023); -9999 for 2025 (campaign 2025-10)
+dissolved_gas,sample_label,,Vial label as written
+dissolved_gas,method,,Headspace method and instrument
+dissolved_gas,CH4_uM,umol L-1,"Dissolved CH4 (headspace: 180 mL water, 20 mL headspace, 25 C; KH 1.4e-3 mol L-1 atm-1)"
+dissolved_gas,CO2_uM,umol L-1,Dissolved CO2 (as CH4; KH 3.4e-2 mol L-1 atm-1)
+dissolved_gas,d13C_CH4_permil,permil VPDB,d13C of CH4 (2025 only)
+field_2022_2023,date,,Sampling date
+field_2022_2023,replicate,,Replicate number
+field_2022_2023,specific_conductance_uS_cm,uS cm-1,Specific conductance at 25 C
+field_2022_2023,salinity_PSU,PSU,Salinity
+field_2022_2023,pH,,pH
+field_2022_2023,DO_mg_L,mg L-1,Dissolved oxygen
+field_2022_2023,DO_percent_sat,percent,Dissolved oxygen saturation
+profiles_2025,temperature_C,degC,Water temperature (Hanna HI98494)
+profiles_2025,pH,,pH (Hanna HI98494)
+profiles_2025,ORP_mV,mV,Oxidation-reduction potential
+profiles_2025,DO_mg_L,mg L-1,Dissolved oxygen (corrected by -1.67 mg L-1 for a sensor offset)
+profiles_2025,DO_percent_sat,percent,Dissolved oxygen saturation (sensor reading)
+profiles_2025,salinity_PSU,PSU,Salinity
+profiles_2025,sulfide_total_dissolved,[unit to confirm],"Total dissolved sulfide, methylene blue (Hach DR900)"
+profiles_2025,iron_total_dissolved_mg_L,mg L-1,"Total dissolved iron, FerroVer (Hach DR900)"
+profiles_2025,chloride_mg_L,mg L-1,Chloride (ion chromatography)
+profiles_2025,sulfate_mg_L,mg L-1,Sulfate (ion chromatography)
+profiles_2025,bromide_mg_L,mg L-1,Bromide (ion chromatography)
+profiles_2025,fluoride_mg_L,mg L-1,Fluoride (ion chromatography)
+profiles_2025,nitrite_N_mg_L,mg N L-1,Nitrite-N (ion chromatography)
+profiles_2025,phosphate_P_mg_L,mg P L-1,Phosphate-P (ion chromatography)
+profiles_2025,nitrate_N_mg_L,mg N L-1,Nitrate-N (0 where at or below detection)
+profiles_2025,ammonium_N_mg_L,mg N L-1,Ammonium-N (0 where at or below detection)
+profiles_2025,nitrate_below_detection,,1 = nitrate at or below detection
+profiles_2025,ammonium_below_detection,,1 = ammonium at or below detection
+profiles_2025,alkalinity_uM,umol L-1,Total alkalinity (titration)
+profiles_2025,DOC_mg_L,mg C L-1,Dissolved organic carbon (Shimadzu TOC)
+profiles_2025,CH4_uM_mean,umol L-1,Mean dissolved CH4 of the vials (BlueFlux_porewater_dissolved_gas.csv)
+profiles_2025,CH4_uM_sd,umol L-1,SD of dissolved CH4 across vials
+profiles_2025,d13C_CH4_permil_mean,permil VPDB,Mean d13C of CH4
+profiles_2025,CO2_uM_mean,umol L-1,Mean dissolved CO2
+profiles_2025,CO2_uM_sd,umol L-1,SD of dissolved CO2
+profiles_2025,n_gas_vials,,Number of gas vials
+sites,site_name,,Site name
+sites,latitude,degrees_north,Site latitude (WGS84; as in the chamber-flux dataset)
+sites,longitude,degrees_east,Site longitude (WGS84)
+sites,ecosystem_type,,Mangrove condition class
+sites,latitude_2025,degrees_north,October 2025 profile location
+sites,longitude_2025,degrees_east,October 2025 profile location

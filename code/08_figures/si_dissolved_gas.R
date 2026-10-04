@@ -50,7 +50,7 @@ cal <- read_csv("output/flux/03_fit/water_k_calibration.csv", show_col_types = F
 est <- read_csv("output/flux/03_fit/water_flux_estimates.csv", show_col_types = FALSE)
 xc  <- read_csv("output/flux/03_fit/water_flux_dissolved_crosscheck.csv", show_col_types = FALSE)
 k_use <- cal$k600_cm_h[cal$used]; k_mid <- median(k_use); k_lo <- min(k_use); k_hi <- max(k_use)
-aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
+aux <- read_csv("data/inputs/closures.csv", show_col_types = FALSE) %>% rename(UniqueID = flux_id, plot = site, start.time = field_start)
 clos <- read_csv("output/flux/03_fit/CH4/fluxes.csv", show_col_types = FALSE) %>% select(UniqueID, F_ch4 = best.flux) %>%
   full_join(read_csv("output/flux/03_fit/CO2/fluxes.csv", show_col_types = FALSE) %>% select(UniqueID, F_co2 = best.flux), by = "UniqueID") %>%
   inner_join(aux %>% filter(component == "water") %>% select(UniqueID, plot, date, start.time), by = "UniqueID") %>%

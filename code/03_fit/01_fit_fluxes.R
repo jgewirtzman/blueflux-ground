@@ -1,8 +1,8 @@
 # =============================================================================
 # Fit CH4 and CO2 fluxes for every closure (handoff work plan, step 4).
 #
-# Inputs: output/flux/01_metadata/auxfile.csv (geometry, Tcham, Pcham), windows.csv
-# (fit windows), raw analyzer records (lib_raw.R).
+# Inputs: data/inputs/closures.csv (fit windows, geometry, Tcham, Pcham; written by
+# 02_windows/03_export_inputs.R), analyzer records (lib_raw.R).
 #
 # Path per gas: fluxqc::process_fluxes() = goFlux::goFlux() -> best.flux() ->
 # flag_detection() -> qc_screens(); outputs written with write_outputs().
@@ -45,10 +45,11 @@ NO_CO2_TRACER <- c("water", "leaves", "leaf", "cwd")
 QC <- list(c0 = TRUE, co2_tracer = TRUE, convex = TRUE, min_window = TRUE, ambient_start = FALSE, noisy = TRUE)
 
 utc <- function(x) as.POSIXct(x, tz = "UTC")
-aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
-win <- read_csv("output/flux/02_windows/windows.csv", show_col_types = FALSE) %>%
+win <- read_csv("data/inputs/closures.csv", show_col_types = FALSE) %>%
   filter(window_source != "none") %>%
-  left_join(aux %>% select(UniqueID, Area, Vcham, Vtot, Tcham, Pcham), by = "UniqueID") %>%
+  transmute(UniqueID = flux_id, analyzer, campaign, component, start = window_start, end = window_end,
+            field_start, field_end, offset_s = clock_offset_s, Area = area_cm2, Vcham = chamber_volume_cm3,
+            Vtot = total_volume_L, Tcham = air_temp_C, Pcham = pressure_kPa) %>%
   filter(!is.na(Area), !is.na(Vtot)) %>%
   mutate(group = paste(analyzer, campaign), start = utc(start), end = utc(end),
          rec_start = utc(field_start) + offset_s,

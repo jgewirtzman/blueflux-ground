@@ -37,7 +37,7 @@
     "warn.length": 20
   },
   "n_closures": 757,
-  "date": "2026-10-03 20:47:12 PDT",
+  "date": "2026-10-04 11:35:07 PDT",
   "sigma_method": "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign",
   "sigma_by_group": {
     "LGR1 Mar2023": 2.830562587,

@@ -17,7 +17,7 @@
 #             it (the chamber went on from ambient), the fit window start.
 # Start-up readings (CH4 < MIN_CH4_PPB or CO2 < MIN_CO2_PPM, e.g. at power-on
 # or after a restart) are dropped first.
-# Unlogged placements marked `add` in data/flux_metadata/unlogged_placements.csv
+# Unlogged placements (data/inputs/unlogged_placements.csv)
 # are placements too, with their checked start and end.
 #
 # Diffusive window: placements longer than LONG_S use the first DIFF_S after
@@ -38,10 +38,9 @@ SEARCH_S <- 3 * 3600           # how far a placement may extend beyond its fit w
 LONG_S <- 12 * 60; DIFF_S <- 600; DEADBAND_S <- 30
 utc <- function(x) as.POSIXct(x, tz = "UTC")
 
-aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
-win <- read_csv("output/flux/02_windows/windows.csv", show_col_types = FALSE) %>%
-  mutate(ws = utc(start), we = utc(end)) %>% filter(!is.na(ws))
-unl <- read_csv("data/flux_metadata/unlogged_placements.csv", show_col_types = FALSE) %>% filter(decision == "add") %>%
+aux <- read_csv("data/inputs/closures.csv", show_col_types = FALSE) %>% rename(UniqueID = flux_id, plot = site)
+win <- aux %>% transmute(UniqueID, analyzer, date, component, ws = utc(window_start), we = utc(window_end)) %>% filter(!is.na(ws))
+unl <- read_csv("data/inputs/unlogged_placements.csv", show_col_types = FALSE) %>%
   transmute(UniqueID = placement_id, analyzer, plot = site, date = as.Date(date), component = "water",
             ws = utc(start_analyzer_clock), we = utc(end_analyzer_clock), geometry_from, logged = FALSE)
 

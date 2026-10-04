@@ -13,20 +13,28 @@
 # output goes to output/logs/<stage>__<script>.log. The run stops at the first
 # failing step.
 #
-# Stages 01-04 read the raw analyzer files (data/analyzer/, gitignored) and the
-# US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored). From
-# stage 05 on, only tracked files are needed.
+# Inputs. The flux stages (03 onward) start from the clean inputs:
+#   data/inputs/closures.csv, unlogged_placements.csv   one corrected row per closure
+#   data/deposit/chamber_fluxes/analyzer_records/*.csv   analyzer records (deposited; gitignored)
+# Stages 01-02 (internal) build data/inputs from the field sheets, scanned data sheets and
+# curated corrections (data/field_notes, data/flux_metadata) and the vendor analyzer files
+# (data/analyzer); they run only where those sources are present. Stage 07 also needs the
+# US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored).
 # =============================================================================
 
 steps <- c(
   # 01 metadata: field sheets + dimension tables + curated corrections -> one auxfile
-  "code/01_metadata/00_index_raw_files.R",
+  "code/01_metadata/00_index_raw_files.R",          # vendor analyzer files only (skipped without data/analyzer)
+  "code/01_metadata/00b_export_analyzer_csv.R",     # vendor files -> clean daily CSVs (deposit; skipped without data/analyzer)
   "code/01_metadata/01_build_auxfile.R",
   # 02 windows: clock offsets and the fit window of every closure
   "code/02_windows/01_rise_detection.R",
   "code/02_windows/02_windows.R",
+  "code/02_windows/03_export_inputs.R",             # -> data/inputs/closures.csv, unlogged_placements.csv
   # 03 fit: goFlux + fluxqc per gas; water flux from dissolved CH4 where unmeasured
   "code/03_fit/01_fit_fluxes.R",
+  "code/05_dataset/00_porewater_2025.R",            # Oct 2025 porewater tables from lab files
+  "code/05_dataset/00_dissolved_gas.R",             # dissolved CH4/CO2 (GC, Picarro) and site salinity table
   "code/03_fit/02_water_flux_from_dissolved.R",
   # 04 ebullition: floating-chamber placements, diffusive / ebullitive CH4 (goFlux fork, vendored)
   "code/04_ebullition/01_placements.R",
@@ -104,7 +112,8 @@ steps <- c(
   "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)
   "code/08_figures/fig_metagenome_placeholder.R",       # PLACEHOLDER metagenome figure        # sampling design vs tide (candidate SI figure)
   "code/08_figures/collect_figures.R",
-  "code/09_archive/build_ornl_daac_package.R"     # DRAFT ORNL DAAC package (measured fluxes)
+  "code/09_archive/build_ornl_daac_package.R",    # DRAFT ORNL DAAC package 1: chamber fluxes -> data/deposit/chamber_fluxes
+  "code/09_archive/build_porewater_package.R"     # DRAFT ORNL DAAC package 2: porewater -> data/deposit/porewater_biogeochemistry
 )
 
 qa_steps <- c(   # legacy comparisons; need output/qa/baseline and, for some, intermediate/
@@ -149,10 +158,17 @@ if ("--qa" %in% args) run <- c(run, qa_steps)
 if ("--list" %in% args) { cat(sprintf("%2d  %s\n", seq_along(steps), label_of(steps)), sep = "")
   cat("QA (--qa):\n"); cat(sprintf("    %s\n", label_of(qa_steps)), sep = ""); quit(save = "no") }
 
-needs_raw <- stage_of(run) %in% c("01_metadata", "02_windows", "03_fit", "04_ebullition")
-if (any(needs_raw) && !dir.exists("data/analyzer"))
-  stop("Stages 01-04 need the raw analyzer files in data/analyzer/ (gitignored). ",
-       "Add them, or start from a later stage: Rscript run_all.R --from 05_dataset")
+# Internal stages 01-02 (field-sheet reconciliation -> data/inputs) run only where their sources
+# are present; the vendor-file steps also need data/analyzer. Without them the run starts from
+# data/inputs and the deposited analyzer CSVs.
+clean_raw <- "data/deposit/chamber_fluxes/analyzer_records"
+internal <- stage_of(run) %in% c("01_metadata", "02_windows")
+if (!dir.exists("data/field_notes") || !dir.exists("data/analyzer")) {
+  if (any(internal)) cat("(internal stages 01-02 skipped: data/field_notes or data/analyzer absent; using data/inputs)\n")
+  run <- run[!internal] }
+if (any(stage_of(run) %in% c("03_fit", "04_ebullition")) && !length(list.files(clean_raw, pattern = "csv$")))
+  stop("Stages 03-04 need the analyzer records in ", clean_raw, " (ORNL DAAC deposit). ",
+       "Or start later: Rscript run_all.R --from 05_dataset")
 if (any(stage_of(run) %in% c("01_metadata", "07_upscaling")) && !file.exists("data/tower/AMF_US-Skr_BASE_HH_2-5.csv"))
   stop("Stages 01 and 07 need data/tower/AMF_US-Skr_BASE_HH_2-5.csv (gitignored).")
 

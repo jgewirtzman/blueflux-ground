@@ -81,7 +81,29 @@ fresh_co2 <- function(tr, unit) {
   f <- !fresh_ch4(tr, unit); f[1] <- TRUE; f
 }
 
+# Clean daily exports (01_metadata/00b_export_analyzer_csv.R; the deposited granule) are
+# read when present, unless BLUEFLUX_RAW_VENDOR=1 forces the vendor files.
+CLEAN_ROOT <- "data/deposit/chamber_fluxes/analyzer_records"
+use_clean <- function() Sys.getenv("BLUEFLUX_RAW_VENDOR") != "1" && dir.exists(CLEAN_ROOT) &&
+  length(list.files(CLEAN_ROOT, pattern = "\\.csv$")) > 0
+.read_clean_day <- function(unit, day) {
+  f <- file.path(CLEAN_ROOT, sprintf("%s_%s.csv", unit, day))
+  key <- paste0("clean:", f)
+  if (exists(key, envir = .raw_cache)) return(get(key, envir = .raw_cache))
+  d <- if (file.exists(f)) read_csv(f, show_col_types = FALSE, na = "-9999", col_types = "cdddc") %>%
+    transmute(POSIX.time = as.POSIXct(time_analyzer, format = "%Y-%m-%dT%H:%M:%OS", tz = "UTC"),
+              CO2dry_ppm = co2_dry_ppm, CH4dry_ppb = ch4_dry_ppb, H2O_ppm = h2o_ppm, source_file) else NULL
+  assign(key, d, envir = .raw_cache); d
+}
 read_raw <- function(unit, from, to) {
+  if (use_clean()) {
+    if (is.na(from) || is.na(to)) return(NULL)
+    days <- format(seq(as.Date(format(from, tz = "UTC")), as.Date(format(to, tz = "UTC")), by = "day"))
+    d <- bind_rows(lapply(days, .read_clean_day, unit = unit))
+    if (!nrow(d)) d <- tibble(POSIX.time = as.POSIXct(character(), tz = "UTC"), CO2dry_ppm = numeric(), CH4dry_ppb = numeric(),
+                              H2O_ppm = numeric(), source_file = character())
+    return(d %>% filter(POSIX.time >= from, POSIX.time <= to) %>% arrange(POSIX.time))
+  }
   ix <- raw_index() %>% filter(unit == !!unit, t_last >= from, t_first <= to)
   if (!nrow(ix)) return(NULL)
   bind_rows(lapply(ix$file, .read_file, unit = unit)) %>%

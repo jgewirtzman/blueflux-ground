@@ -1,0 +1,7 @@
+site_id,site_name,latitude,longitude,ecosystem_type,latitude_2025,longitude_2025
+FLM30,Flamingo,25.15989,-80.91197,ghost_forest,-9999,-9999
+CP40,Christian Point,25.14932,-80.91102,ghost_forest,25.14948261,-80.91095886
+BL60,Bear Lake,25.15783,-80.9232,regenerating_mangrove,25.15778552,-80.92331601
+SE1,Intrusion marsh (SE-1 / US-EvM),25.3531,-80.38071,scrub_mangrove,-9999,-9999
+SRS5,Gunboat Island / SRS5,25.37702258,-81.03234716,intermediate_mangrove,25.37694508,-81.03233098
+SRS6,Lower Shark / SRS6,25.36462994,-81.07794623,tall_mangrove,25.36458864,-81.07797319

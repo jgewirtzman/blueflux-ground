@@ -53,7 +53,8 @@ utc <- function(x) as.POSIXct(x, tz = "UTC")
 pl  <- read_csv("output/flux/04_ebullition/placements.csv", show_col_types = FALSE,
                 col_types = cols(.default = col_character())) %>%
   mutate(across(c(placement_start, placement_end, diffusive_start, diffusive_end), utc))
-aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
+aux <- read_csv("data/inputs/closures.csv", show_col_types = FALSE) %>%
+  transmute(UniqueID = flux_id, Area = area_cm2, Vtot = total_volume_L, Vcham = chamber_volume_cm3, Tcham = air_temp_C, Pcham = pressure_kPa)
 
 trace_of <- function(p, s, e, id, ch4_fresh = TRUE) {
   g <- aux %>% filter(UniqueID == p$geometry_from)

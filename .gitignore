@@ -40,3 +40,6 @@ output/logs/
 data/environmental/water_level/FCE_LTER_1168_water_levels.csv
 data/gis/hurricane_tracks/hurdat2-*.txt
 data/tls/point_clouds/*_clip.npz
+
+# Analyzer records as daily CSVs (75 MB; ORNL DAAC deposit, rebuilt by code/01_metadata/00b_export_analyzer_csv.R)
+data/deposit/chamber_fluxes/analyzer_records/

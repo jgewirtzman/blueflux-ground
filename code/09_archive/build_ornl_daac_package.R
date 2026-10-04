@@ -12,8 +12,9 @@
 #
 # Inputs : output/data_products/combined_gas_flux_dataset.csv (stage 05/06)
 #          data/sites/site_metadata.csv
-#          data/field_notes/dimension_csvs/{surface_area,soil_water_dims}.csv
-# Outputs: output/archive/ornl_daac/
+#          data/inputs/chamber_dimensions_{tree,soil_water}.csv
+# Outputs: data/deposit/chamber_fluxes/ (with analyzer_records/, the analyzer granule
+#          written by code/01_metadata/00b_export_analyzer_csv.R)
 #            BlueFlux_ground_chamber_fluxes_2022_2023.csv
 #            BlueFlux_ground_sites.csv
 #            BlueFlux_ground_chamber_geometry.csv
@@ -23,7 +24,7 @@
 # =============================================================================
 suppressMessages({library(dplyr); library(readr)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
-out <- "output/archive/ornl_daac"; dir.create(out, recursive = TRUE, showWarnings = FALSE)
+out <- "data/deposit/chamber_fluxes"; dir.create(out, recursive = TRUE, showWarnings = FALSE)
 MISS <- -9999
 TZ <- "America/New_York"   # field-log clock: local civil time (EST/EDT)
 
@@ -45,6 +46,7 @@ loc <- function(date, time) {
   time <- ifelse(grepl("^\\d{1,2}:\\d{2}$", time), paste0(time, ":00"), time)
   as.POSIXct(ifelse(is.na(time), NA, paste(date, time)), format = "%Y-%m-%d %H:%M:%S", tz = TZ)
 }
+iso <- function(x) ifelse(is.na(x), NA, format(as.POSIXct(x, tz = "UTC"), "%Y-%m-%dT%H:%M:%S", tz = "UTC"))  # analyzer clock
 fmt_utc <- function(x) ifelse(is.na(x), NA, format(x, "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"))
 se_of <- function(model, lm, hm) ifelse(model == "HM", hm, lm)
 r2_of <- function(model, lm, hm) ifelse(model == "HM", hm, lm)
@@ -83,6 +85,12 @@ f <- d %>%
     analyzer = sub("[0-9]+$", "", analyzer_source),
     analyzer_unit = analyzer_source,
     air_temp_C = air_temp, pressure_kPa,
+    analyzer_clock_offset_s = clock_offset_s,
+    fit_start_analyzer = iso(window_start), fit_end_analyzer = iso(window_end),
+    placement_start_analyzer = ifelse(component == "water_surface", iso(placement_start), NA),
+    placement_end_analyzer = ifelse(component == "water_surface", iso(placement_end), NA),
+    diffusive_start_analyzer = ifelse(component == "water_surface", iso(diffusive_window_start), NA),
+    diffusive_end_analyzer = ifelse(component == "water_surface", iso(diffusive_window_end), NA),
     placement_duration_s = ifelse(component == "water_surface", placement_duration_s, NA),
     CH4_flux = CH4_best.flux,
     CH4_flux_model = CH4_model,
@@ -122,8 +130,8 @@ s_out <- bind_rows(s_out, f %>% filter(site_id %in% missing_sites) %>% group_by(
 write_csv(s_out %>% mutate(across(where(is.numeric), ~ ifelse(is.na(.x), MISS, .x))), file.path(out, "BlueFlux_ground_sites.csv"), na = "")
 
 # chamber geometry
-sa <- read_csv("data/field_notes/dimension_csvs/surface_area.csv", show_col_types = FALSE)
-sw <- read_csv("data/field_notes/dimension_csvs/soil_water_dims.csv", show_col_types = FALSE)
+sa <- read_csv("data/inputs/chamber_dimensions_tree.csv", show_col_types = FALSE)
+sw <- read_csv("data/inputs/chamber_dimensions_soil_water.csv", show_col_types = FALSE)
 geom <- bind_rows(
   sa %>% transmute(chamber_type = sub(" series", "", `Chamber ID`, ignore.case = TRUE), chamber_kind = "tree (elliptical, sealed to bark with clay)",
                    enclosed_area_cm2 = `SA cm2`, diameter_cm = NA_real_, chamber_height_cm = NA_real_, collar_offset_cm = NA_real_),
@@ -174,6 +182,13 @@ dd <- tribble(~column, ~units, ~description,
   "analyzer_unit", "", "Analyzer unit (LGR1-3, Picarro)",
   "air_temp_C", "degC", "Air temperature used in the flux (US-Skr tower TA at the measurement time)",
   "pressure_kPa", "kPa", "Pressure used in the flux (US-Skr tower; 101.325 where unavailable)",
+  "analyzer_clock_offset_s", "s", "Analyzer clock minus field-log clock (analyzer time = local field time + offset)",
+  "fit_start_analyzer", "", "Start of the fitted concentration series, analyzer clock (as time_analyzer in analyzer_records/)",
+  "fit_end_analyzer", "", "End of the fitted concentration series, analyzer clock",
+  "placement_start_analyzer", "", "Floating-chamber placement start, analyzer clock (water only)",
+  "placement_end_analyzer", "", "Floating-chamber placement end, analyzer clock (water only; ebullition summed over the placement)",
+  "diffusive_start_analyzer", "", "Start of the window for the diffusive CH4 flux, analyzer clock (water only)",
+  "diffusive_end_analyzer", "", "End of the window for the diffusive CH4 flux, analyzer clock (water only)",
   "placement_duration_s", "s", "Floating-chamber placement duration (water only)",
   "CH4_flux", "nmol m-2 s-1", "CH4 flux, positive = emission to the atmosphere; water = diffusive + ebullitive",
   "CH4_flux_model", "", "Model of the reported flux: LM (linear) or HM (Hutchinson-Mosier)",
@@ -240,6 +255,10 @@ sprintf("- **By site:** %s.", n_site),
 "| `BlueFlux_ground_sites.csv` | Site codes, names, coordinates, ecosystem type, dominant species, record counts and dates |",
 "| `BlueFlux_ground_chamber_geometry.csv` | Chamber classes: enclosed area, dimensions, collar offset, system-volume range |",
 "| `BlueFlux_ground_data_dictionary.csv` | Column names, units and definitions |",
+sprintf("| `analyzer_records/<unit>_<YYYY-MM-DD>.csv` (%d files) | Analyzer concentration records, one file per analyzer and day: time_analyzer (analyzer clock, ISO 8601, ms), co2_dry_ppm, ch4_dry_ppb, h2o_ppm (as logged; not used in the fluxes), source_file (original vendor file) |",
+        length(list.files(file.path(out, "analyzer_records"), pattern = "csv$"))),
+"",
+"Each flux can be recomputed from `analyzer_records/`: select the analyzer unit's records between `fit_start_analyzer` and `fit_end_analyzer` (water: `diffusive_*` and `placement_*`), and fit with `chamber_area_cm2`, `system_volume_L`, `air_temp_C` and `pressure_kPa`. Picarro CH4 and CO2 update on alternate logged rows; use each gas's fresh readings. The processing code (R) is at [repository DOI].",
 "",
 "## 3. Application and Derivation",
 "",

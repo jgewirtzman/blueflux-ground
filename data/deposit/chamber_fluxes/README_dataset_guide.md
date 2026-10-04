@@ -35,6 +35,9 @@ Per-measurement methane (CH4) and carbon dioxide (CO2) fluxes measured with clos
 | `BlueFlux_ground_sites.csv` | Site codes, names, coordinates, ecosystem type, dominant species, record counts and dates |
 | `BlueFlux_ground_chamber_geometry.csv` | Chamber classes: enclosed area, dimensions, collar offset, system-volume range |
 | `BlueFlux_ground_data_dictionary.csv` | Column names, units and definitions |
+| `analyzer_records/<unit>_<YYYY-MM-DD>.csv` (92 files) | Analyzer concentration records, one file per analyzer and day: time_analyzer (analyzer clock, ISO 8601, ms), co2_dry_ppm, ch4_dry_ppb, h2o_ppm (as logged; not used in the fluxes), source_file (original vendor file) |
+
+Each flux can be recomputed from `analyzer_records/`: select the analyzer unit's records between `fit_start_analyzer` and `fit_end_analyzer` (water: `diffusive_*` and `placement_*`), and fit with `chamber_area_cm2`, `system_volume_L`, `air_temp_C` and `pressure_kPa`. Picarro CH4 and CO2 update on alternate logged rows; use each gas's fresh readings. The processing code (R) is at [repository DOI].
 
 ## 3. Application and Derivation
 

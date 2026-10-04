@@ -82,10 +82,8 @@ camp_of <- function(d) ifelse(format(d, "%Y-%m") == "2022-10", "Oct 2022",
                               ifelse(format(d, "%Y-%m") == "2023-03", "Mar 2023", NA))
 
 # ---- chamber water fluxes (rebuild fit) per plot x campaign x position ------------------------
-aux <- read_csv("output/flux/01_metadata/auxfile.csv", show_col_types = FALSE)
-sw <- read.csv("data/field_notes/BlueFlux Dataset_soils_water.csv", check.names = FALSE)
-sw <- sw[, names(sw) != ""] %>% transmute(UniqueID = flux_id, collar_location = `Collar Location Notes`,
-                                          T_water = suppressWarnings(as.numeric(`Water Temp C`)))
+aux <- read_csv("data/inputs/closures.csv", show_col_types = FALSE) %>% rename(UniqueID = flux_id, plot = site)
+sw <- aux %>% transmute(UniqueID, collar_location, T_water = water_temp_C)
 clos <- read_csv("output/flux/03_fit/CH4/fluxes.csv", show_col_types = FALSE) %>% select(UniqueID, F_ch4 = best.flux) %>%
   full_join(read_csv("output/flux/03_fit/CO2/fluxes.csv", show_col_types = FALSE) %>% select(UniqueID, F_co2 = best.flux), by = "UniqueID") %>%
   inner_join(aux %>% filter(component == "water") %>% select(UniqueID, plot, date), by = "UniqueID") %>%

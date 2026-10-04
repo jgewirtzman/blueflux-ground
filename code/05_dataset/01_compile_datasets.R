@@ -3,10 +3,10 @@
 # script modifies them.
 #
 # Inputs (all produced by earlier stages or tracked):
-#   data/field_notes/*.csv                        field sheets (descriptive columns)
-#   data/flux_metadata/*.csv                      curated corrections / exclusions
-#   output/flux/01_metadata/auxfile.csv           geometry, Tcham, Pcham, dates, analyzers
-#   output/flux/02_windows/windows.csv            fit window per closure
+#   data/inputs/closures.csv                      one corrected row per closure: times, fit
+#                                                 window, geometry, Tcham, Pcham, descriptive
+#                                                 columns, curated exclusions (02_windows/03_export_inputs.R)
+#   data/inputs/unlogged_placements.csv           placements not on the field sheet
 #   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux + fluxqc results
 #   output/flux/04_ebullition/partition.csv       floating-chamber placements: diffusive /
 #                                                 ebullitive CH4 and CO2 per placement
@@ -38,35 +38,14 @@ rd <- function(f, ...) read_csv(f, show_col_types = FALSE, ...)
 chr <- function(f) rd(f, col_types = cols(.default = col_character()))
 num <- function(x) suppressWarnings(as.numeric(x))
 
-aux  <- rd("output/flux/01_metadata/auxfile.csv")
-win  <- rd("output/flux/02_windows/windows.csv")
-excl <- rd("data/flux_metadata/excluded_measurements.csv")
+cl   <- rd("data/inputs/closures.csv", col_types = cols(field_start = col_character(), field_end = col_character(),
+                                                       sheet_index = col_character(), collar_id = col_character(), notes = col_character(),
+                                                       end_time_repair = col_character(), .default = col_guess()))
 part <- rd("output/flux/04_ebullition/partition.csv", col_types = cols(placement_start = col_character(),
            placement_end = col_character(), diffusive_start = col_character(), diffusive_end = col_character(), .default = col_guess()))
-unl_meta <- rd("data/flux_metadata/unlogged_placements.csv")
-dims <- rd("data/field_notes/dimension_csvs/soil_water_dims.csv")
-instr <- rd("data/field_notes/dimension_csvs/additional_vol.csv")
+unl_meta <- rd("data/inputs/unlogged_placements.csv")
 legacy <- rd("output/qa/baseline/output__data_products__combined_gas_flux_dataset.csv",
              col_types = cols(start_time = col_character(), end_time = col_character(), .default = col_guess()))
-
-# ---- 1. Descriptive columns from the field sheets -----------------------------------------
-trees <- bind_rows(chr("data/field_notes/blueflux compiled tree fluxes.csv"),
-                   chr("data/field_notes/blueflux compiled tree fluxes_additional.csv")) %>%
-  filter(!is.na(flux_id)) %>%
-  transmute(flux_id, index, species, status, height = num(height), diameter = num(diameter),
-            lenticels = tolower(lenticels), above = tolower(above), chamber_class,
-            stem_temp = num(stem_temp), soil_temp = num(soil_temp), water_depth = num(water_depth),
-            notes = NA_character_)
-sw_raw <- chr("data/field_notes/BlueFlux Dataset_soils_water.csv"); names(sw_raw)[1] <- "index"
-sw <- sw_raw %>% filter(!is.na(flux_id)) %>%
-  transmute(flux_id, index, surface_type = tolower(Surface), collar_id = `Collar Notes`,
-            collar_location = `Collar Location Notes`, soil_temp = num(`Soil Temp C`),
-            water_temp = num(`Water Temp C`), water_depth = num(`Water depth cm`),
-            pressure_start = num(`Pressure start`), rh_start = num(`RH start`),
-            pneumatophore_count = num(Pneumatophore_Count),
-            notes = coalesce(`Notes 1`, `Notes 2`))
-field <- bind_rows(trees, sw)
-stopifnot(!anyDuplicated(field$flux_id))
 
 # ---- 2. Fit results ------------------------------------------------------------------------
 fit_cols <- c("best.flux", "model", "quality.check", "LM.flux", "LM.SE", "LM.r2", "LM.p.val",
@@ -82,21 +61,20 @@ read_fit <- function(gas) {
 fit <- full_join(read_fit("CH4"), read_fit("CO2"), by = "UniqueID") %>% rename(flux_id = UniqueID)
 
 # ---- 3. Assemble the closure table ---------------------------------------------------------
-cell_of <- function(an) ifelse(grepl("^LGR", an), instr$analyzer_cell[instr$instrument == "lgr_mgga"],
-                               instr$analyzer_cell[instr$instrument == "picarro"])
-d <- aux %>%
-  transmute(flux_id = UniqueID, plot, date, start_time = substr(start.time, 12, 19), end_time = substr(end.time, 12, 19),
+d <- cl %>%
+  transmute(flux_id, plot = site, date, start_time = substr(field_start, 12, 19), end_time = substr(field_end, 12, 19),
             measurement_type, component = tolower(component), analyzer_source = analyzer,
-            chamber_id, geometry_rule, chamber_volume_cm3 = Vcham, surface_area_cm2 = Area,
-            total_system_volume_cm3 = Vtot * 1000, total_system_volume_L = Vtot, tubing_volume_cm3 = Vtube,
-            analyzer_cell_volume_cm3 = cell_of(analyzer), air_temp = Tcham, air_temp_source = Tcham_source,
-            air_temp_handheld = Tcham_handheld, pressure_kPa = Pcham, pressure_source = Pcham_source,
-            end_time_repair, date_corrected, analyzer_corrected, excluded) %>%
-  left_join(field, by = "flux_id") %>%
-  left_join(dims %>% select(chamber_id = Chamber, collar_offset_cm = Offset_cm, collar_volume_cm3 = Collar_Volume_cm3),
-            by = "chamber_id") %>%
-  left_join(win %>% select(flux_id = UniqueID, window_source, window_start = start, window_end = end,
-                           clock_offset_s = offset_s, clock_offset_source = offset_source), by = "flux_id") %>%
+            chamber_id, geometry_rule, chamber_volume_cm3, surface_area_cm2 = area_cm2,
+            total_system_volume_cm3 = total_volume_L * 1000, total_system_volume_L = total_volume_L, tubing_volume_cm3,
+            analyzer_cell_volume_cm3, air_temp = air_temp_C, air_temp_source,
+            air_temp_handheld = air_temp_handheld_C, pressure_kPa, pressure_source,
+            end_time_repair, date_corrected, analyzer_corrected, excluded = NA,   # set in section 7
+            index = sheet_index, species, status, height = height_cm, diameter = diameter_cm, lenticels, above = height_above,
+            chamber_class, stem_temp = stem_temp_C, soil_temp = soil_temp_C, water_depth = water_depth_cm,
+            notes, surface_type, collar_id, collar_location, water_temp = water_temp_C, pressure_start, rh_start,
+            pneumatophore_count, collar_offset_cm, collar_volume_cm3,
+            window_source, window_start = as.POSIXct(window_start, tz = "UTC"), window_end = as.POSIXct(window_end, tz = "UTC"),
+            clock_offset_s, clock_offset_source, excl_curated = exclusion_reason) %>%
   left_join(fit, by = "flux_id") %>%
   mutate(data_source = "rebuild fit (stage 03)")
 
@@ -124,9 +102,6 @@ d <- d %>% mutate(
 # 00_lib/rhizophora_crown.R). `height` becomes height above the sediment;
 # height_corrected = height above the water surface where water stood
 # (stems, prop roots), else above the sediment.
-hfix <- read_csv("data/flux_metadata/height_corrections.csv", show_col_types = FALSE)
-d <- d %>% left_join(hfix %>% select(flux_id, height_fix = height), by = "flux_id") %>%
-  mutate(height = coalesce(height_fix, height)) %>% select(-height_fix)
 source("code/00_lib/rhizophora_crown.R")
 crown <- crown_heights(d)
 cat("R. mangle root-crown height (cm): ",
@@ -166,7 +141,8 @@ unl_rows <- part %>% filter(!logged) %>%
          clock_offset_s = 0, clock_offset_source = "analyzer clock (no field log)",
          index = NA_character_, water_depth = NA_real_, water_temp = NA_real_, collar_id = NA_character_,
          notes = paste("unlogged placement:", unlogged_reason), data_source = "unlogged placement (stage 04)",
-         end_time_repair = NA_character_, date_corrected = FALSE, analyzer_corrected = FALSE, excluded = FALSE) %>%
+         end_time_repair = NA_character_, date_corrected = FALSE, analyzer_corrected = FALSE, excluded = FALSE,
+         excl_curated = NA_character_) %>%
   mutate(across(all_of(fit_names), ~ NA)) %>%
   select(all_of(names(d)))
 d <- bind_rows(d, unl_rows)
@@ -206,15 +182,15 @@ d <- d %>% mutate(flux_status = if_else(CH4_flux_status == "valid" | CO2_flux_st
 # ---- 6. Ebullition: from stage 04 (section 4b) -------------------------------------------------
 
 # ---- 7. Exclusions and the analysis rule -----------------------------------------------------
-d <- d %>% left_join(excl %>% rename(exclusion_reason = reason), by = "flux_id") %>%
-  mutate(exclusion_reason = case_when(!is.na(exclusion_reason) ~ exclusion_reason,
+d <- d %>%
+  mutate(exclusion_reason = case_when(!is.na(excl_curated) ~ excl_curated,
                                       is.na(surface_area_cm2) | is.na(total_system_volume_cm3) ~ "no chamber geometry",
                                       is.na(window_source) | window_source == "none" ~ "no closure time on the field sheet",
                                       data_source == "unlogged placement (stage 04)" & flux_status == "no_data" ~
                                         "stage 04: placement too short for goAquaFlux (< 30 observations)",
                                       flux_status == "no_data" ~ "no raw analyzer data in the window",
                                       TRUE ~ NA_character_),
-         excluded = !is.na(exclusion_reason))
+         excluded = !is.na(exclusion_reason)) %>% select(-excl_curated)
 all_rows <- d %>%
   left_join(legacy %>% select(flux_id, legacy_data_source = data_source, legacy_CH4_best.flux = CH4_best.flux,
                               legacy_CO2_best.flux = CO2_best.flux), by = "flux_id") %>%
