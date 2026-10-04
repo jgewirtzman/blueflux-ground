@@ -14,7 +14,7 @@ d <- read.csv("output/upscaling/switch_by_method.csv")
 lv <- c("Chamber budgets (this study)", "Airborne (Delaria et al. 2024; Doughty conversion)",
         "Airborne, ghost midday = daily (sensitivity)", "Regional model (Doughty et al. 2026)")
 lab <- c("Chamber budgets\n(this study; 5 sites)", "Airborne class fluxes\n(Delaria et al. 2024)",
-         "Airborne, ghost CO2\nmidday = daily", "Regional model\n(Doughty et al. 2026)")
+         "Airborne, ghost CO2\nmidday = daily", "BlueFlux regional model\n(Doughty et al. 2026)")
 d <- d %>% mutate(m = factor(lab[match(method, lv)], rev(lab)), horizon = factor(horizon, c("GWP20", "GWP100")))
 bars <- d %>% select(m, horizon, CO2 = co2_part, CH4 = ch4_part) %>% pivot_longer(c(CO2, CH4), names_to = "gas", values_to = "v") %>%
   mutate(gas = factor(gas, c("CO2", "CH4")))
