@@ -4,9 +4,9 @@ Reads the single-scan LAS files of the BlueFlux TLS dataset (Xiong, Lagomasino &
 2024, ORNL DAAC 2311; ~101 GB, not stored in the repository; set BLUEFLUX_TLS_LAS to the
 download folder) for the scan date used in the surface-area analysis, keeps points within a
 square of half-width HALF metres around the plot centre (mean of the scans' bounding-box
-centres), thins them to one point per VOX-metre voxel, and writes
+centres), thins them to one point per VOX-metre (4 cm) voxel, and writes
 data/tls/point_clouds/<site>_clip.npz (x, y, z in metres relative to the centre and to the
-2nd-percentile height, plus reflectance).
+2nd-percentile height; tls_render.py re-zeros on the 1st percentile, plus reflectance).
 """
 import csv, os, sys
 import numpy as np
@@ -14,7 +14,7 @@ import laspy
 
 LAS = os.environ.get("BLUEFLUX_TLS_LAS", os.path.expanduser("~/Downloads/TLS_Lidar_BlueFlux_Mangroves_2311_1-20261004_061002"))
 OUT = "data/tls/point_clouds"
-HALF, VOX = 20.0, 0.10
+HALF, VOX = 20.0, 0.04
 SCANS = {"SRS6": ["2022-10-15", "2022-10-18"], "CP40": ["2023-03-10"], "SRS5": ["2022-10-21"], "FLM30": ["2023-03-12"]}
 
 rows = list(csv.DictReader(open(os.path.join(LAS, "TLS_Mangrove_Forests_Everglades_File_Characteristics.csv"))))

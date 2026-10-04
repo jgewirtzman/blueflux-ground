@@ -181,15 +181,16 @@ height_panel <- function(right = FALSE) {
 build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE) {
   lt <- theme(legend.title = element_text(size = 7, face = "bold"), legend.text = element_text(size = 7),
               legend.key.size = unit(8, "pt"))
-  horiz <- function(p) cowplot::get_plot_component(p + lt + theme(legend.position = "bottom", legend.direction = "horizontal",
-                                                                  legend.title.position = "left"),
+  horiz <- function(p, title = TRUE) cowplot::get_plot_component(p + lt + theme(legend.position = "bottom", legend.direction = "horizontal",
+                                                                  legend.title.position = "left") +
+                                                      (if (!title) theme(legend.title = element_blank()) else theme()),
                                                     "guide-box-bottom", return_all = TRUE)
   pa <- rate_panel(dd, "CH4", "CH4_flux_status", c(0, 1, 10, 100, 1000), expression("CH"[4]*" (nmol m"^-2*" s"^-1*")")) +
     guides(fill = guide_legend(override.aes = list(size = 2.5), nrow = 1))
   pb <- rate_panel(dd, "CO2", "CO2_flux_status", c(-10, -1, 0, 1, 10), expression("CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*")"), show_y = FALSE)
   pc2 <- pc + guides(shape = guide_legend(override.aes = list(size = 1.8, alpha = 1), nrow = 1))
   pf <- height_panel(d_right)
-  leg_class <- horiz(pa); leg_surf <- horiz(pc2); leg_wood <- horiz(pf)
+  leg_class <- horiz(pa); leg_surf <- horiz(pc2, FALSE); leg_wood <- horiz(pf, FALSE)
   nl <- theme(legend.position = "none")
   pcc <- if (pie) area_pie_panel() else if (stacked) area_stack_panel() else area_panel()
   pcc <- pcc + lt
@@ -232,7 +233,7 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE)
     AAABBB
     LLLLLL
     TTDEFF
-    NNNOOO
+    ##NNOO
     CCGGHH
   "
     # design areas take plots in alphabetical order of their letters: A B C D E F G H L N O T
