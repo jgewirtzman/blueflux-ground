@@ -72,7 +72,7 @@ Half-hourly CO2 and CH4 fluxes at SRS6 came from the AmeriFlux US-Skr BASE produ
 
 ## M15. Airborne eddy covariance
 
-The CARAFE payload (Wolfe et al. 2018) flew on a Beechcraft King Air A90 at ~90 m above sea level with a Picarro G2311-f (10 Hz CO2, CH4 and H2O), a Picarro G2401m calibrated to NOAA/WMO standards, and an Aventech AIMMS-20 probe (20 Hz winds, temperature, pressure, position and attitude) (Delaria et al. 2024). Fluxes were computed by continuous wavelet transform along straight, level legs (>15 km; roll <5°; altitude within ±10 m); median detection limits at 1 km were 5.8 nmol m−2 s−1 for CH4 and 0.9 µmol m−2 s−1 for CO2. Two-dimensional footprints followed Kljun et al. (2015) with HRRR boundary-layer heights, and fluxes were disaggregated to land-cover classes by multilinear regression on footprint composition (Hutjes et al. 2010; Hannun et al. 2020), with ghost forest delineated following Lagomasino et al. (2021). Because regenerating forest was not separable in the footprints, the comparison used two end-members (intact and ghost), and the March 2023 value is the mean of the February and April 2023 deployments (variances combined; table S6). Midday CO2 was converted to daily values for comparison with the daily chamber budgets. _[PLACEHOLDER — July 2024 deployment, same disaggregation; uncertainty definition (E. Delaria).]_
+The CARAFE payload (Wolfe et al. 2018) flew on a Beechcraft King Air A90 at ~90 m above sea level with a Picarro G2311-f (10 Hz CO2, CH4 and H2O), a Picarro G2401m calibrated to NOAA/WMO standards, and an Aventech AIMMS-20 probe (20 Hz winds, temperature, pressure, position and attitude) (Delaria et al. 2024). Fluxes were computed by continuous wavelet transform along straight, level legs (>15 km; roll <5°; altitude within ±10 m); median detection limits at 1 km were 5.8 nmol m−2 s−1 for CH4 and 0.9 µmol m−2 s−1 for CO2. Two-dimensional footprints followed Kljun et al. (2015) with HRRR boundary-layer heights, and fluxes were disaggregated to land-cover classes by multilinear regression on footprint composition (Hutjes et al. 2010; Hannun et al. 2020), with ghost forest delineated following Lagomasino et al. (2021). Flight tracks and the footprint area over each class are shown in fig. S20. Because regenerating forest was not separable in the footprints, the comparison used two end-members (intact and ghost), and the March 2023 value is the mean of the February and April 2023 deployments (variances combined; table S6). Midday CO2 was converted to daily values for comparison with the daily chamber budgets. _[PLACEHOLDER — July 2024 deployment, same disaggregation; uncertainty definition (E. Delaria).]_
 
 ## M16. Porewater geochemistry
 
@@ -204,6 +204,8 @@ Our ghost-forest forcing is on-site vertical exchange five to six years after Ir
 {{FIG S19}}
 
 {{FIG S20}}
+
+{{FIG S21}}
 
 ---
 
