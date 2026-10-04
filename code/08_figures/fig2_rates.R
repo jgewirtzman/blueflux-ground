@@ -226,8 +226,8 @@ build <- function(dd, file, note, stacked = FALSE, pie = FALSE, d_right = FALSE)
       theme(plot.margin = margin(5.5, 5.5, 5.5, 22))
     # (c) terrestrial laser scans, intact vs ghost (tls_render.py)
     img <- png::readPNG("output/figures/other/tls_render_panel.png")
-    tls_ph <- ggplot() + annotation_raster(img, 0, 1, 0, 1) + coord_fixed(ratio = dim(img)[1] / dim(img)[2], expand = FALSE) +
-      scale_x_continuous(limits = c(0, 1)) + scale_y_continuous(limits = c(0, 1)) + theme_void()
+    # fill the whole design cell (no axis titles or legend to leave room for), aspect preserved
+    tls_ph <- wrap_elements(full = grid::rasterGrob(img, interpolate = TRUE)) + theme(plot.margin = margin(16, 0, 0, 10))
     sh <- readRDS("output/figures/other/fig_component_shares.rds")
     design <- "
     AAABBB

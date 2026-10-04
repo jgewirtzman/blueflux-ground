@@ -55,11 +55,11 @@ for k, s in enumerate(SITES):
     ax.set_title(f"{s} ({CLS[s]})", fontsize=8, color=COL[CLS[s]], fontweight="bold")
 fig.savefig("output/figures/other/tls_render_3d.png", dpi=400, bbox_inches="tight", facecolor="white")
 
-# stacked panel for Fig. 2c: intact above ghost, the same 40 m x 20 m slab (20 m deep) for both,
+# stacked panel for Fig. 2c: intact above ghost, the same 40 m wide, 20 m deep slab for both,
 # paler with distance (linear, up to 92% towards white); height above the 1st-percentile point
 # (removes water-surface returns below the floor); nothing below 0 m drawn
 SLAB2 = 10.0
-fig, axes = plt.subplots(2, 1, figsize=(2.4, 2.6), gridspec_kw=dict(hspace=0.08))
+fig, axes = plt.subplots(2, 1, figsize=(2.4, 2.6), gridspec_kw=dict(hspace=0.04))
 for ax, s in zip(axes, SITES):
     d = np.load(f"data/tls/point_clouds/{s}_clip.npz")
     x, y, z = load(s); z = z - np.percentile(d["z"], 1)
@@ -68,7 +68,7 @@ for ax, s in zip(axes, SITES):
     base = np.array(matplotlib.colors.to_rgb(COL[CLS[s]]))
     f = ((y[m][o] + SLAB2) / (2 * SLAB2))[:, None] * 0.92
     ax.scatter(x[m][o], z[m][o], c=base * (1 - f) + f, s=0.03, lw=0, rasterized=True)
-    ax.set_xlim(-20, 20); ax.set_ylim(0, 20); ax.set_aspect("equal"); ax.axis("off")
-    ax.text(-20, 19.5, f"{s} ({CLS[s]})", fontsize=6.5, color=COL[CLS[s]], fontweight="bold", va="top")
-axes[1].plot([12, 17], [16, 16], color="grey", lw=1); axes[1].text(14.5, 16.8, "5 m", fontsize=5.5, ha="center", color="grey")
+    ax.set_xlim(-20, 20); ax.set_ylim(0, 22.5); ax.set_aspect("equal"); ax.axis("off")
+    ax.text(20, 22.5, f"{s} ({CLS[s]})", fontsize=5, color=COL[CLS[s]], fontweight="bold", va="top", ha="right")
+axes[1].plot([15, 20], [13, 13], color="grey", lw=1); axes[1].text(17.5, 13.8, "5 m", fontsize=4.5, ha="center", color="grey")
 fig.savefig("output/figures/other/tls_render_panel.png", dpi=600, bbox_inches="tight", facecolor="white", pad_inches=0.01)
