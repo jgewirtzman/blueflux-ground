@@ -34,12 +34,13 @@ gc <- read_csv("data/environmental/dissolved_gas/dissolved_gas_all_observations.
   filter(source == "GC") %>%
   transmute(site_id = site, campaign = camp(real_date), date = format(real_date), sample_type, depth_cm = NA_real_,
             sample_label = sample_id, method = "headspace equilibration, gas chromatography",
-            CH4_uM, CO2_uM, d13C_CH4_permil = NA_real_)
+            CH4_uM, CO2_uM, d13C_CH4_permil = NA_real_, CH4_above_standard = CH4_above_std,
+            CO2_above_standard = CO2_above_std, failed_vial)
 pic <- read_csv("data/porewater/porewater_gas_samples_2025.csv", show_col_types = FALSE) %>%
   transmute(site_id = site, campaign = "2025-10", date = NA_character_, sample_type,
             depth_cm = suppressWarnings(as.numeric(ifelse(depth_cm == "Surface", NA, depth_cm))),
             sample_label = sample_name, method = "headspace equilibration, Picarro G2201-i (1:5 dilution)",
-            CH4_uM, CO2_uM, d13C_CH4_permil = d13C_CH4)
+            CH4_uM, CO2_uM, d13C_CH4_permil = d13C_CH4, CH4_above_standard = FALSE, CO2_above_standard = FALSE, failed_vial)
 gas <- bind_rows(gc, pic) %>% filter(site_id %in% SITES) %>% arrange(campaign, site_id, sample_type, depth_cm, sample_label)
 write_csv(miss(gas), file.path(out, "BlueFlux_porewater_dissolved_gas.csv"), na = "")
 
@@ -89,9 +90,12 @@ dd <- tribble(~table, ~column, ~units, ~description,
   "dissolved_gas", "date", "", "Sampling date (2022-2023); -9999 for 2025 (campaign 2025-10)",
   "dissolved_gas", "sample_label", "", "Vial label as written",
   "dissolved_gas", "method", "", "Headspace method and instrument",
-  "dissolved_gas", "CH4_uM", "umol L-1", "Dissolved CH4 (headspace: 180 mL water, 20 mL headspace, 25 C; KH 1.4e-3 mol L-1 atm-1)",
-  "dissolved_gas", "CO2_uM", "umol L-1", "Dissolved CO2 (as CH4; KH 3.4e-2 mol L-1 atm-1)",
+  "dissolved_gas", "CH4_uM", "umol L-1", "Dissolved CH4 (headspace: 180 mL water, 20 mL ambient-air headspace, 25 C; air CH4 1.95 ppm subtracted; KH 1.4e-3 mol L-1 atm-1). 2022-2023: GC peak areas calibrated per run against gravimetric standards (power law)",
+  "dissolved_gas", "CO2_uM", "umol L-1", "Dissolved CO2 (as CH4; air CO2 420 ppm subtracted; KH 3.4e-2 mol L-1 atm-1). 2022-2023: weighted quadratic calibration",
   "dissolved_gas", "d13C_CH4_permil", "permil VPDB", "d13C of CH4 (2025 only)",
+  "dissolved_gas", "CH4_above_standard", "", "TRUE if the GC peak area exceeds the highest CH4 standard (5029 ppm): value extrapolated",
+  "dissolved_gas", "CO2_above_standard", "", "TRUE if the GC peak area exceeds the highest CO2 standard (10080 ppm): value extrapolated linearly, indicative only",
+  "dissolved_gas", "failed_vial", "", "TRUE if below 30% of the median of its replicate set (>= 3 vials); excluded from all means",
   "field_2022_2023", "date", "", "Sampling date",
   "field_2022_2023", "replicate", "", "Replicate number",
   "field_2022_2023", "specific_conductance_uS_cm", "uS cm-1", "Specific conductance at 25 C",

@@ -1,4 +1,4 @@
-Manuscript Results — generated 2026-10-04 14:56 
+Manuscript Results — generated 2026-10-05 16:12 
 
 
 ================================================================
@@ -513,26 +513,26 @@ R.6: POREWATER GEOCHEMISTRY (Fig 6)
   Mean +/- SD by Site x Depth:
 
   --- CH4_mean_uM ---
-    SRS5   0          3.66 +/- 0.00 (n=1)
-    SRS5   15         5.34 +/- 0.00 (n=1)
-    SRS5   45         0.81 +/- 0.00 (n=1)
-    SRS5   90         3.73 +/- 0.00 (n=1)
-    SRS5   Surface    0.30 +/- 0.00 (n=1)
+    SRS5   0          3.65 +/- 0.00 (n=1)
+    SRS5   15         5.33 +/- 0.00 (n=1)
+    SRS5   45         0.80 +/- 0.00 (n=1)
+    SRS5   90         3.72 +/- 0.00 (n=1)
+    SRS5   Surface    0.29 +/- 0.00 (n=1)
     SRS6   0          0.18 +/- 0.00 (n=1)
-    SRS6   15         1.04 +/- 0.00 (n=1)
-    SRS6   45         0.66 +/- 0.00 (n=1)
-    SRS6   90         1.62 +/- 0.00 (n=1)
-    SRS6   Surface    0.47 +/- 0.00 (n=1)
-    BL60   0          11.08 +/- 0.00 (n=1)
-    BL60   15         16.09 +/- 0.00 (n=1)
-    BL60   45         4.82 +/- 0.00 (n=1)
-    BL60   90         23.45 +/- 0.00 (n=1)
-    BL60   Surface    86.62 +/- 0.00 (n=1)
-    CP40   0          59.86 +/- 0.00 (n=1)
-    CP40   15         43.97 +/- 0.00 (n=1)
-    CP40   45         42.40 +/- 0.00 (n=1)
-    CP40   90         22.35 +/- 0.00 (n=1)
-    CP40   Surface    2.75 +/- 0.00 (n=1)
+    SRS6   15         1.03 +/- 0.00 (n=1)
+    SRS6   45         0.65 +/- 0.00 (n=1)
+    SRS6   90         1.61 +/- 0.00 (n=1)
+    SRS6   Surface    0.46 +/- 0.00 (n=1)
+    BL60   0          11.07 +/- 0.00 (n=1)
+    BL60   15         16.08 +/- 0.00 (n=1)
+    BL60   45         4.81 +/- 0.00 (n=1)
+    BL60   90         23.44 +/- 0.00 (n=1)
+    BL60   Surface    86.61 +/- 0.00 (n=1)
+    CP40   0          59.85 +/- 0.00 (n=1)
+    CP40   15         43.96 +/- 0.00 (n=1)
+    CP40   45         42.39 +/- 0.00 (n=1)
+    CP40   90         22.34 +/- 0.00 (n=1)
+    CP40   Surface    2.74 +/- 0.00 (n=1)
 
   --- PSU ---
     SRS5   0          13.42 +/- 0.00 (n=1)
@@ -672,34 +672,34 @@ R.6: POREWATER GEOCHEMISTRY (Fig 6)
 --- Multi-campaign dissolved CH4 and salinity (Fig S3) ---
 
   Dissolved CH4 by site x season x type (uM):
-    BL60   Oct 2025           porewater      CH4=13.9 uM (n=4), PSU=34.5
+    BL60   Oct 2025           porewater      CH4=13.8 uM (n=4), PSU=34.5
     BL60   Oct 2025           surface_water  CH4=86.6 uM (n=1), PSU=3.4
-    BL60   dry (Mar 2023)     porewater      CH4=24.8 uM (n=7), PSU=37.6
-    BL60   wet (Oct 2022)     porewater      CH4=47.2 uM (n=3), PSU=37.7
-    BL60   wet (Oct 2022)     surface_water  CH4=20.7 uM (n=3), PSU=15.2
+    BL60   dry (Mar 2023)     porewater      CH4=29.5 uM (n=7), PSU=37.6
+    BL60   wet (Oct 2022)     porewater      CH4=57.7 uM (n=3), PSU=37.7
+    BL60   wet (Oct 2022)     surface_water  CH4=24.6 uM (n=3), PSU=15.2
     CP40   Oct 2025           porewater      CH4=42.1 uM (n=4), PSU=49.5
     CP40   Oct 2025           surface_water  CH4=2.7 uM (n=1), PSU=20.8
-    CP40   dry (Mar 2023)     porewater      CH4=61.9 uM (n=3), PSU=62.6
-    CP40   dry (Mar 2023)     surface_water  CH4=0.8 uM (n=3), PSU=45.1
-    CP40   wet (Oct 2022)     porewater      CH4=4.1 uM (n=3), PSU=58.7
-    CP40   wet (Oct 2022)     surface_water  CH4=0.0 uM (n=6), PSU=39.8
-    FLM30  dry (Mar 2023)     porewater      CH4=59.9 uM (n=3), PSU=60.9
-    FLM30  dry (Mar 2023)     surface_water  CH4=2.5 uM (n=3), PSU=53.6
-    FLM30  wet (Oct 2022)     porewater      CH4=85.7 uM (n=3), PSU=64.2
-    FLM30  wet (Oct 2022)     surface_water  CH4=1.2 uM (n=10), PSU=31.4
+    CP40   dry (Mar 2023)     porewater      CH4=75.2 uM (n=3), PSU=62.6
+    CP40   dry (Mar 2023)     surface_water  CH4=0.9 uM (n=3), PSU=45.1
+    CP40   wet (Oct 2022)     porewater      CH4=4.7 uM (n=3), PSU=58.7
+    CP40   wet (Oct 2022)     surface_water  CH4=5.6 uM (n=5), PSU=39.8
+    FLM30  dry (Mar 2023)     porewater      CH4=72.9 uM (n=3), PSU=60.9
+    FLM30  dry (Mar 2023)     surface_water  CH4=2.8 uM (n=3), PSU=53.6
+    FLM30  wet (Oct 2022)     porewater      CH4=105.8 uM (n=3), PSU=64.2
+    FLM30  wet (Oct 2022)     surface_water  CH4=1.5 uM (n=9), PSU=31.4
     SRS5   Oct 2025           porewater      CH4=3.4 uM (n=4), PSU=19.9
     SRS5   Oct 2025           surface_water  CH4=0.3 uM (n=1), PSU=9.3
-    SRS5   wet (Oct 2022)     porewater      CH4=4.4 uM (n=4), PSU=20.2
-    SRS5   wet (Oct 2022)     surface_water  CH4=0.1 uM (n=4), PSU=0.8
+    SRS5   wet (Oct 2022)     porewater      CH4=6.6 uM (n=3), PSU=20.2
+    SRS5   wet (Oct 2022)     surface_water  CH4=0.2 uM (n=3), PSU=0.8
     SRS6   Oct 2025           porewater      CH4=0.9 uM (n=4), PSU=29.5
     SRS6   Oct 2025           surface_water  CH4=0.5 uM (n=1), PSU=15.5
-    SRS6   wet (Oct 2022)     porewater      CH4=9.5 uM (n=3), PSU=26.6
+    SRS6   wet (Oct 2022)     porewater      CH4=11.1 uM (n=3), PSU=26.6
 
   Pearson correlations (PSU vs log1p(CH4)) by disturbance class (depth-level):
   (site_characterization_figures.R, site x sampling round x depth; all three rounds)
-    ghost          r = 0.600, p = 0.0301, n = 13
-    healthy        r = -0.034, p = 0.9164, n = 12
-    regenerating   r = -0.484, p = 0.1568, n = 10
+    ghost          r = 0.618, p = 0.0244, n = 13
+    healthy        r = 0.181, p = 0.5544, n = 13
+    regenerating   r = -0.437, p = 0.2061, n = 10
 
 ================================================================
 R.7: NET CO2-EQUIVALENT FORCING

@@ -1186,10 +1186,6 @@ if (!is.null(fig8_left)) {
   # The site_characterization_figures.R already built and saved these.
   # Let's just build the right panel here from the same data.
 
-  calc_dissolved_uM <- function(ppm, Vw = 0.180, Vg = 0.020, T = 25, P = 1, KH = 1.4e-3) {
-    R <- 0.082057; TK <- T + 273.15; p <- ppm / 1e6 * P
-    ((p * Vg / (R * TK)) + (KH * p * Vw)) / Vw * 1e6
-  }
 
   season_short_map <- c("wet (Oct 2022)" = "Oct 22", "dry (Mar 2023)" = "Mar 23", "Oct 2025" = "Oct 25")
   season_short_levels <- c("Oct 22", "Mar 23", "Oct 25")
@@ -1198,16 +1194,13 @@ if (!is.null(fig8_left)) {
   core_sites_mc <- c("BL60", "CP40", "FLM30", "SRS5", "SRS6")
 
   # GC data
-  d1c <- read_excel("data/environmental/porewater_gas/GC Run_Dec_2023_Peterman_Gewirtzman (1).xlsx",
-                    sheet = "Run 1 Compiled")
-  d2c <- read_excel("data/environmental/porewater_gas/GC Run_Dec_2023_Peterman_Gewirtzman (1).xlsx",
-                    sheet = "Run 2 Compiled")
-  gc <- bind_rows(d1c, d2c) %>%
-    filter(Project == "Everglades") %>%
-    mutate(CH4_ppm = as.numeric(Concentration...16),
-           real_date = as.Date(as.numeric(Date...6), origin = "1899-12-30"),
-           CH4_uM = calc_dissolved_uM(CH4_ppm),
-           site = case_when(
+  source("code/00_lib/gc_dec2023.R")   # vial -> raw file by sequence position; per-run standard curve
+  gc <- gc_dec2023() %>% filter(!grepl("NO RUN", notes, ignore.case = TRUE)) %>%
+    rename(`Sample ID` = sample_id) %>%
+    mutate(
+      real_date = date,
+      CH4_uM = headspace_dissolved_uM(CH4_ppm, "CH4"),
+      site = case_when(
              grepl("BL.?60", `Sample ID`, ignore.case = TRUE) ~ "BL60",
              grepl("^CP|CP.?4", `Sample ID`, ignore.case = TRUE) ~ "CP40",
              grepl("FLM|FML", `Sample ID`, ignore.case = TRUE) ~ "FLM30",

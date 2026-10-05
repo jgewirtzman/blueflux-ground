@@ -72,6 +72,7 @@ steps <- c(
   "code/08_figures/fig3_stands.R",                  # Fig 3; saves component shares (rds) for Fig 2
   "code/08_figures/fig2_rates.R",                   # Fig 2
   "code/08_figures/fig4_geochem.R",                 # Fig 4
+  "code/08_figures/si_porewater_extra.R",           # fig. S18 (needs fig4 salinity means)
   "code/08_figures/ed_porewater_rounds.R",          # Fig S17
   "code/08_figures/fig5_climate.R",                 # Fig 5
   "code/08_figures/fig1_system.R",                  # Fig 1 (map, photos, NDVI trajectories, schematic)

@@ -6,9 +6,12 @@ all,depth_cm,cm,Porewater sampling depth below the sediment surface; -9999 for s
 dissolved_gas,date,,Sampling date (2022-2023); -9999 for 2025 (campaign 2025-10)
 dissolved_gas,sample_label,,Vial label as written
 dissolved_gas,method,,Headspace method and instrument
-dissolved_gas,CH4_uM,umol L-1,"Dissolved CH4 (headspace: 180 mL water, 20 mL headspace, 25 C; KH 1.4e-3 mol L-1 atm-1)"
-dissolved_gas,CO2_uM,umol L-1,Dissolved CO2 (as CH4; KH 3.4e-2 mol L-1 atm-1)
+dissolved_gas,CH4_uM,umol L-1,"Dissolved CH4 (headspace: 180 mL water, 20 mL ambient-air headspace, 25 C; air CH4 1.95 ppm subtracted; KH 1.4e-3 mol L-1 atm-1). 2022-2023: GC peak areas calibrated per run against gravimetric standards (power law)"
+dissolved_gas,CO2_uM,umol L-1,Dissolved CO2 (as CH4; air CO2 420 ppm subtracted; KH 3.4e-2 mol L-1 atm-1). 2022-2023: weighted quadratic calibration
 dissolved_gas,d13C_CH4_permil,permil VPDB,d13C of CH4 (2025 only)
+dissolved_gas,CH4_above_standard,,TRUE if the GC peak area exceeds the highest CH4 standard (5029 ppm): value extrapolated
+dissolved_gas,CO2_above_standard,,"TRUE if the GC peak area exceeds the highest CO2 standard (10080 ppm): value extrapolated linearly, indicative only"
+dissolved_gas,failed_vial,,TRUE if below 30% of the median of its replicate set (>= 3 vials); excluded from all means
 field_2022_2023,date,,Sampling date
 field_2022_2023,replicate,,Replicate number
 field_2022_2023,specific_conductance_uS_cm,uS cm-1,Specific conductance at 25 C

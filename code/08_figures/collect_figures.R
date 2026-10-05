@@ -31,11 +31,12 @@ display_items <- c(
   "SI/FigureS15_MC_uncertainty.png"        = "other/si_S10_mc_uncertainty.png",                # si_upscaling_figs.R
   # S16 airborne flight tracks: placeholder
   "SI/FigureS17_porewater.png"             = "other/si_grp_porewater.png",                     # si_compose.py (rounds, carbonate)
-  # S18 metagenomes: placeholder
-  "SI/FigureS19_sensitivity_switch.png"    = "other/si_sensitivity_switch.png",                # si_upscaling_figs.R
-  "SI/FigureS20_switch_methods.png"        = "other/si_switch_methods.png"                     # si_switch_methods.R
+  "SI/FigureS18_porewater_extra.png"       = "other/si_porewater_extra.png",                   # si_porewater_extra.R
+  # S19 metagenomes: placeholder
+  "SI/FigureS20_sensitivity_switch.png"    = "other/si_sensitivity_switch.png",                # si_upscaling_figs.R
+  "SI/FigureS21_switch_methods.png"        = "other/si_switch_methods.png"                     # si_switch_methods.R
 )
-# S16 (flight tracks) and S18 (metagenome detail) are placeholders until those data arrive.
+# S16 (flight tracks) and S19 (metagenome detail) are placeholders until those data arrive.
 # Clear stale curated SI copies so the folder mirrors the current numbering.
 unlink(Sys.glob(file.path(fig, "SI", "*.png")))
 

@@ -1,7 +1,7 @@
 "class","term","category","role","value","ci_lo","ci_hi","source","citation","pending"
 "Healthy","GPP (uptake)","vertical","uptake_flux",-2959.65526617725,NA,NA,"measured","tower + chambers",FALSE
-"Healthy","Reco (CO2)","vertical","source_flux",1945.31410554679,NA,NA,"measured","chambers x TLS",FALSE
-"Healthy","CH4 emission","vertical","source_flux",1.13738926734458,NA,NA,"measured","chambers x TLS",FALSE
+"Healthy","Reco (CO2)","vertical","source_flux",1938.13235324403,NA,NA,"measured","chambers x TLS",FALSE
+"Healthy","CH4 emission","vertical","source_flux",1.13130858213148,NA,NA,"measured","chambers x TLS",FALSE
 "Healthy","Lateral DIC","lateral","source_flux",145,61,229,"literature","Zhao et al. 2021 synthesis (Ho 2017, Reithmaier 2020, Volta 2020); scenarios: low Lagrangian ~81, high Reithmaier 2020 Eulerian 622",FALSE
 "Healthy","Lateral DOC","lateral","source_flux",56,NA,NA,"literature","Romigh et al. 2006 (SRS-6 flume, 2003); scenarios: low Lagrangian ~9, high Reithmaier 2020 Eulerian 171",FALSE
 "Healthy","Lateral POC","lateral","source_flux",145,84,205,"literature","Zhao et al. 2021 litter POC 2001-2018: mean of SRS-5 (84) and SRS-6 (205)",FALSE

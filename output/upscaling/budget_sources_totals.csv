@@ -1,5 +1,5 @@
 "term","source","class","value","lo","hi"
-"NEE","Chambers (this study)","Healthy",-1013.80015530351,-1119.97806438253,-907.622246224499
+"NEE","Chambers (this study)","Healthy",-1020.97807717288,-1124.15733077196,-917.798823573794
 "NEE","Chambers (this study)","Ghost",493.711925340502,392.154369108423,595.26948157258
 "NEE","US-SKR tower (2022-23)","Healthy",-1287.69915723346,-1665.80755089508,-909.59076357184
 "NEE","US-SKR tower (Barr 2004)","Healthy",-1170,-1297,-1043
@@ -8,14 +8,14 @@
 "GPP","US-SKR tower (2022-23)","Healthy",-2961.84036665755,-3225.22522508289,-2698.45550823221
 "GPP","US-SKR tower (Barr 2004)","Healthy",-2270,NA,NA
 "GPP","CARAFE (top-down)","Ghost",0,NA,NA
-"Reco","This study: total ER","Healthy",1947.29172715333,1870.78679156353,2023.79666274312
-"Reco","This study: below-canopy","Healthy",1237.124869583,1137.3416115443,1336.9081276217
+"Reco","This study: total ER","Healthy",1940.10850585578,1859.5753512874,2020.64166042416
+"Reco","This study: below-canopy","Healthy",1229.94164828545,1125.90051862919,1333.98277794171
 "Reco","This study: total ER","Ghost",494.076430685945,392.443894956276,595.708966415614
 "Reco","This study: below-canopy","Ghost",494.076430685945,392.443894956276,595.708966415614
 "Reco","Troxler 2015: below-canopy","Healthy",715,NA,NA
 "Reco","US-SKR tower (Barr 2004): ER","Healthy",1100,NA,NA
 "Reco","Troxler 2015: total ER","Healthy",1570,NA,NA
-"CH4","Chambers (this study)","Healthy",1.13738926734458,0.548637825885455,1.7261407088037
+"CH4","Chambers (this study)","Healthy",1.13130858213147,0.544412895338851,1.7182042689241
 "CH4","Chambers (this study)","Ghost",8.90584504924267,5.31812787670716,12.4935622217782
 "CH4","CARAFE top-down*","Healthy",5.449090425,-0.09476679,10.99294764
 "CH4","CARAFE top-down*","Ghost",10.51911369,1.70580222,19.33242516

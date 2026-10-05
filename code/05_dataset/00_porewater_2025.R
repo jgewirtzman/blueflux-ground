@@ -13,7 +13,7 @@
 #   Anions_251121.csv                               ion chromatography (10x dilution)
 #   Shark River alkalinity(Sheet1).csv              total alkalinity (uM)
 #   SRS_November_2025_DOC_full_curve.xlsx           DOC (10x dilution)
-# Dissolved gas (uM) = (n_gas + n_aq) / Vw from the headspace partial pressure,
+# Dissolved gas (uM) = (n_gas + n_aq - n_air) / Vw from the headspace partial pressure,
 #   KH 1.4e-3 (CH4) and 3.4e-2 (CO2) mol L-1 atm-1 at 25 C; 12C + 13C isotopologues.
 # Outputs:
 #   data/porewater/porewater_gas_samples_2025.csv   one row per vial (deposit table)
@@ -24,9 +24,11 @@ suppressMessages({library(dplyr); library(readr); library(readxl); library(strin
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 P <- "data/porewater"
 
-headspace_uM <- function(ppm_diluted, KH, Vw = 0.180, Vg = 0.020, T = 25, P_atm = 1, dil = 5) {
-  p <- ppm_diluted * dil / 1e6 * P_atm; TK <- T + 273.15
-  (p * Vg / (0.082057 * TK) + KH * p * Vw) / Vw * 1e6
+# 180 mL water + 20 mL ambient-air headspace; the equilibrated headspace was diluted 1:5 for
+# the Picarro. The air brought into the vial (x_air) is subtracted from the mass balance.
+headspace_uM <- function(ppm_diluted, KH, x_air = 0, Vw = 0.180, Vg = 0.020, T = 25, P_atm = 1, dil = 5) {
+  p <- ppm_diluted * dil / 1e6 * P_atm; RT <- 0.082057 * (T + 273.15)
+  (p * (Vg / RT + KH * Vw) - x_air / 1e6 * P_atm * Vg / RT) / Vw * 1e6
 }
 runs <- bind_rows(read_csv(file.path(P, "raw/picarro_porewater_run1_20251111.csv"), show_col_types = FALSE) %>% mutate(source = "first"),
                   read_csv(file.path(P, "raw/picarro_porewater_run2.csv"), show_col_types = FALSE) %>% mutate(source = "second"))
@@ -37,16 +39,17 @@ vials <- runs %>% filter(grepl(pat, SampleName)) %>%
                            TRUE ~ str_remove(str_extract(SampleName, "(?<=-)[0-9]+cm(?=-)"), "cm"))) %>%
   group_by(SampleName, source) %>% mutate(replicate_num = row_number()) %>% ungroup() %>%
   group_by(SampleName, replicate_num) %>% arrange(desc(source == "second"), .by_group = TRUE) %>% slice(1) %>% ungroup() %>%
-  mutate(CH4_uM = headspace_uM(HR_12CH4_dry_mean, 1.4e-3) + headspace_uM(HR_13CH4_mean, 1.4e-3),
-         CO2_uM = headspace_uM(`12CO2_mean`, 3.4e-2) + headspace_uM(`13CO2_mean`, 3.4e-2),
+  mutate(CH4_uM = headspace_uM(HR_12CH4_dry_mean + HR_13CH4_mean, 1.4e-3, x_air = 1.95),
+         CO2_uM = headspace_uM(`12CO2_mean` + `13CO2_mean`, 3.4e-2, x_air = 420),
          d13C_CH4 = HR_Delta_iCH4_Raw_mean, d13C_CO2 = Delta_Raw_iCO2_mean,
          sample_type = ifelse(depth == "Surface", "surface_water", "porewater"),
          run_date = as.Date(as.character(Rundate), "%Y%m%d")) %>%
-  arrange(site, depth, SampleName, replicate_num)
+  arrange(site, depth, SampleName, replicate_num) %>%
+  group_by(site, depth) %>% mutate(failed_vial = n() >= 3 & CH4_uM < 0.3 * median(CH4_uM)) %>% ungroup()   # as REP_MIN_FRAC (03_fit/02)
 write_csv(vials %>% transmute(sample_name = SampleName, site, sample_type, depth_cm = depth, replicate = replicate_num,
-                              analysis_run = source, run_date, CH4_uM, d13C_CH4, CO2_uM, d13C_CO2),
+                              analysis_run = source, run_date, CH4_uM, d13C_CH4, CO2_uM, d13C_CO2, failed_vial),
           file.path(P, "porewater_gas_samples_2025.csv"))
-gas <- vials %>% group_by(Site = site, Depth_cm = depth) %>%
+gas <- vials %>% filter(!failed_vial) %>% group_by(Site = site, Depth_cm = depth) %>%
   summarise(CH4_mean_uM = mean(CH4_uM, na.rm = TRUE), CH4_sd_uM = sd(CH4_uM, na.rm = TRUE),
             d13C_CH4_mean = mean(d13C_CH4, na.rm = TRUE), d13C_CH4_sd = sd(d13C_CH4, na.rm = TRUE),
             CO2_mean_uM = mean(CO2_uM, na.rm = TRUE), CO2_sd_uM = sd(CO2_uM, na.rm = TRUE),

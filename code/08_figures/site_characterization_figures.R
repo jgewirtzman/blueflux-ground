@@ -12,10 +12,6 @@ dir.create("output/figures/other", recursive = TRUE, showWarnings = FALSE)
 # =============================================
 # Helpers
 # =============================================
-calc_dissolved_uM <- function(ppm, Vw = 0.180, Vg = 0.020, T = 25, P = 1, KH = 1.4e-3) {
-  R <- 0.082057; TK <- T + 273.15; p <- ppm / 1e6 * P
-  ((p * Vg / (R * TK)) + (KH * p * Vw)) / Vw * 1e6
-}
 
 theme_pub <- function(base_size = 11) {
   theme_bw(base_size = base_size) %+replace%
@@ -40,17 +36,12 @@ core_sites <- c("BL60", "CP40", "FLM30", "SRS5", "SRS6")
 # 1. GC data (Oct 2022 + Mar 2023)
 # =============================================
 cat("Loading GC data...\n")
-d1c <- read_excel("data/environmental/porewater_gas/GC Run_Dec_2023_Peterman_Gewirtzman (1).xlsx",
-                  sheet = "Run 1 Compiled")
-d2c <- read_excel("data/environmental/porewater_gas/GC Run_Dec_2023_Peterman_Gewirtzman (1).xlsx",
-                  sheet = "Run 2 Compiled")
-
-gc <- bind_rows(d1c, d2c) %>%
-  filter(Project == "Everglades") %>%
+source("code/00_lib/gc_dec2023.R")   # vial -> raw file by sequence position; per-run standard curve
+gc <- gc_dec2023() %>% filter(!grepl("NO RUN", notes, ignore.case = TRUE)) %>%
+  rename(`Sample ID` = sample_id) %>%
   mutate(
-    CH4_ppm = as.numeric(Concentration...16),
-    real_date = as.Date(as.numeric(Date...6), origin = "1899-12-30"),
-    CH4_uM = calc_dissolved_uM(CH4_ppm),
+    real_date = date,
+    CH4_uM = headspace_dissolved_uM(CH4_ppm, "CH4"),
     site = case_when(
       grepl("BL.?60", `Sample ID`, ignore.case = TRUE) ~ "BL60",
       grepl("^CP|CP.?4", `Sample ID`, ignore.case = TRUE) ~ "CP40",
@@ -76,6 +67,7 @@ gc <- bind_rows(d1c, d2c) %>%
     season = ifelse(real_date < as.Date("2023-01-01"), "wet (Oct 2022)", "dry (Mar 2023)")
   ) %>%
   filter(!is.na(site), !is.na(sample_type)) %>%
+  drop_failed_vials(site, season, sample_type, depth_cm) %>%   # same rule as the water fluxes
   select(site, season, sample_type, depth_cm, CH4_uM)
 
 # =============================================
@@ -112,7 +104,8 @@ sal_terr <- read_excel("data/environmental/salinity/Blueflux Salinity.xlsx",
       sample_type == "surface_water" ~ -5,
       !is.na(`Depth (cm)`) ~ as.numeric(`Depth (cm)`),
       TRUE ~ 40),
-    season = ifelse(grepl("2022", as.character(Date)), "wet (Oct 2022)", "dry (Mar 2023)")
+    season = ifelse(grepl("2022", as.character(Date)), "wet (Oct 2022)", "dry (Mar 2023)"),
+      depth_cm = ifelse(sample_type == "porewater" & is.na(`Depth (cm)`), 40, depth_cm)
   ) %>%
   filter(!is.na(site), !is.na(PSU_val)) %>%
   select(site, season, sample_type, depth_cm, PSU_val)
@@ -129,6 +122,15 @@ sal_all <- bind_rows(
   sal_terr,
   pw %>% filter(!is.na(PSU_val)) %>% select(site, season, sample_type, depth_cm, PSU_val)
 )
+# SRS5 / SRS6 surface water without a plot reading: the BlueFlux river-survey station beside
+# the plot on the campaign (ORNL DAAC 2333), as in 05_dataset/00_dissolved_gas.R
+station <- read_csv("data/environmental/aquatic/ORNL_DAAC_2333_BLUEFLUX_Transect_Shark_Haney_Rivers_TarponBay.csv",
+                    show_col_types = FALSE, na = "-9999") %>%
+  filter(site %in% c("SRS 5", "SRS 6"), is.finite(salinity)) %>%
+  transmute(site = sub(" ", "", site), sample_type = "surface_water", depth_cm = -5, PSU_val = salinity,
+            season = case_when(substr(date, 1, 7) == "2022-10" ~ "wet (Oct 2022)", substr(date, 1, 7) == "2023-03" ~ "dry (Mar 2023)")) %>%
+  filter(!is.na(season)) %>% anti_join(sal_all, by = c("site", "season", "sample_type"))
+sal_all <- bind_rows(sal_all, station)
 
 ch4_sum <- ch4_all %>%
   filter(site %in% core_sites) %>%

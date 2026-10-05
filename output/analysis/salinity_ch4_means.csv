@@ -1,0 +1,37 @@
+"site","season","depth_cm","class","type","PSU_mean","CH4_uM"
+"BL60","Oct 2025",-5,"regenerating","surface",3.4,86.6142923777465
+"BL60","Oct 2025",0,"regenerating","porewater",35.44,11.0668780708839
+"BL60","Oct 2025",15,"regenerating","porewater",35.27,16.0766114077665
+"BL60","Oct 2025",45,"regenerating","porewater",33.85,4.80845719868703
+"BL60","Oct 2025",90,"regenerating","porewater",33.46,23.443426410856
+"BL60","dry (Mar 2023)",15,"regenerating","porewater",37.4866666666667,28.193002764487
+"BL60","dry (Mar 2023)",40,"regenerating","porewater",39.4633333333333,30.919617725558
+"BL60","dry (Mar 2023)",100,"regenerating","porewater",32.42,29.0708677270019
+"BL60","wet (Oct 2022)",-5,"regenerating","surface",15.1633333333333,24.5828059349566
+"BL60","wet (Oct 2022)",40,"regenerating","porewater",37.68,57.69295949939
+"CP40","Oct 2025",-5,"ghost","surface",20.84,2.73794792694977
+"CP40","Oct 2025",0,"ghost","porewater",41.36,59.8471406989531
+"CP40","Oct 2025",15,"ghost","porewater",54.5,43.958551786755
+"CP40","Oct 2025",45,"ghost","porewater",51.68,42.394278567881
+"CP40","Oct 2025",90,"ghost","porewater",50.32,22.3375599635171
+"CP40","dry (Mar 2023)",-5,"ghost","surface",45.0533333333333,0.86924420417014
+"CP40","dry (Mar 2023)",40,"ghost","porewater",64.2133333333333,75.2371747313066
+"CP40","wet (Oct 2022)",-5,"ghost","surface",39.836,5.60287787505561
+"CP40","wet (Oct 2022)",40,"ghost","porewater",58.682,4.65706437194964
+"FLM30","dry (Mar 2023)",-5,"ghost","surface",53.59,2.77740528132813
+"FLM30","dry (Mar 2023)",40,"ghost","porewater",60.8766666666667,72.8605521695381
+"FLM30","wet (Oct 2022)",-5,"ghost","surface",31.4268115533333,1.51248276123593
+"FLM30","wet (Oct 2022)",40,"ghost","porewater",64.1599460433333,105.763817504825
+"SRS5","Oct 2025",-5,"intact","surface",9.3,0.287700647025594
+"SRS5","Oct 2025",0,"intact","porewater",13.42,3.64805446847125
+"SRS5","Oct 2025",15,"intact","porewater",15.7,5.33292583765572
+"SRS5","Oct 2025",45,"intact","porewater",26.8,0.80126543975259
+"SRS5","Oct 2025",90,"intact","porewater",23.49,3.72453709336662
+"SRS5","wet (Oct 2022)",-5,"intact","surface",0.85,0.174795115225689
+"SRS5","wet (Oct 2022)",40,"intact","porewater",20.1935257466667,6.62398407402221
+"SRS6","Oct 2025",-5,"intact","surface",15.52,0.458559951717587
+"SRS6","Oct 2025",0,"intact","porewater",25.78,0.175185456993963
+"SRS6","Oct 2025",15,"intact","porewater",26.7,1.03415952836718
+"SRS6","Oct 2025",45,"intact","porewater",30.3,0.651945702824079
+"SRS6","Oct 2025",90,"intact","porewater",35.08,1.60918670806906
+"SRS6","wet (Oct 2022)",40,"intact","porewater",26.55554435,11.1393193937289
