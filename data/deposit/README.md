@@ -4,7 +4,7 @@ Two datasets, rebuilt by `Rscript run_all.R` (code/09_archive). Nothing here has
 
 | Folder | Dataset | Built by |
 |---|---|---|
-| `chamber_fluxes/` | BlueFlux ground chamber CH4 and CO2 fluxes, 2022-2023: one row per measurement with its inputs (times, analyzer-clock fit windows, area, volume, temperature, pressure) and results; sites; chamber geometry; dictionary; guide. `analyzer_records/` (92 daily CSVs, 75 MB; gitignored) is the analyzer granule from which every flux can be recomputed. | `build_ornl_daac_package.R`; `analyzer_records/` by `code/01_metadata/00b_export_analyzer_csv.R` |
+| `chamber_fluxes/` | BlueFlux ground chamber CH4 and CO2 fluxes, 2022-2023: one row per measurement with its inputs (times, analyzer-clock fit windows, area, volume, temperature, pressure) and results; sites; chamber geometry; dictionary; guide. `analyzer_records/` (92 daily CSVs, 75 MB; gitignored) is the analyzer granule from which every flux can be recomputed. | `build_ornl_daac_package.R`; `analyzer_records/` by `code/hygiene/01_metadata/00b_export_analyzer_csv.R` |
 | `porewater_biogeochemistry/` | Porewater and plot surface-water dissolved CH4/CO2 (per vial), field salinity/pH/DO (2022-2023) and October 2025 depth profiles (sonde, sulfide, iron, anions, N, alkalinity, DOC, d13C-CH4) | `build_porewater_package.R` |
 
 Not included, because they are archived elsewhere and cited: the BlueFlux aquatic survey (Vaughn and Raymond, ORNL DAAC 2333), TLS scans (ORNL DAAC 2311), CARAFE airborne fluxes, AmeriFlux US-Skr, FCE LTER water levels. Metagenomes go to NCBI SRA.

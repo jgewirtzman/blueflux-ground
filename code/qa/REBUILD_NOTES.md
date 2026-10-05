@@ -2,9 +2,9 @@
 
 The scripts named below were renamed when the pipeline was reorganized into
 stages (see the top-level README):
-`04_build_auxfile.R` -> `code/01_metadata/01_build_auxfile.R`,
-`06_clock_offsets.R` -> `code/02_windows/01_rise_detection.R`,
-`07_windows.R` -> `code/02_windows/02_windows.R`,
+`04_build_auxfile.R` -> `code/hygiene/01_metadata/01_build_auxfile.R`,
+`06_clock_offsets.R` -> `code/hygiene/02_windows/01_rise_detection.R`,
+`07_windows.R` -> `code/hygiene/02_windows/02_windows.R`,
 `08_fit_fluxes.R` -> `code/03_fit/01_fit_fluxes.R`,
 `11_water_flux_from_pch4.R` -> `code/03_fit/02_water_flux_from_dissolved.R`,
 `lib_raw.R` -> `code/00_lib/lib_raw.R`; the others moved to `code/qa/`.

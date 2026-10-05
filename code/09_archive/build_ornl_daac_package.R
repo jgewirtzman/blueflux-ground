@@ -14,7 +14,7 @@
 #          data/sites/site_metadata.csv
 #          data/inputs/chamber_dimensions_{tree,soil_water}.csv
 # Outputs: data/deposit/chamber_fluxes/ (with analyzer_records/, the analyzer granule
-#          written by code/01_metadata/00b_export_analyzer_csv.R)
+#          written by code/hygiene/01_metadata/00b_export_analyzer_csv.R)
 #            BlueFlux_ground_chamber_fluxes_2022_2023.csv
 #            BlueFlux_ground_sites.csv
 #            BlueFlux_ground_chamber_geometry.csv

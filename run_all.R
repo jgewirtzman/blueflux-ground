@@ -16,7 +16,7 @@
 # Inputs. The flux stages (03 onward) start from the clean inputs:
 #   data/inputs/closures.csv, unlogged_placements.csv   one corrected row per closure
 #   data/deposit/chamber_fluxes/analyzer_records/*.csv   analyzer records (deposited; gitignored)
-# Stages 01-02 (internal) build data/inputs from the field sheets, scanned data sheets and
+# Stages 01-02 (internal, code/hygiene/) build data/inputs from the field sheets, scanned data sheets and
 # curated corrections (data/field_notes, data/flux_metadata) and the vendor analyzer files
 # (data/analyzer); they run only where those sources are present. Stage 07 also needs the
 # US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored).
@@ -24,13 +24,13 @@
 
 steps <- c(
   # 01 metadata: field sheets + dimension tables + curated corrections -> one auxfile
-  "code/01_metadata/00_index_raw_files.R",          # vendor analyzer files only (skipped without data/analyzer)
-  "code/01_metadata/00b_export_analyzer_csv.R",     # vendor files -> clean daily CSVs (deposit; skipped without data/analyzer)
-  "code/01_metadata/01_build_auxfile.R",
+  "code/hygiene/01_metadata/00_index_raw_files.R",          # vendor analyzer files only (skipped without data/analyzer)
+  "code/hygiene/01_metadata/00b_export_analyzer_csv.R",     # vendor files -> clean daily CSVs (deposit; skipped without data/analyzer)
+  "code/hygiene/01_metadata/01_build_auxfile.R",
   # 02 windows: clock offsets and the fit window of every closure
-  "code/02_windows/01_rise_detection.R",
-  "code/02_windows/02_windows.R",
-  "code/02_windows/03_export_inputs.R",             # -> data/inputs/closures.csv, unlogged_placements.csv
+  "code/hygiene/02_windows/01_rise_detection.R",
+  "code/hygiene/02_windows/02_windows.R",
+  "code/hygiene/02_windows/03_export_inputs.R",             # -> data/inputs/closures.csv, unlogged_placements.csv
   # 03 fit: goFlux + fluxqc per gas; water flux from dissolved CH4 where unmeasured
   "code/03_fit/01_fit_fluxes.R",
   "code/05_dataset/00_porewater_2025.R",            # Oct 2025 porewater tables from lab files

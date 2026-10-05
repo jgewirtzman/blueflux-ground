@@ -2,7 +2,7 @@
 # Fit CH4 and CO2 fluxes for every closure (handoff work plan, step 4).
 #
 # Inputs: data/inputs/closures.csv (fit windows, geometry, Tcham, Pcham; written by
-# 02_windows/03_export_inputs.R), analyzer records (lib_raw.R).
+# hygiene/02_windows/03_export_inputs.R), analyzer records (lib_raw.R).
 #
 # Path per gas: fluxqc::process_fluxes() = goFlux::goFlux() -> best.flux() ->
 # flag_detection() -> qc_screens(); outputs written with write_outputs().

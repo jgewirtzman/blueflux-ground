@@ -122,7 +122,7 @@ raw_index <- raw_index %>%
          is_duplicate = !is.na(duplicate_of) & file != duplicate_of) %>%
   ungroup()
 
-# (the raw file index itself is written by code/01_metadata/00_index_raw_files.R)
+# (the raw file index itself is written by code/hygiene/01_metadata/00_index_raw_files.R)
 cat("  raw files:", nrow(raw_index), "| duplicates:", sum(raw_index$is_duplicate),
     "| unreadable/empty:", sum(raw_index$n_rows == 0), "\n")
 

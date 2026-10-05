@@ -81,7 +81,7 @@ fresh_co2 <- function(tr, unit) {
   f <- !fresh_ch4(tr, unit); f[1] <- TRUE; f
 }
 
-# Clean daily exports (01_metadata/00b_export_analyzer_csv.R; the deposited granule) are
+# Clean daily exports (hygiene/01_metadata/00b_export_analyzer_csv.R; the deposited granule) are
 # read when present, unless BLUEFLUX_RAW_VENDOR=1 forces the vendor files.
 CLEAN_ROOT <- "data/deposit/chamber_fluxes/analyzer_records"
 use_clean <- function() Sys.getenv("BLUEFLUX_RAW_VENDOR") != "1" && dir.exists(CLEAN_ROOT) &&

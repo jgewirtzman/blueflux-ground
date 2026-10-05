@@ -5,7 +5,7 @@
 # Inputs (all produced by earlier stages or tracked):
 #   data/inputs/closures.csv                      one corrected row per closure: times, fit
 #                                                 window, geometry, Tcham, Pcham, descriptive
-#                                                 columns, curated exclusions (02_windows/03_export_inputs.R)
+#                                                 columns, curated exclusions (hygiene/02_windows/03_export_inputs.R)
 #   data/inputs/unlogged_placements.csv           placements not on the field sheet
 #   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux + fluxqc results
 #   output/flux/04_ebullition/partition.csv       floating-chamber placements: diffusive /
