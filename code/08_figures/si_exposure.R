@@ -70,7 +70,7 @@ lab <- function(d) d %>% mutate(site = factor(site, tls_sites), campaign = facto
 pa <- ggplot(lab(w_all), aes(x = site, y = w_cm, colour = cls)) +
   geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.3, linetype = "dashed") +
   geom_boxplot(outlier.shape = NA, width = 0.55, linewidth = 0.3, fill = NA) +
-  geom_jitter(width = 0.15, height = 0, size = 0.5, alpha = 0.6, stroke = 0) +
+  geom_point(position = position_jitter(width = 0.15, height = 0, seed = 1), size = 0.5, alpha = 0.6, stroke = 0) +
   facet_wrap(~ campaign) + scale_colour_manual(values = pal_class, name = NULL, drop = FALSE) +
   labs(x = NULL, y = "water depth above TLS ground (cm)") + theme_fig() + theme(legend.position = "none")
 # (b) exposed share
