@@ -743,7 +743,7 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 # References
 
 - M. R. Allen et al., A solution to the misrepresentations of CO2-equivalent emissions of short-lived climate pollutants under ambitious mitigation. *npj Clim. Atmos. Sci.* **1**, 16 (2018).
-- O. K. Atkin, J. R. Evans, M. C. Ball, H. Lambers, T. L. Pons, Leaf respiration of snow gum in the light and dark. *Interactions between temperature and irradiance. Plant Physiol.* **122**, 915–923 (2000).
+- O. K. Atkin, J. R. Evans, M. C. Ball, H. Lambers, T. L. Pons, Leaf respiration of snow gum in the light and dark: interactions between temperature and irradiance. *Plant Physiol.* **122**, 915–923 (2000).
 - J. G. Barr, J. D. Fuentes, V. Engel, J. C. Zieman, Physiological responses of red mangroves to the climate in the Florida Everglades. *J. Geophys. Res. Biogeosci.* **114**, G02008 (2009).
 - A. V. Borges et al., Variability of the gas transfer velocity of CO2 in a macrotidal estuary (the Scheldt). *Estuaries* **27**, 593–603 (2004).
 - S. Bouillon et al., Importance of intertidal sediment processes and porewater exchange on the water column biogeochemistry in a pristine mangrove creek (Ras Dege, Tanzania). *Biogeosciences* **4**, 311–322 (2007).
