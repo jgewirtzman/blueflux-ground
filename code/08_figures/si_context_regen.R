@@ -3,7 +3,7 @@
 #   (a) Component CH4 rates at the context / regenerating sites (BL60, MI, RB10,
 #       SE1; site mean with bootstrap 95% CI, pooled campaigns) against the
 #       pooled core-class means and CIs (intact SRS5+SRS6; ghost CP40+FLM30).
-#       Same conventions as Table S12 / code/06_analysis/05_si_tables.R
+#       Same conventions as Table S16 / code/06_analysis/05_si_tables.R
 #       (eight named plots; closures with CO2 < -10 umol m-2 s-1 dropped;
 #       sample mean; percentile CI from 5,000 resamples, seed 42), CI only n > 3.
 #   (b) BL60 stand CH4 (g CH4 m-2 yr-1) by campaign and annual mean under three

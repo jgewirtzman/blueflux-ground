@@ -50,7 +50,7 @@ pC <- pt(ggplot(d, aes(ratio, Site)) + geom_vline(xintercept=1, linetype="dashed
   scale_y_discrete(limits=rev, expand=expansion(add=c(0.9,0.5))) +
   labs(x="Measured ÷ mixing-predicted alkalinity", y=NULL, tag="e") + theme_fig() + theme(legend.position="none")
 # D: alkalinity above mixing against sulfate reduction (2 equivalents per sulfate reduced; sulfate
-# deficit from the seawater sulfate:salinity ratio, 28.2 mM at S = 35; text S7)
+# deficit from the seawater sulfate:salinity ratio, 28.2 mM at S = 35; text S2)
 d <- d %>% mutate(SO4_def = 28.24 * PSU / 35 - SO4_ppm / 96.06, TA_excess = TA - TAmix)
 pD <- pt(ggplot(d, aes(2 * SO4_def, TA_excess)) + geom_abline(linetype="dashed", colour="grey45") +
   annotate("text",x=33,y=33,label="1:1",hjust=1,vjust=-0.5,size=2.2,colour="grey35")) +

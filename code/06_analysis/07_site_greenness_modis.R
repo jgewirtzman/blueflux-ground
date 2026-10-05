@@ -1,5 +1,5 @@
 # =============================================================================
-# Site greenness from MODIS (context for Table S1 and the ghost-forest GPP note).
+# Site greenness from MODIS (context for Table S4 and the ghost-forest GPP note).
 #   MOD13Q1 v061 (250 m, 16-day): NDVI, EVI, pixel reliability
 #   MOD15A2H v061 (500 m, 8-day): LAI, FPAR, FparLai_QC
 # Single pixel at each site's coordinates (data/sites/site_metadata.csv), 2015-16 and 2022-23,

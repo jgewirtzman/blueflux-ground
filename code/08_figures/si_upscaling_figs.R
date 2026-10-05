@@ -139,7 +139,7 @@ p_tide <- ggplot(seg_t) +
                       strip.text.x = element_text(colour = pal_class[["intact"]], face = "bold", size = 8, hjust = 0.5))
 save_si(p_tide + labs(tag = "d"), "si_tide_states", 4.0)   # panel d below the flooded-share panels
 
-# ---- Sensitivity of the intact-to-ghost switch to analytical choices (table S10) ----
+# ---- Sensitivity of the intact-to-ghost switch to analytical choices (table S3) ----
 sens_lab <- c(`none (1.00)` = "none (1.00)", `literature (2.00)` = "literature (2.00)", `stem_chambers (4.33)` = "stem chambers (4.33)",
   `negligible (0.01 m3/ha)` = "negligible (0.01 m³ ha⁻¹)", `krauss_lo (13 m3/ha)` = "Krauss low (13 m³ ha⁻¹)",
   `krauss_eyewall (132 m3/ha)` = "Krauss eyewall (132 m³ ha⁻¹)", `krauss_hi (181 m3/ha)` = "Krauss high (181 m³ ha⁻¹)",

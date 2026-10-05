@@ -1,5 +1,5 @@
 # =============================================================================
-# Site greenness from Sentinel-2 L2A (10 m; plot scale), context for Table S1 and
+# Site greenness from Sentinel-2 L2A (10 m; plot scale), context for Table S4 and
 # the ghost-forest GPP note. Microsoft Planetary Computer STAC (public; anonymous
 # SAS token). For each site, scenes over the plot from Sep 2022 to Apr 2023 with
 # < 30% scene cloud cover; a 50 x 50 m window (5 x 5 pixels) centred on the site

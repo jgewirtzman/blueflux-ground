@@ -1,5 +1,5 @@
 # =============================================================================
-# Table S1 | Study sites: location, class, sampling, stand structure, hydrology
+# Table S4 | Study sites: location, class, sampling, stand structure, hydrology
 # and porewater salinity, one column per site.
 #   location, class, species   data/sites/site_metadata.csv
 #   sampling                   closures per campaign (combined_gas_flux_dataset.csv)

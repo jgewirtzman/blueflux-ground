@@ -1,5 +1,5 @@
 # =============================================================================
-# Long-term greenness history of each site (context for site history, Table S1,
+# Long-term greenness history of each site (context for site history, Table S4,
 # and the BL60 "regenerating" class).
 #   Landsat Collection 2 Level-2 (Landsat 5, 7, 8, 9; 30 m), 1995-2025: dry-season
 #   (Jan-Apr) scenes with < 40% scene cloud, up to 8 per year, NDVI from surface

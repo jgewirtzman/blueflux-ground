@@ -68,23 +68,23 @@ FIGS = {
  "S12": (['output/figures/other/si_waterline.png'],
         "Water level against the woody surfaces at the four laser-scanned sites (M10, M11; vertical axis to scale, cm above the plot's mean floor; horizontal positions, prop-root reach and pneumatophores illustrative). Lines, water level by campaign (dark, wet season, October 2022; light, dry season, March 2023): at the tidal intact sites (a, b), mean high (dashed) and low (solid) water of the campaign month from the FCE LTER loggers; at the ghost sites (c, d), mean recorded depth. Floor relief follows the fitted floor-height distribution (tidal sites) or the recorded depths (ghost sites); stems stand on the mean floor (tidal) or at the mean floor height of the stem chambers (ghost); stem and prop-root diameters, root heights and stem number per 7 m are from TLS; downed wood has the median measured diameter and lies on the mean floor. Subtitles give the share of each surface above water used in the budgets (mean of the two campaigns; lowest 0.5 m of stem), the flooded share of the floor, and the median annual maximum water level (2001–2024). Hourly extremes (99th and 1st percentiles) in the campaign months were +20 and −2 cm (October) and +12 and −28 cm (March) at SRS5, and +43 and −3 cm and +33 and −26 cm at SRS6."),
  "S13": (['output/figures/other/si_grp_tide.png'],
-        'Flooded share of the intact forest floor at the tidal sites (M11; table S13). (a) Hourly water level (FCE LTER logger datum) at SRS5 and SRS6 in the campaign months; points, logger level at each chamber water-depth reading (filled, standing water; open, none); dashed line and band, fitted mean floor height ± 1 SD. (b) Floor height relative to the logger datum, fitted as a normal distribution by censored maximum likelihood from the depth readings (green; rug, readings with standing water), against the distribution of hourly water level in each campaign month; floor below the water is flooded. (c) Campaign-month flooded share: area-weighted mean of the hourly flooded share (central; bars, floor mean ± 1.96 SE), the all-or-nothing switch (whole floor flooded when the offset-corrected logger level is above zero) and the long-term area-weighted value (2010 onward, dashed). (d) Stand CH4 of the intact forest at high and low tide by component (SRS5, SRS6; October 2022 and March 2023; exponential stem rule). Diamonds and bars, stand total and Monte Carlo 95% interval; dashed line, the tide-weighted value used in the budgets (flooded share of the floor in the campaign month; M11); inverse-hyperbolic-sine axis.'),
+        'Flooded share of the intact forest floor at the tidal sites (M11; table S8). (a) Hourly water level (FCE LTER logger datum) at SRS5 and SRS6 in the campaign months; points, logger level at each chamber water-depth reading (filled, standing water; open, none); dashed line and band, fitted mean floor height ± 1 SD. (b) Floor height relative to the logger datum, fitted as a normal distribution by censored maximum likelihood from the depth readings (green; rug, readings with standing water), against the distribution of hourly water level in each campaign month; floor below the water is flooded. (c) Campaign-month flooded share: area-weighted mean of the hourly flooded share (central; bars, floor mean ± 1.96 SE), the all-or-nothing switch (whole floor flooded when the offset-corrected logger level is above zero) and the long-term area-weighted value (2010 onward, dashed). (d) Stand CH4 of the intact forest at high and low tide by component (SRS5, SRS6; October 2022 and March 2023; exponential stem rule). Diamonds and bars, stand total and Monte Carlo 95% interval; dashed line, the tide-weighted value used in the budgets (flooded share of the floor in the campaign month; M11); inverse-hyperbolic-sine axis.'),
  "S14": (['output/figures/other/stem_extrap_clean.png'],
-        'Stem height extrapolation (text S1). (a) Measured stem CH4 (points; height above water or soil) and the stem profile under each of six extrapolation rules (lines; TLS height above ground), by site and campaign; the default rule is exponential decay to zero; shaded, above the 1.5 m chamber limit; square-root height axis; inverse-hyperbolic-sine flux axes that differ by site. (b) Stem CH4 per unit ground area (absolute tree flux) and (c) total plot CH4 under each rule, with non-stem components held constant and high tide at tidal sites; x axes differ by site.'),
+        'Stem height extrapolation (text S7). (a) Measured stem CH4 (points; height above water or soil) and the stem profile under each of six extrapolation rules (lines; TLS height above ground), by site and campaign; the default rule is exponential decay to zero; shaded, above the 1.5 m chamber limit; square-root height axis; inverse-hyperbolic-sine flux axes that differ by site. (b) Stem CH4 per unit ground area (absolute tree flux) and (c) total plot CH4 under each rule, with non-stem components held constant and high tide at tidal sites; x axes differ by site.'),
  "S15": (['output/figures/other/si_S10_mc_uncertainty.png'],
-        "Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S4); inverse-hyperbolic-sine axis; components that are always zero omitted."),
+        "Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S10); inverse-hyperbolic-sine axis; components that are always zero omitted."),
  "S16": ([],
         '_[PLACEHOLDER — CARAFE flight tracks and coverage (E. Delaria): flight legs of each deployment (April 2022, October 2022, February and April 2023, July 2024) over the mangrove extent and the 2017 dieback; footprint climatology; area of intact and ghost mangrove within the footprints (km2) and its share of each class in south Florida; the ground sites marked.]_'),
  "S17": (['output/figures/other/si_grp_porewater.png'],
-        'Porewater chemistry. Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023. Alkalinity against conservative mixing and sulfate reduction (October 2025; 0–90 cm, surface water excluded; text S7): (c) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (d) Measured against mixing-predicted alkalinity; dashed, 1:1. (e) Measured ÷ mixing-predicted alkalinity by site. (f) Alkalinity above mixing against twice the sulfate deficit (sulfate below the seawater sulfate:salinity ratio, 28.2 mM at 35 PSU); dashed, 1:1, the alkalinity sulfate reduction alone would produce (text S7). Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.'),
+        'Porewater chemistry. Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023. Alkalinity against conservative mixing and sulfate reduction (October 2025; 0–90 cm, surface water excluded; text S2): (c) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (d) Measured against mixing-predicted alkalinity; dashed, 1:1. (e) Measured ÷ mixing-predicted alkalinity by site. (f) Alkalinity above mixing against twice the sulfate deficit (sulfate below the seawater sulfate:salinity ratio, 28.2 mM at 35 PSU); dashed, 1:1, the alkalinity sulfate reduction alone would produce (text S2). Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.'),
  "S18": (['output/figures/other/si_porewater_extra.png'],
         'Porewater variables not shown in Fig. 4, and the salinity–CH4 relationship by sample type. (a) October 2025 profiles of pH, ammonium and nitrate (0–90 cm; inorganic nitrogen below detection set to zero), with plot surface water, where measured, in the blue band; shaded, 0–15 cm. (b) Salinity against dissolved CH4 (site × campaign × depth means; ln(1 + x) axis), porewater and plot surface water separately: lines, the model of Fig. 4B (salinity × forest class + sample type) at each sample type, with 95% confidence bands; shape, sampling round. River and bay channels (light blue; Vaughn and Raymond 2024) are shown with the surface water.'),
  "S19": ([],
         '_[PLACEHOLDER — sediment metagenome detail: taxonomy by site and depth, marker-gene abundance per gram sediment and per gram organic carbon, DNA yield (Peccia laboratory).]_'),
  "S20": (['output/figures/other/si_sensitivity_switch.png'],
-        'Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S9; table S10). Vertical line, central case (6,396 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,000–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.'),
+        'Sensitivity of the intact-to-ghost switch (GWP20) to analytical choices, one at a time (text S11; table S3). Vertical line, central case (6,396 g CO2-eq m−2 yr−1); points left of it lower the switch, right of it raise it. Analytical choices keep the switch between ~5,600 and ~8,000 (GWP100: ~5,000–7,300); only carbon-balance framings that count lateral export or storage alone lower it further.'),
  "S21": (['output/figures/other/si_switch_methods.png'],
-        'The intact-to-ghost switch by three routes (text S5): chamber site budgets (this study; Monte Carlo 95% interval); CARAFE airborne class fluxes alone (Delaria et al. 2024; four deployments, wet and dry seasons weighted equally), with midday CO2 scaled to daily for both classes by the tower relation of Doughty et al. (2026), and as a sensitivity with ghost midday flux taken as daily (pale); and the BlueFlux regional upscaling (Doughty et al. 2026), mangrove-forest versus mapped-dieback pixels, 2022–2024 (values read from its figs. S2 and S3; no interval). Bars, CO2 and CH4 parts; diamonds and whiskers, switch and 95% interval.'),
+        'The intact-to-ghost switch by three routes (text S1): chamber site budgets (this study; Monte Carlo 95% interval); CARAFE airborne class fluxes alone (Delaria et al. 2024; four deployments, wet and dry seasons weighted equally), with midday CO2 scaled to daily for both classes by the tower relation of Doughty et al. (2026), and as a sensitivity with ghost midday flux taken as daily (pale); and the BlueFlux regional upscaling (Doughty et al. 2026), mangrove-forest versus mapped-dieback pixels, 2022–2024 (values read from its figs. S2 and S3; no interval). Bars, CO2 and CH4 parts; diamonds and whiskers, switch and 95% interval.'),
 }
 
 
@@ -113,7 +113,7 @@ def t_S1():
     val = {(r["row"], r["site"]): r["value"] for r in rs}
     sp = lambda s: ", ".join(f"*{x.strip()}*" for x in s.split(","))
     b = [[a] + [sp(val.get((a, s), "")) if a == "Dominant species" else val.get((a, s), "–") for s in sites] for a in attrs]
-    return ("**Table S1. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year "
+    return ("**Table S4. Study sites.** Core sites (SRS5–FLM30) and context sites (RB10, SE1, MI). Campaigns: month and year "
             "(number of chamber closures). Stand structure from terrestrial laser scanning of the four scanned plots (M10); "
             "DBH and height include standing dead trunks at the ghost sites; woody surface per m² of ground. "
             "FCE LTER: trees > 2.5 cm DBH in two 20 × 20 m plots, 2023 survey (data S2). "
@@ -124,21 +124,21 @@ def t_S1():
 
 def t_S2():
     b = [[r["category"], r["n"], r["components"]] for r in rows("output/analysis/si/si_exclusions.csv")]
-    return ("**Table S2. Measurement exclusions by criterion** (M6). Duplicate records are not independent closures; "
+    return ("**Table S5. Measurement exclusions by criterion** (M6). Duplicate records are not independent closures; "
             "no flux was removed for being small, negative or below detection.\n\n" + md_table(["Criterion", "n", "By component"], b))
 
 def t_S3():
     rr = rows("output/analysis/si/si_sample_sizes.csv")
     comps = [c for c in ["stem", "root", "soil", "water", "cwd", "leaves"] if c in rr[0]]
     b = [[r["plot"], r["campaign"]] + [r[c] for c in comps] + [r["total"]] for r in rr]
-    return ("**Table S3. Analysed fluxes by site, campaign and component.** The intact water-surface term in October 2022 (SRS5, SRS6), "
+    return ("**Table S1. Analysed fluxes by site, campaign and component.** The intact water-surface term in October 2022 (SRS5, SRS6), "
             "where no floating chamber was deployed, was estimated from dissolved CH4 and CO2 (M8).\n\n" + md_table(["Site", "Campaign"] + comps + ["Total"], b))
 
 def t_S4():
     rr = rows("output/analysis/si/si_component_rates.csv")
     b = [[r["component"], r["class"], r["season"], r["n_CH4"], ci(r["CH4_mean"], r["CH4_lo"], r["CH4_hi"], 2),
           ci(r["CO2_mean"], r["CO2_lo"], r["CO2_hi"], 2)] for r in rr]
-    return ("**Table S4. Component flux rates by class and season** (bootstrap mean and 95% CI; CH4 nmol m−2 s−1, CO2 "
+    return ("**Table S6. Component flux rates by class and season** (bootstrap mean and 95% CI; CH4 nmol m−2 s−1, CO2 "
             "µmol m−2 s−1 per m2 of enclosed surface; intervals for n ≥ 3).\n\n" +
             md_table(["Component", "Class", "Season", "n", "CH4", "CO2"], b))
 
@@ -150,7 +150,7 @@ def t_S5():
     b = md_table(["Term", "Estimate", "SE", "p"], [[r["term"], fmt(r["estimate"], 3), fmt(r["se"], 3), fmt(r["p"], 3)] for r in fx])
     keys = list(sp[0].keys())
     c = md_table(keys, [[fmt(r[k], 3) if k != keys[0] else r[k] for k in keys] for r in sp])
-    return ("**Table S5. Woody CH4 height model** (M20). (A) Height forms compared by AIC. (B) Parametric terms of the selected "
+    return ("**Table S12. Woody CH4 height model** (M20). (A) Height forms compared by AIC. (B) Parametric terms of the selected "
             "model (asinh scale; terms ending '.1' are on the scale part). (C) Species added to the selected model (reference *R. mangle*).\n\n"
             f"(A)\n\n{a}\n\n(B)\n\n{b}\n\n(C)\n\n{c}")
 
@@ -159,8 +159,8 @@ def t_S6():
     b = [[r["gas"], r["campaign"], r["class"].replace("_", " "), fmt(r["flux"]), fmt(r["se"]), r["units"], r["source"]] for r in rr]
     adj = rows("output/upscaling/supp_carafe_inundation_adjudication.csv")
     a2 = md_table(list(adj[0].keys()), [[fmt(v, 1) if i else v for i, v in enumerate(r.values())] for r in adj])
-    return ("**Table S6. Airborne end-member fluxes** (two-class disaggregation, Delaria et al. 2024) and the airborne check of the "
-            "ghost-forest inundation representation (text S2). _[July 2024 pending; confirm uncertainty definition.]_\n\n"
+    return ("**Table S10. Airborne end-member fluxes** (two-class disaggregation, Delaria et al. 2024) and the airborne check of the "
+            "ghost-forest inundation representation (text S8). _[July 2024 pending; confirm uncertainty definition.]_\n\n"
             + md_table(["Gas", "Deployment", "Class", "Flux", "SE", "Units", "Source"], b) + "\n\n" + a2)
 
 def t_S7():
@@ -187,7 +187,7 @@ def t_S8():
         b.append([lab, fmt(n["ch4_g_yr"], 2), fmt(n["co2_g_yr"], 0), fmt(n["net20"], 0), f"{fmt(m['net20_lo'],0)} to {fmt(m['net20_hi'],0)}",
                   fmt(n["net100"], 0), f"{fmt(m['net100_lo'],0)} to {fmt(m['net100_hi'],0)}", fmt(n["net_gwpstar"], 0),
                   f"{n['ch4_pct20']}%"])
-    return ("**Table S8. Annual budgets and net forcing by class** (g m−2 yr−1; forcing in g CO2-eq m−2 yr−1; Monte Carlo 95% intervals).\n\n"
+    return ("**Table S9. Annual budgets and net forcing by class** (g m−2 yr−1; forcing in g CO2-eq m−2 yr−1; Monte Carlo 95% intervals).\n\n"
             + md_table(["Class", "CH4", "Net CO2", "Net GWP20", "95% interval", "Net GWP100", "95% interval", "Net GWP*", "CH4 share (GWP20)"], b))
 
 def from_ncc_si(label):
@@ -197,26 +197,26 @@ def from_ncc_si(label):
     return re.sub(r"\s*(?:Source|Sources?):\s*`?output/[^\s`]+`?\.?", "", s[i:j])   # drop pipeline file paths
 
 def t_S9():
-    return from_ncc_si("S9").replace("(S.M10)", "(M13)").replace("(S.T3)", "(text S3)").replace("(S.M17)", "(M18)") \
-        .replace("(S.M16)", "(M22)").replace("S.M15", "M11").replace("(S.T2", "(text S2").replace("(S.T5)", "(text S5)")
+    return from_ncc_si("S9").replace("**Table S9.", "**Table S13.", 1).replace("(S.M10)", "(M13)").replace("(S.T3)", "(text S9)").replace("(S.M17)", "(M18)") \
+        .replace("(S.M16)", "(M22)").replace("S.M15", "M11").replace("(S.T2", "(text S8").replace("(S.T5)", "(text S1)")
 
 def t_S10():
-    return from_ncc_si("S10").replace("(S.T9)", "(text S9)")
+    return from_ncc_si("S10").replace("**Table S10.", "**Table S3.", 1).replace("(S.T9)", "(text S11)")
 
 def t_S11():
     rr = rows("output/data_products/porewater_N_fce_context.csv")
-    return ("**Table S11. Porewater inorganic nitrogen: this study against FCE LTER monitoring at SRS5 and SRS6** (µmol L−1).\n\n" +
+    return ("**Table S2. Porewater inorganic nitrogen: this study against FCE LTER monitoring at SRS5 and SRS6** (µmol L−1).\n\n" +
             md_table(list(rr[0].keys()), [[fmt(v, 2) if i > 1 else v for i, v in enumerate(r.values())] for r in rr]))
 
 def t_S12():
     rr = rows("output/upscaling/supp_context_site_areal_rates.csv")
-    return ("**Table S12. Component CH4 rates at all sites, campaigns pooled** (nmol m−2 s−1 per m2 of surface; 95% CI; context sites "
-            "MI, RB10, SE1 alongside the core sites; text S8).\n\n" +
+    return ("**Table S16. Component CH4 rates at all sites, campaigns pooled** (nmol m−2 s−1 per m2 of surface; 95% CI; context sites "
+            "MI, RB10, SE1 alongside the core sites; text S4).\n\n" +
             md_table(["Site", "Component", "CH4 (95% CI)", "n"], [[r["plot"], r["component"], ci(r["nmol_m2_s"], r["lo"], r["hi"], 2), r["n"]] for r in rr]))
 
 def t_S13():
     rr = rows("output/upscaling/flood_fraction.csv")
-    return ("**Table S13. Flooded share of the intact forest floor** (M11): campaign-month mean of the hourly flooded share (±1.96 SE of the floor mean), "
+    return ("**Table S8. Flooded share of the intact forest floor** (M11): campaign-month mean of the hourly flooded share (±1.96 SE of the floor mean), "
             "the all-or-nothing switch and the long-term value, with the fitted floor-height distribution (cm relative to the logger datum).\n\n" +
             md_table(["Site", "Campaign", "Flooded share", "Switch", "2010–2023", "Floor µ (SE)", "Floor σ", "n readings (wet)"],
                      [[r["site"], r["campaign"], ci(r["frac_flooded"], r["frac_flooded_lo"], r["frac_flooded_hi"], 2), fmt(r["frac_flooded_switch"], 2),
@@ -232,16 +232,36 @@ def t_S14():
     b = md_table(["Storm", "Area (km2)", "Switch GWP20 (Tg)", "GWP100 (Tg)", "Induced CH4 (Gg)"],
                  [[r["storm"], fmt(r["area_km2"], 1), ci(r["switch_gwp20_Tg"], r["switch_gwp20_lo_Tg"], r["switch_gwp20_hi_Tg"], 2),
                    fmt(r["switch_gwp100_Tg"], 2), ci(r["ch4_induced_Gg"], r["ch4_induced_lo_Gg"], r["ch4_induced_hi_Gg"], 2)] for r in st])
-    return ("**Table S14. Regional scaling of the switch over 2017 hurricane dieback** (M19). (A) By territory. (B) By storm, with the Florida bound.\n\n"
+    return ("**Table S11. Regional scaling of the switch over 2017 hurricane dieback** (M19). (A) By territory. (B) By storm, with the Florida bound.\n\n"
             "(A)\n\n" + a + "\n\n(B)\n\n" + b)
 
 def t_S15():
     rr = rows("manuscript/literature/value_catalog.csv")
-    return ("**Table S15. Literature values for canopy leaf respiration and leaf area** (M13; full provenance in the repository).\n\n" +
+    return ("**Table S14. Literature values for canopy leaf respiration and leaf area** (M13; full provenance in the repository).\n\n" +
             md_table(["ID", "Quantity", "Value", "Units", "Species", "Site", "Method", "Source"],
                      [[r["id"], r["quantity"], r["value_as_published"], r["value_units"], r["species"], r["site"], r["method"], r["source_short"]] for r in rr]))
 
-TABLES = {f"S{i}": globals()[f"t_S{i}"] for i in range(1, 16)}
+def t_S16():
+    rr = [r for r in rows("output/data_products/porewater_all_parameters.csv") if r["Depth_cm"] == "Surface"]
+    order = ["SRS5", "SRS6", "BL60", "CP40"]
+    rr = sorted(rr, key=lambda r: order.index(r["Site"]) if r["Site"] in order else 9)
+    def g(r, k, f=1.0, d=1):
+        try:
+            v = float(r[k])
+        except (ValueError, KeyError, TypeError):
+            return "–"
+        return "–" if v != v else f"{v * f:.{d}f}"
+    cols = ["Site", "Salinity (PSU)", "O2 (% sat.)", "pH", "Redox (mV)", "CH4 (µM)", "δ13C-CH4 (‰)", "CO2 (µM)",
+            "Alkalinity (mM)", "DOC (mg L−1)", "Sulfide (mM)", "Fe (µM)", "NH4+ (µM)"]
+    body = [[r["Site"], g(r, "PSU"), g(r, "%DO", 1, 0), g(r, "pH", 1, 2), g(r, "ORP", 1, 0), g(r, "CH4_mean_uM", 1, 2),
+             g(r, "d13C_CH4_mean"), g(r, "CO2_mean_uM", 1, 0), g(r, "Alkalinity_uM", 1e-3, 1), g(r, "DOC_mg_L"),
+             g(r, "Sulfide", 1 / 34.08, 2), g(r, "Total Iron", 1000 / 55.85, 1), g(r, "NH4_N_mgL", 1000 / 14.007, 0)] for r in rr]
+    return ("**Table S15. Plot surface water, October 2025** (text S2). SRS5 and SRS6 salinity, O2, pH and alkalinity are from the "
+            "adjacent river-survey station on 22 October 2025 (Vaughn and Raymond 2024; M16); O2 after the sensor offset correction (M16); "
+            "–, not measured.\n\n" + md_table(cols, body))
+
+OLD_TABLE = {1: 3, 2: 11, 3: 10, 4: 1, 5: 2, 6: 4, 7: 7, 8: 13, 9: 8, 10: 6, 11: 14, 12: 5, 13: 9, 14: 15, 15: 16, 16: 12}   # new table number -> builder (t_S<old>), numbered by first citation
+TABLES = {f"S{i}": globals()[f"t_S{OLD_TABLE[i]}"] for i in range(1, 17)}
 
 # ------------------------------------------------------------------ data S2 and references
 def data_s2():

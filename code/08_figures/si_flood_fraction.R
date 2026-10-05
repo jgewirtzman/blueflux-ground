@@ -1,6 +1,6 @@
 # =============================================================================
 # SI figure | Flooded share of the intact forest floor (SRS5, SRS6) per campaign
-# month (Methods M11; table S13). Visualises code/07_upscaling/01b_flood_fraction.R:
+# month (Methods M11; table S8). Visualises code/07_upscaling/01b_flood_fraction.R:
 #   (a) FCE LTER hourly water level (knb-lter-fce.1168.15, logger datum) in each
 #       campaign month, with the logger level at our chamber water-depth readings
 #       (filled: standing water; open: none) and the fitted floor height (mean,
