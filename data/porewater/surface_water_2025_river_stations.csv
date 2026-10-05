@@ -1,0 +1,3 @@
+Site,date,time,station,TempC,pH,ppmDO,pct_DO,PSU,source
+SRS5,2025-10-22,14:30,SRS-5,27.44,7.43,3.64,69.4,9.3,"BlueFlux aquatic transect sonde, river station beside the plot (collected by J. Gewirtzman; Everglades Lateral C/GHG Dataset, D. Vaughn)"
+SRS6,2025-10-22,12:10,SRS-6,27.34,7.49,3.54,69.8,15.52,"BlueFlux aquatic transect sonde, river station beside the plot (collected by J. Gewirtzman; Everglades Lateral C/GHG Dataset, D. Vaughn)"

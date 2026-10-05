@@ -76,7 +76,7 @@ p <- ggplot(w, aes(site_lab, CH4_best.flux, group = position)) +
   facet_grid(~camp, scales = "free_x", space = "free_x") +
   scale_fill_manual(values = pos_cols, name = "position (chambers, filled; bars, means)") +
   scale_y_continuous(trans = "asinh", breaks = c(0, 1, 2, 5, 10, 20, 50, 100)) +
-  labs(x = NULL, y = expression("Water-surface CH"[4]*" (nmol m"^-2*" s"^-1*")"), tag = "b") +
+  labs(x = NULL, y = expression("Water-surface CH"[4]*" (nmol m"^-2*" s"^-1*")"), tag = "a") +
   guides(fill = guide_legend(override.aes = list(size = 2.2))) +
   theme_fig(base_size = 8) +
   theme(strip.text = element_text(hjust = 0.5), legend.title = element_text(face = "bold", size = 7),

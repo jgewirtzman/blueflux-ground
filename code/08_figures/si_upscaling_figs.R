@@ -137,7 +137,7 @@ p_tide <- ggplot(seg_t) +
   labs(x = NULL, y = expression("Stand CH"[4]*" (mg m"^-2*" ground d"^-1*")")) +
   theme_fig() + theme(legend.position = "right", panel.grid.major.x = element_blank(),
                       strip.text.x = element_text(colour = pal_class[["intact"]], face = "bold", size = 8, hjust = 0.5))
-save_si(p_tide, "si_tide_states", 4.0)
+save_si(p_tide + labs(tag = "d"), "si_tide_states", 4.0)   # panel d below the flooded-share panels
 
 # ---- Sensitivity of the intact-to-ghost switch to analytical choices (table S10) ----
 sens_lab <- c(`none (1.00)` = "none (1.00)", `literature (2.00)` = "literature (2.00)", `stem_chambers (4.33)` = "stem chambers (4.33)",

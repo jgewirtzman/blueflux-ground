@@ -12,7 +12,7 @@ River, estuary and tidal-creek samples from the BlueFlux aquatic survey are arch
 
 2022-2023: porewater (mostly ~40 cm) and surface water; dissolved gases by headspace equilibration (180 mL water, 20 mL headspace, 25 C) and gas chromatography; vials the run sheet marks as not run are omitted. Salinity, conductivity, pH and DO measured on separate aliquots.
 
-October 2025: MHE PushPoint samplers; field sonde (Hanna HI98494; DO corrected by -1.67 mg L-1 for a sensor offset); sulfide (methylene blue) and iron (FerroVer) on a Hach DR900; dissolved CH4, CO2 and d13C-CH4 by headspace equilibration (1:5 dilution) on a Picarro G2201-i with SAM autosampler (re-run samples: the second run); DOC, anions and alkalinity at the Yale Analytical and Stable Isotope Center; inorganic N at Yale (values at or below zero set to zero and flagged).
+October 2025: MHE PushPoint samplers; field sonde (Hanna HI98494; dissolved O2 corrected for a constant 30% saturation floor of the sensor; SRS5/SRS6 surface water from the transect sonde at the adjacent river station, 22 Oct 2025); sulfide (methylene blue) and iron (FerroVer) on a Hach DR900; dissolved CH4, CO2 and d13C-CH4 by headspace equilibration (1:5 dilution) on a Picarro G2201-i with SAM autosampler (re-run samples: the second run); DOC, anions and alkalinity at the Yale Analytical and Stable Isotope Center; inorganic N at Yale (values at or below zero set to zero and flagged).
 
 d13C-CO2 is not reported: H2S in the headspace interferes with the 13CO2 measurement.
 

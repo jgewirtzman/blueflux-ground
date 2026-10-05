@@ -664,10 +664,7 @@ cat("================================================================\n\n")
 pw <- read_csv("output/data_products/porewater_all_parameters.csv",
                show_col_types = FALSE)
 
-# Apply DO correction
-pw <- pw %>%
-  mutate(ppmDO = ppmDO - 1.67)
-cat("  Applied DO correction: -1.67 mg/L\n")
+# DO: sensor floor already removed in 05_dataset/00_porewater_2025.R
 
 # Add disturbance classification, Site factor, Depth_numeric
 pw <- pw %>%
@@ -720,7 +717,7 @@ cat("\n--- Porewater PCA ---\n")
 
 # Remove specified columns (same as soilprofile script)
 remove_cols <- c("Lat", "Long", "Depth_numeric", "SpCond", "TempC",
-                 "n_replicates", "Tds ppt", "%DO", "Br_ppm", "F_ppm")
+                 "n_replicates", "Tds ppt", "%DO", "DO_pct_raw", "ppmDO_raw", "Br_ppm", "F_ppm")
 sd_cols <- names(pw)[grepl("_sd$|_sd_", names(pw))]
 co2_cols <- names(pw)[grepl("CO2", names(pw))]
 

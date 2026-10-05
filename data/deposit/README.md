@@ -16,7 +16,7 @@ The pipeline itself starts from `data/inputs/` (clean, corrected closure table, 
 Chamber fluxes: see `chamber_fluxes/OPEN_QUESTIONS.md` (species codes Cyprus / Mahogany / Slash Pine; habitat labels for the non-mangrove comparison sites).
 
 Porewater:
-1. Sulfide units (Hach DR900 methylene blue): mg L-1 or ug L-1? The column is labelled `[unit to confirm]`.
+1. Sulfide units: mg L-1 per the analyst's data sheet (M. Zhang, Everglade_Porewater_2025.xlsx); confirm the dilution used for the methylene-blue reading.
 2. Specific conductance (Oct 2025) mixes units on the sheet (BL60 surface 6.257, porewater ~5000 at 35 PSU), so it is left out; salinity is reported.
 3. Oct 2025 surface-water samples at SRS5/SRS6 may also appear in a future version of DAAC 2333: check with D. Vaughn.
 4. GC protocol (instrument, detectors, standards) for the 2022-2023 vials; the SI has a CHECK for it too.

@@ -87,6 +87,7 @@ p <- ggplot(dd, aes(y = lab)) +
   theme(strip.text.y = element_text(angle = 0, hjust = 0, size = 6.5), panel.grid.minor = element_blank()) +
   ggh4x::facet_grid2(group ~ ., scales = "free_y", space = "free_y", strip = ggh4x::strip_themed(text_y = lapply(c(pal_class[["intact"]], "#B5651D", "grey35", "#B5651D", "grey35"), function(cc) element_text(colour = cc, angle = 0, hjust = 0, size = 6.5, face = "bold"))))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
+p <- p + labs(tag = "b")   # panel b below the chamber vs dissolved-gas panel
 ggsave("output/figures/other/si_k600_compare.png", p, width = 7.2, height = 5, dpi = 300, bg = "white")
 ggsave("output/figures/other/si_k600_compare.pdf", p, width = 7.2, height = 5, device = cairo_pdf)
 print(eq %>% mutate(across(where(is.numeric), ~ round(.x, 2))))

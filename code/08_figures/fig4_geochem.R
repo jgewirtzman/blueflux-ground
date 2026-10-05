@@ -34,12 +34,11 @@ mock_lab <- function(t = "MOCKUP: hypothetical values") labs(title = t)
 mock_theme <- theme(plot.title = element_text(colour = "firebrick", face = "italic", size = 6.5, hjust = 0))
 
 pw <- read.csv("output/data_products/porewater_all_parameters.csv", check.names = FALSE) %>%
-  mutate(ppmDO = ppmDO - 1.67) %>%
   mutate(class = factor(site_cls[Site], names(pal_class)), Site = factor(Site, names(site_shape)),
          depth = case_when(Depth_cm == "Surface" ~ -5, TRUE ~ suppressWarnings(as.numeric(Depth_cm))))
 
 # ---- (a) PCA ----
-drop <- c("Lat", "Long", "Depth_numeric", "SpCond", "TempC", "n_replicates", "Tds ppt", "%DO", "Br_ppm", "F_ppm", "depth")
+drop <- c("Lat", "Long", "Depth_numeric", "SpCond", "TempC", "n_replicates", "Tds ppt", "%DO", "DO_pct_raw", "ppmDO_raw", "Br_ppm", "F_ppm", "depth")
 num <- pw %>% select(where(is.numeric)) %>% select(-any_of(drop)) %>%
   select(-matches("_sd$|_sd_|CO2|_raw$|_bdl$"))
 keep <- names(num)[colMeans(is.na(num)) <= 0.20]

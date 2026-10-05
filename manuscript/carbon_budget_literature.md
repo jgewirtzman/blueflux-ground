@@ -131,3 +131,40 @@ Verified against abstract/full text unless noted; g C m-2 yr-1 conversions ours.
 - Osland et al. 2020 Wetlands 40:1445: ~75 cm elevation loss after 1935 hurricane, forest to mudflat. Bennion et al. 2024 Wetlands: -4.8 to -26 mm/yr after toppling.
 - Reed et al. 2025 GCB (10.1111/gcb.70124): surviving Everglades forest recovered lost C within 4 yr (recovery debt 132-224 g C m-2).
 Synthesis: dead-stand vertical C loss 700-2,900 g C/yr early on peat, declining; ours (494 at 5-6 yr) mid-low. Dissolved lateral export DECREASES after mortality (-45 to -52% DIC) apart from one-time storm pulses; total loss roughly conserved, shifting lateral -> vertical.
+
+---
+
+## Sulfide toxicity, root oxidation, iron buffering and regeneration failure (added 2026-10-04)
+Agent literature check for the porewater/persistence argument. DOIs verified against Crossref; "abstract not read" = citation verified, finding from summaries only (check before quoting).
+| Citation | DOI | Status | Finding |
+|---|---|---|---|
+| McKee 1993, *J. Ecol.* 81:477 | 10.2307/2261526 | CONTEXT | Rhizophora zone oxidized, low sulfide; Avicennia zone 2–4 mM; greenhouse sulfidic flooding cut A. germinans biomass 20–40%. Check sulfide units in PDF |
+| McKee, Mendelssohn & Hester 1988, *Am. J. Bot.* 75:1352 | 10.1002/j.1537-2197.1988.tb14196.x | CONTEXT | Sulfide 3–5x lower near prop roots/pneumatophores than bare sediment ≤1 m away, while aeration functional |
+| Thibodeau & Nickerson 1986, *Am. J. Bot.* 73:512 | 10.1002/j.1537-2197.1986.tb12069.x | CONTEXT | Blocking pneumatophores made Avicennia rhizosphere as reduced as bare soil |
+| Kristensen & Alongi 2006, *L&O* 51:1557 | 10.4319/lo.2006.51.4.1557 | CONTEXT | Root O2 loss keeps rhizosphere Fe(III)-rich |
+| McKee 1996, *Tree Physiol.* 16:883 | 10.1093/treephys/16.11-12.883 | CONTEXT | Hypoxia cut root extension in Avicennia/Laguncularia |
+| Lin & Sternberg 1992, *Aust. J. Plant Physiol.* 19:509 | 10.1071/PP9920509 | CONTEXT | 2 mM sulfide reduced photosynthesis and growth of Florida R. mangle seedlings |
+| Youssef & Saenger 1998, *Tree Physiol.* 18:317 | 10.1093/treephys/18.5.317 | CONTEXT | Sulfide closed stomata; Fe2+/Mn2+ alleviated |
+| Koch, Mendelssohn & McKee 1990, *L&O* 35:399 | 10.4319/lo.1990.35.2.0399 | CONTEXT | H2S lowers root ADH, ATP, NH4 uptake (marsh plants) |
+| Lamers et al. 2013, *Front. Plant Sci.* 4:268 | 10.3389/fpls.2013.00268 | CONTEXT | Sulfide phytotoxicity review |
+| Nickerson & Thibodeau 1985, *Biogeochemistry* 1:183 | 10.1007/BF02185041 | CONTEXT (abstract not read) | Bahamas H2S ~1.2 mM under Rhizophora, ~3.7 mM beyond root zones |
+| Pérez-Ceballos et al. 2022, *Forests* 13:1307 | 10.3390/f13081307 | CONTEXT | Isolated dead Avicennia basin, Mexico: salinity 88, sulfide ~4.8 mM (closest CP40 analogue) |
+| Chen & Twilley 1999, *Estuaries* 22:955 | 10.2307/1353075 | CONTEXT | Shark River porewater sulfide generally <0.15 mM |
+| Restrepo et al. 2025, *Ecosphere* 16:e70298 | 10.1002/ecs2.70298 | CONTEXT (counterpoint) | Recovering Everglades stands: seedling growth driven by P and light, not salinity or sulfide |
+| Lewis et al. 2016, *Mar. Pollut. Bull.* 109:764 | 10.1016/j.marpolbul.2016.03.006 | CONTEXT | Tidal restriction/impoundment predisposes mangroves to mortality (no sulfide data) |
+| Chambers, Steinmuller & Breithaupt 2019, *Ecology* 100:e02720 | 10.1002/ecy.2720 | CONTEXT | Peat collapse framework |
+| Julian, Chambers & Russell 2017, *Estuar. Coasts* 40:822 | 10.1007/s12237-016-0180-3 | CONTEXT (abstract not read) | Everglades pyritization; Fe-limited sulfide sequestration |
+| Chambers et al. 2001, *L&O* 46:1278 | 10.4319/lo.2001.46.6.1278 | CONTEXT | S. Florida carbonate sediment Fe <50 µmol/g; sulfide minerals Fe-limited; Fe addition lowers seagrass sulfide exposure |
+| Ruiz-Halpern et al. 2008, *Biogeochemistry* 87:113 | 10.1007/s10533-007-9162-7 | CONTEXT (abstract not read) | Fe addition lowered Florida Bay porewater sulfide |
+| Holmer et al. 2005, *Ecosystems* 8:721 | 10.1007/s10021-003-0180-6 | CONTEXT (abstract not read) | Fe additions in carbonate sediment |
+| Cobacho et al. 2024, *Mar. Pollut. Bull.* 202:116303 | 10.1016/j.marpolbul.2024.116303 | CONTEXT | Sargassum: sulfide 15 mM killed mangroves; Fe cut CH4 62% |
+| Queiroz et al. 2022, *Biogeochemistry* 158:357 | 10.1007/s10533-022-00903-1 | CONTEXT (abstract not read) | Dead Brazilian mangrove soils lost >50% Fe within a year |
+| Krauss et al. 2008, *Aquat. Bot.* 89:105 | 10.1016/j.aquabot.2007.12.014 | CONTEXT | Seedling establishment optimum 3–27 ppt; A. germinans rooting 10% at 75 ppt |
+| McKee 1995, *Oecologia* 101:448 | 10.1007/BF00329423 | CONTEXT (abstract not read) | Recruitment vs Eh and sulfide, Belize |
+| McKee, Rooth & Feller 2007, *Ecol. Appl.* 17:1678 | 10.1890/06-1614.1 | CONTEXT | Recruitment in harsh sites depends on nurse plants |
+| Baldwin et al. 2001, *Plant Ecol.* 157:151 | 10.1023/A:1013941304875 | CONTEXT (abstract not read) | Post-Andrew recovery from survivors and early seedlings |
+| Borum et al. 2005, *J. Ecol.* 93:148 | 10.1111/j.1365-2745.2004.00943.x | CONTEXT | Thalassia sulfide intrusion when internal O2 low |
+| Carlson, Yarbro & Barber 1994, *Bull. Mar. Sci.* 54:733 | (no DOI) | CONTEXT | Florida Bay die-off patches higher sulfide |
+| Charles 2019; Wilson 2018; Servais 2019 | 10.1007/s12237-019-00620-3; 10.1007/s12237-018-0438-z; 10.1016/j.geoderma.2018.11.013 | CONTEXT (abstracts not read) | Everglades peat collapse with saltwater intrusion (marsh) |
+| Reef et al. 2010, *Tree Physiol.* 30:1148; Smith et al. 1991, *ECSS* 33:419 | 10.1093/treephys/tpq048; 10.1016/0272-7714(91)90081-L | CONTEXT | NH4 as main N source; crab removal raised sulfide/NH4. NH4 toxicity in mangroves weakly supported |
+Novelty: no prior study measures sulfide, Fe and CH4 profiles in hurricane-killed mangrove and ties lost root oxidation to both surface sulfide and CH4. Lagomasino 2021 inferred, not measured, sulfide in Irma ponding.

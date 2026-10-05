@@ -33,7 +33,8 @@ p<-ggplot(sa,aes(sa_g,height_m+0.25,fill=segment_label))+
   theme_fig()+theme(panel.grid.major.y=element_blank(),panel.spacing.x=unit(10,"pt"),
                     legend.title=element_text(size=7,face="bold"),legend.text=element_text(size=7),
                     legend.margin=margin(0,0,0,0),legend.box.spacing=unit(4,"pt"))
-ggsave("output/figures/other/SA_by_segment_height_fixedY.pdf",p,width=7.2,height=3.6,device=cairo_pdf)
-ggsave("output/figures/other/SA_by_segment_height_fixedY.png",p,width=7.2,height=3.6,dpi=300,bg="white")
+ps<-p
+ggsave("output/figures/other/SA_by_segment_height_fixedY.pdf",ps,width=7.2,height=3.6,device=cairo_pdf)
+ggsave("output/figures/other/SA_by_segment_height_fixedY.png",ps,width=7.2,height=3.6,dpi=300,bg="white")
 ggsave("output/figures/presentation/06d_SA_by_height.png",p,width=7.2,height=3.6,dpi=300,bg="white")
 cat("written SA_by_segment_height_fixedY\n")

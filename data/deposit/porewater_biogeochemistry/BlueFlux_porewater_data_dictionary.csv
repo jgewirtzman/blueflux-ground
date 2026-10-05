@@ -19,10 +19,10 @@ field_2022_2023,DO_percent_sat,percent,Dissolved oxygen saturation
 profiles_2025,temperature_C,degC,Water temperature (Hanna HI98494)
 profiles_2025,pH,,pH (Hanna HI98494)
 profiles_2025,ORP_mV,mV,Oxidation-reduction potential
-profiles_2025,DO_mg_L,mg L-1,Dissolved oxygen (corrected by -1.67 mg L-1 for a sensor offset)
-profiles_2025,DO_percent_sat,percent,Dissolved oxygen saturation (sensor reading)
+profiles_2025,DO_mg_L,mg L-1,"Dissolved oxygen, sonde floor removed (see DO_percent_sat)"
+profiles_2025,DO_percent_sat,percent,"Dissolved oxygen saturation; the sonde's constant 30% floor (read in anoxic porewater and surface water) subtracted. SRS5/SRS6 surface water: transect sonde at the adjacent river station, 22 Oct 2025, no offset"
 profiles_2025,salinity_PSU,PSU,Salinity
-profiles_2025,sulfide_total_dissolved,[unit to confirm],"Total dissolved sulfide, methylene blue (Hach DR900)"
+profiles_2025,sulfide_total_dissolved_mg_L,mg L-1,"Total dissolved sulfide, methylene blue (Hach DR900)"
 profiles_2025,iron_total_dissolved_mg_L,mg L-1,"Total dissolved iron, FerroVer (Hach DR900)"
 profiles_2025,chloride_mg_L,mg L-1,Chloride (ion chromatography)
 profiles_2025,sulfate_mg_L,mg L-1,Sulfate (ion chromatography)

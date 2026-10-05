@@ -46,8 +46,8 @@ pc <- ggplot(sc, aes(PSU_mean, CH4_mean)) +
   scale_y_continuous(trans = "log1p", breaks = c(0, 1, 5, 10, 25, 50, 100)) +
   labs(x = "Salinity (PSU)", y = expression("Dissolved CH"[4]*" ("*mu*"M)")) + theme_fig() + small +
   theme(panel.spacing.x = unit(4, "pt"))
-fig <- (pa + labs(tag = "a")) / (pb + labs(tag = "b")) / (pc + labs(tag = "c")) &
+fig <- (pa + labs(tag = "a")) / (pb + labs(tag = "b")) &   # salinity vs CH4 by site is Fig. 4B
   theme(legend.position = "right", legend.justification = "left", legend.key.size = unit(9, "pt"))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/ed_porewater_rounds.png", fig, width = 7.2, height = 7.4, dpi = 300, bg = "white")
-ggsave("output/figures/other/ed_porewater_rounds.pdf", fig, width = 7.2, height = 7.4, device = cairo_pdf)
+ggsave("output/figures/other/ed_porewater_rounds.png", fig, width = 7.2, height = 5.0, dpi = 300, bg = "white")
+ggsave("output/figures/other/ed_porewater_rounds.pdf", fig, width = 7.2, height = 5.0, device = cairo_pdf)

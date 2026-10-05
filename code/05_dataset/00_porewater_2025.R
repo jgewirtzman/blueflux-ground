@@ -9,6 +9,7 @@
 #       diluted 1:5; headspace equilibration 180 mL water + 20 mL gas at 25 C.
 #       Re-run samples: the second run is kept.
 #   Porewater - Values.csv, Porewater - Sites.csv   field sonde, sulfide, iron; sites
+#   surface_water_2025_river_stations.csv           SRS5/SRS6 surface sonde (river station, 22 Oct 2025)
 #   Anions_251121.csv                               ion chromatography (10x dilution)
 #   Shark River alkalinity(Sheet1).csv              total alkalinity (uM)
 #   SRS_November_2025_DOC_full_curve.xlsx           DOC (10x dilution)
@@ -57,6 +58,21 @@ sites_meta <- read_csv(file.path(P, "Porewater - Sites.csv"), show_col_types = F
 pv <- read_csv(file.path(P, "Porewater - Values.csv"), show_col_types = FALSE) %>% select(-Label) %>%
   mutate(Depth_cm = as.character(Value)) %>%
   select(Site, Depth_cm, ORP, pH, `%DO`, ppmDO, SpCond, `Tds ppt`, PSU, TempC, Sulfide, `Total Iron`)
+# Dissolved O2: the 2025 sonde read a constant floor of ~30% saturation in anoxic, sulfidic
+# porewater and in anoxic BL60 surface water (the 2022 sonde read 0.6-2.9% in the same waters),
+# i.e. a zero offset in % saturation. Subtract the lowest porewater reading from every reading
+# (% saturation) and rescale mg L-1 by the same factor; raw values kept as *_raw.
+DO_FLOOR <- min(pv$`%DO`[pv$Depth_cm != "Surface"], na.rm = TRUE)
+pv <- pv %>% mutate(DO_pct_raw = `%DO`, ppmDO_raw = ppmDO,
+                    `%DO` = pmax(DO_pct_raw - DO_FLOOR, 0), ppmDO = ppmDO_raw * `%DO` / DO_pct_raw)
+# SRS5 / SRS6 surface water (no sonde reading at the profile): the transect sonde at the river
+# station beside each plot, 22 Oct 2025 (surface_water_2025_river_stations.csv; no offset)
+rs <- read_csv(file.path(P, "surface_water_2025_river_stations.csv"), show_col_types = FALSE)
+for (i in seq_len(nrow(rs))) {
+  k <- pv$Site == rs$Site[i] & pv$Depth_cm == "Surface"
+  pv[k, c("TempC", "pH", "ppmDO", "%DO", "PSU")] <- rs[i, c("TempC", "pH", "ppmDO", "pct_DO", "PSU")]
+}
+cat("DO floor subtracted:", DO_FLOOR, "% saturation\n")
 an <- read_csv(file.path(P, "Anions_251121.csv"), show_col_types = FALSE) %>%
   filter(`Sample type` == "Sample", !grepl("Blank|Spike|ch|ac", Ident, ignore.case = TRUE)) %>%
   mutate(Site = str_extract(Ident, "^[A-Za-z0-9]+"), Depth_cm = str_extract(Ident, "(?<=-)[A-Za-z0-9]+$")) %>%

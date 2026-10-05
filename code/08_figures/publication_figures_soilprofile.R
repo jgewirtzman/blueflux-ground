@@ -93,11 +93,8 @@ df <- df %>%
     )
   )
 
-# Apply DO sensor offset correction (-1.8 mg/L from measured values)
 # Then shift up by 0.13 to floor minimum at 0 (avoids negative DO)
-df <- df %>%
-  mutate(ppmDO = ppmDO - 1.8 + 0.13)
-cat("  Applied DO correction: -1.67 mg/L (sensor offset -1.8, floor shift +0.13)\n")
+# DO: sensor floor already removed in 05_dataset/00_porewater_2025.R
 
 cat("  Loaded:", nrow(df), "rows,", n_distinct(df$Site), "sites\n")
 cat("  Variables:", ncol(df), "columns\n")
@@ -296,7 +293,7 @@ cat("\n--- Figure 5: PCA of Porewater Geochemistry ---\n")
 
 # Select numeric columns for PCA, exclude metadata and SD columns
 remove_cols <- c("Lat", "Long", "Depth_numeric", "SpCond", "TempC",
-                 "n_replicates", "Tds ppt", "%DO", "Br_ppm", "F_ppm")
+                 "n_replicates", "Tds ppt", "%DO", "DO_pct_raw", "ppmDO_raw", "Br_ppm", "F_ppm")
 sd_cols <- names(df)[grepl("_sd$|_sd_", names(df))]
 co2_cols <- names(df)[grepl("CO2", names(df))]
 

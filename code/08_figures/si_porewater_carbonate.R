@@ -37,21 +37,29 @@ mix <- data.frame(PSU=seq(0,65,length.out=100)) %>% mutate(TA=(3000+(2400-3000)*
 pA <- pt(ggplot(d, aes(PSU, TA)) + geom_line(data=mix, linetype="dashed", colour="grey45") +
   annotate("text",x=64,y=2.3,label="conservative mixing",hjust=1,vjust=-0.7,size=2.2,colour="grey35")) +
   scale_y_continuous(limits=c(0,36),expand=c(0,0)) + scale_x_continuous(limits=c(0,65),expand=c(0,0)) +
-  labs(x="Salinity (PSU)", y="Total alkalinity (mM)", tag="a") + theme_fig()
+  labs(x="Salinity (PSU)", y="Total alkalinity (mM)", tag="c") + theme_fig()
 # B: measured vs predicted, 1:1
 pB <- pt(ggplot(d, aes(TAmix, TA)) + geom_abline(linetype="dashed", colour="grey45") +
   annotate("text",x=30,y=30,label="1:1 (conservative mixing)",hjust=1,vjust=-0.6,size=2.2,colour="grey35",angle=45)) +
   coord_equal(xlim=c(0,36), ylim=c(0,36), expand=FALSE) +
-  labs(x="Alkalinity predicted by mixing (mM)", y="Measured alkalinity (mM)", tag="b") + theme_fig()
+  labs(x="Alkalinity predicted by mixing (mM)", y="Measured alkalinity (mM)", tag="d") + theme_fig()
 # C: ratio by site
 pC <- pt(ggplot(d, aes(ratio, Site)) + geom_vline(xintercept=1, linetype="dashed", colour="grey45") +
   annotate("text",x=1.3,y=0.6,label="conservative\nmixing",vjust=0,hjust=0,size=2.2,colour="grey35",lineheight=0.9)) +
   scale_x_continuous(limits=c(0,16), breaks=c(1,5,10,15), labels=function(x) paste0(x,"×"), expand=c(0,0)) +
   scale_y_discrete(limits=rev, expand=expansion(add=c(0.9,0.5))) +
-  labs(x="Measured ÷ mixing-predicted alkalinity", y=NULL, tag="c") + theme_fig() + theme(legend.position="none")
+  labs(x="Measured ÷ mixing-predicted alkalinity", y=NULL, tag="e") + theme_fig() + theme(legend.position="none")
+# D: alkalinity above mixing against sulfate reduction (2 equivalents per sulfate reduced; sulfate
+# deficit from the seawater sulfate:salinity ratio, 28.2 mM at S = 35; text S7)
+d <- d %>% mutate(SO4_def = 28.24 * PSU / 35 - SO4_ppm / 96.06, TA_excess = TA - TAmix)
+pD <- pt(ggplot(d, aes(2 * SO4_def, TA_excess)) + geom_abline(linetype="dashed", colour="grey45") +
+  annotate("text",x=33,y=33,label="1:1",hjust=1,vjust=-0.5,size=2.2,colour="grey35")) +
+  coord_equal(xlim=c(-1,36), ylim=c(-1,36), expand=FALSE) +
+  labs(x=expression("2 × sulfate deficit (mM)"), y="Alkalinity above mixing (mM)", tag="f") + theme_fig()
 th <- theme()
-fig <- (pA + th + theme(legend.position="none")) | (pB + th + theme(legend.position="none")) | (pC + th)
+fig <- ((pA + th + theme(legend.position="none")) | (pB + th + theme(legend.position="none"))) /
+       ((pC + th) | (pD + th + theme(legend.position="none")))
 fig <- fig + plot_layout(guides="collect") & theme(legend.position="bottom")
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/si_S12_carbonate.png", fig, width = 7.2, height = 3.0, dpi = 300, bg = "white")
-ggsave("output/figures/other/si_S12_carbonate.pdf", fig, width = 7.2, height = 3.0, device = cairo_pdf)
+ggsave("output/figures/other/si_S12_carbonate.png", fig, width = 7.2, height = 5.4, dpi = 300, bg = "white")
+ggsave("output/figures/other/si_S12_carbonate.pdf", fig, width = 7.2, height = 5.4, device = cairo_pdf)

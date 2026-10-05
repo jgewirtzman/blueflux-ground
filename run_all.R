@@ -47,6 +47,7 @@ steps <- c(
   "code/05_dataset/05_porewater_N_fce_context.R",
   # 06 analysis: statistics and manuscript numbers
   "code/06_analysis/01_summary_table.R",
+  "code/08_figures/site_characterization_figures.R",# salinity-CH4 table for Fig 4B, Fig S17c (before 02_manuscript_results)
   "code/06_analysis/02_manuscript_results.R",
   "code/06_analysis/03_woody_height_model.R",
   "code/06_analysis/04_porewater_carbonate.R",
@@ -105,12 +106,12 @@ steps <- c(
   "code/08_figures/plot_us_skr_gpp.R",              # tower GPP diagnostics
   "code/08_figures/si_switch_methods.R",            # Fig S21
   "code/08_figures/si_campaign_context.R",          # Fig S19
-  "code/08_figures/site_characterization_figures.R",# Fig S17c data
   "code/08_figures/plot_site_closure.R",            # exploratory site closure (not in SI)
   "code/08_figures/plot_water_positions.R",         # Fig S4b
   "code/08_figures/figS_sampling_design.R",         # Fig S4a
   "code/08_figures/fig_carafe_endmembers.R",            # airborne intact vs ghost (draft panel)
   "code/08_figures/fig_metagenome_placeholder.R",       # PLACEHOLDER metagenome figure        # sampling design vs tide (candidate SI figure)
+  "code/08_figures/si_compose.py",                   # stacks SI figure parts (python3)
   "code/08_figures/collect_figures.R",
   "code/09_archive/build_ornl_daac_package.R",    # DRAFT ORNL DAAC package 1: chamber fluxes -> data/deposit/chamber_fluxes
   "code/09_archive/build_porewater_package.R"     # DRAFT ORNL DAAC package 2: porewater -> data/deposit/porewater_biogeochemistry
