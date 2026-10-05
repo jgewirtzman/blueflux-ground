@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # =============================================================================
-# run_all.R -- BlueFlux ground pipeline, raw analyzer files to figures.
+# run_all.R -- BlueFlux ground pipeline, clean inputs and analyzer records to figures.
 #
 #   Rscript run_all.R                     # everything, in order
 #   Rscript run_all.R --from 05_dataset   # from a stage (or a step, e.g. 07_upscaling/02)
@@ -13,24 +13,16 @@
 # output goes to output/logs/<stage>__<script>.log. The run stops at the first
 # failing step.
 #
-# Inputs. The flux stages (03 onward) start from the clean inputs:
+# Inputs. The pipeline starts from the clean inputs:
 #   data/inputs/closures.csv, unlogged_placements.csv   one corrected row per closure
+#   data/inputs/chamber_dimensions_*.csv                 chamber classes and collars
 #   data/deposit/chamber_fluxes/analyzer_records/*.csv   analyzer records (deposited; gitignored)
-# Stages 01-02 (internal, code/hygiene/) build data/inputs from the field sheets, scanned data sheets and
-# curated corrections (data/field_notes, data/flux_metadata) and the vendor analyzer files
-# (data/analyzer); they run only where those sources are present. Stage 07 also needs the
-# US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored).
+# Stage 07 also needs the US-Skr tower file (data/tower/AMF_US-Skr_BASE_HH_2-5.csv, gitignored).
+# How data/inputs was derived from the field sheets and vendor analyzer files is kept, for the
+# record, in code/hygiene/ (not run here; see code/hygiene/README.md).
 # =============================================================================
 
 steps <- c(
-  # 01 metadata: field sheets + dimension tables + curated corrections -> one auxfile
-  "code/hygiene/01_metadata/00_index_raw_files.R",          # vendor analyzer files only (skipped without data/analyzer)
-  "code/hygiene/01_metadata/00b_export_analyzer_csv.R",     # vendor files -> clean daily CSVs (deposit; skipped without data/analyzer)
-  "code/hygiene/01_metadata/01_build_auxfile.R",
-  # 02 windows: clock offsets and the fit window of every closure
-  "code/hygiene/02_windows/01_rise_detection.R",
-  "code/hygiene/02_windows/02_windows.R",
-  "code/hygiene/02_windows/03_export_inputs.R",             # -> data/inputs/closures.csv, unlogged_placements.csv
   # 03 fit: goFlux + fluxqc per gas; water flux from dissolved CH4 where unmeasured
   "code/03_fit/01_fit_fluxes.R",
   "code/05_dataset/00_porewater_2025.R",            # Oct 2025 porewater tables from lab files
@@ -159,19 +151,12 @@ if ("--qa" %in% args) run <- c(run, qa_steps)
 if ("--list" %in% args) { cat(sprintf("%2d  %s\n", seq_along(steps), label_of(steps)), sep = "")
   cat("QA (--qa):\n"); cat(sprintf("    %s\n", label_of(qa_steps)), sep = ""); quit(save = "no") }
 
-# Internal stages 01-02 (field-sheet reconciliation -> data/inputs) run only where their sources
-# are present; the vendor-file steps also need data/analyzer. Without them the run starts from
-# data/inputs and the deposited analyzer CSVs.
 clean_raw <- "data/deposit/chamber_fluxes/analyzer_records"
-internal <- stage_of(run) %in% c("01_metadata", "02_windows")
-if (!dir.exists("data/field_notes") || !dir.exists("data/analyzer")) {
-  if (any(internal)) cat("(internal stages 01-02 skipped: data/field_notes or data/analyzer absent; using data/inputs)\n")
-  run <- run[!internal] }
 if (any(stage_of(run) %in% c("03_fit", "04_ebullition")) && !length(list.files(clean_raw, pattern = "csv$")))
   stop("Stages 03-04 need the analyzer records in ", clean_raw, " (ORNL DAAC deposit). ",
        "Or start later: Rscript run_all.R --from 05_dataset")
-if (any(stage_of(run) %in% c("01_metadata", "07_upscaling")) && !file.exists("data/tower/AMF_US-Skr_BASE_HH_2-5.csv"))
-  stop("Stages 01 and 07 need data/tower/AMF_US-Skr_BASE_HH_2-5.csv (gitignored).")
+if (any(stage_of(run) == "07_upscaling") && !file.exists("data/tower/AMF_US-Skr_BASE_HH_2-5.csv"))
+  stop("Stage 07 needs data/tower/AMF_US-Skr_BASE_HH_2-5.csv (gitignored).")
 
 dir.create("output/logs", recursive = TRUE, showWarnings = FALSE)
 cat("=== BlueFlux ground pipeline:", length(run), "steps |", format(Sys.time()), "===\n")
