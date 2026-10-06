@@ -46,3 +46,6 @@ data/deposit/chamber_fluxes/analyzer_records/
 
 # Private correspondence (never commit; repo is public)
 manuscript/correspondence/
+
+# Private notes (never commit; repo is public)
+manuscript/private_notes/
