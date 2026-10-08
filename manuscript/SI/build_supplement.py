@@ -74,7 +74,7 @@ FIGS = {
  "S15": (['output/figures/other/si_S10_mc_uncertainty.png'],
         "Component CH4 per unit ground area by site and campaign: Monte Carlo mean and 95% interval (joint flux-rate and surface-area uncertainty; tide states weighted by the flooded share of the floor), with each component's share of the variance of stand CH4 at right (text S10); inverse-hyperbolic-sine axis; components that are always zero omitted."),
  "S16": ([],
-        '_[PLACEHOLDER — CARAFE flight tracks and coverage (E. Delaria): flight legs of each deployment (April 2022, October 2022, February and April 2023, July 2024) over the mangrove extent and the 2017 dieback; footprint climatology; area of intact and ghost mangrove within the footprints (km2) and its share of each class in south Florida; the ground sites marked.]_'),
+        '_[PLACEHOLDER — CARAFE flight tracks and coverage (E. Delaria): flight legs of each deployment (April 2022, October 2022, February and April 2023) over the mangrove extent and the 2017 dieback; footprint climatology; area of intact and ghost mangrove within the footprints (km2) and its share of each class in south Florida; the ground sites marked.]_'),
  "S17": (['output/figures/other/si_grp_porewater.png'],
         'Porewater chemistry. Porewater by site, sampling round (October 2022, March 2023, October 2025) and depth: (a) dissolved CH4 and (b) salinity (site × round × depth means; porewater only). Site names coloured by forest class. No porewater CH4 was analysed for SRS5 and SRS6 in March 2023. Alkalinity against conservative mixing and sulfate reduction (October 2025; 0–90 cm, surface water excluded; text S2): (c) Total alkalinity against salinity, with the mixing line (dashed; end-members salinity 0, 3,000 µM and salinity 35, 2,400 µM). (d) Measured against mixing-predicted alkalinity; dashed, 1:1. (e) Measured ÷ mixing-predicted alkalinity by site. (f) Alkalinity above mixing against twice the sulfate deficit (sulfate below the seawater sulfate:salinity ratio, 28.2 mM at 35 PSU); dashed, 1:1, the alkalinity sulfate reduction alone would produce (text S2). Fill, forest class; shape, site. FLM30 was not sampled for alkalinity.'),
  "S18": (['output/figures/other/si_porewater_extra.png'],
@@ -160,7 +160,7 @@ def t_S6():
     adj = rows("output/upscaling/supp_carafe_inundation_adjudication.csv")
     a2 = md_table(list(adj[0].keys()), [[fmt(v, 1) if i else v for i, v in enumerate(r.values())] for r in adj])
     return ("**Table S10. Airborne end-member fluxes** (two-class disaggregation, Delaria et al. 2024) and the airborne check of the "
-            "ghost-forest inundation representation (text S8). _[July 2024 pending; confirm uncertainty definition.]_\n\n"
+            "ghost-forest inundation representation (text S8). _[Confirm uncertainty definition.]_\n\n"
             + md_table(["Gas", "Deployment", "Class", "Flux", "SE", "Units", "Source"], b) + "\n\n" + a2)
 
 def t_S7():

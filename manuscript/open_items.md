@@ -7,7 +7,7 @@ now carry only content placeholders (missing data or text).
 All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 
 ## Checks
-- E. Delaria: airborne uncertainty definition; July 2024 deployment.
+- E. Delaria: airborne uncertainty definition.
 - Inorganic-N dilution.
 - D. Lagomasino: definition of the 2017 dieback layer (173 km2 vs the paper's 790 km2 of persistent damage).
 - TLS scan positions per plot; Powell et al. methods paper (in preparation).

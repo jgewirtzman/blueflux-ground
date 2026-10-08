@@ -1,7 +1,7 @@
 # =============================================================================
 # Fig. 3 | The stand carbon budget and its independent closure.
 #   (a) Airborne CH4 and midday CO2 over intact and ghost forest by deployment
-#       (CARAFE; +/- 1.96 SE band; grey, our campaign months; July 2024 pending).
+#       (CARAFE; +/- 1.96 SE band; grey, our campaign months).
 #   (b) CH4 and (c) net CO2 exchange by campaign and annually (mean of the wet and
 #       dry campaigns): stacked bottom-up components, bottom-up totals (Monte Carlo
 #       95%), airborne (Mar 2023 = mean of Feb and Apr 2023) and tower (US-Skr
@@ -142,20 +142,18 @@ pc <- closure_panel(ch_stack3, est3(ch_tot, ca_ch4), expression("Stand CH"[4]*" 
 pd <- closure_panel(co_stack3, est3(co_tot, ca_co2, tower), expression("Stand CO"[2]*" ("*mu*"mol m"^-2*" s"^-1*", daily)"),
                     gpp_df = gpp3)
 
-# ---- (e) aircraft by deployment (placeholder) ----
-deps <- c("Apr 2022", "Oct 2022", "Feb 2023", "Apr 2023", "Jul 2024")
+# ---- (e) aircraft by deployment ----
+deps <- c("Apr 2022", "Oct 2022", "Feb 2023", "Apr 2023")
 air <- read.csv("data/carafe_topdown/delaria_endmembers_campaign.csv") %>%
+  filter(campaign %in% deps) %>%
   mutate(class = to_class(class), campaign = factor(campaign, deps), gas = ifelse(gas == "CH4", "CH4\n(nmol m-2 s-1)", "CO2, midday\n(umol m-2 s-1)"))
-pend <- expand.grid(campaign = factor("Jul 2024", deps), gas = unique(air$gas))
 pe <- ggplot(air, aes(campaign, flux, colour = class)) +
   geom_hline(yintercept = 0, colour = "grey60", linewidth = 0.3) +
   geom_errorbar(aes(ymin = flux - z95 * se, ymax = flux + z95 * se), position = position_dodge(0.5), width = 0.15, linewidth = 0.4) +
   geom_point(position = position_dodge(0.5), size = 1.8) +
-  geom_text(data = pend, aes(campaign, -Inf, label = "pending"), inherit.aes = FALSE, angle = 90, hjust = -0.2, size = 2.2, colour = "grey50") +
   facet_wrap(~ gas, scales = "free_y") + scale_x_discrete(drop = FALSE, labels = function(x) sub(" 20", "\n'", x)) +
   scale_colour_manual(values = pal_class[cls], name = "forest class") +
-  labs(x = "Airborne deployment", y = "Airborne flux (95% CI)",
-       subtitle = "PLACEHOLDER: two-class values for all five deployments pending") +
+  labs(x = "Airborne deployment", y = "Airborne flux (95% CI)") +
   theme_fig() + theme(strip.text = element_text(hjust = 0.5), plot.subtitle = element_text(size = 6.5, colour = "firebrick"))
 
 # ---- (f) annual budgets ----
@@ -185,31 +183,32 @@ saveRDS(list(ch4 = pa, resp = pb), "output/figures/other/fig_component_shares.rd
 pc <- pc + guides(shape = "none", fill = "none")
 pd <- pd + guides(shape = guide_legend(nrow = 1, override.aes = list(fill = c("white", "grey30", "grey30"))), fill = "none")
 # (a) airborne time series: dated deployments, CI band, dotted connectors
-dep_date <- c("Apr 2022" = "2022-04-15", "Oct 2022" = "2022-10-15", "Feb 2023" = "2023-02-15", "Apr 2023" = "2023-04-15", "Jul 2024" = "2024-07-15")
+dep_date <- c("Apr 2022" = "2022-04-15", "Oct 2022" = "2022-10-15", "Feb 2023" = "2023-02-15", "Apr 2023" = "2023-04-15")
 gas_lab <- c(CH4 = "CH[4]~(nmol~m^-2~s^-1)", CO2 = "CO[2]*','~midday~(mu*mol~m^-2~s^-1)")
 air_ts <- read.csv("data/carafe_topdown/delaria_endmembers_campaign.csv") %>%
+  filter(campaign %in% deps) %>%
   mutate(class = to_class(class), date = as.Date(dep_date[campaign]), lo = flux - z95 * se, hi = flux + z95 * se,
          gas = factor(gas_lab[gas], gas_lab))
 camp_band <- data.frame(xmin = as.Date(c("2022-10-01", "2023-03-01")), xmax = as.Date(c("2022-10-31", "2023-03-31")))
-pend_lab <- data.frame(gas = factor(gas_lab, gas_lab), date = as.Date("2024-07-15"))
 pts <- ggplot(air_ts, aes(date, flux, colour = class, fill = class, group = class)) +
   geom_rect(data = camp_band, aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), inherit.aes = FALSE, fill = "grey90") +
   geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.3) +
   geom_ribbon(aes(ymin = lo, ymax = hi), alpha = 0.15, colour = NA) +
   geom_line(linewidth = 0.35, linetype = "13") + geom_point(size = 1.4) +
-  geom_text(data = pend_lab, aes(date, Inf, label = "Jul 2024\npending"), inherit.aes = FALSE, vjust = 1.3, size = 2, colour = "grey45") +
   facet_wrap(~ gas, scales = "free_y", labeller = label_parsed) +
   scale_colour_manual(values = pal_class[cls], breaks = c("intact", "ghost"), name = NULL) +
   scale_fill_manual(values = pal_class[cls], breaks = c("intact", "ghost"), name = NULL) +
-  scale_x_date(limits = as.Date(c("2022-02-01", "2024-09-30")), date_labels = "%b %Y", date_breaks = "6 months") +
+  scale_x_date(limits = as.Date(c("2022-04-01", "2023-04-30")), breaks = as.Date(unname(dep_date)), date_labels = "%b\n%Y", expand = expansion(mult = 0)) +
+  scale_y_continuous(expand = expansion(mult = 0.025), breaks = scales::breaks_pretty(n = 5)) +
   labs(x = NULL, y = "Airborne flux (95% CI)") + theme_fig() +
-  theme(strip.text = element_text(hjust = 0.5), legend.position = "right", axis.text.x = element_text(size = 6))
+  theme(strip.text = element_text(hjust = 0.5), legend.position = "bottom", legend.direction = "horizontal",
+        legend.margin = margin(0, 0, 0, 0), legend.box.spacing = unit(1, "pt"), axis.text.x = element_text(size = 6))
 sch <- readRDS("output/figures/other/fig_carbon_schematic.rds")
 row_cl <- ((pc + labs(tag = "b")) | (pd + labs(tag = "c"))) + plot_layout(guides = "collect") &
   theme(legend.position = "bottom", legend.direction = "horizontal", legend.margin = margin(0, 0, 0, 0), legend.box.spacing = unit(2, "pt"),
         plot.margin = margin(2, 3, 2, 3))
 fig <- (pts + labs(tag = "a")) / wrap_elements(full = row_cl) / (wrap_elements(full = sch & theme(plot.margin = margin(0, 2, 0, 12))) + labs(tag = "d")) +
-  plot_layout(heights = c(0.42, 1, 1.42)) & theme(plot.tag = element_text(face = "bold", size = 11), plot.margin = margin(2, 3, 2, 3))
+  plot_layout(heights = c(0.56, 0.93, 1.12)) & theme(plot.tag = element_text(face = "bold", size = 11), plot.margin = margin(2, 3, 2, 3))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
-ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 9, dpi = 300, bg = "white")
-ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 9, device = cairo_pdf)
+ggsave("output/figures/other/fig3_stands.png", fig, width = 7.2, height = 8.4, dpi = 300, bg = "white")
+ggsave("output/figures/other/fig3_stands.pdf", fig, width = 7.2, height = 8.4, device = cairo_pdf)

@@ -70,16 +70,15 @@ up_ <- c(nee_se, sumr$flux_lateral - sumr$flux_lateral_lo, lit[["Soil C burial"]
 RES_R <- sumr$closure_resid + c(-sqrt(sum(dn^2)), sqrt(sum(up_^2)))
 cat(sprintf("closure residual %.0f (%.0f to %.0f)\n", sumr$closure_resid, RES_R[1], RES_R[2]))
 source("code/08_figures/fig_carbon_stockflow.R")
-ttl <- function(k, sub) labs(title = paste(k, "forest"), subtitle = sub)
-th_t <- function(k) theme(plot.title = element_text(face = "bold", size = 9, colour = pal_class[[k]], margin = margin(0, 0, 1, 0)),
-                          plot.subtitle = element_text(size = 7, colour = "grey30", margin = margin(0, 0, 0, 0)),
+ttl <- function(k) labs(title = paste(k, "forest"))
+th_t <- function(k) theme(plot.title = element_text(face = "bold", size = 9, colour = pal_class[[k]], margin = margin(0, 0, 2, 0)),
+                          plot.margin = margin(0, 2, 0, 2),
                           panel.border = element_rect(fill = NA, colour = "grey55", linewidth = 0.4))
 r_i <- co2w[co2w$class == "intact", ]; r_g <- co2w[co2w$class == "ghost", ]
 M_g <- sum(ch4w[ch4w$class == "ghost", -1])
-pa <- ((schematic("intact") + ttl("intact", sprintf("net uptake %s; retained %s (wood %s, burial %s)", fmtv(-sumr$flux_measured),
-          fmtv(sumr$NECB_full), fmtv(lit[["dBiomass C"]]), fmtv(lit[["Soil C burial"]]))) + th_t("intact")) + plot_spacer() +
-       (schematic("ghost") + ttl("ghost", sprintf("net loss %s, all of it respired or emitted as CH4", fmtv(sum(r_g[, -1]) + M_g))) + th_t("ghost")) + plot_layout(widths = c(1, 0.05, 1))) /
-  schematic_key() + plot_layout(heights = c(1, 0.09))
+pa <- ((schematic("intact") + ttl("intact") + th_t("intact")) + plot_spacer() +
+       (schematic("ghost") + ttl("ghost") + th_t("ghost")) + plot_layout(widths = c(1, 0.05, 1))) /
+  schematic_key() + plot_layout(heights = c(1, 0.075))
 
 # ---------------------------------------------------------------- (b) methane budget
 mc <- read.csv("output/upscaling/mc_component_uncertainty.csv") %>% filter(component == "total", disturbance_level %in% names(cls)) %>%

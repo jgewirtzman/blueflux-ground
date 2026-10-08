@@ -58,7 +58,7 @@ schematic <- function(k) {
   add_lab <- function(x, y, txt, col, hj = 0.5, size = 2.1, face = "bold") lab[[length(lab) + 1]] <<- data.frame(x = x, y = y, txt = txt, col = col, hj = hj, size = size, face = face)
 
   # ---- landscape: sky, sediment with deep layer, creek on the right
-  add_shape(cbind(x = c(0, 10, 10, 0), y = c(GROUND, GROUND, 9.6, 9.6)), sky)
+  add_shape(cbind(x = c(0, 10, 10, 0), y = c(GROUND, GROUND, 9.35, 9.35)), sky)
   bank <- bez(c(7.7, GROUND), c(8.2, 1.25), c(8.9, 1.3), 30)
   ground_poly <- rbind(c(0, GROUND), bank, c(10, 1.3), c(10, 0.75), c(0, 0.75))
   add_shape(ground_poly, sed)
@@ -159,7 +159,7 @@ schematic <- function(k) {
     geom_text(data = lb, aes(x, y, label = txt, colour = I(col), hjust = hj, size = I(size), fontface = face), vjust = 0, lineheight = 0.85) +
     annotate("text", 1.3, 2.24, label = "sediment", hjust = 0, size = 1.9, colour = "#5A4632", fontface = "italic") +
     annotate("text", 9.9, 0.32, label = "to estuary", hjust = 1, size = 1.8, colour = "grey95", fontface = "italic") +
-    coord_fixed(xlim = c(0, 10), ylim = c(0, 9.6), expand = FALSE, clip = "off") + theme_void()
+    coord_fixed(xlim = c(0, 10), ylim = c(0, 9.35), expand = FALSE, clip = "off") + theme_void()
 }
 
 schematic_key <- function() {
