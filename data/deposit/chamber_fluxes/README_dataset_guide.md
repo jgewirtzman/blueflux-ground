@@ -45,8 +45,8 @@ Component-resolved fluxes for scaling ecosystem CH4 and CO2 exchange with struct
 
 ## 4. Quality Assessment
 
-- Minimum detectable flux per measurement: 1.96 sigma / t x the flux term, sigma = median absolute deviation of within-window first differences, centred per closure and pooled by analyzer and campaign. Below-detection fluxes are retained at their measured values and flagged (`*_below_MDF`, `*_detection_class`).
-- QC screens (fluxqc 0.2.3: initial concentration, CO2 tracer, curvature, minimum window, noise) are reported as `*_qc_flag`; flagged fluxes are retained.
+- Minimum detectable flux per measurement: z sigma / t x the flux term (z = 1.96, a benchmark multiplier rather than a calibrated 95% test; t = window span plus one logging interval), sigma = median absolute deviation of within-window first differences, centred per closure and pooled by analyzer and campaign. Below-detection fluxes are retained at their measured values and flagged (`*_below_MDF`, `*_detection_class`).
+- QC screens (initial concentration, CO2 tracer, curvature, minimum window, noise; goFlux 0.5.0.9001 qc.flags/co2.tracer plus curvature and window screens in the workflow) are reported as `*_qc_flag`; flagged fluxes are retained.
 - Not in the file: closures with no analyzer record in the window, analyzer artefacts, duplicate data entries, three pilot chamber designs and March 2022 chambers without recorded dimensions.
 - Fit uncertainty: `*_flux_se` and `*_r2` of the reported model.
 
@@ -56,7 +56,7 @@ Component-resolved fluxes for scaling ecosystem CH4 and CO2 exchange with struct
 
 **Chambers.** Four elliptical stem-chamber classes (A-D; enclosed 40-462 cm2) and hollow (open-ended) HA/HB chambers fitted around the whole circumference of small stems and roots, all sealed to bark with modelling clay at heights given above the sediment (`chamber_height_cm`); prop-root chambers on individual *Rhizophora mangle* aerial roots; chambers on downed wood; a transparent leaf chamber (LB) on a branch cluster of 15 leaves (direction and approximate magnitude, not a controlled physiological rate); open-bottom acrylic soil cylinders (23.5 cm diameter) in the wet season and PVC soil collars (14.3 or 19.4 cm) in the dry season, with pneumatophores within the footprint counted; floating chambers (19.4 cm) on water. Closed-loop tubing with inline desiccant; system volumes per chamber-analyzer combination (0.8-39.6 L).
 
-**Flux calculation.** goFlux (R): linear and Hutchinson-Mosier models fitted to each concentration series; the reported flux follows the goFlux best.flux criteria (HM considered only with >= 30 points). Ideal-gas conversion with air temperature and pressure from the co-located AmeriFlux US-Skr tower at each measurement time. Floating-chamber placements were identified in the analyzer record (one flux per placement); ebullition was separated with goAquaFlux (de-ebulliated diffusive window; first 10 min for placements > 12 min; ebullition = summed bubble steps over the placement). Picarro water placements (5 s readings) do not resolve bubbles; their total is the two-point flux over the placement. Wet-season water CO2 at the intact sites, where no floating-chamber record exists, comes from dissolved gas and a calibrated gas-transfer velocity (`CO2_flux_source`).
+**Flux calculation.** goFlux (R; Rheault et al. 2024) version 0.5.0.9001 with additions (Gewirtzman 2026, doi:10.5281/zenodo.23254791): linear and Hutchinson-Mosier models fitted to each concentration series; the reported flux follows the goFlux best.flux criteria (HM considered only with >= 30 points). Ideal-gas conversion with air temperature and pressure from the co-located AmeriFlux US-Skr tower at each measurement time. Floating-chamber placements were identified in the analyzer record (one flux per placement); ebullition was separated with goAquaFlux (de-ebulliated diffusive window; first 10 min for placements > 12 min; ebullition = summed bubble steps over the placement). Picarro water placements (5 s readings) do not resolve bubbles; their total is the two-point flux over the placement. Wet-season water CO2 at the intact sites, where no floating-chamber record exists, comes from dissolved gas and a calibrated gas-transfer velocity (`CO2_flux_source`).
 
 ## 6. Data Access
 
@@ -65,5 +65,6 @@ Component-resolved fluxes for scaling ecosystem CH4 and CO2 exchange with struct
 ## 7. References
 
 Delaria, E. R. et al. (2024) [CARAFE BlueFlux airborne fluxes].
-Rheault, K. et al. goFlux: a user-friendly way to calculate GHG fluxes yourself, regardless of user experience. R package.
+Rheault, K., Christiansen, J. R. & Larsen, K. S. (2024) goFlux: a user-friendly way to calculate GHG fluxes yourself, regardless of user experience. J. Open Source Softw. 9, 6393. https://doi.org/10.21105/joss.06393
+Gewirtzman, J. (2026) goFlux 0.5.0.9001: goFlux with additions (R package). Zenodo. https://doi.org/10.5281/zenodo.23254791
 [Manuscript reference to add.]

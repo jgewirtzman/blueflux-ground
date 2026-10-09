@@ -7,7 +7,7 @@
 #                                                 window, geometry, Tcham, Pcham, descriptive
 #                                                 columns, curated exclusions (hygiene/02_windows/03_export_inputs.R)
 #   data/inputs/unlogged_placements.csv           placements not on the field sheet
-#   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux + fluxqc results
+#   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux 0.5.0.9001 fork results
 #   output/flux/04_ebullition/partition.csv       floating-chamber placements: diffusive /
 #                                                 ebullitive CH4 and CO2 per placement
 #   output/qa/baseline/...combined_gas_flux_dataset.csv
@@ -168,13 +168,13 @@ d <- d %>% left_join(pw, by = "flux_id") %>%
          ebullition_source = if_else(in_placement, "stage 04: goAquaFlux fork 2ed7224, de-ebulliated diffusive + whole-placement ebullition", NA_character_)) %>%
   select(-starts_with("p_"), -in_placement)
 
-# ---- 5. Legacy-compatible flux columns (fluxqc conventions) ---------------------------------
+# ---- 5. Legacy-compatible flux columns (lab conventions) ---------------------------------
 for (g in c("CH4", "CO2")) {
   bf <- d[[paste0(g, "_best.flux")]]; mdl <- d[[paste0(g, "_model")]]
   se <- ifelse(mdl == "HM", d[[paste0(g, "_HM.SE")]], d[[paste0(g, "_LM.SE")]])
   d[[paste0(g, "_flux_status")]] <- ifelse(is.na(bf), "no_data", "valid")
   d[[paste0(g, "_below_MDF")]]  <- d[[paste0(g, "_below_MDF_emp")]] %in% TRUE   # lab convention MDF
-  d[[paste0(g, "_flagged")]]    <- d[[paste0(g, "_qc_any")]] %in% TRUE          # fluxqc screens
+  d[[paste0(g, "_flagged")]]    <- d[[paste0(g, "_qc_any")]] %in% TRUE          # QC screens
   d[[paste0(g, "_SNR")]]        <- ifelse(!is.na(bf) & !is.na(se) & se > 0, abs(bf) / se, NA_real_)
 }
 d <- d %>% mutate(flux_status = if_else(CH4_flux_status == "valid" | CO2_flux_status == "valid", "valid", "no_data"))

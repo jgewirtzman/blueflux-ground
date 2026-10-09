@@ -47,6 +47,8 @@ lewis2005 | Lewis, R. R. Ecological engineering for successful management and re
 liu2020 | Liu, J. et al. Methane emissions reduce the radiative cooling effect of a subtropical estuarine mangrove wetland by half. Glob. Change Biol. 26, 4998–5016 (2020). https://doi.org/10.1111/gcb.15247
 doughty2025 | Doughty, C. L. et al. BlueFlux: Modeled daily CO2 and CH4 wetland fluxes, southern Florida, 2000–2024. ORNL DAAC (2025). https://doi.org/10.3334/ORNLDAAC/2404
 saintilan2023 | Saintilan, N. et al. Widespread retreat of coastal habitat is likely at warming levels above 1.5 °C. Nature 621, 112–119 (2023). https://doi.org/10.1038/s41586-023-06448-z
+cowan2025 | Cowan, N. J., Levy, P., Tigli, M., Toteva, G. Y. & Drewer, J. Characterisation of analytical uncertainty in chamber soil flux measurements. Eur. J. Soil Sci. 76, e70104 (2025). https://doi.org/10.1111/ejss.70104
+gewirtzman2026goflux | Gewirtzman, J. goFlux 0.5.0.9001: goFlux with additions (R package). Zenodo (2026). https://doi.org/10.5281/zenodo.23254791
 gofluxref | Rheault, K., Christiansen, J. R. & Larsen, K. S. goFlux: a user-friendly way to calculate GHG fluxes yourself, regardless of user experience. J. Open Source Softw. 9, 6393 (2024). https://doi.org/10.21105/joss.06393
 kljun2015 | Kljun, N., Calanca, P., Rotach, M. W. & Schmid, H. P. A simple two-dimensional parameterisation for Flux Footprint Prediction (FFP). Geosci. Model Dev. 8, 3695–3713 (2015). https://doi.org/10.5194/gmd-8-3695-2015
 hutjes2010 | Hutjes, R. W. A. et al. Dis-aggregation of airborne flux measurements using footprint analysis. Agric. For. Meteorol. 150, 966–983 (2010). https://doi.org/10.1016/j.agrformet.2010.03.004

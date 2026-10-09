@@ -4,8 +4,11 @@
 # Inputs: data/inputs/closures.csv (fit windows, geometry, Tcham, Pcham; written by
 # hygiene/02_windows/03_export_inputs.R), analyzer records (lib_raw.R).
 #
-# Path per gas: fluxqc::process_fluxes() = goFlux::goFlux() -> best.flux() ->
-# flag_detection() -> qc_screens(); outputs written with write_outputs().
+# Path per gas: goFlux::process.fluxes() = goFlux() -> best.flux() ->
+# flux.class() -> qc.flags() (+ co2.tracer()); outputs written with
+# write.outputs(). goFlux is the fork release v0.5.0.9001 (goFlux (Rheault et
+# al. 2024) version 0.5.0.9001 with additions, doi:10.5281/zenodo.23254791),
+# from a project library (code/00_lib/goflux_release.R); it replaces fluxqc.
 # Conventions (Jon, 2026-10-01; ch4-data-filtering WORKLOG_2026-09):
 #   - Tcham = tower air temperature, Pcham = tower pressure (auxfile);
 #   - no H2O dilution correction: H2O_ppm set to 0 (LGR H2O channel reads
@@ -13,36 +16,48 @@
 #   - instrument precision for goFlux's own MDF: LGR GLA131 0.35 ppm CO2 /
 #     0.9 ppb CH4 (as legacy); Picarro G4301 goFlux defaults;
 #   - empirical precision sigma = MAD(dx)/sqrt(2) per analyzer x campaign
-#     ("group"), MDF = 1.96 sigma / t * flux.term, t = closure seconds.
+#     ("group"), MDF = z sigma / t * flux.term with z = 1.96 (conf = 0.95; a
+#     benchmark multiplier, not a calibrated 95% test) and t = closure.time()
+#     (span of the window + one logging interval).
 #     The first differences dx are taken within each closure's fit window and
 #     centred on that closure's own median dx before pooling, so the closures'
 #     different slopes do not enter sigma (fluxqc 0.2.3 pools uncentred dx,
 #     which at 6-10 s steps inflates sigma ~1.4-2x: code/qa/sigma_pooling_check.R;
 #     reported as jgewirtzman/fluxqc#1, the custom-sigma MDF grouping as #2).
-#     fluxqc's flag_detection() and qc_screens() are re-run with that sigma;
+#     that sigma is passed to flux.class() as prec, one value per group;
 #   - best.flux criteria as the legacy scripts (all ten, g.limit 2, p 0.05,
 #     k.ratio 1);
 #   - HM only with >= HM_MIN_OBS points in the window; otherwise the LM
 #     estimate is used (replaces the legacy Mar 2022 forced-LM patch);
-#   - CO2 fitted first and passed to the CH4 co2_tracer screen; that screen
-#     is set to NA for water, leaves and dead wood (no respiratory CO2).
+#   - QC screens (flags only): qc.flags() for the starting concentration
+#     (C0 > 1.5 x group median) and noise (closure precision > 1.5 x group);
+#     the curvature screen (significant quadratic term of the same sign as the
+#     net change, p < 0.05) and the minimum window (< 60 s) are computed here,
+#     as before (qc.flags' own convex/min.obs test HM.k < 0 and nb.obs instead);
+#   - CO2 fitted first; the CH4 co2_tracer screen fires when the CO2 flux is not
+#     positive and significant (!co2.tracer()); NA for water, leaves and dead
+#     wood (no respiratory CO2).
+# Output columns keep the names read downstream (sigma_emp, MDF_emp,
+# det_class_emp, qc_*); goFlux's det.* / qc.* columns are renamed to them.
 # Nothing is deleted; rows are flagged. Each closure is fitted on a padded
 # trace (window +- PAD_S) so the MAD precision sees shoulders as well.
 # =============================================================================
-suppressMessages({library(dplyr); library(readr); library(lubridate); library(purrr); library(fluxqc)})
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+source("code/00_lib/goflux_release.R"); goflux_release()
+suppressMessages({library(dplyr); library(readr); library(lubridate); library(purrr); library(goFlux)})
 source("code/00_lib/lib_raw.R")
+OUT_DIR <- Sys.getenv("FIT_OUT", "output/flux/03_fit")
 
 PAD_S <- 300; HM_MIN_OBS <- 30
 PREC <- list(LGR = c(CO2dry_ppm = 0.35, CH4dry_ppb = 0.9), Picarro = c(CO2dry_ppm = 0.025, CH4dry_ppb = 0.1))
 BEST_ARGS <- list(criteria = c("MAE", "RMSE", "AICc", "SE", "g.factor", "kappa", "MDF", "nb.obs", "intercept", "p-value"),
                   intercept.lim = NULL, g.limit = 2, p.val = 0.05, k.ratio = 1, warn.length = 20)
 NO_CO2_TRACER <- c("water", "leaves", "leaf", "cwd")
-# ambient_start is off: it compares the window start with the pre-closure
-# ambient at 3x the 1 Hz Allan noise, but BlueFlux windows start after a dead
-# band by design and the shoulder before start.time often holds the previous
-# closure's tail, so it fired on ~95% of CO2 closures without information.
-QC <- list(c0 = TRUE, co2_tracer = TRUE, convex = TRUE, min_window = TRUE, ambient_start = FALSE, noisy = TRUE)
+# The ambient check is off: the shoulder before the recorded closure start often
+# holds the previous closure's tail (back-to-back closures), so the pre-closure
+# record is not ambient. min.obs is off: the window screen below is in seconds.
+QC <- list(c0.mult = 1.5, min.obs = NULL, ambient.sigma = NULL, noisy.mult = 1.5)
+CONVEX_P <- 0.05; MIN_WINDOW_S <- 60
 
 utc <- function(x) as.POSIXct(x, tz = "UTC")
 win <- read_csv("data/inputs/closures.csv", show_col_types = FALSE) %>%
@@ -76,11 +91,11 @@ cat("Building observation windows for", nrow(win), "closures...\n")
 ow <- map(seq_len(nrow(win)), build_ow)
 missing_raw <- win$UniqueID[vapply(ow, is.null, TRUE)]
 ow <- compact(ow); names(ow) <- vapply(ow, function(d) d$UniqueID[1], "")
-manID <- suppressWarnings(windows_from_table(ow, win %>% filter(UniqueID %in% names(ow)) %>%
+manID <- suppressWarnings(windows.from.table(ow, win %>% filter(UniqueID %in% names(ow)) %>%
                                                select(UniqueID, start, end), warn.length = 10))
 ow_ch4 <- compact(map(seq_len(nrow(win)), build_ow, fresh = "CH4"))
 names(ow_ch4) <- vapply(ow_ch4, function(d) d$UniqueID[1], "")
-manID_ch4 <- suppressWarnings(windows_from_table(ow_ch4, win %>% filter(UniqueID %in% names(ow_ch4)) %>%
+manID_ch4 <- suppressWarnings(windows.from.table(ow_ch4, win %>% filter(UniqueID %in% names(ow_ch4)) %>%
                                                    select(UniqueID, start, end), warn.length = 10))
 cat("  closures with traces:", length(ow), "| no raw data in window:", length(missing_raw), "\n")
 
@@ -100,55 +115,68 @@ apply_hm_min <- function(fx) {
 
 # centred empirical precision per group: dx within each closure's window, minus
 # that closure's median dx, pooled over the group; MAD / sqrt(2)
-centred_sigma <- function(traces, gas, fluxes) {
-  tr <- traces[!is.na(traces$flag) & traces$flag == 1, c("UniqueID", gas)]
-  dx <- unlist(lapply(split(tr[[gas]], tr$UniqueID), function(v) { d <- diff(v); d - stats::median(d) }))
-  g <- fluxes$group[match(rep(names(split(tr[[gas]], tr$UniqueID)), times = lengths(lapply(split(tr[[gas]], tr$UniqueID), diff))), fluxes$UniqueID)]
-  s <- tapply(dx, g, function(v) stats::mad(v) / sqrt(2))
-  data.frame(UniqueID = fluxes$UniqueID, sigma = as.numeric(s[fluxes$group]))
+centred_sigma <- function(traces, gas) {
+  tr <- traces[!is.na(traces$flag) & traces$flag == 1, c("UniqueID", "group", gas)]
+  by_id <- split(tr[[gas]], tr$UniqueID)
+  dx <- lapply(by_id, function(v) { d <- diff(v); d - stats::median(d) })
+  g <- tr$group[match(names(by_id), tr$UniqueID)]
+  s <- tapply(unlist(dx), rep(g, lengths(dx)), function(v) stats::mad(v) / sqrt(2))
+  data.frame(UniqueID = names(by_id), prec = as.numeric(s[g]), group = g)
+}
+
+# curvature screen: significant quadratic term with the sign of the net change
+convex_screen <- function(traces, gas, ids) {
+  tr <- traces[!is.na(traces$flag) & traces$flag == 1, ]
+  cv <- vapply(split(tr, tr$UniqueID), function(d) {
+    if (nrow(d) < 6) return(NA)
+    co <- summary(stats::lm(d[[gas]] ~ d$Etime + I(d$Etime^2)))$coefficients
+    if (nrow(co) < 3) return(NA)
+    net <- unname(stats::coef(stats::lm(d[[gas]] ~ d$Etime))[2])
+    sign(co[3, 1]) == sign(net) && co[3, 4] < CONVEX_P
+  }, logical(1))
+  unname(cv[as.character(ids)])
 }
 
 fit_gas <- function(gas, co2 = NULL, man = manID) {
-  res <- suppressWarnings(process_fluxes(man, aux = aux_grp, gastype = gas, group = "group", co2 = co2, qc = QC,
-                                         H2O_col = "H2O_ppm", best.flux_args = BEST_ARGS))
-  sig <- centred_sigma(res$traces, gas, res$fluxes)
-  # one group at a time: with precision = "custom", fluxqc 0.2.3's Wassmann MDF
-  # uses sigma.global (by default the median over ALL closures) instead of the
-  # closure's own sigma, so each group gets its own sigma as sigma.global
+  sig <- centred_sigma(man, gas)
+  res <- suppressWarnings(process.fluxes(man, gastype = gas, auxfile = aux_grp, by = "group",
+                                         prec = sig[c("UniqueID", "prec")], conf = 0.95, qc = QC,
+                                         best.flux.args = BEST_ARGS, H2O_col = "H2O_ppm"))
   fx <- res$fluxes
-  fx <- bind_rows(lapply(split(seq_len(nrow(fx)), fx$group), function(i) {
-    ids <- fx$UniqueID[i]; s <- sig$sigma[match(ids, sig$UniqueID)][1]
-    flag_detection(fx[i, ], traces = res$traces[res$traces$UniqueID %in% ids, ], gastype = gas, precision = "custom",
-                   sigma = s, sigma.global = s, mdf = "wassmann", conf = 0.95)
-  }))
-  res$fluxes <- fx[match(res$fluxes$UniqueID, fx$UniqueID), ]
-  res$fluxes <- suppressWarnings(qc_screens(res$fluxes, traces = res$traces, screens = QC, group = "group",
-                                            gastype = gas, co2 = co2, verbose = FALSE))
+  w <- win[match(fx$UniqueID, win$UniqueID), ]
+  fx <- fx %>% mutate(
+    sigma_emp = det.prec, MDF_emp = det.MDF,
+    MDF_emp_method = "z sigma / t * flux.term; z = 1.96 (conf 0.95); t = closure.time(); sigma = centred MAD(dx)/sqrt(2) per group",
+    qc_c0_ratio = qc.c0.ratio, qc_c0 = qc.c0,
+    qc_co2_tracer = if (is.null(co2)) NA else !co2.tracer(co2, fx),
+    qc_convex = convex_screen(man, gas, UniqueID),
+    qc_min_window = as.numeric(w$end - w$start, units = "secs") < MIN_WINDOW_S,
+    qc_noisy_ratio = qc.noisy.ratio, qc_noisy = qc.noisy) %>%
+    select(-starts_with("det."), -starts_with("qc."))
+  fx <- apply_hm_min(fx) %>% left_join(aux_grp %>% select(UniqueID, component), by = "UniqueID")
+  fx$qc_co2_tracer[tolower(fx$component) %in% NO_CO2_TRACER] <- NA
+  qc_cols <- c("qc_c0", "qc_co2_tracer", "qc_convex", "qc_min_window", "qc_noisy")
+  fx$qc_any <- Reduce(`|`, lapply(fx[qc_cols], function(v) coalesce(v, FALSE)))
+  res$fluxes <- fx
   res$settings$sigma_method <- "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign"
-  res$settings$sigma_by_group <- as.list(tapply(sig$sigma, res$fluxes$group, function(v) v[1]))
-  res$fluxes <- apply_hm_min(res$fluxes) %>%
-    left_join(aux_grp %>% select(UniqueID, component), by = "UniqueID")
-  if ("qc_co2_tracer" %in% names(res$fluxes)) {
-    res$fluxes$qc_co2_tracer[tolower(res$fluxes$component) %in% NO_CO2_TRACER] <- NA
-    qc_cols <- grep("^qc_(?!any)", names(res$fluxes), value = TRUE, perl = TRUE)
-    qc_cols <- qc_cols[vapply(res$fluxes[qc_cols], is.logical, TRUE)]
-    res$fluxes$qc_any <- Reduce(`|`, lapply(res$fluxes[qc_cols], function(v) coalesce(v, FALSE)))
-  }
+  res$settings$sigma_by_group <- as.list(tapply(sig$prec, sig$group, function(v) v[1]))
+  res$settings$qc_local <- list(convex = paste("quadratic term same sign as net change, p <", CONVEX_P),
+                                min_window_s = MIN_WINDOW_S, co2_tracer = "!co2.tracer(): CO2 best.flux not > 0 with LM p < 0.05")
   res$settings$hm_min_obs <- HM_MIN_OBS
   res$settings$h2o_correction <- "none (H2O_ppm = 0; LGR H2O channel reads negative)"
   res$settings$instrument_prec <- PREC
   res$settings$co2_tracer_off_for <- NO_CO2_TRACER
   res$settings$window_pad_s <- PAD_S
   res$settings$picarro_rows <- if (gas == "CH4dry_ppb") paste0("fresh CH4 readings only (|dCH4| >= ", PICARRO_HELD_PPB, " ppb; every other row)") else "fresh CO2 readings only (the rows where CH4 is carried forward)"
-  res$settings$qc_note <- "ambient_start off: windows start after a dead band by design"
+  res$settings$qc_note <- "ambient check off: the pre-closure shoulder often holds the previous closure's tail"
   res$settings$no_raw_data <- missing_raw
   res
 }
 
 cat("Fitting CO2...\n"); co2 <- fit_gas("CO2dry_ppm")
-write_outputs(co2, "output/flux/03_fit/CO2", plots = FALSE)
+write.outputs(co2, file.path(OUT_DIR, "CO2"), plots = FALSE)
 cat("Fitting CH4...\n"); ch4 <- fit_gas("CH4dry_ppb", co2 = co2$fluxes, man = manID_ch4)
-write_outputs(ch4, "output/flux/03_fit/CH4", plots = FALSE)
+write.outputs(ch4, file.path(OUT_DIR, "CH4"), plots = FALSE)
 
 for (g in list(co2, ch4)) {
   f <- g$fluxes

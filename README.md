@@ -55,7 +55,7 @@ Each step runs in its own R process; logs go to `output/logs/`.
 |-------|---------|--------------|--------------|
 | 01 metadata | `00_index_raw_files.R`, `01_build_auxfile.R` | Index raw files (serial, interval, span); field sheets + dimension tables + `data/flux_metadata/` corrections -> one goFlux auxfile (geometry, tower air temperature and pressure) | `output/flux/00_raw/raw_file_index.csv`, `output/flux/01_metadata/auxfile.csv` |
 | 02 windows | `01_rise_detection.R`, `02_windows.R` | Clock offset per analyzer-day; fit window per closure (curated trimmed > saved manual > field log + offset) | `output/flux/02_windows/windows.csv` |
-| 03 fit | `01_fit_fluxes.R`, `02_water_flux_from_dissolved.R` | goFlux + fluxqc per gas (MAD precision, 1.96 sigma / t MDF, QC screens, HM >= 30 points); water flux from dissolved CH4 where no chamber flux exists | `output/flux/03_fit/{CH4,CO2}/fluxes.csv`, `water_flux_estimates.csv` |
+| 03 fit | `01_fit_fluxes.R`, `02_water_flux_from_dissolved.R` | goFlux fork release 0.5.0.9001 per gas (MAD precision, 1.96 sigma / t MDF, QC screens, HM >= 30 points); water flux from dissolved CH4 where no chamber flux exists | `output/flux/03_fit/{CH4,CO2}/fluxes.csv`, `water_flux_estimates.csv` |
 | 04 ebullition | `01_placements.R`, `02_partition.R` | Floating-chamber placements from the raw CH4 record (chamber on to lift; one flux per placement, plus the curated unlogged placements); diffusive CH4 from the first 10 min of placements > 12 min (else the stage-02 window), de-ebulliated (goAquaFlux, goFlux fork); ebullitive CH4 over the whole placement; CO2 on the diffusive window | `output/flux/04_ebullition/placements.csv`, `partition.csv` |
 | 05 dataset | `01_compile_datasets.R`, `02_data_products.R`, `03_data_dictionary.R` | Compiled datasets, written once; cleaning, QC, exclusions and the analysis rule as columns | `output/data_products/flux_measurements_all.csv`, `combined_gas_flux_dataset.csv` (analysis set), `data_dictionary.csv` |
 | 06 analysis | `01_summary_table.R`, `02_manuscript_results.R` | Bootstrap statistics; manuscript numbers | `flux_statistics_table.csv`, `manuscript/text/manuscript_results.txt` |
@@ -120,10 +120,10 @@ install.packages(c("here", "dplyr", "tidyr", "readr", "readxl", "lubridate", "st
                    "ggplot2", "patchwork", "cowplot", "ggh4x", "ggridges", "ggdist", "ggbeeswarm",
                    "ggrepel", "ggpubr", "scales", "forcats", "lme4", "lmerTest", "emmeans",
                    "boot", "MASS", "data.table", "magick", "openxlsx", "jsonlite", "sf", "rnaturalearth"))
-# Flux calculation: goFlux 0.4.0 and fluxqc 0.2.3
-remotes::install_github("Qepanna/goFlux@v0.4.0")   # or the release used; record in sessionInfo
-# fluxqc: lab package (local install from the fluxqc repository)
-install.packages("callr")
+install.packages(c("callr", "remotes"))
+# Flux calculation (stage 03): goFlux (Rheault et al. 2024) version 0.5.0.9001 with additions
+# (Gewirtzman 2026, doi:10.5281/zenodo.23254791), installed automatically on first use into the
+# project library .Rlib/goflux-0.5.0.9001 from jgewirtzman/goFlux@v0.5.0.9001 (code/00_lib/goflux_release.R).
 ```
 
 Stage 04 also needs `goAquaFlux(diffusion.window = "deebulliated")`, which exists
@@ -131,7 +131,7 @@ only on the goFlux fork branch `feat/aqua-diffusive-deebulliated` (commit
 2ed7224, not on any remote). Its package source is vendored and pinned in
 `vendor/goFlux_0.4.0_aqua-deebulliated_2ed7224.tar.gz`; stage 04 installs it on
 first use into the project library `.Rlib/` (gitignored) and runs it in a
-separate R process, so the released goFlux 0.4.0 used by stage 03 is untouched
+separate R process, so the goFlux used by stage 03 is untouched
 (`code/00_lib/goflux_fork.R`).
 
 Requires R >= 4.3.

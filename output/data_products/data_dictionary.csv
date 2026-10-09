@@ -71,17 +71,17 @@ CH4_g.fact,CH4 g factor (HM / LM),numeric
 CH4_k.ratio.lim,CH4 goFlux kappa limit,numeric
 CH4_MDF.lim,CH4 goFlux MDF limit,numeric
 CH4_warn.nb.obs,CH4 goFlux observation-count warning,numeric
-CH4_sigma_emp,"CH4 Empirical precision: MAD of first differences / sqrt(2), per analyzer x campaign",numeric
-CH4_MDF_emp,"CH4 Minimum detectable flux, 1.96 sigma_emp / t x flux.term (t = closure seconds)",numeric
+CH4_sigma_emp,"CH4 Empirical precision: MAD of within-window first differences (centred per closure) / sqrt(2), per analyzer x campaign",numeric
+CH4_MDF_emp,"CH4 Minimum detectable flux, z sigma_emp / t x flux.term (z = 1.96; t = window span + one logging interval)",numeric
 CH4_MDF_emp_method,CH4 MDF method string,character
 CH4_below_MDF_emp,CH4 |best.flux| <= MDF_emp,logical
 CH4_det_class_emp,CH4 emission / uptake / below detection,character
 CH4_hm_min_obs_rule,CH4 HM replaced by LM (fewer than 30 points),logical
 CH4_qc_c0,CH4 QC: starting concentration > 1.5 x group median,logical
-CH4_qc_co2_tracer,"CH4 QC: no CO2 rise on live tissue (NA for water, leaves, CWD)",logical
-CH4_qc_convex,CH4 QC: concave-down trace (saturation / leak),logical
+CH4_qc_co2_tracer,"CH4 QC: CH4 closure whose CO2 flux is not positive and significant (NA for CO2 and for water, leaves, CWD)",logical
+CH4_qc_convex,CH4 QC: significantly accelerating (convex) trace,logical
 CH4_qc_min_window,CH4 QC: window shorter than 60 s,logical
-CH4_qc_noisy,CH4 QC: closure noise > 1.5 x campaign sigma,logical
+CH4_qc_noisy,CH4 QC: closure second-difference precision > 1.5 x analyzer-campaign median,logical
 CH4_qc_any,CH4 Any QC screen fired,logical
 CO2_best.flux,"CO2 Selected flux (CH4 nmol m-2 s-1; CO2 umol m-2 s-1); for water, the stage-04 placement value (CH4 total; CO2 diffusive window); fit diagnostics describe the stage-02 window",numeric
 CO2_model,CO2 Model selected by best.flux (LM / HM; HM only with >= 30 points),character
@@ -105,17 +105,17 @@ CO2_g.fact,CO2 g factor (HM / LM),numeric
 CO2_k.ratio.lim,CO2 goFlux kappa limit,numeric
 CO2_MDF.lim,CO2 goFlux MDF limit,numeric
 CO2_warn.nb.obs,CO2 goFlux observation-count warning,numeric
-CO2_sigma_emp,"CO2 Empirical precision: MAD of first differences / sqrt(2), per analyzer x campaign",numeric
-CO2_MDF_emp,"CO2 Minimum detectable flux, 1.96 sigma_emp / t x flux.term (t = closure seconds)",numeric
+CO2_sigma_emp,"CO2 Empirical precision: MAD of within-window first differences (centred per closure) / sqrt(2), per analyzer x campaign",numeric
+CO2_MDF_emp,"CO2 Minimum detectable flux, z sigma_emp / t x flux.term (z = 1.96; t = window span + one logging interval)",numeric
 CO2_MDF_emp_method,CO2 MDF method string,character
 CO2_below_MDF_emp,CO2 |best.flux| <= MDF_emp,logical
 CO2_det_class_emp,CO2 emission / uptake / below detection,character
 CO2_hm_min_obs_rule,CO2 HM replaced by LM (fewer than 30 points),logical
 CO2_qc_c0,CO2 QC: starting concentration > 1.5 x group median,logical
-CO2_qc_co2_tracer,"CO2 QC: no CO2 rise on live tissue (NA for water, leaves, CWD)",logical
-CO2_qc_convex,CO2 QC: concave-down trace (saturation / leak),logical
+CO2_qc_co2_tracer,"CO2 QC: CH4 closure whose CO2 flux is not positive and significant (NA for CO2 and for water, leaves, CWD)",logical
+CO2_qc_convex,CO2 QC: significantly accelerating (convex) trace,logical
 CO2_qc_min_window,CO2 QC: window shorter than 60 s,logical
-CO2_qc_noisy,CO2 QC: closure noise > 1.5 x campaign sigma,logical
+CO2_qc_noisy,CO2 QC: closure second-difference precision > 1.5 x analyzer-campaign median,logical
 CO2_qc_any,CO2 Any QC screen fired,logical
 data_source,"rebuild fit (stage 03), or unlogged placement (stage 04) from data/flux_metadata/unlogged_placements.csv",character
 year,Year,numeric

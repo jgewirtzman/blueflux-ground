@@ -7,14 +7,14 @@
 #
 #   1. prior: median offset of the saved manual windows for that analyzer-day,
 #      else that analyzer-campaign, else 0 (LGR) / +25200 s (Picarro, ~7 h);
-#   2. per closure: the CO2 rise is located with fluxqc::find_rise() in the
+#   2. per closure: the CO2 rise is located with goFlux::find.rise() in the
 #      analyzer record from (field start + prior - 2 min) to (field end +
 #      prior + 2 min), with sample-count and gap limits scaled to the logging
 #      interval; offset = rise start - field start;
 #   3. per analyzer-day: median of the per-closure offsets; closures more than
 #      120 s from it are flagged.
 #
-# fluxqc::find_clock_offset() (one score over all closures of the day) was
+# goFlux::find.clock.offset() (one score over all closures of the day) was
 # tried first: on most BlueFlux days its score curve is flat and the optimum
 # lands 300-1900 s from the saved windows, because soil and water closures at
 # high background and back-to-back closures give no clean onset.
@@ -23,8 +23,12 @@
 # output/flux/02_windows/rise_detection_days.csv (per analyzer-day, with checks against the
 # saved windows and the clock notes on the scanned sheets).
 # =============================================================================
-suppressMessages({library(dplyr); library(readr); library(lubridate); library(purrr); library(fluxqc)})
+# (Run originally with fluxqc 0.2.3, now retired; ported to the goFlux fork
+# release v0.5.0.9001, code/00_lib/goflux_release.R, whose find.rise() is the
+# same function under a new name.)
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
+source("code/00_lib/goflux_release.R"); goflux_release()
+suppressMessages({library(dplyr); library(readr); library(lubridate); library(purrr); library(goFlux)})
 source("code/00_lib/lib_raw.R")
 
 PAD_S <- 120; MAX_DEV_S <- 120   # prior is good to ~30 s (LGR) / ~100 s (Picarro); wider pads catch the neighbouring closure
@@ -51,7 +55,7 @@ detect <- function(unit, start, end, prior) {
   if (is.null(tr) || nrow(tr) < 10) return(tibble(n_raw = 0L))
   dt <- median(diff(as.numeric(tr$POSIX.time)))
   try_gas <- function(gas, rise) {
-    r <- find_rise(tr$POSIX.time, tr[[gas]], rise.ppm = rise, gap.secs = max(5, 2.5 * dt),
+    r <- find.rise(tr$POSIX.time, tr[[gas]], rise = rise, gap.secs = max(5, 2.5 * dt),
                    min.n = max(8, round(60 / dt)), min.dur = max(60, 6 * dt),
                    conc.range = if (gas == "CO2dry_ppm") c(300, 20000) else c(1000, 1e7))
     if (is.null(r)) NULL else tibble(gas = gas, rise_start = r$start, rise_end = r$end, rise_dconc = r$dconc)

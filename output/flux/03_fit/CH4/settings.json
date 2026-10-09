@@ -1,34 +1,23 @@
 {
-  "fluxqc_version": "0.2.3",
-  "goFlux_version": "0.4.0",
+  "goFlux.version": "0.5.0.9001",
+  "goFlux.commit": "d3238ba4cfa15399883ca2c11b6f58c2181732c9",
   "gastype": "CH4dry_ppb",
-  "H2O_col": "H2O_ppm",
-  "precision": "mad",
-  "mdf": "wassmann",
+  "by": "group",
+  "prec": "supplied per UniqueID",
   "conf": 0.95,
-  "extra": null,
-  "sigma_global": {"mad": 2.578957024},
+  "z": 1.95996398454005,
+  "det.prec.median": 2.0809876798675,
   "qc": {
-    "c0": {
-      "k": 1.5
-    },
-    "co2_tracer": {
-      "min_slope": 0,
-      "require_detection": true
-    },
-    "convex": {
-      "p": 0.05
-    },
-    "min_window": {
-      "secs": 60
-    },
-    "noisy": {
-      "k": 1.5
-    }
+    "c0.mult": 1.5,
+    "min.obs": null,
+    "ambient.sigma": null,
+    "noisy.mult": 1.5
   },
-  "group": "group",
-  "goFlux_args": {},
-  "best.flux_args": {
+  "co2.tracer": false,
+  "goFlux.args": {
+    "H2O_col": "H2O_ppm"
+  },
+  "best.flux.args": {
     "criteria": ["MAE", "RMSE", "AICc", "SE", "g.factor", "kappa", "MDF", "nb.obs", "intercept", "p-value"],
     "intercept.lim": null,
     "g.limit": 2,
@@ -36,29 +25,34 @@
     "k.ratio": 1,
     "warn.length": 20
   },
-  "n_closures": 757,
-  "date": "2026-10-04 11:35:07 PDT",
+  "n.measurements": 757,
+  "date": "2026-10-08 22:47:46 PDT",
   "sigma_method": "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign",
   "sigma_by_group": {
-    "LGR1 Mar2023": 2.830562587,
-    "LGR1 Oct2022": 3.06120102,
-    "LGR2 Mar2023": 1.546325858,
-    "LGR2 Oct2022": 1.493908032,
-    "LGR3 Mar2022": 1.472940902,
-    "LGR3 Mar2023": 2.432187112,
-    "LGR3 Oct2022": 2.08098768,
-    "Picarro Mar2022": 2.858541283,
-    "Picarro Oct2022": 4.410227021
+    "LGR1 Mar2023": 2.83056258722554,
+    "LGR1 Oct2022": 3.0612010202591,
+    "LGR2 Mar2023": 1.54632585783611,
+    "LGR2 Oct2022": 1.49390803214638,
+    "LGR3 Mar2022": 1.47294090187107,
+    "LGR3 Mar2023": 2.43218711198642,
+    "LGR3 Oct2022": 2.0809876798675,
+    "Picarro Mar2022": 2.85854128311889,
+    "Picarro Oct2022": 4.41022702088522
+  },
+  "qc_local": {
+    "convex": "quadratic term same sign as net change, p < 0.05",
+    "min_window_s": 60,
+    "co2_tracer": "!co2.tracer(): CO2 best.flux not > 0 with LM p < 0.05"
   },
   "hm_min_obs": 30,
   "h2o_correction": "none (H2O_ppm = 0; LGR H2O channel reads negative)",
   "instrument_prec": {
-    "LGR": {"CO2dry_ppm": 0.35, "CH4dry_ppb": 0.9},
-    "Picarro": {"CO2dry_ppm": 0.025, "CH4dry_ppb": 0.1}
+    "LGR": [0.35, 0.9],
+    "Picarro": [0.025, 0.1]
   },
   "co2_tracer_off_for": ["water", "leaves", "leaf", "cwd"],
   "window_pad_s": 300,
   "picarro_rows": "fresh CH4 readings only (|dCH4| >= 0.3 ppb; every other row)",
-  "qc_note": "ambient_start off: windows start after a dead band by design",
+  "qc_note": "ambient check off: the pre-closure shoulder often holds the previous closure's tail",
   "no_raw_data": ["Oct_22_9_SRS6_stem", "Oct_22_10_SRS6_root", "Oct_22_11_SRS6_stem", "Oct_22_12_SRS6_stem", "Oct_22_13_SRS6_stem", "Oct_22_14_SRS6_root", "Oct_22_15_SRS6_root", "44851_SRS6_Soil_48", "Oct_22_132_SRS5_CWD", "Oct_22_133_SRS5_CWD", "Oct_22_165_SRS5_stem", "Oct_22_166_SRS5_stem", "Oct_22_167_SRS5_stem", "Oct_22_168_SRS5_root", "Oct_22_169_SRS5_root", "Oct_22_170_SRS5_stem", "Oct_22_171_SRS5_stem", "Oct_22_172_SRS5_stem", "Oct_22_173_SRS5_stem", "Oct_22_174_SRS5_root"]
 }

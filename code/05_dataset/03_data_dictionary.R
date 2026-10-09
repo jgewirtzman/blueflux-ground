@@ -73,13 +73,13 @@ gas_desc <- c(
   LM.diagnose = "goFlux LM diagnostics", HM.diagnose = "goFlux HM diagnostics", LM.score = "goFlux LM score",
   HM.score = "goFlux HM score", g.fact = "g factor (HM / LM)", k.ratio.lim = "goFlux kappa limit", MDF.lim = "goFlux MDF limit",
   warn.nb.obs = "goFlux observation-count warning",
-  sigma_emp = "Empirical precision: MAD of first differences / sqrt(2), per analyzer x campaign",
-  MDF_emp = "Minimum detectable flux, 1.96 sigma_emp / t x flux.term (t = closure seconds)",
+  sigma_emp = "Empirical precision: MAD of within-window first differences (centred per closure) / sqrt(2), per analyzer x campaign",
+  MDF_emp = "Minimum detectable flux, z sigma_emp / t x flux.term (z = 1.96; t = window span + one logging interval)",
   MDF_emp_method = "MDF method string", below_MDF_emp = "|best.flux| <= MDF_emp",
   det_class_emp = "emission / uptake / below detection", hm_min_obs_rule = "HM replaced by LM (fewer than 30 points)",
-  qc_c0 = "QC: starting concentration > 1.5 x group median", qc_co2_tracer = "QC: no CO2 rise on live tissue (NA for water, leaves, CWD)",
-  qc_convex = "QC: concave-down trace (saturation / leak)", qc_min_window = "QC: window shorter than 60 s",
-  qc_noisy = "QC: closure noise > 1.5 x campaign sigma", qc_any = "Any QC screen fired",
+  qc_c0 = "QC: starting concentration > 1.5 x group median", qc_co2_tracer = "QC: CH4 closure whose CO2 flux is not positive and significant (NA for CO2 and for water, leaves, CWD)",
+  qc_convex = "QC: significantly accelerating (convex) trace", qc_min_window = "QC: window shorter than 60 s",
+  qc_noisy = "QC: closure second-difference precision > 1.5 x analyzer-campaign median", qc_any = "Any QC screen fired",
   flux_status = "valid / no_data", below_MDF = "Below detection (= below_MDF_emp, lab convention)",
   flagged = "QC-flagged (= qc_any)", SNR = "|best.flux| / SE of the selected model")
 for (g in c("CH4", "CO2")) desc <- c(desc, setNames(paste(g, gas_desc), paste0(g, "_", names(gas_desc))))

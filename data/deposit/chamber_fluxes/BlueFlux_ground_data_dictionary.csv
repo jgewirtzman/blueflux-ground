@@ -45,7 +45,7 @@ CH4_r2,1,R2 of the reported CH4 fit
 CH4_MDF,nmol m-2 s-1,"Minimum detectable CH4 flux, 1.96 sigma / t x flux term (sigma: MAD of within-window first differences, pooled by analyzer and campaign)"
 CH4_below_MDF,1,1 if |CH4_flux| < CH4_MDF (flux retained at its measured value)
 CH4_detection_class,,"emission, uptake or below detection"
-CH4_qc_flag,1,1 if any fluxqc screen fired (flux retained)
+CH4_qc_flag,1,1 if any QC screen fired (flux retained)
 CH4_diffusive_flux,nmol m-2 s-1,"Water only: diffusive CH4 flux (goAquaFlux, de-ebulliated window)"
 CH4_ebullitive_flux,nmol m-2 s-1,Water only: ebullitive CH4 flux over the placement
 CO2_flux,umol m-2 s-1,"CO2 flux, positive = emission to the atmosphere"
@@ -55,5 +55,5 @@ CO2_r2,1,R2 of the reported CO2 fit
 CO2_MDF,umol m-2 s-1,Minimum detectable CO2 flux (as CH4_MDF)
 CO2_below_MDF,1,1 if |CO2_flux| < CO2_MDF
 CO2_detection_class,,"emission, uptake or below detection"
-CO2_qc_flag,1,1 if any fluxqc screen fired
+CO2_qc_flag,1,1 if any QC screen fired
 CO2_flux_source,,"How the CO2 flux was obtained (chamber fit, or dissolved gas x k600 for wet-season intact water)"
