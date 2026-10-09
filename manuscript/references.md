@@ -53,6 +53,7 @@ hutjes2010 | Hutjes, R. W. A. et al. Dis-aggregation of airborne flux measuremen
 hannun2020 | Hannun, R. A. et al. Spatial heterogeneity in CO2, CH4, and energy fluxes: insights from airborne eddy covariance measurements over the Mid-Atlantic region. Environ. Res. Lett. 15, 035008 (2020). https://doi.org/10.1088/1748-9326/ab7391
 heskel2016 | Heskel, M. A. et al. Convergence in the temperature response of leaf respiration across biomes and plant functional types. Proc. Natl Acad. Sci. USA 113, 3832–3837 (2016). https://doi.org/10.1073/pnas.1520282113
 krauss2005 | Krauss, K. W. et al. Woody debris in the mangrove forests of South Florida. Biotropica 37, 9–15 (2005). https://doi.org/10.1111/j.1744-7429.2005.03058.x
+ouyang2018 | Ouyang, X., Lee, S. Y. & Connolly, R. M. Using isotope labeling to partition sources of CO2 efflux in newly established mangrove seedlings. Limnol. Oceanogr. 63, 731–740 (2018). https://doi.org/10.1002/lno.10663
 troxler2015 | Troxler, T. G. et al. Component-specific dynamics of riverine mangrove CO2 efflux in the Florida coastal Everglades. Agric. For. Meteorol. 213, 273–282 (2015). https://doi.org/10.1016/j.agrformet.2014.12.012
 xiong2024 | Xiong, L., Lagomasino, D. & Poulter, B. BlueFlux: Terrestrial lidar scans of mangrove forests, Everglades, FL, USA, 2022–2023. ORNL DAAC (2024). https://doi.org/10.3334/ORNLDAAC/2311
 smith2009_ghost | [CITE: post-hurricane ghost-forest persistence in the Everglades — e.g., Smith et al. 2009 / Radabaugh et al. 2020; to choose]

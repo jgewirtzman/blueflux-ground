@@ -278,7 +278,7 @@ for line in open(P("manuscript/references.md"), encoding="utf-8"):
         k, v = line.split(" | ", 1); refs[k.strip()] = v.strip()
 SI_REFS = ["yau2024", "pacheco2024", "cabezas2018", "martin2020", "sotomayor1994", "salasrabaza2023", "allen2018", "atkin2000", "clark2011", "barr2009", "barr2010", "bouillon2007", "bunting2022", "cahoon2003", "castanedamoya2013",
            "carafe_instrument", "delaria2024", "doughty2026", "forster2021", "griffiths2021", "hannun2020", "heskel2016", "ho2017", "ho2014", "ho2016", "ho2018", "raymondcole2001", "borges2004", "colecaraco1998", "rosentreter2017", "huntingford2017", "jeffrey2019", "lovelock2011", "martinez2021", "radabaugh2020", "romerouribe2022", "yu2023",
-           "hutchinson1981", "hutjes2010", "kljun2015", "krauss2005", "lagomasino2021", "lin2024", "osland2020",
+           "hutchinson1981", "hutjes2010", "kljun2015", "krauss2005", "lagomasino2021", "lin2024", "osland2020", "ouyang2018",
            "pedersen2010", "poulter2023", "powell_tls", "reed2025", "reithmaier2020", "gofluxref", "sippo2020", "smith2021",
            "stegehuis2026", "sturchio2022", "taillie2020", "troxler2015", "wanninkhof2014", "weiss1974", "wood2023",
            "yamamoto1976", "yong2024", "zhao2021", "zhu2024"]
