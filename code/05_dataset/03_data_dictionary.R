@@ -78,7 +78,7 @@ gas_desc <- c(
   MDF_emp_method = "MDF method string", below_MDF_emp = "|best.flux| <= MDF_emp",
   det_class_emp = "emission / uptake / below detection", hm_min_obs_rule = "HM replaced by LM (fewer than 30 points)",
   qc_c0 = "QC: starting concentration > 1.5 x group median", qc_co2_tracer = "QC: CH4 closure whose CO2 flux is not positive and significant (NA for CO2 and for water, leaves, CWD)",
-  qc_convex = "QC: significantly accelerating (convex) trace", qc_min_window = "QC: window shorter than 60 s",
+  qc_convex = "QC: significantly accelerating (convex) trace", qc_min_window = "QC: closure duration (window span + one logging interval) shorter than 60 s",
   qc_noisy = "QC: closure second-difference precision > 1.5 x analyzer-campaign median", qc_any = "Any QC screen fired",
   flux_status = "valid / no_data", below_MDF = "Below detection (= below_MDF_emp, lab convention)",
   flagged = "QC-flagged (= qc_any)", SNR = "|best.flux| / SE of the selected model")

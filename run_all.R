@@ -23,7 +23,7 @@
 # =============================================================================
 
 steps <- c(
-  # 03 fit: goFlux fork release 0.5.0.9001 per gas; water flux from dissolved CH4 where unmeasured
+  # 03 fit: goFlux fork release 0.5.0.9002 per gas; water flux from dissolved CH4 where unmeasured
   "code/03_fit/01_fit_fluxes.R",
   "code/05_dataset/00_porewater_2025.R",            # Oct 2025 porewater tables from lab files
   "code/05_dataset/00_dissolved_gas.R",             # dissolved CH4/CO2 (GC, Picarro) and site salinity table

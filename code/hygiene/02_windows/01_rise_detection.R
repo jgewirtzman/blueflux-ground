@@ -24,7 +24,7 @@
 # saved windows and the clock notes on the scanned sheets).
 # =============================================================================
 # (Run originally with fluxqc 0.2.3, now retired; ported to the goFlux fork
-# release v0.5.0.9001, code/00_lib/goflux_release.R, whose find.rise() is the
+# release v0.5.0.9002, code/00_lib/goflux_release.R, whose find.rise() is the
 # same function under a new name.)
 if (requireNamespace("here", quietly = TRUE)) setwd(here::here())
 source("code/00_lib/goflux_release.R"); goflux_release()

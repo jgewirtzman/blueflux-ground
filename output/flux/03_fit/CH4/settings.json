@@ -1,6 +1,6 @@
 {
-  "goFlux.version": "0.5.0.9001",
-  "goFlux.commit": "d3238ba4cfa15399883ca2c11b6f58c2181732c9",
+  "goFlux.version": "0.5.0.9002",
+  "goFlux.commit": "006f625f9aaa8e42ab7be6afd27a00adce3da990",
   "gastype": "CH4dry_ppb",
   "by": "group",
   "prec": "supplied per UniqueID",
@@ -10,6 +10,8 @@
   "qc": {
     "c0.mult": 1.5,
     "min.obs": null,
+    "min.secs": 60,
+    "convex.p": 0.05,
     "ambient.sigma": null,
     "noisy.mult": 1.5
   },
@@ -26,7 +28,7 @@
     "warn.length": 20
   },
   "n.measurements": 757,
-  "date": "2026-10-08 22:47:46 PDT",
+  "date": "2026-10-09 00:08:37 PDT",
   "sigma_method": "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign",
   "sigma_by_group": {
     "LGR1 Mar2023": 2.83056258722554,
@@ -39,11 +41,7 @@
     "Picarro Mar2022": 2.85854128311889,
     "Picarro Oct2022": 4.41022702088522
   },
-  "qc_local": {
-    "convex": "quadratic term same sign as net change, p < 0.05",
-    "min_window_s": 60,
-    "co2_tracer": "!co2.tracer(): CO2 best.flux not > 0 with LM p < 0.05"
-  },
+  "co2_tracer_flag": "!co2.tracer(): CO2 best.flux not > 0 with LM p < 0.05",
   "hm_min_obs": 30,
   "h2o_correction": "none (H2O_ppm = 0; LGR H2O channel reads negative)",
   "instrument_prec": {

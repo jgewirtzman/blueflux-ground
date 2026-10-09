@@ -7,7 +7,7 @@
 #                                                 window, geometry, Tcham, Pcham, descriptive
 #                                                 columns, curated exclusions (hygiene/02_windows/03_export_inputs.R)
 #   data/inputs/unlogged_placements.csv           placements not on the field sheet
-#   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux 0.5.0.9001 fork results
+#   output/flux/03_fit/{CH4,CO2}/fluxes.csv       goFlux 0.5.0.9002 fork results
 #   output/flux/04_ebullition/partition.csv       floating-chamber placements: diffusive /
 #                                                 ebullitive CH4 and CO2 per placement
 #   output/qa/baseline/...combined_gas_flux_dataset.csv
