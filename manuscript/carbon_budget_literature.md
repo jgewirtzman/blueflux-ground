@@ -168,3 +168,12 @@ Agent literature check for the porewater/persistence argument. DOIs verified aga
 | Charles 2019; Wilson 2018; Servais 2019 | 10.1007/s12237-019-00620-3; 10.1007/s12237-018-0438-z; 10.1016/j.geoderma.2018.11.013 | CONTEXT (abstracts not read) | Everglades peat collapse with saltwater intrusion (marsh) |
 | Reef et al. 2010, *Tree Physiol.* 30:1148; Smith et al. 1991, *ECSS* 33:419 | 10.1093/treephys/tpq048; 10.1016/0272-7714(91)90081-L | CONTEXT | NH4 as main N source; crab removal raised sulfide/NH4. NH4 toxicity in mangroves weakly supported |
 Novelty: no prior study measures sulfide, Fe and CH4 profiles in hurricane-killed mangrove and ties lost root oxidation to both surface sulfide and CH4. Lagomasino 2021 inferred, not measured, sulfide in Irma ponding.
+
+## Peat collapse / soil C loss after mangrove mortality (added 2026-10-09, text S6)
+| Griffiths & Mitsch 2021, *Plants* 10:1749 | 10.3390/plants10081749 | USED | Naples Bay, pre- (2013-14) vs post-Irma (2019): 2.7 kg C m-2 lost in top 20 cm; bulk density 0.26 g cm-3; OC 191 -> 121 g/kg (full text verified) |
+| Osland et al. 2020, *Wetlands* 40:1445 | 10.1007/s13157-020-01291-8 | USED | ENP forest killed by 1935 hurricane -> mudflat, ~75 cm elevation loss (abstract) |
+| Whelan et al. 2009, *Wetlands* 29:16 | 10.1672/08-125.1 | CONTEXT | Shark River after Wilma: +42.8 mm storm deposit, ~10 mm lost the next year (not dieback; abstract) |
+| Lang'at et al. 2014, *PLoS ONE* 9:e107868 | 10.1371/journal.pone.0107868 | CONTEXT | Kenya, girdled/cut R. mucronata: -32.1 mm/yr vs +4.2 control; surface CO2 efflux 25.3 t CO2/ha/yr (~690 g C m-2 yr-1) (full text) |
+| Barr et al. 2012, *Agric. For. Meteorol.* 153:54 | 10.1016/j.agrformet.2011.07.022 | NOT VERIFIED | >2 cm loss over 3 yr at highest-mortality sites after Wilma (seen only as cited in Radabaugh 2020) |
+| Sippo et al. 2019, *GCA* 253:142 | 10.1016/j.gca.2019.03.003 | CONTEXT | dead vs living forest ~8 months after dieback: DOC -0-12%, DIC -50-52%, TAlk -37-51% (abstract) |
+- Worked order of magnitude (text S6): 11 mm/yr (Cahoon 2003) x 0.028-0.050 g C cm-3 (Griffiths & Mitsch post/pre) = ~300-550 g C m-2 yr-1; upper bound (compaction).
