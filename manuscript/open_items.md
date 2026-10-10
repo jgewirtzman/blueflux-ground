@@ -5,6 +5,7 @@ now carry only content placeholders (missing data or text).
 
 ## Authors and affiliations
 All author affiliations confirmed by J. Gewirtzman (2026-10-03).
+- Eric Ward (ericward@umd.edu) added 2026-10-09, position 15 of 29; affiliation set to UMD Geographical Sciences (^4^) by inference (BlueFlux team; TLS manuscript group with L. Xiong): confirm.
 
 ## Checks
 - E. Delaria: airborne uncertainty definition. NOTE (2026-10-09, not yet acted on): Erin's original

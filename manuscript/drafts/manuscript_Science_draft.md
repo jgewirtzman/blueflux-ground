@@ -1,6 +1,6 @@
 # Hurricane-induced mortality switches mangroves from carbon sink to methane source
 
-Jonathan Gewirtzman^1,2,3\*^, Elisabeth Powell^4,5^, Frannie Adams^1^, Sean Charles^6,7^, Erin Delaria^8,9^, Cheryl Doughty^5,8^, Lin Xiong^4^, Lucy Carruthers^6^, Addison Colwell^10^, Atticus Stovall^5,8,11^, Glenn Wolfe^9^, Judith Rosentreter^12^, Derrick Vaughn^1,13,14^, Anthony Campbell^5,15^, Mingyu Zhang^1^, Samuel Tsao^1^, Megan Brueck^16^, Ben Girgenti^1^, Michael Norton^1,17^, Jessie Peterman^1^, Ayia Lindquist^5^, William Chen^18^, Jordan Peccia^18^, Irvan Luhung^18^, Sparkle Malone^1,13^, Benjamin Poulter^5,19^, David Lagomasino^6,20^, Peter Raymond^1,13^
+Jonathan Gewirtzman^1,2,3\*^, Elisabeth Powell^4,5^, Frannie Adams^1^, Sean Charles^6,7^, Erin Delaria^8,9^, Cheryl Doughty^5,8^, Lin Xiong^4^, Lucy Carruthers^6^, Addison Colwell^10^, Atticus Stovall^5,8,11^, Glenn Wolfe^9^, Judith Rosentreter^12^, Derrick Vaughn^1,13,14^, Anthony Campbell^5,15^, Eric Ward^4^, Mingyu Zhang^1^, Samuel Tsao^1^, Megan Brueck^16^, Ben Girgenti^1^, Michael Norton^1,17^, Jessie Peterman^1^, Ayia Lindquist^5^, William Chen^18^, Jordan Peccia^18^, Irvan Luhung^18^, Sparkle Malone^1,13^, Benjamin Poulter^5,19^, David Lagomasino^6,20^, Peter Raymond^1,13^
 
 ^1^Yale School of the Environment, Yale University, New Haven, CT, USA.\
 ^2^Department of Earth System Science, Stanford Doerr School of Sustainability, Stanford University, Stanford, CA, USA.\
