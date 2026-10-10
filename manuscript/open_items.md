@@ -7,7 +7,12 @@ now carry only content placeholders (missing data or text).
 All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 
 ## Checks
-- E. Delaria: airborne uncertainty definition.
+- E. Delaria: airborne uncertainty definition. NOTE (2026-10-09, not yet acted on): Erin's original
+  disaggregation script (Erin_original_disaggregation.m, in the Codex workspace) reports the class-flux error as
+  e = 2 * sqrt(RE^2 + SE-term^2 + regression SE^2), i.e. roughly a 2-sigma (~95%) envelope, not a standard
+  error. Fig. 3 / fig_carafe_endmembers currently plot +-1.96 x that value as a "95% CI", which would be ~2x too
+  wide if the published values carry the same definition. Confirm with Erin before changing; the fallback is to
+  plot the reported error as-is and say so in the caption. Do not edit until confirmed.
 - Inorganic-N dilution.
 - D. Lagomasino: definition of the 2017 dieback layer (173 km2 vs the paper's 790 km2 of persistent damage).
 - TLS scan positions per plot; Powell et al. methods paper (in preparation).
@@ -15,9 +20,10 @@ All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 - References verified (2026-10-03). Remaining: the 2017 dieback layer vs the public Taillie archive (PANGAEA); CARAFE dataset title now reads 2022-2024 on ORNL DAAC — recheck at submission.
 
 ## Agreed, to implement (after the SI figure walk-through)
+DONE 2026-10-09 (revised with Jon): Fig. 5B is now three measured parts (lost uptake / CO2 released by the dead stand / added CH4) with CH4 as a share of the measured release (47% GWP20, 16% GWP100); ghost lateral export and peat loss are NOT added to the switch but discussed by fate in text S6 (ponding -> in-place degassing; alkalinity retained; peat collapse as a long-term stock loss lengthening the recovery debt; bound: +550-920 g CO2 (switch +9-14% at GWP20), CH4 unchanged). Regenerating stand not added to Fig. 5. Global scaling dropped. The bullets below are the original plan.
 - Ghost-forest lateral export: state as unmeasured (non-tidal because ponded; overland flow likely causes episodic lateral loss). Bounding scenarios: zero; literature (dissolved export ~halved after mortality, Sippo 2019/2020, Stegehuis 2026: ~150-250 g C m-2 yr-1); full intact-stand rate (346, 235-938).
 - CH4 additionality: CH4 increment (845 GWP20 / 290 GWP100 g CO2-eq m-2 yr-1) as a percentage of warming from carbon lost by the dead stand (vertical CO2 + lateral scenario): ~47%/16% (zero lateral), ~30-35%/11-12% (literature), ~27%/9% (intact rate). Lost uptake treated as a recovery debt. Fig 5b/c redesign (regenerating CH4; switch split into lost uptake / carbon released / CH4) and text edits.
-- Global hypothetical scaling (CH4-centred, per 100 km2 of persistently dead stand), framed as hypothetical.
+- ~~Global hypothetical scaling~~ dropped (Jon, 2026-10-09).
 
 ## QA flags (water chambers)
 - Bubble detection misses steps in the final seconds of a placement (no post-bubble baseline): 1 of 30 bubble-free LGR placements (44857_CP40_Water_78, CP40 Oct 2022) has a ~2.4 ppm step at 336 s inside the diffusive window; diffusive flux ~21% high (25.2 vs ~20.8 nmol m-2 s-1). Option: trim the last ~15 s or flag end steps.
@@ -29,5 +35,5 @@ All author affiliations confirmed by J. Gewirtzman (2026-10-03).
 - No porewater CH4 for SRS5 and SRS6 in March 2023: the GC run file (GC Run_Dec_2023) holds only SRS1 surface water for that month. Check whether those samples were collected and run elsewhere.
 
 ## Optional analyses
-- Global extension: apply the per-area switch to cyclone-driven mangrove mortality worldwide (global loss products x storm tracks), with bounds.
+- ~~Global extension~~ dropped (Jon, 2026-10-09).
 - Fig. 1C artist illustration: labels pending.

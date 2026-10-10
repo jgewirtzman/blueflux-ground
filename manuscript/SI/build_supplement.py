@@ -160,7 +160,7 @@ def t_S6():
     adj = rows("output/upscaling/supp_carafe_inundation_adjudication.csv")
     a2 = md_table(list(adj[0].keys()), [[fmt(v, 1) if i else v for i, v in enumerate(r.values())] for r in adj])
     return ("**Table S10. Airborne end-member fluxes** (two-class disaggregation, Delaria et al. 2024) and the airborne check of the "
-            "ghost-forest inundation representation (text S8). _[Confirm uncertainty definition.]_\n\n"
+            "ghost-forest inundation representation (text S8). _[pending: uncertainty definition (E. Delaria)]_\n\n"
             + md_table(["Gas", "Deployment", "Class", "Flux", "SE", "Units", "Source"], b) + "\n\n" + a2)
 
 def t_S7():

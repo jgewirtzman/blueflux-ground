@@ -49,3 +49,6 @@ manuscript/correspondence/
 
 # Private notes (never commit; repo is public)
 manuscript/private_notes/
+
+# CARAFE footprint-class exploration (derived from unpublished footprint weights; keep local)
+output/qa/carafe_dominant_class/

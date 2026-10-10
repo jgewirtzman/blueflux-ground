@@ -4,9 +4,13 @@
 #       net CO2 exchange and CH4 (as CO2-eq) stacked; diamond = net with Monte
 #       Carlo 95% interval (GWP20/100); open circle = intact net ecosystem carbon
 #       balance with alkalinity export retained (forcing_framings.csv).
-#   (b) The intact-to-ghost switch per m2, split into the CO2 change (lost
-#       uptake + respiration) and the CH4 increase, with the CH4 share and the
-#       regional total over the 2017 loss area.
+#   (b) The intact-to-ghost switch per m2, split into lost uptake (the intact
+#       stand's net CO2 uptake that stops: a recovery debt until regrowth), CO2
+#       released by the dead stand (measured, vertical) and the added CH4, with
+#       CH4 as a share of the warming from the measured carbon release and the
+#       regional total. Unmeasured losses of the dead stand (lateral export,
+#       whose effect depends on its form, and peat collapse) are not included
+#       (text S6).
 #   (c) Induced CH4 from 2017 hurricane dieback per 0.25 degree cell, with
 #       little recovery after the 2017 hurricanes, and the Irma/Maria tracks.
 # Inputs from 07_upscaling (net_forcing_by_class, mc_net_forcing_by_class,
@@ -57,29 +61,33 @@ pa <- ggplot(gas, aes(class, v)) +
   theme(axis.text.x = element_text(colour = pal_class[c("intact", "ghost")], face = "bold"),
         strip.text = element_text(hjust = 0.5), panel.grid.major.x = element_blank(), legend.direction = "vertical")
 
-# ---- (b) the switch, per m2, with regional totals ----
-dco2 <- nf$co2_g_yr[nf$class == "ghost"] - nf$co2_g_yr[nf$class == "intact"]
+# ---- (b) the switch, per m2: lost uptake + carbon released + CH4 ----
+lost <- -nf$co2_g_yr[nf$class == "intact"]; rel <- nf$co2_g_yr[nf$class == "ghost"]
 dch4 <- c(GWP20 = nf$ch4_co2eq20[nf$class == "ghost"] - nf$ch4_co2eq20[nf$class == "intact"],
           GWP100 = nf$ch4_co2eq100[nf$class == "ghost"] - nf$ch4_co2eq100[nf$class == "intact"],
           `GWP*` = nf$ch4_co2we_gwpstar[nf$class == "ghost"] - nf$ch4_co2we_gwpstar[nf$class == "intact"])
-swd <- data.frame(metric = factor(rep(metrics, each = 2), metrics), gas = factor(rep(c("CO2", "CH4"), 3), c("CO2", "CH4")),
-                  v = c(rbind(dco2, dch4)))
+parts <- c(lost = "lost uptake (recovery debt)", rel = "carbon released by the dead stand", CH4 = "added CH4")
+swd <- expand.grid(metric = factor(metrics, metrics), part = factor(names(parts), names(parts))) %>%
+  mutate(v = case_when(part == "lost" ~ lost, part == "rel" ~ rel, TRUE ~ dch4[as.character(metric)]))
 swt <- data.frame(metric = factor(metrics, metrics), tot = c(sw[["gwp20"]], sw[["gwp100"]], sw[["gwpstar"]]),
                   lo = c(sw[["gwp20_lo"]], sw[["gwp100_lo"]], NA), hi = c(sw[["gwp20_hi"]], sw[["gwp100_hi"]], NA),
                   Tg = c(reg$switch_gwp20_Tg, reg$switch_gwp100_Tg, reg$switch_gwpstar_Tg), ch4 = dch4) %>%
-  mutate(pct = 100 * ch4 / tot)
+  mutate(pct_rel = 100 * ch4 / rel)
+pal_part <- c(lost = "#D3D5D8", rel = pal_gas[["CO2"]], CH4 = pal_gas[["CH4"]])
 pb <- ggplot(swd, aes(v, metric)) +
-  geom_col(aes(fill = gas), width = 0.6, colour = "white", linewidth = 0.25, position = position_stack(reverse = TRUE)) +
+  geom_col(aes(fill = part), width = 0.6, colour = "white", linewidth = 0.25, position = position_stack(reverse = TRUE)) +
   geom_errorbar(data = swt, aes(x = tot, xmin = lo, xmax = hi), width = 0.15, linewidth = 0.4, colour = col_ink, orientation = "y") +
   geom_text(data = swt, aes(x = pmax(tot, hi, na.rm = TRUE) + 250,
-                            label = sprintf("CH₄ %.0f%%\n%s Tg yr⁻¹", pct, formatC(Tg, format = "f", digits = 2))),
-            hjust = 0, size = 2.2, colour = "grey20", lineheight = 0.95) +
-  scale_fill_manual(values = pal_gas, guide = "none") +
+                            label = sprintf("CH\u2084 = +%.0f%%\nof CO\u2082 released\n%s Tg yr\u207b\u00b9", pct_rel, formatC(Tg, format = "f", digits = 2))),
+            hjust = 0, size = 2.1, colour = "grey20", lineheight = 0.92) +
+  scale_fill_manual(values = pal_part, name = NULL,
+                    labels = c(lost = "lost uptake (recovery debt)", rel = expression("CO"[2]*" released by the dead stand"),
+                               CH4 = expression("added CH"[4]))) +
   scale_y_discrete(limits = rev) +
-  scale_x_continuous(labels = scales::label_comma(), expand = expansion(mult = c(0, 0.3))) +
-  labs(x = expression("Added forcing, ghost minus intact (g CO"[2]*"-eq m"^-2*" yr"^-1*")"), y = NULL,
-       subtitle = sprintf("Labels: CH₄ share; regional total over %.0f km²", reg$area_km2)) +
-  theme_fig() + theme(panel.grid.major.y = element_blank(), plot.subtitle = element_text(size = 6.5, colour = "grey30"))
+  scale_x_continuous(labels = scales::label_comma(), expand = expansion(mult = c(0, 0.5))) +
+  labs(x = expression("Added forcing, ghost minus intact (g CO"[2]*"-eq m"^-2*" yr"^-1*")"), y = NULL) +
+  coord_cartesian(clip = "off") +
+  theme_fig() + theme(panel.grid.major.y = element_blank())
 
 # ---- (c) regional induced CH4 ----
 sf_use_s2(FALSE)
@@ -100,17 +108,15 @@ pc <- ggplot() +
   scale_fill_gradientn(colours = seq_ch4, trans = "log10", breaks = c(0.01, 0.1, 1, 10, 100), labels = c("0.01", "0.1", "1", "10", "100"),
                        name = expression(atop("Induced CH"[4]*" (Mg", "yr"^-1*" per 0.25"*degree*" cell)"))) +
   coord_sf(xlim = c(-98, -59), ylim = c(8, 31), expand = FALSE) +
-  labs(x = NULL, y = NULL,
-       subtitle = sprintf("2017 hurricane dieback: %.0f km\u00b2, inducing %.1f Gg CH\u2084 yr\u207b\u00b9 (%.1f\u2013%.1f)",
-                          reg$area_km2, reg$ch4_induced_Gg, reg$ch4_induced_lo_Gg, reg$ch4_induced_hi_Gg)) +
+  labs(x = NULL, y = NULL) +
   guides(fill = guide_colourbar(title.position = "top", direction = "vertical")) +
   theme_fig() + theme(legend.position = "right", legend.justification = c(0, 0.5),
                       legend.key.width = unit(6, "pt"), legend.key.height = unit(22, "pt"), legend.title = element_text(size = 6.5),
-                      panel.grid.major = element_line(colour = "grey88", linewidth = 0.2), axis.line = element_blank(),
-                      plot.subtitle = element_text(size = 6.5, colour = "grey30"))
+                      panel.grid.major = element_line(colour = "grey88", linewidth = 0.2), axis.line = element_blank())
 
-row1 <- ((pa + labs(tag = "a")) | (pb + labs(tag = "b"))) + plot_layout(widths = c(1.25, 1), guides = "collect") &
-  theme(legend.position = "bottom", legend.direction = "horizontal")
+row1 <- ((pa + labs(tag = "a") + theme(legend.position = "bottom", legend.direction = "vertical")) |
+         (pb + labs(tag = "b") + theme(legend.position = "bottom", legend.direction = "vertical"))) +
+  plot_layout(widths = c(1.25, 1))
 fig <- row1 / (pc + labs(tag = "c")) + plot_layout(heights = c(1, 1.1)) & theme(plot.tag = element_text(face = "bold", size = 11))
 dir.create("output/figures/other", showWarnings = FALSE, recursive = TRUE)
 ggsave("output/figures/other/fig5_climate.png", fig, width = 7.2, height = 7.4, dpi = 300, bg = "white")
