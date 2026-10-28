@@ -35,6 +35,9 @@ DONE 2026-10-09 (revised with Jon): Fig. 5B is now three measured parts (lost up
 ## Data gaps
 - No porewater CH4 for SRS5 and SRS6 in March 2023: the GC run file (GC Run_Dec_2023) holds only SRS1 surface water for that month. Check whether those samples were collected and run elsewhere.
 
+## Decide when the metagenome results arrive
+- Fig. 4D (October 2025 depth profiles, all 11 variables): if the metagenome panels (4E-G) come in and show a clear class contrast, move 4D intact (all 11 panels together) to the SI and cite Fig. 4A + the SI profile figure for the oxidized surface layer (keep the depth range, "top 0-45 cm", in the text). If the metagenomes are thin, late or do not separate the classes, keep 4D in the main figure. (Jon, 2026-10-28.)
+
 ## Optional analyses
 - ~~Global extension~~ dropped (Jon, 2026-10-09).
 - Fig. 1C artist illustration: labels pending.
