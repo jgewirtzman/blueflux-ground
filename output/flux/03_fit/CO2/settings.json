@@ -3,10 +3,12 @@
   "goFlux.commit": "006f625f9aaa8e42ab7be6afd27a00adce3da990",
   "gastype": "CO2dry_ppm",
   "by": "group",
-  "prec": "supplied per UniqueID",
-  "conf": 0.95,
+  "prec": "empirical sigma per group, in goFlux() and flux.class()",
+  "conf.goFlux": 0.95,
+  "conf.flux.class": 0.95,
+  "conf.best.flux": null,
   "z": 1.95996398454005,
-  "det.prec.median": 0.701350507723572,
+  "det.prec.median": 0.675934061319542,
   "qc": {
     "c0.mult": 1.5,
     "min.obs": null,
@@ -14,10 +16,6 @@
     "convex.p": 0.05,
     "ambient.sigma": null,
     "noisy.mult": 1.5
-  },
-  "co2.tracer": false,
-  "goFlux.args": {
-    "H2O_col": "H2O_ppm"
   },
   "best.flux.args": {
     "criteria": ["MAE", "RMSE", "AICc", "SE", "g.factor", "kappa", "MDF", "nb.obs", "intercept", "p-value"],
@@ -28,23 +26,23 @@
     "warn.length": 20
   },
   "n.measurements": 756,
-  "date": "2026-10-09 00:08:25 PDT",
-  "sigma_method": "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign",
+  "date": "2026-11-03 17:20:13 CST",
+  "sigma_method": "empirical.prec(method = 'hadamard') per closure within the fit window; median per analyzer x campaign",
   "sigma_by_group": {
-    "LGR1 Mar2023": 0.947714288463632,
-    "LGR1 Oct2022": 1.00327718369432,
-    "LGR2 Mar2023": 0.518412296067775,
-    "LGR2 Oct2022": 0.483292352855901,
-    "LGR3 Mar2022": 0.640545829923954,
-    "LGR3 Mar2023": 0.764251898550895,
-    "LGR3 Oct2022": 0.701350507723572,
-    "Picarro Mar2022": 1.32276761845891,
-    "Picarro Oct2022": 0.921047104915173
+    "LGR1 Mar2023": 0.901699366779282,
+    "LGR1 Oct2022": 1.013825433365,
+    "LGR2 Mar2023": 0.498438951866239,
+    "LGR2 Oct2022": 0.460004375735704,
+    "LGR3 Mar2022": 0.320187256268807,
+    "LGR3 Mar2023": 0.75900721996395,
+    "LGR3 Oct2022": 0.675934061319542,
+    "Picarro Mar2022": 1.08103851120792,
+    "Picarro Oct2022": 0.690895815615101
   },
   "co2_tracer_flag": "!co2.tracer(): CO2 best.flux not > 0 with LM p < 0.05",
   "hm_min_obs": 30,
   "h2o_correction": "none (H2O_ppm = 0; LGR H2O channel reads negative)",
-  "instrument_prec": {
+  "instrument_prec_datasheet": {
     "LGR": [0.35, 0.9],
     "Picarro": [0.025, 0.1]
   },

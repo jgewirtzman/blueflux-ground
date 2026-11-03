@@ -48,6 +48,8 @@ liu2020 | Liu, J. et al. Methane emissions reduce the radiative cooling effect o
 doughty2025 | Doughty, C. L. et al. BlueFlux: Modeled daily CO2 and CH4 wetland fluxes, southern Florida, 2000–2024. ORNL DAAC (2025). https://doi.org/10.3334/ORNLDAAC/2404
 saintilan2023 | Saintilan, N. et al. Widespread retreat of coastal habitat is likely at warming levels above 1.5 °C. Nature 621, 112–119 (2023). https://doi.org/10.1038/s41586-023-06448-z
 cowan2025 | Cowan, N. J., Levy, P., Tigli, M., Toteva, G. Y. & Drewer, J. Characterisation of analytical uncertainty in chamber soil flux measurements. Eur. J. Soil Sci. 76, e70104 (2025). https://doi.org/10.1111/ejss.70104
+huppi2018 | Hüppi, R., Felber, R., Krauss, M., Six, J., Leifeld, J. & Fuß, R. Restricting the nonlinearity parameter in soil greenhouse gas flux calculation for more reliable flux estimates. PLoS ONE 13, e0200876 (2018). https://doi.org/10.1371/journal.pone.0200876
+parkin2012 | Parkin, T. B., Venterea, R. T. & Hargreaves, S. K. Calculating the detection limits of chamber-based soil greenhouse gas flux measurements. J. Environ. Qual. 41, 705–715 (2012). https://doi.org/10.2134/jeq2011.0394
 gewirtzman2026goflux | Gewirtzman, J. goFlux 0.5.0.9002: goFlux with additions (R package). Zenodo (2026). https://doi.org/10.5281/zenodo.23256675
 gofluxref | Rheault, K., Christiansen, J. R. & Larsen, K. S. goFlux: a user-friendly way to calculate GHG fluxes yourself, regardless of user experience. J. Open Source Softw. 9, 6393 (2024). https://doi.org/10.21105/joss.06393
 kljun2015 | Kljun, N., Calanca, P., Rotach, M. W. & Schmid, H. P. A simple two-dimensional parameterisation for Flux Footprint Prediction (FFP). Geosci. Model Dev. 8, 3695–3713 (2015). https://doi.org/10.5194/gmd-8-3695-2015

@@ -32,7 +32,7 @@ Each closure was located in the analyzer record from its field start and end tim
 
 ## M5. Flux calculation and detection limits
 
-Fluxes were computed with goFlux (Rheault et al. 2024) version 0.5.0.9002 with additions (Gewirtzman 2026), fitting a linear model and the nonlinear Hutchinson–Mosier model (Hutchinson & Mosier 1981; Pedersen et al. 2010) to each closure and selecting the reported flux with the goFlux best-flux criteria (mean absolute error, root-mean-square error, AICc, standard error, g-factor ≤2, κ, minimum detectable flux, number of observations and p < 0.05). The nonlinear model was considered only with ≥30 observations in the window; otherwise the linear flux was used. Fluxes (nmol CH4 or µmol CO2 per m2 of enclosed surface per s) were computed from the initial slope with the ideal-gas law using the total system volume, enclosed area, and air temperature and barometric pressure from the US-Skr tower interpolated to the closure start (101.325 kPa in March 2022, when the tower recorded no pressure). Fluxes were not corrected for water vapour because the analyzers report dry mole fractions. The minimum detectable flux (MDF) of each closure was z σ / t × the flux conversion term, with z = 1.96 (a benchmark multiplier rather than a calibrated 95% test; Cowan et al. 2025), t the closure duration (the span of the fitting window plus one logging interval) and σ the analyzer precision estimated empirically for each analyzer and campaign as the median absolute deviation of within-window first differences (each closure centred on its own median, then pooled, ÷√2). Fluxes below the MDF were retained at their measured values (170 of 762 CH4 fluxes; 8 of 761 CO2 fluxes), so that component means are unbiased. Five screens were recorded for every closure as flags but not used to exclude data: initial concentration >1.5 times the analyzer–campaign median; a CH4 closure whose CO2 flux was not positive and significant (p < 0.05; not evaluated for water, leaves and downed wood); a significantly accelerating (convex) trace; a window <60 s; and closure noise (second-difference precision) >1.5 times the analyzer–campaign median.
+Fluxes were computed with goFlux (Rheault et al. 2024) version 0.5.0.9002 with additions (Gewirtzman 2026), fitting a linear model and the nonlinear Hutchinson–Mosier model (Hutchinson & Mosier 1981; Pedersen et al. 2010) to each closure and selecting the reported flux with the goFlux best-flux criteria (mean absolute error, root-mean-square error, AICc, standard error, g-factor ≤2, κ, minimum detectable flux, number of observations and p < 0.05). The nonlinear model was considered only with ≥30 observations in the window; otherwise the linear flux was used. Fluxes (nmol CH4 or µmol CO2 per m2 of enclosed surface per s) were computed from the initial slope with the ideal-gas law using the total system volume, enclosed area, and air temperature and barometric pressure from the US-Skr tower interpolated to the closure start (101.325 kPa in March 2022, when the tower recorded no pressure). Fluxes were not corrected for water vapour because the analyzers report dry mole fractions. Analyzer precision (σ) was estimated from the second differences of each closure's concentration record (Hadamard precision, 1.4826 × the median absolute deviation of within-window second differences ÷ √6; goFlux empirical.prec) and taken as the median per analyzer and campaign. A fit was treated as noisy when its residual scatter exceeded σ, and the curvature of the non-linear fit was bounded by the minimum detectable flux (MDF; Hüppi et al. 2018). The MDF of each closure was 1.96σ/t multiplied by the flux term, where t is the closure time (the span of the fitting window plus one logging interval; Parkin et al. 2012); 1.96 is used as a conventional benchmark rather than a calibrated 95% test (Cowan et al. 2025). Fluxes below the MDF were retained at their measured values (155 of 762 CH4 fluxes; 8 of 761 CO2 fluxes), so that component means are unbiased. Five screens were recorded for every closure as flags but not used to exclude data: initial concentration >1.5 times the analyzer–campaign median; a CH4 closure whose CO2 flux was not positive and significant (p < 0.05; not evaluated for water, leaves and downed wood); a significantly accelerating (convex) trace; a window <60 s; and closure noise (second-difference precision) >1.5 times the analyzer–campaign median.
 
 ## M6. Selection criteria and exclusions
 
@@ -407,27 +407,27 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 |---|---|---|---|---|---|
 | cwd | ghost | dry | 5 | -0.10 (-0.74 to 0.31) | 0.51 (0.39 to 0.64) |
 | cwd | ghost | wet | 5 | 4.78 (0.30 to 12.26) | 15.37 (4.45 to 33.89) |
-| cwd | intact | dry | 10 | 0.27 (0.12 to 0.44) | 2.84 (1.88 to 3.96) |
+| cwd | intact | dry | 10 | 0.27 (0.12 to 0.44) | 2.84 (1.87 to 3.96) |
 | cwd | intact | wet | 4 | 0.81 (0.67 to 0.94) | 4.96 (2.82 to 6.65) |
 | cwd | regenerating | wet | 2 | 0.20 | 7.60 |
 | leaves | regenerating | dry | 14 | 0.02 (0.00 to 0.04) | -1.25 (-2.29 to -0.34) |
-| leaves | scrub | dry | 5 | 0.03 (0.02 to 0.05) | -2.27 (-3.33 to -1.24) |
-| root | ghost | wet | 4 | 0.61 (0.14 to 1.45) | 2.05 (0.34 to 3.69) |
+| leaves | scrub | dry | 5 | 0.03 (0.01 to 0.04) | -2.27 (-3.33 to -1.24) |
+| root | ghost | wet | 4 | 0.65 (0.22 to 1.47) | 2.05 (0.34 to 3.69) |
 | root | intact | dry | 22 | 1.05 (0.40 to 2.11) | 2.26 (1.25 to 3.57) |
-| root | intact | wet | 28 | 5.48 (0.66 to 14.59) | 2.17 (1.16 to 3.23) |
+| root | intact | wet | 28 | 5.47 (0.65 to 14.59) | 2.17 (1.16 to 3.23) |
 | root | regenerating | dry | 5 | 5.73 (2.78 to 8.29) | 2.42 (1.54 to 3.11) |
-| root | scrub | dry | 6 | 3.23 (1.27 to 5.19) | 0.54 (0.05 to 1.02) |
-| soil | ghost | dry | 31 | 11.67 (4.88 to 21.68) | 1.49 (0.92 to 2.03) |
+| root | scrub | dry | 6 | 3.23 (1.28 to 5.19) | 0.54 (0.05 to 1.02) |
+| soil | ghost | dry | 31 | 11.67 (4.87 to 21.67) | 1.49 (0.92 to 2.03) |
 | soil | intact | dry | 36 | 1.42 (0.84 to 2.16) | 1.29 (1.04 to 1.62) |
-| soil | intact | wet | 28 | 11.74 (5.58 to 20.96) | 1.97 (1.09 to 3.01) |
-| soil | regenerating | dry | 22 | 57.79 (28.00 to 93.95) | 8.70 (6.76 to 10.85) |
+| soil | intact | wet | 28 | 11.73 (5.58 to 20.96) | 1.97 (1.08 to 3.00) |
+| soil | regenerating | dry | 22 | 57.79 (28.00 to 93.95) | 8.70 (6.77 to 10.85) |
 | soil | regenerating | wet | 1 | 8.15 | 2.12 |
 | stem | ghost | dry | 123 | 7.42 (4.74 to 10.61) | 1.84 (1.43 to 2.37) |
 | stem | ghost | wet | 87 | 17.98 (8.71 to 30.17) | 2.70 (2.22 to 3.27) |
-| stem | intact | dry | 103 | 0.24 (0.16 to 0.34) | 1.85 (1.57 to 2.15) |
-| stem | intact | wet | 69 | 0.36 (0.17 to 0.63) | 1.54 (1.25 to 1.86) |
-| stem | regenerating | dry | 54 | 1.14 (0.39 to 2.10) | 3.74 (3.15 to 4.35) |
-| stem | regenerating | wet | 35 | 34.69 (6.98 to 81.66) | 7.33 (5.40 to 9.70) |
+| stem | intact | dry | 103 | 0.24 (0.17 to 0.34) | 1.85 (1.57 to 2.15) |
+| stem | intact | wet | 69 | 0.37 (0.18 to 0.63) | 1.54 (1.25 to 1.86) |
+| stem | regenerating | dry | 54 | 1.15 (0.40 to 2.10) | 3.74 (3.15 to 4.35) |
+| stem | regenerating | wet | 35 | 34.72 (7.02 to 81.67) | 7.33 (5.40 to 9.70) |
 | stem | scrub | dry | 5 | 0.09 (-0.02 to 0.29) | 0.44 (0.30 to 0.70) |
 | water | ghost | dry | 23 | 6.33 (5.35 to 7.44) | 0.38 (0.29 to 0.47) |
 | water | ghost | wet | 10 | 38.76 (22.03 to 63.04) | 0.54 (0.43 to 0.66) |
@@ -442,13 +442,13 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 | Site | Campaign | Class | Stem | Root | Soil | Water | Downed wood | Total |
 |---|---|---|---|---|---|---|---|---|
 | CP40 | Oct 2022 | ghost | 0.31 | 0.03 | 0.00 | 70.17 | 0.26 | 70.77 |
-| CP40 | Mar 2023 | ghost | 0.16 | 0.03 | 8.24 | 5.91 | -0.01 | 14.32 |
-| FLM30 | Oct 2022 | ghost | 0.15 | 0.01 | 0.00 | 28.77 | 0.00 | 28.93 |
+| CP40 | Mar 2023 | ghost | 0.16 | 0.03 | 8.24 | 5.91 | -0.01 | 14.33 |
+| FLM30 | Oct 2022 | ghost | 0.15 | 0.02 | 0.00 | 28.77 | 0.00 | 28.93 |
 | FLM30 | Mar 2023 | ghost | 0.18 | 0.02 | 7.98 | 8.17 | -0.02 | 16.34 |
-| SRS5 | Oct 2022 | intact | 0.03 | 0.22 | 0.65 | 0.58 | 0.10 | 1.59 |
-| SRS5 | Mar 2023 | intact | 0.04 | 0.40 | 0.28 | 0.29 | 0.04 | 1.06 |
-| SRS6 | Oct 2022 | intact | 0.05 | 3.81 | 5.79 | 0.65 | 0.08 | 10.38 |
-| SRS6 | Mar 2023 | intact | 0.05 | 0.18 | 2.22 | 1.02 | 0.06 | 3.52 |
+| SRS5 | Oct 2022 | intact | 0.03 | 0.22 | 0.65 | 0.58 | 0.10 | 1.58 |
+| SRS5 | Mar 2023 | intact | 0.05 | 0.40 | 0.28 | 0.29 | 0.04 | 1.07 |
+| SRS6 | Oct 2022 | intact | 0.05 | 3.81 | 5.79 | 0.65 | 0.08 | 10.39 |
+| SRS6 | Mar 2023 | intact | 0.05 | 0.18 | 2.22 | 1.02 | 0.06 | 3.53 |
 
 (B)
 
@@ -459,35 +459,35 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 | FLM30 | Mar 2023 | 0.53 | 0.04 | 0.46 | 0.37 | 0.06 | 0.00 | 1.47 | 0.00 | 1.47 |
 | FLM30 | Oct 2022 | 0.38 | 0.04 | 0.00 | 0.36 | 0.00 | 0.00 | 0.77 | 0.00 | 0.77 |
 | SRS5 | Mar 2023 | 1.46 | 0.62 | 0.73 | 0.46 | 0.28 | 1.74 | 5.29 | 8.51 | -3.21 |
-| SRS5 | Oct 2022 | 0.90 | 0.36 | 0.47 | 0.28 | 0.51 | 2.00 | 4.52 | 7.12 | -2.60 |
+| SRS5 | Oct 2022 | 0.90 | 0.36 | 0.46 | 0.28 | 0.51 | 2.00 | 4.52 | 7.12 | -2.60 |
 | SRS6 | Mar 2023 | 1.60 | 0.17 | 0.67 | 0.86 | 0.47 | 1.74 | 5.51 | 8.51 | -3.00 |
-| SRS6 | Oct 2022 | 1.17 | 0.62 | 0.60 | 0.41 | 0.34 | 2.00 | 5.15 | 7.12 | -1.97 |
+| SRS6 | Oct 2022 | 1.17 | 0.62 | 0.60 | 0.41 | 0.34 | 2.00 | 5.14 | 7.12 | -1.97 |
 
 (C)
 
 | Site | Campaign | Component | CH4 rate (95% CI) | n | Source |
 |---|---|---|---|---|---|
-| CP40 | Oct 2022 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root |
+| CP40 | Oct 2022 | root | 0.65 (0.22 to 1.47) | 4 | gap: FLM30 root |
 | CP40 | Oct 2022 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
 | CP40 | Oct 2022 | water | 50.73 (25.74 to 86.19) | 6 | site |
 | CP40 | Oct 2022 | cwd | 4.78 (0.30 to 12.26) | 5 | site |
-| FLM30 | Oct 2022 | root | 0.61 (0.14 to 1.45) | 4 | site |
+| FLM30 | Oct 2022 | root | 0.65 (0.22 to 1.47) | 4 | site |
 | FLM30 | Oct 2022 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
 | FLM30 | Oct 2022 | water | 20.79 (13.39 to 32.73) | 4 | site |
 | FLM30 | Oct 2022 | cwd | 4.78 (0.30 to 12.26) | 5 | gap: CP40 cwd |
-| SRS5 | Oct 2022 | root | 0.70 (0.31 to 1.17) | 19 | site |
-| SRS5 | Oct 2022 | soil | 1.23 (0.88 to 1.53) | 8 | site |
+| SRS5 | Oct 2022 | root | 0.69 (0.30 to 1.17) | 19 | site |
+| SRS5 | Oct 2022 | soil | 1.22 (0.85 to 1.53) | 8 | site |
 | SRS5 | Oct 2022 | water | 0.69 (0.23 to 3.88) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
 | SRS5 | Oct 2022 | cwd | 0.70 | 1 | site |
-| SRS6 | Oct 2022 | root | 15.56 (0.87 to 43.55) | 9 | site |
-| SRS6 | Oct 2022 | soil | 15.94 (7.93 to 28.71) | 20 | site |
+| SRS6 | Oct 2022 | root | 15.57 (0.88 to 43.55) | 9 | site |
+| SRS6 | Oct 2022 | soil | 15.94 (7.92 to 28.71) | 20 | site |
 | SRS6 | Oct 2022 | water | 0.64 (0.21 to 3.64) | 0 | dissolved CH4 x k (code/03_fit/02_water_flux_from_dissolved.R) |
 | SRS6 | Oct 2022 | cwd | 0.84 (0.65 to 0.97) | 3 | site |
-| CP40 | Mar 2023 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
+| CP40 | Mar 2023 | root | 0.65 (0.22 to 1.47) | 4 | gap: FLM30 root Oct 2022 |
 | CP40 | Mar 2023 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
 | CP40 | Mar 2023 | water | 5.30 (4.13 to 6.59) | 11 | site |
 | CP40 | Mar 2023 | cwd | -0.10 (-0.74 to 0.31) | 5 | site |
-| FLM30 | Mar 2023 | root | 0.61 (0.14 to 1.45) | 4 | gap: FLM30 root Oct 2022 |
+| FLM30 | Mar 2023 | root | 0.65 (0.22 to 1.47) | 4 | gap: FLM30 root Oct 2022 |
 | FLM30 | Mar 2023 | soil | 30.78 (12.70 to 55.16) | 10 | ghost floor without standing water: FLM30_2022 soil |
 | FLM30 | Mar 2023 | water | 7.27 (5.91 to 8.87) | 12 | site |
 | FLM30 | Mar 2023 | cwd | -0.10 (-0.74 to 0.31) | 5 | gap: CP40 cwd |
@@ -515,7 +515,7 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 
 | Class | CH4 | Net CO2 | Net GWP20 | 95% interval | Net GWP100 | 95% interval | Net GWP* | CH4 share (GWP20) |
 |---|---|---|---|---|---|---|---|---|
-| intact | 1.51 | -3 743 | -3 620 | -5 203 to -1 895 | -3 701 | -5 279 to -1 992 | -3 731 | 3.2% |
+| intact | 1.51 | -3 744 | -3 621 | -5 204 to -1 897 | -3 702 | -5 279 to -1 993 | -3 732 | 3.2% |
 | ghost | 11.90 | 1 810 | 2 776 | 1 931 to 3 977 | 2 142 | 1 505 to 3 266 | 3 134 | 34.8% |
 
 **Table S10. Airborne end-member fluxes** (two-class disaggregation, Delaria et al. 2024) and the airborne check of the ghost-forest inundation representation (text S8). _[pending: uncertainty definition (E. Delaria)]_
@@ -572,7 +572,7 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 | Anguilla | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
 | Grenada | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
 | Honduras | 0.00 | 0.000 (0.000 to 0.000) | 0.000 | 0.000 | 0.000 (0.000 to 0.000) |
-| Total | 173.43 | 1.109 (0.664 to 1.592) | 1.013 | 1.191 | 1.801 (0.547 to 3.051) |
+| Total | 173.43 | 1.109 (0.664 to 1.592) | 1.013 | 1.191 | 1.801 (0.546 to 3.051) |
 
 (B)
 
@@ -589,34 +589,34 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 
 | Height form | AIC | edf | ΔAIC |
 |---|---|---|---|
-| smooth_log | 977.5 | 19.7 | 0.0 |
-| log | 989.1 | 16.7 | 11.6 |
-| smooth | 990.2 | 22.1 | 12.7 |
-| linear | 1 021 | 17.3 | 43.0 |
+| smooth_log | 975.6 | 19.7 | 0.0 |
+| log | 986.6 | 16.7 | 11.0 |
+| smooth | 988.1 | 22.2 | 12.5 |
+| linear | 1 018 | 17.4 | 42.7 |
 
 (B)
 
 | Term | Estimate | SE | p |
 |---|---|---|---|
-| (Intercept) | 0.327 | 0.108 | 0.002 |
-| classregenerating | 0.736 | 0.182 | 0.000 |
-| classghost | 1.043 | 0.161 | 0.000 |
-| surfaceprop root | 0.139 | 0.095 | 0.143 |
-| statusdead | 0.031 | 0.075 | 0.679 |
-| seasondry | -0.082 | 0.127 | 0.521 |
-| floodedyes | -0.005 | 0.066 | 0.935 |
-| (Intercept).1 | -0.996 | 0.054 | 0.000 |
-| classregenerating.1 | 1.046 | 0.098 | 0.000 |
-| classghost.1 | 1.196 | 0.078 | 0.000 |
+| (Intercept) | 0.333 | 0.109 | 0.002 |
+| classregenerating | 0.747 | 0.183 | 0.000 |
+| classghost | 1.039 | 0.161 | 0.000 |
+| surfaceprop root | 0.129 | 0.095 | 0.174 |
+| statusdead | 0.027 | 0.075 | 0.721 |
+| seasondry | -0.087 | 0.128 | 0.499 |
+| floodedyes | 0.004 | 0.066 | 0.955 |
+| (Intercept).1 | -0.997 | 0.054 | 0.000 |
+| classregenerating.1 | 1.041 | 0.098 | 0.000 |
+| classghost.1 | 1.195 | 0.078 | 0.000 |
 
 (C)
 
 | term | Estimate | Std. Error | z value | Pr(>|z|) |
 |---|---|---|---|---|
-| spAVGE | -0.113 | 0.078 | -1.444 | 0.149 |
-| spCOER | -0.559 | 0.257 | -2.178 | 0.029 |
-| spLARA | -0.149 | 0.093 | -1.613 | 0.107 |
-| spunidentified | -2.219 | 0.711 | -3.121 | 0.002 |
+| spAVGE | -0.112 | 0.078 | -1.439 | 0.150 |
+| spCOER | -0.591 | 0.254 | -2.326 | 0.020 |
+| spLARA | -0.159 | 0.092 | -1.718 | 0.086 |
+| spunidentified | -2.233 | 0.710 | -3.146 | 0.002 |
 
 **Table S13. Literature-derived values.**
 
@@ -692,29 +692,29 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 | BL60 | leaves | 0.02 (0.00 to 0.04) | 14 |
 | BL60 | root | 5.73 (2.78 to 8.29) | 5 |
 | BL60 | soil | 55.63 (27.01 to 90.45) | 23 |
-| BL60 | stem | 14.18 (3.37 to 32.02) | 90 |
+| BL60 | stem | 14.20 (3.38 to 32.03) | 90 |
 | BL60 | water | 56.85 (33.34 to 88.92) | 5 |
 | CP40 | cwd | 2.34 (-0.06 to 6.25) | 10 |
 | CP40 | stem | 14.13 (7.55 to 22.68) | 78 |
 | CP40 | water | 21.34 (8.94 to 38.90) | 17 |
-| FLM30 | root | 0.61 (0.14 to 1.45) | 4 |
+| FLM30 | root | 0.65 (0.22 to 1.47) | 4 |
 | FLM30 | soil | 30.78 (12.93 to 56.13) | 10 |
-| FLM30 | stem | 11.14 (5.94 to 18.72) | 123 |
+| FLM30 | stem | 11.14 (5.93 to 18.72) | 123 |
 | FLM30 | water | 10.65 (7.36 to 15.17) | 16 |
 | MI | soil | 2.57 (2.10 to 3.04) | 21 |
-| MI | stem | 0.49 (0.19 to 0.93) | 9 |
+| MI | stem | 0.48 (0.17 to 0.92) | 9 |
 | RB10 | soil | 1.05 (0.50 to 1.68) | 10 |
-| SE1 | leaves | 0.03 (0.02 to 0.05) | 5 |
-| SE1 | root | 3.23 (1.27 to 5.19) | 6 |
+| SE1 | leaves | 0.03 (0.01 to 0.04) | 5 |
+| SE1 | root | 3.23 (1.28 to 5.19) | 6 |
 | SE1 | stem | 0.09 (-0.02 to 0.29) | 5 |
 | SE1 | water | 1.61 | 1 |
 | SRS5 | cwd | 0.28 (0.13 to 0.46) | 6 |
-| SRS5 | root | 0.93 (0.44 to 1.70) | 34 |
-| SRS5 | soil | 0.63 (0.38 to 0.88) | 24 |
-| SRS5 | stem | 0.11 (0.09 to 0.13) | 84 |
+| SRS5 | root | 0.93 (0.44 to 1.69) | 34 |
+| SRS5 | soil | 0.62 (0.38 to 0.88) | 24 |
+| SRS5 | stem | 0.12 (0.10 to 0.14) | 84 |
 | SRS5 | water | 0.57 (0.24 to 0.96) | 5 |
 | SRS6 | cwd | 0.53 (0.27 to 0.78) | 8 |
-| SRS6 | root | 9.05 (0.67 to 25.00) | 16 |
+| SRS6 | root | 9.05 (0.68 to 25.00) | 16 |
 | SRS6 | soil | 11.81 (6.17 to 20.33) | 30 |
 | SRS6 | stem | 0.45 (0.27 to 0.66) | 89 |
 | SRS6 | water | 1.35 (1.13 to 1.47) | 3 |
@@ -772,6 +772,7 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 - D. T. Ho, S. Ferrón, V. C. Engel, L. G. Larsen, J. G. Barr, Air-water gas exchange and CO2 flux in a mangrove-dominated estuary. *Geophys. Res. Lett.* **41**, 108–113 (2014).
 - D. T. Ho et al., Influence of current velocity and wind speed on air-water gas exchange in a mangrove estuary. *Geophys. Res. Lett.* **43**, 3813–3821 (2016).
 - D. T. Ho et al., On factors influencing air-water gas exchange in emergent wetlands. *J. Geophys. Res. Biogeosci.* **123**, 178–192 (2018).
+- R. Hüppi et al., Restricting the nonlinearity parameter in soil greenhouse gas flux calculation for more reliable flux estimates. *PLoS ONE* **13**, e0200876 (2018).
 - C. Huntingford et al., Implications of improved representations of plant respiration in a changing climate. *Nat. Commun.* **8**, 1602 (2017).
 - G. L. Hutchinson, A. R. Mosier, Improved soil cover method for field measurement of nitrous oxide fluxes. *Soil Sci. Soc. Am. J.* **45**, 311–316 (1981).
 - R. W. A. Hutjes et al., Dis-aggregation of airborne flux measurements using footprint analysis. *Agric. For. Meteorol.* **150**, 966–983 (2010).
@@ -786,6 +787,7 @@ To our knowledge no chamber study has measured CH4 from hurricane-killed mangrov
 - M. J. Osland et al., A tropical cyclone-induced ecological regime shift: mangrove forest conversion to mudflat in Everglades National Park (Florida, USA). *Wetlands* **40**, 1445–1458 (2020).
 - X. Ouyang, S. Y. Lee, R. M. Connolly, Using isotope labeling to partition sources of CO2 efflux in newly established mangrove seedlings. *Limnol. Oceanogr.* **63**, 731–740 (2018).
 - C. F. Pacheco et al., Soil greenhouse gas emissions from dead and natural mangrove forests in Southeastern Brazil. *Mar. Pollut. Bull.* **203**, 116487 (2024).
+- T. B. Parkin, R. T. Venterea, S. K. Hargreaves, Calculating the detection limits of chamber-based soil greenhouse gas flux measurements. *J. Environ. Qual.* **41**, 705–715 (2012).
 - A. R. Pedersen, S. O. Petersen, K. Schelde, A comprehensive approach to soil-atmosphere trace-gas flux estimation with static chambers. *Eur. J. Soil Sci.* **61**, 888–902 (2010).
 - B. Poulter et al., Multi-scale observations of mangrove blue carbon ecosystem fluxes: the NASA Carbon Monitoring System BlueFlux field campaign. *Environ. Res. Lett.* **18**, 075009 (2023).
 - E. B. Powell et al., manuscript in preparation.

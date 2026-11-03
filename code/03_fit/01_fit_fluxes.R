@@ -13,18 +13,27 @@
 #   - Tcham = tower air temperature, Pcham = tower pressure (auxfile);
 #   - no H2O dilution correction: H2O_ppm set to 0 (LGR H2O channel reads
 #     negative); fluxes are on the analyzers' dry mole fractions;
-#   - instrument precision for goFlux's own MDF: LGR GLA131 0.35 ppm CO2 /
-#     0.9 ppb CH4 (as legacy); Picarro G4301 goFlux defaults;
-#   - empirical precision sigma = MAD(dx)/sqrt(2) per analyzer x campaign
-#     ("group"), MDF = z sigma / t * flux.term with z = 1.96 (conf = 0.95; a
+#   - goFlux convention (Jon, 2026-11-03; ch4-data-filtering 3583b5b): the
+#     empirical sigma below is the precision goFlux() sees (the CO2_prec /
+#     CH4_prec columns), so it sets best.flux's noise limits (RMSE.lim =
+#     MAE.lim = prec, SE.lim = prec/sqrt(n)) and goFlux's MDF / kappa.max;
+#     goFlux() and flux.class() get conf = 0.95, best.flux() none. The LGR /
+#     Picarro datasheet values (PREC) are kept in settings for reference only;
+#   - empirical precision sigma per analyzer x campaign ("group") from Hadamard
+#     second differences inside each closure's fit window,
+#     goFlux::empirical.prec(method = "hadamard"): 1.4826 MAD(d2x)/sqrt(6) per
+#     closure (d2x within runs of regular logging), and the group sigma is the
+#     median over the group's closures. The second differences remove each
+#     closure's slope, so no centring is needed. empirical.prec(by = group)
+#     reports one row per logging interval, which splits the Picarro groups
+#     (alternate-row CH4/CO2 updates every 5-15 s) into many small subsets;
+#     taking the median over all of a group's closures keeps one sigma per
+#     group, as for the other projects (ch4-data-filtering 3583b5b). Replaces the
+#     centred MAD(dx)/sqrt(2) (within 5% at the 1 Hz LGR groups).
+#     MDF = z sigma / t * flux.term with z = 1.96 (conf = 0.95; a
 #     benchmark multiplier, not a calibrated 95% test) and t = closure.time()
-#     (span of the window + one logging interval).
-#     The first differences dx are taken within each closure's fit window and
-#     centred on that closure's own median dx before pooling, so the closures'
-#     different slopes do not enter sigma (fluxqc 0.2.3 pools uncentred dx,
-#     which at 6-10 s steps inflates sigma ~1.4-2x: code/qa/sigma_pooling_check.R;
-#     reported as jgewirtzman/fluxqc#1, the custom-sigma MDF grouping as #2).
-#     that sigma is passed to flux.class() as prec, one value per group;
+#     (span of the window + one logging interval);
+#     that sigma is passed to goFlux() and flux.class() as prec, one value per group;
 #   - best.flux criteria as the legacy scripts (all ten, g.limit 2, p 0.05,
 #     k.ratio 1);
 #   - HM only with >= HM_MIN_OBS points in the window; otherwise the LM
@@ -111,26 +120,38 @@ apply_hm_min <- function(fx) {
   fx
 }
 
-# centred empirical precision per group: dx within each closure's window, minus
-# that closure's median dx, pooled over the group; MAD / sqrt(2)
-centred_sigma <- function(traces, gas) {
-  tr <- traces[!is.na(traces$flag) & traces$flag == 1, c("UniqueID", "group", gas)]
-  by_id <- split(tr[[gas]], tr$UniqueID)
-  dx <- lapply(by_id, function(v) { d <- diff(v); d - stats::median(d) })
-  g <- tr$group[match(names(by_id), tr$UniqueID)]
-  s <- tapply(unlist(dx), rep(g, lengths(dx)), function(v) stats::mad(v) / sqrt(2))
-  data.frame(UniqueID = names(by_id), prec = as.numeric(s[g]), group = g)
+# Hadamard precision per closure (empirical.prec by UniqueID), median per group
+group_sigma <- function(traces, gas) {
+  tr <- traces[!is.na(traces$flag) & traces$flag == 1, ]
+  h <- suppressWarnings(empirical.prec(tr, gas, method = "hadamard", by = "UniqueID", warn = FALSE))
+  g <- tr$group[match(h$UniqueID, tr$UniqueID)]
+  s <- tapply(h$prec, g, stats::median, na.rm = TRUE)
+  data.frame(UniqueID = h$UniqueID, prec = as.numeric(s[g]), group = g)
 }
 
+# goFlux() -> best.flux() -> flux.class() -> qc.flags(), as process.fluxes(), which
+# keeps conf for flux.class() and does not pass it on to goFlux()
 fit_gas <- function(gas, co2 = NULL, man = manID) {
-  sig <- centred_sigma(man, gas)
-  res <- suppressWarnings(process.fluxes(man, gastype = gas, auxfile = aux_grp, by = "group",
-                                         prec = sig[c("UniqueID", "prec")], conf = 0.95, qc = QC,
-                                         best.flux.args = BEST_ARGS, H2O_col = "H2O_ppm"))
+  sig <- group_sigma(man, gas)
+  man[[c(CO2dry_ppm = "CO2_prec", CH4dry_ppb = "CH4_prec")[[gas]]]] <- sig$prec[match(man$UniqueID, sig$UniqueID)]
+  man <- man[man$UniqueID %in% sig$UniqueID, ]
+  flux <- suppressWarnings(goFlux(man, gas, H2O_col = "H2O_ppm", conf = 0.95))
+  best <- as.data.frame(do.call(best.flux, c(list(flux.result = flux), BEST_ARGS)))
+  best$group <- aux_grp$group[match(best$UniqueID, aux_grp$UniqueID)]
+  best <- flux.class(best, dataframe = man, gastype = gas, prec = sig[c("UniqueID", "prec")], by = "group", conf = 0.95)
+  best <- do.call(qc.flags, c(list(flux.result = best, dataframe = man, gastype = gas, by = "group"), QC))
+  desc <- utils::packageDescription("goFlux")
+  res <- list(fluxes = best, dataframe = man, gastype = gas,
+              settings = list(goFlux.version = as.character(utils::packageVersion("goFlux")), goFlux.commit = desc$RemoteSha,
+                              gastype = gas, by = "group", prec = "empirical sigma per group, in goFlux() and flux.class()",
+                              conf.goFlux = 0.95, conf.flux.class = 0.95, conf.best.flux = NA, z = stats::qnorm(0.975),
+                              det.prec.median = stats::median(best$det.prec, na.rm = TRUE), qc = QC,
+                              best.flux.args = BEST_ARGS, n.measurements = nrow(best),
+                              date = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")))
   fx <- res$fluxes
   fx <- fx %>% mutate(
     sigma_emp = det.prec, MDF_emp = det.MDF,
-    MDF_emp_method = "z sigma / t * flux.term; z = 1.96 (conf 0.95); t = closure.time(); sigma = centred MAD(dx)/sqrt(2) per group",
+    MDF_emp_method = "z sigma / t * flux.term; z = 1.96 (conf 0.95); t = closure.time(); sigma = median Hadamard 1.4826 MAD(d2x)/sqrt(6) per group",
     qc_c0_ratio = qc.c0.ratio, qc_c0 = qc.c0,
     qc_co2_tracer = if (is.null(co2)) NA else !co2.tracer(co2, fx),
     qc_convex = qc.convex, qc_min_window = qc.min.secs,
@@ -141,12 +162,12 @@ fit_gas <- function(gas, co2 = NULL, man = manID) {
   qc_cols <- c("qc_c0", "qc_co2_tracer", "qc_convex", "qc_min_window", "qc_noisy")
   fx$qc_any <- Reduce(`|`, lapply(fx[qc_cols], function(v) coalesce(v, FALSE)))
   res$fluxes <- fx
-  res$settings$sigma_method <- "custom: MAD/sqrt(2) of within-window first differences, centred per closure, pooled per analyzer x campaign"
+  res$settings$sigma_method <- "empirical.prec(method = 'hadamard') per closure within the fit window; median per analyzer x campaign"
   res$settings$sigma_by_group <- as.list(tapply(sig$prec, sig$group, function(v) v[1]))
   res$settings$co2_tracer_flag <- "!co2.tracer(): CO2 best.flux not > 0 with LM p < 0.05"
   res$settings$hm_min_obs <- HM_MIN_OBS
   res$settings$h2o_correction <- "none (H2O_ppm = 0; LGR H2O channel reads negative)"
-  res$settings$instrument_prec <- PREC
+  res$settings$instrument_prec_datasheet <- PREC
   res$settings$co2_tracer_off_for <- NO_CO2_TRACER
   res$settings$window_pad_s <- PAD_S
   res$settings$picarro_rows <- if (gas == "CH4dry_ppb") paste0("fresh CH4 readings only (|dCH4| >= ", PICARRO_HELD_PPB, " ppb; every other row)") else "fresh CO2 readings only (the rows where CH4 is carried forward)"

@@ -1,6 +1,6 @@
 "term","source","class","value","lo","hi"
-"NEE","Chambers (this study)","Healthy",-1020.97807717288,-1124.15733077196,-917.798823573794
-"NEE","Chambers (this study)","Ghost",493.711925340502,392.154369108423,595.26948157258
+"NEE","Chambers (this study)","Healthy",-1021.2296816654,-1124.43129834001,-918.028064990785
+"NEE","Chambers (this study)","Ghost",493.675489651809,392.113958020549,595.237021283069
 "NEE","US-SKR tower (2022-23)","Healthy",-1287.69915723346,-1665.80755089508,-909.59076357184
 "NEE","US-SKR tower (Barr 2004)","Healthy",-1170,-1297,-1043
 "NEE","CARAFE top-down*","Healthy",-818.7850656,-818.7850656,-818.7850656
@@ -8,15 +8,15 @@
 "GPP","US-SKR tower (2022-23)","Healthy",-2961.84036665755,-3225.22522508289,-2698.45550823221
 "GPP","US-SKR tower (Barr 2004)","Healthy",-2270,NA,NA
 "GPP","CARAFE (top-down)","Ghost",0,NA,NA
-"Reco","This study: total ER","Healthy",1940.10850585578,1859.5753512874,2020.64166042416
-"Reco","This study: below-canopy","Healthy",1229.94164828545,1125.90051862919,1333.98277794171
-"Reco","This study: total ER","Ghost",494.076430685945,392.443894956276,595.708966415614
-"Reco","This study: below-canopy","Ghost",494.076430685945,392.443894956276,595.708966415614
+"Reco","This study: total ER","Healthy",1939.85671560477,1859.38739494289,2020.32603626665
+"Reco","This study: below-canopy","Healthy",1229.68985803444,1125.7114949649,1333.66822110399
+"Reco","This study: total ER","Ghost",494.039968096945,392.403454033074,595.676482160815
+"Reco","This study: below-canopy","Ghost",494.039968096945,392.403454033074,595.676482160815
 "Reco","Troxler 2015: below-canopy","Healthy",715,NA,NA
 "Reco","US-SKR tower (Barr 2004): ER","Healthy",1100,NA,NA
 "Reco","Troxler 2015: total ER","Healthy",1570,NA,NA
-"CH4","Chambers (this study)","Healthy",1.13130858213147,0.544412895338851,1.7182042689241
-"CH4","Chambers (this study)","Ghost",8.90584504924267,5.31812787670716,12.4935622217782
+"CH4","Chambers (this study)","Healthy",1.1312737740069,0.544183084482687,1.71836446353112
+"CH4","Chambers (this study)","Ghost",8.90672684564679,5.31902843972757,12.494425251566
 "CH4","CARAFE top-down*","Healthy",5.449090425,-0.09476679,10.99294764
 "CH4","CARAFE top-down*","Ghost",10.51911369,1.70580222,19.33242516
 "Lateral DIC","Zhao 2021 (forest)","Healthy",145,61,229
